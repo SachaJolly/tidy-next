@@ -1,0 +1,10 @@
+.container:not(:last-child) {
+  margin: 0 0 3rem;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}

@@ -1,0 +1,143 @@
+:host {
+  display: block;
+  background-color: red;
+}
+
+.application-ui {
+  position: relative;
+  // display: flex;
+  // flex-direction: column;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  transition: opacity 0.6s ease;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  font-feature-settings: "liga";
+
+  &.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.has-cookies-flash {
+    padding-bottom: 8.25rem;
+
+    // @include media-breakpoint-down(md) {
+    //   padding-bottom: 3.5rem;
+    // }
+  }
+}
+
+.application-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  z-index: 350;
+  padding: 3rem 0 0;
+}
+
+.application-flash {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface-background);
+  width: 100vw;
+  height: auto;
+  padding: 2rem 0;
+  bottom: 0;
+  box-shadow: 0 0.125rem 1.5rem rgba(var(--color-black), 0.25);
+  color: var(--text-muted);
+  z-index: 300;
+
+  // @include media-breakpoint-down(md) {
+  //   width: auto;
+  //   left: .5rem;
+  //   right: .5rem;
+  //   padding: 2rem .5rem;
+  //   border-radius: .125rem;
+  //   margin-bottom: 4rem;
+  // }
+}
+
+.loading-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  // font-family: $font-mi;
+  font-weight: normal;
+  font-size: inherit;
+  font-style: normal;
+  line-height: 1;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin: 0 0.25rem;
+  text-decoration: none !important;
+  vertical-align: middle;
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  &:first-child {
+    margin: 0 0.25rem 0 0;
+  }
+
+  &:last-child {
+    margin: 0 0 0 0.25rem;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// FAB buttons
+
+.fab-btn {
+  position: fixed;
+  display: flex;
+  background-color: var(--surface-interactive);
+  // width: 3rem;
+  color: var(--text-on-interactive);
+  padding: 1rem;
+  bottom: 4rem;
+  border-radius: 1.75rem;
+  box-shadow: 0 0.25rem 1rem rgba(var(--color-black), 0.5);
+  right: 1rem;
+  z-index: 300;
+
+  &:hover,
+  &:active,
+  &focus {
+    text-decoration: none;
+  }
+
+  &.is-for-item {
+    bottom: 1rem;
+  }
+
+  .icon {
+    // font-family: $font-mi;
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin: 0;
+    color: inherit;
+  }
+
+  span {
+    line-height: 1.5rem;
+  }
+
+  span + span {
+    font-weight: 500;
+    text-transform: uppercase;
+    margin: 0 0.5rem 0 0.25rem;
+  }
+}

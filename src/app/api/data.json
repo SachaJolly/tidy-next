@@ -1,0 +1,104 @@
+{
+  "lists": [
+    {
+      "id": 1,
+      "title": "À voir",
+      "items": 246,
+      "notes": 0,
+      "featured": false,
+      "visibility": "private",
+      "color": "rgb(207, 216, 220)",
+      "cover": "https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/5ca1392c20fdb8000420bf04.png"
+    },
+    {
+      "id": 2,
+      "title": "Articles and Videos about Coronavirus",
+      "items": 30,
+      "notes": 0,
+      "featured": false,
+      "visibility": "public",
+      "color": "rgb(207, 216, 220)",
+      "cover": "https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/5fcff0149e59670004cf3947.jpeg"
+    },
+    {
+      "id": 3,
+      "title": "Films et vidéos d'animation",
+      "items": 28,
+      "notes": 3,
+      "featured": true,
+      "visibility": "public",
+      "color": "rgb(207, 216, 220)",
+      "cover": "https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/5ca7a09ed0e7b90004198836.png"
+    },
+    {
+      "id": 4,
+      "title": "Vidéastes incontournables",
+      "items": 63,
+      "notes": 1,
+      "featured": true,
+      "visibility": "private",
+      "color": "rgb(207, 216, 220)",
+      "cover": "https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/5ca7a2cfd0e7b90004198839.jpeg"
+    },
+    {
+      "id": 5,
+      "title": "Mes jeux préférés",
+      "items": 11,
+      "notes": 1,
+      "featured": false,
+      "visibility": "unindexed",
+      "color": "rgb(207, 216, 220)",
+      "cover": "https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/5fcfee1d9e59670004cf3944.jpeg"
+    },
+    {
+      "id": 6,
+      "title": "My first list",
+      "items": 0,
+      "notes": 0,
+      "featured": false,
+      "visibility": "public",
+      "color": "rgb(207, 216, 220)",
+      "cover": null
+    },
+    {
+      "id": 7,
+      "title": "Curation: Robotics",
+      "items": 54,
+      "notes": 1,
+      "featured": true,
+      "visibility": "public",
+      "color": "rgb(207, 216, 220)",
+      "cover": "https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/5fcff4e69e59670004cf3956.jpeg"
+    },
+    {
+      "id": 8,
+      "title": "What is cosplay",
+      "items": 6,
+      "notes": 4,
+      "featured": true,
+      "visibility": "public",
+      "color": "rgb(207, 216, 220)",
+      "cover": "https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/5a1b33cae88313000417b1bc.jpeg"
+    },
+    {
+      "id": 9,
+      "title": "Des vidéastes qu'elles sont trop cools !",
+      "items": 10,
+      "notes": 1,
+      "featured": true,
+      "visibility": "public",
+      "color": "rgb(207, 216, 220)",
+      "cover": "https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/5aa4f7c1322ce10004215869.jpeg"
+    },
+    {
+      "id": 10,
+      "title": "Curation: Robotics",
+      "items": 54,
+      "notes": 1,
+      "featured": true,
+      "visibility": "private",
+      "color": "rgb(207, 216, 220)",
+      "cover": "https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/5fcff4e69e59670004cf3956.jpeg"
+    }
+  ]
+}

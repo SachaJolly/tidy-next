@@ -1,0 +1,19 @@
+import { fn } from "@storybook/test";
+
+import Footer from "./footer";
+import "./footer.module.scss";
+
+export default {
+  title: "Components/Footer",
+  component: Footer,
+  parameters: {
+    layout: "fullscreen",
+  },
+  tags: ["autodocs"],
+  argTypes: {},
+  args: {},
+};
+
+export const Default = {
+  args: {},
+};

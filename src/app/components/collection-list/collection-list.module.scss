@@ -1,0 +1,25 @@
+.collection-list {
+  margin-right: -0.5rem;
+  margin-left: -0.5rem;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 1rem;
+}
+
+@media (min-width: 618px) {
+  .collection-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 887px) {
+  .collection-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .collection-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

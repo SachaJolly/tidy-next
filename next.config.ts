@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  sassOptions: {
+    indentWidth: 2,
+    outputStyle: "expanded",
+  },
 };
 
 export default nextConfig;

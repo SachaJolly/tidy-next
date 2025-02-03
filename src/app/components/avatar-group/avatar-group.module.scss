@@ -1,0 +1,30 @@
+.avatar-group {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  align-items: center;
+
+  [class*='avatar_avatar'] {
+    &:not(:first-of-type) {
+      &[class*='is-24'] {
+        margin-left: -0.25rem;
+        mask: radial-gradient(circle 13px at -7px 50%, transparent 99%, #FFF 100%);
+      }
+      
+      &[class*='is-32'] {
+        margin-left: -0.25rem;
+        mask: radial-gradient(circle 16px at -10px 50%, transparent 99%, #FFF 100%)
+      }
+      
+      &[class*='is-56'] {
+        margin-left: -0.5rem;
+        mask: radial-gradient(circle 30px at -20px 50%, transparent 99%, #FFF 100%);
+      }
+      
+      &[class*='is-96'] {
+        margin-left: -1rem;
+        mask: radial-gradient(circle 50px at -32px 50%, transparent 99%, #FFF 100%);
+      }
+    }
+  }
+}

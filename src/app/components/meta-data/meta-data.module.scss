@@ -1,0 +1,22 @@
+.featured {
+  color: var(--text-type-featured);
+}
+
+.popular {
+  color: var(--text-type-popular);
+}
+
+.trending {
+  color: var(--text-type-trending);
+}
+
+.visibility,
+.pinned,
+.shared,
+.tag {
+  color: var(--text-body);
+
+  .icon {
+    color: var(--text-muted);
+  }
+}

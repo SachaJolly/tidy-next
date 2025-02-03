@@ -1,0 +1,120 @@
+.container {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  margin-top: auto;
+  padding: 2rem 0;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  gap: 1rem;
+  align-items: center;
+  text-align: center;
+
+  width: 100%;
+  padding: 0 8px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 500px) {
+  .content {
+    max-width: 500px;
+  }
+}
+
+@media (min-width: 618px) {
+  .content {
+    max-width: 570px;
+  }
+}
+
+@media (min-width: 887px) {
+  .content {
+    max-width: 855px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .content {
+    max-width: 1140px;
+  }
+}
+
+.copy {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  font-weight: normal;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  gap: 0.5rem;
+  color: var(--text-muted);
+
+  .nav-link,
+  .nav-select {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    font-weight: normal;
+    padding: 0.25rem;
+    margin: 0;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease-in-out;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: var(--surface-highlight);
+    }
+
+    &.is-interactive {
+      color: var(--text-interactive);
+    }
+  }
+
+  .nav-select {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-position: right 0.25rem center;
+    color: inherit;
+    padding: 0.25rem 1.25rem 0.25rem 0.25rem;
+    cursor: pointer;
+    field-sizing: content;
+
+    select {
+      background-color: transparent;
+      appearance: none;
+      border: none;
+      font-size: 0.875rem;
+      color: inherit;
+
+      &:hover,
+      &:focus,
+      &:active {
+        text-decoration: underline;
+      }
+    }
+  }
+}

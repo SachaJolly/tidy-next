@@ -1,0 +1,137 @@
+.container {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  color: var(--text-body);
+
+  &:hover,
+  &.hover,
+  &:focus,
+  &.focus,
+  &:active,
+  &.active {
+    .cover img {
+      transform: scale(1.1, 1.1);
+    }
+  }
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  background-color: var(--surface-background);
+  padding: 0.5rem;
+  border-radius: var(--radius-interactive);
+  color: inherit;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+
+  &:hover,
+  &.hover,
+  &:focus,
+  &.focus,
+  &:active,
+  &.active {
+    background-color: var(--surface-highlight);
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.cover {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  width: 6rem;
+  height: 3rem;
+  margin: 0 0.25rem 0 0;
+  border-radius: 0.25rem;
+  overflow: hidden;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: var(--stroke-thin) solid var(--border-default);
+    width: 100%;
+    height: 100%;
+    border-radius: 0.25rem;
+    pointer-events: none;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    transition: -webkit-transform 3s ease;
+    transition: transform 3s ease;
+    transition:
+      transform 3s ease,
+      -webkit-transform 3s ease;
+  }
+}
+
+.infos {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 0 0.5rem;
+}
+
+.title {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  color: var(--text-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  margin: 0 0 0.25rem;
+  word-break: break-word;
+}
+
+@media (min-width: 887px) {
+  .container.bigger {
+    grid-column: span 2;
+    grid-row: span 2;
+
+    .cover {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+@media (min-width: 618px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .cover {
+    width: 100%;
+    height: 8rem;
+    margin: 0 0 0.25rem;
+  }
+
+  .infos {
+    flex: 0 0 auto;
+    padding: 0.5rem 0.25rem;
+  }
+}

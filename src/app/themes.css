@@ -1,0 +1,104 @@
+:root {
+  color-scheme: light dark;
+
+  /* Surface */
+  --surface-background: light-dark(var(--color-white), var(--color-grey-900));
+  --surface-highlight: light-dark(var(--color-grey-050), var(--color-grey-700));
+  --surface-highlight-hover: light-dark(
+    var(--color-grey-100),
+    var(--color-grey-800)
+  );
+  --surface-modal: light-dark(var(--color-white), var(--color-grey-600));
+  --surface-overlay: light-dark(
+    var(--color-white-op90),
+    var(--color-black-op70)
+  );
+  --surface-tooltip: light-dark(
+    var(--color-black-op90),
+    var(--color-white-op90)
+  );
+  --surface-interactive: light-dark(
+    var(--color-purple-500),
+    var(--color-purple-300)
+  );
+  --surface-interactive-hover: light-dark(
+    var(--color-purple-600),
+    var(--color-purple-400)
+  );
+  --surface-interactive-highlight: light-dark(
+    var(--color-purple-op10),
+    var(--color-purple-op10)
+  );
+  --surface-interactive-highlight-hover: light-dark(
+    var(--color-purple-10),
+    var(--color-purple-10)
+  );
+  --surface-selection: light-dark(
+    var(--color-yellow-op40),
+    var(--color-yellow-op40)
+  );
+
+  /* Text */
+  --text-interactive: light-dark(
+    var(--color-purple-500),
+    var(--color-purple-300)
+  );
+  --text-interactive-hover: light-dark(
+    var(--color-purple-600),
+    var(--color-purple-400)
+  );
+  --text-heading: light-dark(var(--color-grey-800), var(--color-white));
+  --text-body: light-dark(var(--color-grey-600), var(--color-white));
+  --text-muted: light-dark(var(--color-grey-400), var(--color-grey-300));
+  --text-disabled: light-dark(var(--color-grey-300), var(--color-grey-400));
+  --text-inverse: light-dark(var(--color-white), var(--color-grey-900));
+  --text-on-interactive: light-dark(var(--color-white), var(--color-white));
+
+  /* Text types */
+  --text-type-featured: light-dark(
+    var(--color-purple-500),
+    var(--color-purple-300)
+  );
+  --text-type-trending: light-dark(var(--color-red-500), var(--color-red-200));
+  --text-type-popular: light-dark(
+    var(--color-green-500),
+    var(--color-green-300)
+  );
+
+  /* Border */
+  --border-default: light-dark(
+    var(--color-black-op20),
+    var(--color-white-op20)
+  );
+  --border-default-hover: light-dark(
+    var(--color-black-op30),
+    var(--color-white-op40)
+  );
+  --border-inverse: light-dark(
+    var(--color-white-op20),
+    var(--color-black-op20)
+  );
+  --border-inverse-hover: light-dark(
+    var(--color-white-op40),
+    var(--color-black-op30)
+  );
+  --border-interactive: light-dark(
+    var(--color-purple-op20),
+    var(--color-purple-op40)
+  );
+  --border-interactive-hover: light-dark(
+    var(--color-purple-op30),
+    var(--color-purple-op50)
+  );
+  --border-active: light-dark(var(--color-purple-500), var(--color-purple-300));
+  --border-active-hover: light-dark(
+    var(--color-purple-600),
+    var(--color-purple-400)
+  );
+  --border-disabled: light-dark(
+    var(--color-black-op10),
+    var(--color-white-op10)
+  );
+  --border-error: light-dark(var(--color-red-500), var(--color-red-200));
+  --border-error-hover: light-dark(var(--color-red-600), var(--color-red-400));
+}

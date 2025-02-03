@@ -1,0 +1,19 @@
+import { fn } from "@storybook/test";
+
+import Hero from "./hero";
+import "./hero.module.scss";
+
+export default {
+  title: "Components/Hero",
+  component: Hero,
+  parameters: {
+    layout: "fullscreen",
+  },
+  tags: ["autodocs"],
+  argTypes: {},
+  args: {},
+};
+
+export const Default = {
+  args: {},
+};

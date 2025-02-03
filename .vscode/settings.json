@@ -1,0 +1,11 @@
+{
+  "[scss]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true
+  },
+  "editor.formatOnSave": true,
+  "scss.format.spaceAroundSelectorSeparator": true,
+  "scss.format.enable": true
+}

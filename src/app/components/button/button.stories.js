@@ -1,0 +1,61 @@
+import { fn } from "@storybook/test";
+
+import Button from "./button";
+import "./button.module.scss";
+import { type } from "os";
+
+export default {
+  title: "Components/Button",
+  component: Button,
+  parameters: {
+    layout: "centered",
+  },
+  tags: ["autodocs"],
+  argTypes: {
+    tinted: { control: "boolean" },
+    transparent: { control: "boolean" },
+  },
+  args: {
+    label: "Label",
+    size: "default",
+    type: "default",
+    tinted: false,
+    transparent: false,
+    onClick: fn(),
+  },
+};
+
+export const Default = {
+  args: {},
+};
+
+export const Small = {
+  args: {
+    size: "small",
+  },
+};
+
+export const Transparent = {
+  args: {
+    transparent: true,
+  },
+};
+
+export const Interactive = {
+  args: {
+    type: "interactive",
+  },
+};
+
+export const Tinted = {
+  args: {
+    type: "interactive",
+    tinted: true,
+  },
+};
+
+export const Icon = {
+  args: {
+    icon: "favorite",
+  },
+};
