@@ -47,7 +47,7 @@
   }
 
   &:focus-within {
-    background-color: var(--surface-modal);
+    // background-color: var(--surface-modal);
     border: var(--stroke-thin) solid var(--border-active);
     outline-color: var(--surface-interactive);
     outline-offset: 0.125rem;

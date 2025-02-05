@@ -19,6 +19,7 @@
   }
 
   &.brand {
+    color: var(--text-heading);
     padding: .25rem .75rem .25rem .25rem;
   }
 
@@ -28,6 +29,20 @@
     &:hover {
       background-color: var(--surface-interactive-highlight);
       color: var(--text-interactive);
+    }
+  }
+
+  [class*='icon'] {
+    &:only-child {
+      margin: 0 -.5rem;
+    }
+
+    &:first-child {
+      margin-left: -.5rem;
+    }
+
+    &:last-child {
+      margin-right: -.5rem;
     }
   }
 

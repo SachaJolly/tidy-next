@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Space_Grotesk } from "next/font/google";
+
 import "./primitives.css";
 import "./themes.css";
 import "./globals.css";
 import "./layout.module.scss";
-import Footer from "@/app/components/footer/footer";
+
 import Navbar from "@/app/components/navbar/navbar";
+import Footer from "@/app/components/footer/footer";
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-interface",
@@ -26,6 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head></head>
       <body>
         <div className="application-ui">
           <Navbar />

@@ -7,7 +7,8 @@ import ButtonGroup from "@/app/components/button-group/button-group";
 import NavLink from "@/app/components/nav-link/nav-link";
 import { usePathname } from "next/navigation";
 import Icon from "@/app/components/icon/icon";
-import Avatar from "../avatar/avatar";
+import Avatar from "@/app/components/avatar/avatar";
+import { Logo } from "@/app/components/logo/logo";
 
 interface NavbarProps {
   title?: string;
@@ -22,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
     <nav className={styles["container"]}>
       <div className={styles["content"]}>
         <NavLink href="/" className="brand">
-          <img src="/img/logo-tidycards.svg" alt="TidyCards" />
+          <Logo variant="default" />
         </NavLink>
 
         <form action="/search" className={styles["search-container"]}>
