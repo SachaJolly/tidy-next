@@ -1,13 +1,13 @@
 import React from "react";
-import styles from "./meta-data.module.scss";
+import styles from "./meta.module.scss";
 
-interface MetaDataProps {
+interface MetaProps {
   type?: keyof typeof styles; // Use keyof to ensure type safety with your CSS module
   children: React.ReactNode;
 }
 
-const MetaData: React.FC<MetaDataProps> = ({ type, children }) => (
+const Meta: React.FC<MetaProps> = ({ type, children }) => (
   <li className={styles[type || ""]}>{children}</li>
 );
 
-export default MetaData;
+export default Meta;

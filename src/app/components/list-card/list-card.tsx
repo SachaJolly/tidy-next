@@ -1,126 +1,102 @@
 import React from "react";
 import Icon from "../icon/icon";
-import Meta from "../meta-list/meta-list";
-import MetaData from "../meta-data/meta-data";
+import MetaGroup from "../meta-group/meta-group";
+import Meta from "../meta/meta";
 import styles from "./list-card.module.scss";
-
-enum Visibility {
-  PRIVATE = "PRIVATE",
-  UNINDEXED = "UNINDEXED",
-  PUBLIC = "PUBLIC",
-}
+import { List } from "@/app/api/lists/route";
 
 interface ListCardProps {
-  _id: { $oid: string };
-  title: string;
-  color: string;
-  _thumbnail?: string;
-  visibility: Visibility;
-  itemsCount: number;
-  starsCount: number;
-  isPinned?: boolean;
-  isFeatured?: boolean;
-  isPopular?: boolean;
-  isTrending?: boolean;
+  list: List;
   bigger?: boolean;
 }
 
 const ListCard: React.FC<ListCardProps> = ({
-  _id,
-  title,
-  color,
-  _thumbnail,
-  visibility,
-  itemsCount,
-  starsCount,
-  isPinned = false,
-  isFeatured = false,
-  isPopular = false,
-  isTrending = false,
+  list,
   bigger = false,
   ...props
 }) => {
   const listClasses = `${styles.container} ${bigger ? styles.bigger : ""}`;
-  const coverColor = { backgroundColor: "#" + color };
+  const coverColor = { backgroundColor: "#" + list.color };
 
   return (
     <div className={listClasses} {...props}>
-      <a href={`/list/${_id.$oid}`} className={styles["content"]}>
+      <a href={`/lists/${list.id}`} className={styles["content"]}>
         <div className={styles["cover"]} style={coverColor}>
-          {_thumbnail && (
+          {list.thumbnail && (
             <picture>
               <source
                 media="(max-width:617px)"
-                srcSet={`https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/${_thumbnail}.jpeg`}
+                srcSet={`https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/${list.thumbnail}.jpeg`}
               />
               <img
-                alt={title}
-                src={`https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/${_thumbnail}.jpeg`}
+                alt={list.title}
+                src={`https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/${list.thumbnail}.jpeg`}
               />
             </picture>
           )}
         </div>
         <div className={styles["infos"]}>
-          <h4 className={styles["title"]}>{title}</h4>
-          <Meta>
-            {isPinned && (
-              <MetaData type="pinned">
+          <h4 className={styles["title"]}>{list.title}</h4>
+          <MetaGroup>
+            {/* {list.isPinned && (
+              <Meta type="pinned">
                 <Icon name="keep" size="16px"></Icon>
                 <span>Pinned</span>
-              </MetaData>
-            )}
+              </Meta>
+            )} */}
 
-            {visibility === "PRIVATE" && (
-              <MetaData type="visibility">
+            {list.visibility === "PRIVATE" && (
+              <Meta type="visibility">
                 <Icon name="lock" size="16px"></Icon>
                 <span>Private</span>
-              </MetaData>
+              </Meta>
             )}
 
-            {visibility === "UNINDEXED" && (
-              <MetaData type="visibility">
+            {list.visibility === "UNINDEXED" && (
+              <Meta type="visibility">
                 <Icon name="visibility_off" size="16px"></Icon>
                 <span>Unindexed</span>
-              </MetaData>
+              </Meta>
             )}
 
-            {visibility === "PUBLIC" && (
+            {list.visibility === "PUBLIC" && (
               <>
-                {isTrending ? (
-                  <MetaData type="trending">
-                    <Icon name="whatshot" size="16px"></Icon>
-                    <span>Trending</span>
-                  </MetaData>
-                ) : isPopular ? (
-                  <MetaData type="popular">
-                    <Icon name="recommend" size="16px"></Icon>
-                    <span>Popular</span>
-                  </MetaData>
-                ) : (
-                  isFeatured && (
-                    <MetaData type="featured">
+                {
+                  // list.isTrending ? (
+                  //   <Meta type="trending">
+                  //     <Icon name="whatshot" size="16px"></Icon>
+                  //     <span>Trending</span>
+                  //   </Meta>
+                  // ) : list.isPopular ? (
+                  //   <Meta type="popular">
+                  //     <Icon name="recommend" size="16px"></Icon>
+                  //     <span>Popular</span>
+                  //   </Meta>
+                  // ) : ()
+                  list.isFeatured && (
+                    <Meta type="featured">
                       <Icon name="stars" size="16px"></Icon>
                       <span>Featured</span>
-                    </MetaData>
+                    </Meta>
                   )
-                )}
+                }
               </>
             )}
 
-            {itemsCount > 0 ? (
-              <MetaData>
-                {itemsCount} {itemsCount === 1 ? "item" : "items"}
-              </MetaData>
+            {list.items > 0 ? (
+              <Meta>
+                {list.items} {list.items === 1 ? "item" : "items"}
+              </Meta>
             ) : (
-              <MetaData>Empty</MetaData>
+              <Meta>Empty</Meta>
             )}
 
-            {starsCount > 0 && (
-              <MetaData>
-                {starsCount} {starsCount === 1 ? "note" : "notes"}
-              </MetaData>
+            {list.notes > 0 && (
+              <Meta>
+                {list.notes} {list.notes === 1 ? "note" : "notes"}
+              </Meta>
             )}
-          </Meta>
+          </MetaGroup>
         </div>
       </a>
     </div>

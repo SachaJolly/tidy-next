@@ -28,26 +28,26 @@ export default {
     displayMode: { control: "select", options: ["GRID", "LIST"] },
   },
   args: {
-    _id: {
-      $oid: "5a6f3d78b5df6d00042ceeb1",
-    },
-    _author: "584348bf79a3c400042a5940",
-    color: "FF887A",
+    id: "5a6f3d78b5df6d00042ceeb1",
     title: "Vidéastes incontournables",
-    isOnDiscover: true,
-    isPinned: false,
-    isFeatured: false,
-    isPopular: false,
-    isTrending: false,
-    starsCount: 0,
-    itemsCount: 0,
+    description:
+      "Voici une liste non exhaustive des vidéastes qui font un travail génial et de qualité. Mais cela ne reste que mon humble avis.",
+
+    status: "ACTIVE",
     visibility: "PUBLIC",
     displayMode: "LIST",
-    lifeState: "ACTIVE",
-    bio: "Voici une liste non exhaustive des vidéastes qui font un travail génial et de qualité. Mais cela ne reste que mon humble avis.",
 
-    _collaborators: [],
-    collaboratorsCount: 0,
+    color: "FF887A",
+    thumbnail: "5ca7a2cfd0e7b90004198839",
+
+    items: 0,
+    collaborators: 0,
+    notes: 0,
+
+    isOnDiscover: true,
+    isFeatured: false,
+
+    authorId: "584348bf79a3c400042a5940",
   },
 };
 

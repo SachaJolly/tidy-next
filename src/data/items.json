@@ -1,0 +1,206 @@
+{
+  "items": [
+    {
+      "id": "5a7cb5d3c0ae040004ff57c5",
+      "title": "Kurzgesagt – In a Nutshell",
+      "caption": "Educational science videos",
+      "type": "URL",
+      "status": "ACTIVE",
+      "visibility": "PUBLIC",
+      "displayMode": "EMBED",
+
+      "content": {
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "title": "Never Gonna Give You Up",
+        "description": "Official music video for Rick Astley - Never Gonna Give You Up",
+        "author": "Rick Astley",
+        "host": "www.youtube.com",
+        "favicon": "https://www.youtube.com/favicon.ico",
+        "image": "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
+        "embed": "<iframe width='560' height='315' src='https://www.youtube.com/embed/dQw4w9WgXcQ' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>"
+      },
+
+      "ownership": {
+        "authorId": "584348bf79a3c400042a5940",
+        "listId": "5a6f3d78b5df6d00042ceeb1",
+        "position": 3
+      },
+
+      "stats": {
+        "views": 1500,
+        "likes": 120,
+        "shares": 45,
+        "comments": 23
+      },
+
+      "timestamps": {
+        "createdAt": "2018-02-08T20:40:51.116Z",
+        "updatedAt": "2024-03-21T15:30:00.000Z",
+        "deletedAt": null
+      }
+    },
+    {
+      "id": "5a7cb5f0c0ae040004ff57c7",
+      "title": "OpenAI",
+      "caption": "Artificial intelligence research and deployment company",
+      "type": "URL",
+      "status": "ACTIVE",
+      "visibility": "PUBLIC",
+      "displayMode": "BOOKMARK",
+
+      "content": {
+        "url": "https://openai.com",
+        "title": "OpenAI",
+        "description": "OpenAI is an AI research and deployment company. Our mission is to ensure that artificial general intelligence benefits all of humanity.",
+        "author": "OpenAI",
+        "host": "openai.com",
+        "favicon": "https://openai.com/favicon.ico",
+        "image": "https://openai.com/og-image.png",
+        "embed": null
+      },
+
+      "ownership": {
+        "authorId": "584348bf79a3c400042a5940",
+        "listId": "5a6f3d78b5df6d00042ceeb1",
+        "position": 2
+      },
+
+      "stats": {
+        "views": 890,
+        "likes": 75,
+        "shares": 30,
+        "comments": 15
+      },
+
+      "timestamps": {
+        "createdAt": "2018-02-08T20:41:20.992Z",
+        "updatedAt": "2024-03-21T14:45:00.000Z",
+        "deletedAt": null
+      }
+    },
+    {
+      "id": "5a7cb5f0c0ae020004ff57c7",
+      "title": "",
+      "caption": "Artificial intelligence research and deployment company",
+      "type": "URL",
+      "status": "ACTIVE",
+      "visibility": "PUBLIC",
+      "displayMode": "BOOKMARK",
+
+      "content": {
+        "url": "https://www.rottentomatoes.com/m/ralph_breaks_the_internet",
+        "title": "Ralph Breaks the Internet",
+        "description": "Video game bad guy Ralph and fellow misfit Vanellope von Schweetz must risk it all by traveling to the World Wide Web in search of a replacement part to save Vanellope's video game,",
+        "label1": "Tomatometer 🍅",
+        "value1": "88% (274 Reviews)",
+        "label2": "Audience Score 🍿",
+        "value2": "64% (5,000+ Ratings)",
+        "author": "",
+        "host": "rottentomatoes.com",
+        "siteName": "Rotten Tomatoes",
+        "favicon": "https://www.rottentomatoes.com/assets/pizza-pie/images/favicon.ico",
+        "image": "https://resizing.flixster.com/SGSmngJrLudTqgmRELYew37kCQI=/206x305/v2/https://resizing.flixster.com/7qMcr3aH_5B7qGFRHSs1W6GsZNM=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzRmMWQ0OTA1LTYzZjUtNGU2My1hM2ZjLTFkNzg4NzY0OGI1Zi53ZWJw",
+        "embed": null
+      },
+
+      "ownership": {
+        "authorId": "584348bf79a3c400042a5940",
+        "listId": "5a6f3d78b5df6d00042ceeb1",
+        "position": 2
+      },
+
+      "stats": {
+        "views": 890,
+        "likes": 75,
+        "shares": 30,
+        "comments": 15
+      },
+
+      "timestamps": {
+        "createdAt": "2018-02-08T20:41:20.992Z",
+        "updatedAt": "2024-03-21T14:45:00.000Z",
+        "deletedAt": null
+      }
+    },
+    {
+      "id": "5834c3341abe4604007fb9e7",
+      "title": "Spotify - Lofi Girl",
+      "caption": "Beats to relax/study to",
+      "type": "URL",
+      "status": "ACTIVE",
+      "visibility": "PUBLIC",
+      "displayMode": "LINK",
+
+      "content": {
+        "url": "https://open.spotify.com/track/123456",
+        "title": "Lofi Hip Hop Radio - Beats to Relax/Study to",
+        "description": "The perfect background music for work or study",
+        "author": "Lofi Girl",
+        "host": "open.spotify.com",
+        "favicon": "https://open.spotify.com/favicon.ico",
+        "image": "https://i.scdn.co/image/ab67616d0000b273123456789",
+        "embed": "<iframe style='border-radius:12px' src='https://open.spotify.com/embed/track/123456' width='100%' height='352' frameBorder='0' allowfullscreen='' allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' loading='lazy'></iframe>"
+      },
+
+      "ownership": {
+        "authorId": "584348bf79a3c400042a5940",
+        "listId": "5a6f3d78b5df6d00042ceeb1",
+        "position": 1
+      },
+
+      "stats": {
+        "views": 1250,
+        "likes": 45,
+        "shares": 12,
+        "comments": 8
+      },
+
+      "timestamps": {
+        "createdAt": "2016-11-22T22:14:12.734Z",
+        "updatedAt": "2024-03-21T14:45:00.000Z",
+        "deletedAt": null
+      }
+    },
+    {
+      "id": "5a1b33cae88313000417b1bc",
+      "title": "How to Start Cosplaying - A Beginner's Guide",
+      "caption": "Everything you need to know to start your cosplay journey",
+      "type": "ARTICLE",
+      "status": "ACTIVE",
+      "visibility": "PUBLIC",
+      "displayMode": "BOOKMARK",
+      "content": {
+        "url": "https://cosplay-guide.com/beginners",
+        "host": "cosplay-guide.com",
+        "favicon": "https://cosplay-guide.com/favicon.ico",
+        "ogImage": "https://cosplay-guide.com/assets/guide-cover.jpg",
+        "embedCode": null
+      },
+
+      "media": {
+        "thumbnail": "5a1b33cae88313000417b1bd",
+        "images": ["5a1b33cae88313000417b1bd", "5a1b33cae88313000417b1be"]
+      },
+
+      "stats": {
+        "views": 2340,
+        "likes": 89,
+        "shares": 34,
+        "comments": 15
+      },
+
+      "ownership": {
+        "authorId": "584348bf79a3c400042a5940",
+        "listId": "5a185521080b2f00046253ce",
+        "position": 1
+      },
+
+      "timestamps": {
+        "createdAt": "2017-11-26T18:22:34.734+00:00",
+        "updatedAt": "2017-11-28T09:45:12.000+00:00",
+        "deletedAt": null,
+        "lastActivityAt": "2024-03-20T16:30:00.000Z"
+      }
+    }
+  ]
+}

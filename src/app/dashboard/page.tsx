@@ -7,54 +7,15 @@ import CollectionList from "@/components/collection-list/collection-list";
 import Section from "@/components/section/section";
 import SectionHeader from "@/components/section-header/section-header";
 import ListCard from "@/components/list-card/list-card";
-import Meta from "@/components/meta-list/meta-list";
-import MetaData from "@/components/meta-data/meta-data";
+import MetaGroup from "@/app/components/meta-group/meta-group";
+import Meta from "@/app/components/meta/meta";
 
-import listsFile from "@/api/lists.json";
-import sortFile from "@/api/customsorts.json";
-
-enum Visibility {
-  PRIVATE = "PRIVATE",
-  UNINDEXED = "UNINDEXED",
-  PUBLIC = "PUBLIC",
-}
-
-interface List {
-  _id: { $oid: string };
-  updatedAt: { $date: string };
-  createdAt: { $date: string };
-  _author: string;
-  depth: number;
-  _thumbnail?: string;
-  color: string;
-  title: string;
-  _parents: any[];
-  isOnDiscover: boolean;
-  isFeatured: boolean;
-  starsCount: number;
-  itemsCount: number;
-  visibility: Visibility;
-  lifeState: string;
-  __v: number;
-  featuredAt?: { $date: string } | null;
-  displayMode: string;
-  bio?: string;
-  _collaborators?: { $oid: string }[];
-  collaboratorsCount: number;
-}
+import { getDashboardLists } from "@/app/api/lists/route";
+import { List } from "@/app/api/lists/route";
 
 function Dashboard(): JSX.Element {
   //   const lists: List[] = listsFile.lists.concat(sortFile.customsorts || [])
-  const lists: List[] = listsFile.lists
-    .map((list) => ({
-      ...list,
-      _collaborators: list._collaborators || [],
-      collaboratorsCount: list.collaboratorsCount ?? 0,
-      displayMode: list.displayMode || "default",
-      visibility: list.visibility as Visibility,
-    }))
-    .filter((list) => list._author === "584348bf79a3c400042a5940")
-    .sort((a, b) => a.starsCount - b.starsCount);
+  const lists: List[] = getDashboardLists("584348bf79a3c400042a5940");
 
   return (
     <Page>
@@ -64,24 +25,14 @@ function Dashboard(): JSX.Element {
       />
       <Section>
         <SectionHeader title="My lists">
-          <Meta>
-            <MetaData>Default collection</MetaData>
-            <MetaData>Only public lists are visible to everyone</MetaData>
-          </Meta>
+          <MetaGroup>
+            <Meta>Default collection</Meta>
+            <Meta>Only public lists are visible to everyone</Meta>
+          </MetaGroup>
         </SectionHeader>
         <CollectionList>
           {lists.map((list) => (
-            <ListCard
-              _id={list._id}
-              title={list.title}
-              color={list.color}
-              _thumbnail={list._thumbnail}
-              visibility={list.visibility}
-              itemsCount={list.itemsCount}
-              starsCount={list.starsCount}
-              isFeatured={list.isFeatured}
-              key={list._id.$oid}
-            />
+            <ListCard list={list} key={list.id} />
           ))}
         </CollectionList>
       </Section>
