@@ -41,7 +41,7 @@ const meta = {
     },
   },
   args: {
-    name: 'favorite',
+    name: 'search',
     size: '24px',
   },
 } satisfies Meta<typeof Icon>;
@@ -51,7 +51,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    name: 'favorite',
+    name: 'search',
   },
   play: async ({ canvasElement }) => {
     const span = canvasElement.querySelector('span');
@@ -59,60 +59,30 @@ export const Default: Story = {
   },
 };
 
-export const Heart: Story = {
-  args: {
-    name: 'heart',
-  },
-};
-
-export const Star: Story = {
-  args: {
-    name: 'star',
-  },
-};
-
-export const Arrow: Story = {
-  args: {
-    name: 'arrow',
-  },
-};
-
-export const Check: Story = {
-  args: {
-    name: 'check',
-  },
-};
-
-export const ChevronDown: Story = {
-  args: {
-    name: 'chevronDown',
-  },
-};
-
 export const Size12: Story = {
   args: {
-    name: 'heart',
+    name: 'search',
     size: '12px',
   },
 };
 
 export const Size16: Story = {
   args: {
-    name: 'star',
+    name: 'search',
     size: '16px',
   },
 };
 
 export const Size20: Story = {
   args: {
-    name: 'arrow',
+    name: 'search',
     size: '20px',
   },
 };
 
 export const Size24: Story = {
   args: {
-    name: 'check',
+    name: 'search',
     size: '24px',
   },
 };
