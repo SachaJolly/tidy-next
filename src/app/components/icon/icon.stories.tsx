@@ -13,27 +13,7 @@ const meta = {
   argTypes: {
     name: {
       control: 'select',
-      options: [
-        'heart',
-        'star',
-        'favorite',
-        'check',
-        'close',
-        'chevronDown',
-        'chevronUp',
-        'chevronLeft',
-        'chevronRight',
-        'arrow',
-        'arrowUp',
-        'arrowDown',
-        'search',
-        'menu',
-        'settings',
-        'success',
-        'error',
-        'warning',
-        'info',
-      ],
+      options: ['search'],
     },
     size: {
       control: 'select',

@@ -13,16 +13,7 @@ const meta = {
   argTypes: {
     icon: {
       control: 'select',
-      options: [
-        undefined,
-        'heart',
-        'star',
-        'check',
-        'arrow',
-        'chevronDown',
-        'chevronUp',
-        'settings',
-      ],
+      options: [undefined, 'search'],
     },
     size: {
       control: 'select',
@@ -80,7 +71,14 @@ export const Tinted: Story = {
   },
 };
 
-export const Icon: Story = {
+export const WithIcon: Story = {
+  args: {
+    label: 'Search',
+    icon: 'search',
+  },
+};
+
+export const IconOnly: Story = {
   args: {
     icon: 'search',
   },
