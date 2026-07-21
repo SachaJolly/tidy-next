@@ -73,14 +73,8 @@ export const Tinted: Story = {
 
 export const WithIcon: Story = {
   args: {
-    label: 'Search',
-    icon: 'search',
-  },
-};
-
-export const IconOnly: Story = {
-  args: {
-    icon: 'search',
+    label: 'Like',
+    icon: 'favorite',
   },
 };
 
