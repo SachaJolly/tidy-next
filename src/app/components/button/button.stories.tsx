@@ -80,30 +80,9 @@ export const Tinted: Story = {
   },
 };
 
-export const WithIconHeart: Story = {
+export const Icon: Story = {
   args: {
-    label: 'Like',
-    icon: 'heart',
-  },
-};
-
-export const WithIconStar: Story = {
-  args: {
-    label: 'Rate',
-    icon: 'star',
-  },
-};
-
-export const WithIconCheck: Story = {
-  args: {
-    label: 'Done',
-    icon: 'check',
-  },
-};
-
-export const IconOnly: Story = {
-  args: {
-    icon: 'heart',
+    icon: 'search',
   },
 };
 

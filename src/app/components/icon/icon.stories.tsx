@@ -37,7 +37,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['16px', '20px', '24px', '32px', '48px'],
+      options: ['12px', '16px', '20px', '24px'],
     },
   },
   args: {
@@ -89,23 +89,30 @@ export const ChevronDown: Story = {
   },
 };
 
-export const Size16: Story = {
+export const Size12: Story = {
   args: {
     name: 'heart',
+    size: '12px',
+  },
+};
+
+export const Size16: Story = {
+  args: {
+    name: 'star',
     size: '16px',
   },
 };
 
-export const Size32: Story = {
+export const Size20: Story = {
   args: {
-    name: 'star',
-    size: '32px',
+    name: 'arrow',
+    size: '20px',
   },
 };
 
-export const Size48: Story = {
+export const Size24: Story = {
   args: {
-    name: 'arrow',
-    size: '48px',
+    name: 'check',
+    size: '24px',
   },
 };

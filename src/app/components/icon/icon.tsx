@@ -4,7 +4,7 @@ import styles from "./icon.module.scss";
 
 interface IconProps {
   name: IconName;
-  size?: "16px" | "20px" | "24px" | "32px" | "48px";
+  size?: "12px" | "16px" | "20px" | "24px";
   className?: string | string[];
 }
 
