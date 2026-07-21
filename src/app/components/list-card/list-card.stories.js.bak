@@ -1,4 +1,4 @@
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 
 import ListCard from "./list-card";
 import "./list-card.module.scss";

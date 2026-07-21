@@ -1,8 +1,9 @@
 import React from "react";
+import { icons, type IconName } from "./icons";
 import styles from "./icon.module.scss";
 
 interface IconProps {
-  name: string;
+  name: IconName;
   size?: "16px" | "20px" | "24px" | "32px" | "48px";
   className?: string | string[];
 }
@@ -20,7 +21,13 @@ const Icon: React.FC<IconProps> = ({ name, size = "24px", className }) => {
     ...getModuleClasses(className),
   ].filter(Boolean);
 
-  return <span className={classes.join(" ")}>{name}</span>;
+  const icon = icons[name];
+
+  return (
+    <span className={classes.join(" ")}>
+      {icon}
+    </span>
+  );
 };
 
 export default Icon;

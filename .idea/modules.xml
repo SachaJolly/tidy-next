@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../tidy-api/.idea/tidy-api.iml" filepath="$PROJECT_DIR$/../tidy-api/.idea/tidy-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/tidy-next.iml" filepath="$PROJECT_DIR$/.idea/tidy-next.iml" />
     </modules>
   </component>

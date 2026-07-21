@@ -1,11 +1,11 @@
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 
-import Footer from "./footer";
-import "./footer.module.scss";
+import Hero from "./hero";
+import "./hero.module.scss";
 
 export default {
-  title: "Components/Footer",
-  component: Footer,
+  title: "Components/Hero",
+  component: Hero,
   parameters: {
     layout: "fullscreen",
   },

@@ -1,11 +1,12 @@
 import React from "react";
 import Icon from "../icon/icon";
+import type { IconName } from "../icon/icons";
 import styles from "./button.module.scss";
 
 interface ButtonProps {
   href?: string;
   label?: string;
-  icon?: string;
+  icon?: IconName;
   size?: "default" | "small";
   type?: "default" | "interactive";
   tinted?: boolean;
@@ -36,7 +37,9 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <a href={href} className={classes.join(" ")} onClick={onClick}>
-      {icon && <Icon name={icon} size="20px" />}
+      {icon && (
+        <Icon name={icon} size="20px" />
+      )}
       {label && <span>{label}</span>}
     </a>
   );
