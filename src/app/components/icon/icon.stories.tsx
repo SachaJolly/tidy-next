@@ -17,12 +17,12 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['12px', '16px', '20px', '24px'],
+      options: [12, 16, 20, 24],
     },
   },
   args: {
     name: 'search',
-    size: '24px',
+    size: 24,
   },
 } satisfies Meta<typeof Icon>;
 
@@ -42,27 +42,27 @@ export const Default: Story = {
 export const Size12: Story = {
   args: {
     name: 'search',
-    size: '12px',
+    size: 12,
   },
 };
 
 export const Size16: Story = {
   args: {
     name: 'search',
-    size: '16px',
+    size: 16,
   },
 };
 
 export const Size20: Story = {
   args: {
     name: 'search',
-    size: '20px',
+    size: 20,
   },
 };
 
 export const Size24: Story = {
   args: {
     name: 'search',
-    size: '24px',
+    size: 24,
   },
 };

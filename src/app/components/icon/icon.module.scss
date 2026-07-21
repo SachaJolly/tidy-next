@@ -1,36 +1,10 @@
 .icon {
-  font-family: "Material Symbols Sharp";
-  font-weight: normal;
-  font-style: normal;
-  font-size: 1.5rem;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  text-decoration: none;
   display: flex;
   flex: 0 0 auto;
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
-  font-feature-settings: "liga";
-  -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
   color: inherit;
   overflow: hidden;
-
-  &.is-12px {
-    font-size: 0.75rem;
-  }
-
-  &.is-16px {
-    font-size: 1rem;
-  }
-
-  &.is-20px {
-    font-size: 1.25rem;
-  }
-
-  &.is-24px {
-    font-size: 1.5rem;
-  }
 }
