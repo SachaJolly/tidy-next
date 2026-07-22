@@ -14,7 +14,13 @@ const config: StorybookConfig = {
   staticDirs: ['../public'],
   async viteFinal(config): Promise<InlineConfig> {
     const base = process.env.STORYBOOK_BASE_URL ? `${process.env.STORYBOOK_BASE_URL}/` : '/';
-    return { ...config, base };
+    return {
+      ...config,
+      base,
+      css: {
+        transformer: 'postcss',
+      },
+    };
   },
 };
 export default config;
