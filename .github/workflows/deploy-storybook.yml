@@ -39,6 +39,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Init MSW service worker
+        run: npx msw init public --no-save
+
       - run: npm run build-storybook -- --output-dir storybook-static
         env:
           STORYBOOK_BASE_URL: /tidy-next
