@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -12,7 +13,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -20,13 +21,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: npm
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/storybook
+          key: ${{ runner.os }}-storybook-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx', '**/*.mdx', '**/*.css', '**/*.scss') }}
+          restore-keys: |
+            ${{ runner.os }}-storybook-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - run: npm ci
 
