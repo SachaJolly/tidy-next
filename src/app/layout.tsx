@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans, Space_Grotesk } from "next/font/google";
 
 import "./primitives.css";
-import "./themes.css";
+import "./semantics.css";
 import "./globals.css";
 import "./layout.module.scss";
 
