@@ -5,16 +5,15 @@ export const theme = create({
 
   // Branding
   brandTitle: 'TidyCards',
+  brandImage: '/logo.svg',
   brandUrl: '/',
   brandTarget: '_self',
 
-  // Typography
   fontBase: '"IBM Plex Sans", Helvetica, sans-serif',
   fontCode: '"IBM Plex Mono", monospace',
 
-  // Colors — purple primary
-  colorPrimary: 'hsl(245, 100%, 68%)',
-  colorSecondary: 'hsl(245, 100%, 68%)',
+  colorPrimary: 'hsl(245, 100%, 75%)',
+  colorSecondary: 'hsl(245, 100%, 75%)',
 
   // UI
   appBg: 'hsl(0, 0%, 94%)',
@@ -45,14 +44,9 @@ export const darkTheme = create({
   base: 'dark',
 
   brandTitle: 'TidyCards',
+  brandImage: '/logo.svg',
   brandUrl: '/',
   brandTarget: '_self',
-
-  fontBase: '"IBM Plex Sans", Helvetica, sans-serif',
-  fontCode: '"IBM Plex Mono", monospace',
-
-  colorPrimary: 'hsl(245, 100%, 75%)',
-  colorSecondary: 'hsl(245, 100%, 75%)',
 
   appBg: 'hsl(0, 0%, 7%)',
   appContentBg: 'hsl(0, 0%, 13%)',
