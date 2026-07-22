@@ -55,6 +55,12 @@
       "plugin:storybook/recommended"
     ]
   },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions"
+  ],
   "engines": {
     "node": "22.13.0"
   },
