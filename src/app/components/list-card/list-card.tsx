@@ -3,7 +3,7 @@ import Icon from '../icon/icon';
 import MetaGroup from '../meta-group/meta-group';
 import Meta from '../meta/meta';
 import styles from './list-card.module.scss';
-import { List } from '@/app/api/lists/route';
+import { List } from '@/lib/types';
 
 interface ListCardProps {
   list: List;
@@ -12,7 +12,7 @@ interface ListCardProps {
 
 const ListCard: React.FC<ListCardProps> = ({ list, bigger = false, ...props }) => {
   const listClasses = `${styles.container} ${bigger ? styles.bigger : ''}`;
-  const coverColor = { backgroundColor: '#' + list.color };
+  const coverColor = { backgroundColor: list.color };
 
   return (
     <div className={listClasses} {...props}>
@@ -55,40 +55,36 @@ const ListCard: React.FC<ListCardProps> = ({ list, bigger = false, ...props }) =
               </Meta>
             )}
 
-            {list.visibility === 'PUBLIC' && (
-              <>
-                {list.isTrending ? (
-                  <Meta type="trending">
-                    <Icon name="hot" size={16}></Icon>
-                    <span>Trending</span>
-                  </Meta>
-                ) : list.isPopular ? (
-                  <Meta type="popular">
-                    <Icon name="recommended" size={16}></Icon>
-                    <span>Popular</span>
-                  </Meta>
-                ) : (
-                  list.isFeatured && (
-                    <Meta type="featured">
-                      <Icon name="featured" size={16}></Icon>
-                      <span>Featured</span>
-                    </Meta>
-                  )
-                )}
-              </>
+            {list.isTrending ? (
+              <Meta type="trending">
+                <Icon name="hot" size={16}></Icon>
+                <span>Trending</span>
+              </Meta>
+            ) : list.isPopular ? (
+              <Meta type="popular">
+                <Icon name="recommended" size={16}></Icon>
+                <span>Popular</span>
+              </Meta>
+            ) : (
+              list.isFeatured && (
+                <Meta type="featured">
+                  <Icon name="featured" size={16}></Icon>
+                  <span>Featured</span>
+                </Meta>
+              )
             )}
 
-            {list.items > 0 ? (
+            {list.itemsCount > 0 ? (
               <Meta>
-                {list.items} {list.items === 1 ? 'item' : 'items'}
+                {list.itemsCount} {list.itemsCount === 1 ? 'item' : 'items'}
               </Meta>
             ) : (
               <Meta>Empty</Meta>
             )}
 
-            {list.notes > 0 && (
+            {list.notesCount > 0 && (
               <Meta>
-                {list.notes} {list.notes === 1 ? 'note' : 'notes'}
+                {list.notesCount} {list.notesCount === 1 ? 'note' : 'notes'}
               </Meta>
             )}
           </MetaGroup>
