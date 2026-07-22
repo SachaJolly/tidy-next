@@ -8,7 +8,8 @@ import { initialize, mswLoader } from 'msw-storybook-addon';
 import { mswHandlers } from './msw-handlers';
 import { theme } from './theme';
 
-initialize({ onUnhandledRequest: 'bypass' });
+const serviceWorkerUrl = `${import.meta.env.BASE_URL ?? '/'}mockServiceWorker.js`;
+initialize({ onUnhandledRequest: 'bypass', serviceWorker: { url: serviceWorkerUrl } });
 
 const preview: Preview = {
   decorators: [],
