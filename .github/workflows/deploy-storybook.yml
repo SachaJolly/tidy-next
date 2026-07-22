@@ -40,6 +40,8 @@ jobs:
       - run: npm ci
 
       - run: npm run build-storybook -- --output-dir storybook-static
+        env:
+          STORYBOOK_BASE_URL: /tidy-next
 
       - uses: actions/upload-pages-artifact@v3
         with:

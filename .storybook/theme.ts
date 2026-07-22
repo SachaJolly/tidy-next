@@ -1,11 +1,13 @@
 import { create } from 'storybook/theming';
 
+const base = process.env.STORYBOOK_BASE_URL ?? '';
+
 export const theme = create({
   base: 'light',
 
   // Branding
   brandTitle: 'TidyCards',
-  brandImage: '/logo.svg',
+  brandImage: `${base}/logo.svg`,
   brandUrl: '/',
   brandTarget: '_self',
 
@@ -44,7 +46,7 @@ export const darkTheme = create({
   base: 'dark',
 
   brandTitle: 'TidyCards',
-  brandImage: '/logo.svg',
+  brandImage: `${base}/logo.svg`,
   brandUrl: '/',
   brandTarget: '_self',
 
