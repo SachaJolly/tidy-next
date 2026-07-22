@@ -1,27 +1,23 @@
-import React from "react";
-import Icon from "../icon/icon";
-import MetaGroup from "../meta-group/meta-group";
-import Meta from "../meta/meta";
-import styles from "./list-card.module.scss";
-import { List } from "@/app/api/lists/route";
+import React from 'react';
+import Icon from '../icon/icon';
+import MetaGroup from '../meta-group/meta-group';
+import Meta from '../meta/meta';
+import styles from './list-card.module.scss';
+import { List } from '@/app/api/lists/route';
 
 interface ListCardProps {
   list: List;
   bigger?: boolean;
 }
 
-const ListCard: React.FC<ListCardProps> = ({
-  list,
-  bigger = false,
-  ...props
-}) => {
-  const listClasses = `${styles.container} ${bigger ? styles.bigger : ""}`;
-  const coverColor = { backgroundColor: "#" + list.color };
+const ListCard: React.FC<ListCardProps> = ({ list, bigger = false, ...props }) => {
+  const listClasses = `${styles.container} ${bigger ? styles.bigger : ''}`;
+  const coverColor = { backgroundColor: '#' + list.color };
 
   return (
     <div className={listClasses} {...props}>
-      <a href={`/lists/${list.id}`} className={styles["content"]}>
-        <div className={styles["cover"]} style={coverColor}>
+      <a href={`/lists/${list.id}`} className={styles['content']}>
+        <div className={styles['cover']} style={coverColor}>
           {list.thumbnail && (
             <picture>
               <source
@@ -35,57 +31,56 @@ const ListCard: React.FC<ListCardProps> = ({
             </picture>
           )}
         </div>
-        <div className={styles["infos"]}>
-          <h4 className={styles["title"]}>{list.title}</h4>
+        <div className={styles['infos']}>
+          <h4 className={styles['title']}>{list.title}</h4>
           <MetaGroup>
-            {/* {list.isPinned && (
+            {list.isPinned && (
               <Meta type="pinned">
-                <Icon name="keep" size="16px"></Icon>
+                <Icon name="pin" size={16}></Icon>
                 <span>Pinned</span>
               </Meta>
-            )} */}
+            )}
 
-            {list.visibility === "PRIVATE" && (
+            {list.visibility === 'PRIVATE' && (
               <Meta type="visibility">
-                <Icon name="lock" size="16px"></Icon>
+                <Icon name="private" size={16}></Icon>
                 <span>Private</span>
               </Meta>
             )}
 
-            {list.visibility === "UNINDEXED" && (
+            {list.visibility === 'UNINDEXED' && (
               <Meta type="visibility">
-                <Icon name="visibility_off" size="16px"></Icon>
+                <Icon name="visibility_off" size={16}></Icon>
                 <span>Unindexed</span>
               </Meta>
             )}
 
-            {list.visibility === "PUBLIC" && (
+            {list.visibility === 'PUBLIC' && (
               <>
-                {
-                  // list.isTrending ? (
-                  //   <Meta type="trending">
-                  //     <Icon name="whatshot" size="16px"></Icon>
-                  //     <span>Trending</span>
-                  //   </Meta>
-                  // ) : list.isPopular ? (
-                  //   <Meta type="popular">
-                  //     <Icon name="recommend" size="16px"></Icon>
-                  //     <span>Popular</span>
-                  //   </Meta>
-                  // ) : ()
+                {list.isTrending ? (
+                  <Meta type="trending">
+                    <Icon name="hot" size={16}></Icon>
+                    <span>Trending</span>
+                  </Meta>
+                ) : list.isPopular ? (
+                  <Meta type="popular">
+                    <Icon name="recommended" size={16}></Icon>
+                    <span>Popular</span>
+                  </Meta>
+                ) : (
                   list.isFeatured && (
                     <Meta type="featured">
-                      <Icon name="stars" size="16px"></Icon>
+                      <Icon name="featured" size={16}></Icon>
                       <span>Featured</span>
                     </Meta>
                   )
-                }
+                )}
               </>
             )}
 
             {list.items > 0 ? (
               <Meta>
-                {list.items} {list.items === 1 ? "item" : "items"}
+                {list.items} {list.items === 1 ? 'item' : 'items'}
               </Meta>
             ) : (
               <Meta>Empty</Meta>
@@ -93,7 +88,7 @@ const ListCard: React.FC<ListCardProps> = ({
 
             {list.notes > 0 && (
               <Meta>
-                {list.notes} {list.notes === 1 ? "note" : "notes"}
+                {list.notes} {list.notes === 1 ? 'note' : 'notes'}
               </Meta>
             )}
           </MetaGroup>

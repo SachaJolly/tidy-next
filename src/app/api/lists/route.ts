@@ -1,19 +1,19 @@
-import { NextResponse } from "next/server";
-import listsData from "@/data/lists.json";
-import { getUserById } from "../users/route";
-import { getListItems } from "../items/route";
+import { NextResponse } from 'next/server';
+import listsData from '@/data/lists.json';
+import { getUserById } from '../users/route';
+import { getListItems } from '../items/route';
 
 export type List = {
   id: string;
   title: string;
   description?: string;
 
-  status: "ACTIVE" | "ARCHIVED" | "DELETED";
-  visibility: "PUBLIC" | "PRIVATE" | "UNINDEXED";
-  displayMode: "LIST";
+  status: 'ACTIVE' | 'ARCHIVED' | 'DELETED';
+  visibility: 'PUBLIC' | 'PRIVATE' | 'UNINDEXED';
+  displayMode: 'LIST';
 
   color: string;
-  thumbnail: string | null;
+  thumbnail?: string;
 
   items: number;
   collaborators: number;
@@ -21,6 +21,9 @@ export type List = {
 
   isOnDiscover: boolean;
   isFeatured: boolean;
+  isPinned: boolean;
+  isPopular: boolean;
+  isTrending: boolean;
 
   authorId: string;
 
@@ -46,22 +49,18 @@ export function getAllLists(): List[] {
 
 // Get public lists by authorId (only public and active for profile)
 export function getListsByAuthorId(authorId: string): List[] {
-  return sortByDate(
-    lists.filter((list) => list.authorId === authorId) as List[],
-  );
+  return sortByDate(lists.filter((list) => list.authorId === authorId) as List[]);
 }
 
 // Get active lists
 export function getActiveLists(): List[] {
-  return sortByDate(lists.filter((list) => list.status === "ACTIVE") as List[]);
+  return sortByDate(lists.filter((list) => list.status === 'ACTIVE') as List[]);
 }
 
 // Get public lists
 export function getPublicLists(): List[] {
   return sortByDate(
-    lists.filter(
-      (list) => list.visibility === "PUBLIC" && list.status === "ACTIVE",
-    ) as List[],
+    lists.filter((list) => list.visibility === 'PUBLIC' && list.status === 'ACTIVE') as List[],
   );
 }
 
@@ -72,9 +71,7 @@ export function getDeletedLists(): List[] {
 
 // Get archived lists
 export function getArchivedLists(): List[] {
-  return sortByDate(
-    lists.filter((list) => list.status === "ARCHIVED") as List[],
-  );
+  return sortByDate(lists.filter((list) => list.status === 'ARCHIVED') as List[]);
 }
 
 // Get a list by its ID
@@ -84,19 +81,14 @@ export function getListById(id: string): List | undefined {
 
 // Get all active lists by authorId for dashboard (including private lists for dashboard)
 export function getDashboardLists(authorId: string): List[] {
-  return lists.filter(
-    (list) => list.authorId === authorId && list.status === "ACTIVE",
-  ) as List[];
+  return lists.filter((list) => list.authorId === authorId && list.status === 'ACTIVE') as List[];
 }
 
 // Get discover lists
 export function getDiscoverLists(): List[] {
   return sortByDate(
     lists.filter(
-      (list) =>
-        list.isOnDiscover &&
-        list.status === "ACTIVE" &&
-        list.visibility === "PUBLIC",
+      (list) => list.isOnDiscover && list.status === 'ACTIVE' && list.visibility === 'PUBLIC',
     ) as List[],
   );
 }
@@ -105,10 +97,7 @@ export function getDiscoverLists(): List[] {
 export function getFeaturedLists(): List[] {
   return sortByDate(
     lists.filter(
-      (list) =>
-        list.isFeatured &&
-        list.status === "ACTIVE" &&
-        list.visibility === "PUBLIC",
+      (list) => list.isFeatured && list.status === 'ACTIVE' && list.visibility === 'PUBLIC',
     ) as List[],
   );
 }
@@ -116,9 +105,7 @@ export function getFeaturedLists(): List[] {
 // Get latest lists with optional limit
 export function getLatestLists(limit?: number): List[] {
   const activeLists = sortByDate(
-    lists.filter(
-      (list) => list.status === "ACTIVE" && list.visibility === "PUBLIC",
-    ) as List[],
+    lists.filter((list) => list.status === 'ACTIVE' && list.visibility === 'PUBLIC') as List[],
   );
 
   return limit ? activeLists.slice(0, limit) : activeLists;
