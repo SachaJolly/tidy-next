@@ -17,13 +17,13 @@ export const icons = {
   search: (
     <svg {...solidSvgProps}>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M19.2929 20.7071L15.2929 16.7071L16.7071 15.2929L20.7071 19.2929L19.2929 20.7071Z"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M5 11C5 14.3137 7.68629 17 11 17C14.3137 17 17 14.3137 17 11C17 7.68629 14.3137 5 11 5C7.68629 5 5 7.68629 5 11ZM11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3Z"
       />
     </svg>
@@ -244,8 +244,8 @@ export const icons = {
   featured: (
     <svg {...solidSvgProps}>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM18 12L14 14L12 18L10 14L6 12L10 10L12 6L14 10L18 12Z"
       />
     </svg>
@@ -253,8 +253,8 @@ export const icons = {
   recommended: (
     <svg {...solidSvgProps}>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M8.1 21.212C9.31667 21.7373 10.6167 22 12 22C13.3833 22 14.6833 21.7373 15.9 21.212C17.1167 20.6873 18.175 19.975 19.075 19.075C19.975 18.175 20.6873 17.1167 21.212 15.9C21.7373 14.6833 22 13.3833 22 12C22 10.6167 21.7373 9.31667 21.212 8.1C20.6873 6.88333 19.975 5.825 19.075 4.925C18.175 4.025 17.1167 3.31233 15.9 2.787C14.6833 2.26233 13.3833 2 12 2C10.6167 2 9.31667 2.26233 8.1 2.787C6.88333 3.31233 5.825 4.025 4.925 4.925C4.025 5.825 3.31267 6.88333 2.788 8.1C2.26267 9.31667 2 10.6167 2 12C2 13.3833 2.26267 14.6833 2.788 15.9C3.31267 17.1167 4.025 18.175 4.925 19.075C5.825 19.975 6.88333 20.6873 8.1 21.212ZM7 18V10.425L12 5L13 6V6.6L12.4 10H18V12.075L15.45 18H7Z"
       />
     </svg>
@@ -277,8 +277,8 @@ export const icons = {
   comment: (
     <svg {...solidSvgProps}>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M8 22V18H2V2H22V18H14L8 22ZM14 14H6V12H14V14ZM18 11H6V9H18V11ZM18 8H6V6H18V8Z"
       />
     </svg>
@@ -341,8 +341,8 @@ export const icons = {
   video: (
     <svg {...solidSvgProps}>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M3 3V21H21V3H3ZM16.5 12L9.5 16.5V7.5L16.5 12Z"
       />
     </svg>
@@ -360,8 +360,8 @@ export const icons = {
   markdown: (
     <svg {...solidSvgProps}>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M2 6V18H22V6H2ZM12.5719 15.2687H10.6562V11.5187L8.73437 13.9219L6.81249 11.5187V15.2687H4.88437V8.73123H6.80624L8.72812 11.1344L10.65 8.73123H12.5719V15.2687ZM13.9219 12L16.8062 15.3656L19.6875 12H17.7656V8.73123H15.8437V12H13.9219Z"
       />
     </svg>

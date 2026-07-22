@@ -113,6 +113,10 @@ function collectIconNodes(node, parentName = '') {
 
 // ─── SVG normalisation ────────────────────────────────────────────────────────
 
+function toCamelCase(str) {
+  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
 function normaliseSvg(svgRaw) {
   let svg = svgRaw
     // Remove XML declaration
@@ -128,6 +132,11 @@ function normaliseSvg(svgRaw) {
     // Self-close empty tags
     .replace(/<(path|circle|rect|polygon|polyline|line|ellipse)([^/]*)><\/\1>/g, '<$1$2/>')
     .trim();
+
+  // Convert all kebab-case SVG attributes to camelCase for JSX
+  svg = svg.replace(/([a-zA-Z]+)-([a-zA-Z]+)=/g, (match, p1, p2) => {
+    return `${toCamelCase(p1 + '-' + p2)}=`;
+  });
 
   return svg;
 }
