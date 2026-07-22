@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { SemanticTable } from './ColorPalette';
+
+<Meta title="Design Tokens/Semantics" />
+
+# Semantics
+
+Semantic tokens defined in `semantics.css`. Light and dark values shown side by side.
+
+### Surface
+
+<SemanticTable tokens={[{token:'surface-background',description:'Page background'},{token:'surface-highlight',description:'Subtle highlight surface'},{token:'surface-highlight-hover',description:'Highlight on hover'},{token:'surface-modal',description:'Modal / sheet background'},{token:'surface-overlay',description:'Overlay backdrop'},{token:'surface-tooltip',description:'Tooltip background'},{token:'surface-interactive',description:'Primary interactive element'},{token:'surface-interactive-hover',description:'Primary interactive on hover'},{token:'surface-interactive-highlight',description:'Subtle interactive highlight'},{token:'surface-selection',description:'Text selection highlight'}]} />
+
+### Text
+
+<SemanticTable tokens={[{token:'text-interactive',description:'Interactive / link text',type:'text'},{token:'text-interactive-hover',description:'Interactive text on hover',type:'text'},{token:'text-heading',description:'Heading text',type:'text'},{token:'text-body',description:'Body text',type:'text'},{token:'text-muted',description:'Secondary / muted text',type:'text'},{token:'text-disabled',description:'Disabled text',type:'text'},{token:'text-inverse',description:'Text on dark/inverted surfaces',type:'text',background:'var(--surface-tooltip)'},{token:'text-on-interactive',description:'Text on interactive elements',type:'text',background:'var(--surface-interactive)'},{token:'text-type-featured',description:'Featured content label',type:'text'},{token:'text-type-trending',description:'Trending content label',type:'text'},{token:'text-type-popular',description:'Popular content label',type:'text'}]} />
+
+### Border
+
+<SemanticTable tokens={[{token:'border-default',description:'Default border'},{token:'border-default-hover',description:'Default border on hover'},{token:'border-inverse',description:'Inverted border'},{token:'border-inverse-hover',description:'Inverted border on hover'},{token:'border-interactive',description:'Interactive element border'},{token:'border-interactive-hover',description:'Interactive border on hover'},{token:'border-active',description:'Active / focused border'},{token:'border-active-hover',description:'Active border on hover'},{token:'border-disabled',description:'Disabled border'},{token:'border-error',description:'Error state border'},{token:'border-error-hover',description:'Error border on hover'}]} />
