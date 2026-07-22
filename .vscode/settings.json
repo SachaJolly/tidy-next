@@ -1,13 +1,14 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "[scss]": {
+  "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.tabSize": 2,
-    "editor.insertSpaces": true,
-    "editor.detectIndentation": false,
     "editor.formatOnSave": true
   },
-  "scss.format.spaceAroundSelectorSeparator": true,
-  "scss.format.enable": true
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "scss.format.enable": true,
+  "css.format.enable": false
 }
