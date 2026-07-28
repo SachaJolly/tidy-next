@@ -1,4 +1,5 @@
 .container {
+  container-type: inline-size;
   position: relative;
   display: flex;
   flex: 1 1 auto;
@@ -20,6 +21,7 @@
     left: 0;
     right: 0;
     bottom: 0;
+    pointer-events: none;
   }
 }
 
@@ -29,11 +31,107 @@
   flex: 1 1 auto;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  gap: 1rem;
 
   width: 100%;
-  max-width: 570px;
-  padding: 0 8px;
+  padding-right: .5rem;
+  padding-left: .5rem;
   margin-right: auto;
   margin-left: auto;
+
+  @container (min-width: 500px) {
+    max-width: 500px;
+  }
+
+  @container (min-width: 570px) {
+    max-width: 570px;
+  }
+
+  @container (min-width: 855px) {
+    max-width: 855px;
+  }
+
+  @container (min-width: 1140px) {
+    max-width: 1140px;
+  }
+
+  @container (min-width: 2057px) {
+    max-width: 1718px;
+  }
+}
+
+.title {
+  font-size: 3.5rem;
+  line-height: 3rem;
+  margin-bottom: 1rem;
+}
+
+@container (min-width: 1140px) {
+  .title {
+    font-size: 4.5rem;
+    line-height: 4rem;
+  }
+}
+
+/* ── centered (default) ───────────────────────────────────────────────────── */
+
+.centered .content {
+  text-align: center;
+  max-width: 570px;
+
+  .media {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* ── horizontal ───────────────────────────────────────────────────────────── */
+
+.horizontal .content {
+  flex-direction: column;
+  text-align: center;
+
+  .media {
+    flex: 1 1 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .text {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 3.5rem;
+    line-height: 3rem;
+  }
+
+  /* On small screens, stack vertically */
+  @media (min-width: 855px) {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+
+    .text {
+      align-items: flex-start;
+      order: 1;
+    }
+
+    .media {
+      justify-content: center;
+      order: 2;
+    }
+  }
 }
