@@ -2,7 +2,7 @@ import React from "react";
 import Icon from "../icon/icon";
 import styles from "./nav-link.module.scss";
 
-interface NavLinkProps {
+interface NavLinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'className' | 'prefix'> {
   href?: string;
   label?: string;
   icon?: string;
@@ -11,10 +11,9 @@ interface NavLinkProps {
   children?: React.ReactNode;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({
+const NavLink = React.forwardRef<HTMLAnchorElement, NavLinkProps>(({
   href = "#",
   label,
   icon,
@@ -23,8 +22,8 @@ const NavLink: React.FC<NavLinkProps> = ({
   children,
   prefix,
   suffix,
-  onClick,
-}) => {
+  ...rest
+}, ref) => {
   const getModuleClasses = (classNames: string | string[] | undefined) => {
     if (!classNames) return [];
     const names = Array.isArray(classNames) ? classNames : [classNames];
@@ -38,7 +37,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   ].filter(Boolean);
 
   return (
-    <a href={href} className={classes.join(" ")} onClick={onClick}>
+    <a ref={ref} href={href} className={classes.join(" ")} {...rest}>
       {prefix}
       {icon && <Icon name={icon} />}
       {label && <span>{label}</span>}
@@ -46,6 +45,8 @@ const NavLink: React.FC<NavLinkProps> = ({
       {suffix}
     </a>
   );
-};
+});
+
+NavLink.displayName = "NavLink";
 
 export default NavLink;
