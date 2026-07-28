@@ -5,8 +5,8 @@
 
 .application-ui {
   position: relative;
-  // display: flex;
-  // flex-direction: column;
+  display: flex;
+  flex-direction: column;
   z-index: 0;
   width: 100vw;
   height: 100vh;
@@ -48,7 +48,7 @@
   height: auto;
   padding: 2rem 0;
   bottom: 0;
-  box-shadow: 0 0.125rem 1.5rem rgba(var(--color-black), 0.25);
+  box-shadow: 0 .125rem 1.5rem rgba(var(--color-black), .25);
   color: var(--text-muted);
   z-index: 300;
 
