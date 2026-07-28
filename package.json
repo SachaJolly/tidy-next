@@ -12,6 +12,8 @@
     "sync-icons": "node scripts/sync-figma-icons.mjs"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "js-cookie": "^3.0.8",
     "next": "^16.2.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -29,6 +31,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@types/jest": "^29.5.14",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

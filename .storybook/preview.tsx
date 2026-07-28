@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/nextjs-vite';
-import '../src/app/primitives.css';
-import '../src/app/semantics.css';
-import '../src/app/globals.css';
+import '@/styles/primitives.css';
+import '@/styles/semantics.css';
+import '@/styles/globals.css';
 import './storybook.css';
 import MockDate from 'mockdate';
 import { initialize, mswLoader } from 'msw-storybook-addon';
