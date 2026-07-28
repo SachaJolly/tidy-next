@@ -11,7 +11,7 @@ const mockList = {
   status: 'ACTIVE' as const,
   visibility: 'PUBLIC' as const,
   displayMode: 'LIST' as const,
-  color: 'FF887A',
+  color: '#FF887A',
   items: 0,
   collaborators: 0,
   notes: 0,

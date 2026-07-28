@@ -1,39 +1,22 @@
-import MetaGroup from "../meta-group/meta-group";
-import Meta from "../meta/meta";
+import MetaGroup from "@/components/meta-group/meta-group";
+import Meta from "@/components/meta/meta";
 import styles from "./item.module.scss";
 
-interface ItemStats {
-  views: number;
-  likes: number;
-  comments: number;
-}
+import { Item as ItemType } from "@/lib/types";
 
-interface ItemContent {
-  url: string;
-  title: string;
-  description: string;
-  label1?: string;
-  value1?: string;
-  label2?: string;
-  value2?: string;
-  author?: string;
-  host: string;
-  siteName?: string;
-  favicon?: string;
-  image?: string;
-  embed?: string;
+interface ItemStatsProps {
+  stats: {
+    views: number;
+    likes: number;
+    comments: number;
+  }
 }
 
 interface ItemProps {
-  item: {
-    displayMode: "LINK" | "BOOKMARK" | "EMBED";
-    stats: ItemStats;
-    content: ItemContent;
-    caption: string;
-  };
+  item: ItemType;
 }
 
-const ItemStats = ({ stats }: { stats: ItemStats }) => (
+const ItemStats = ({ stats }: ItemStatsProps) => (
   <MetaGroup>
     <Meta>{stats.views} views</Meta>
     <Meta>{stats.likes} likes</Meta>
@@ -59,11 +42,11 @@ export const Item = ({ item }: ItemProps) => {
               alt=""
             />
           )}
-          <h3 className={styles["title"]}>{item.content.title}</h3>
+          <h3 className={styles["title"]}>{item.title}</h3>
         </a>
 
         {item.caption && <p className={styles["caption"]}>{item.caption}</p>}
-        {/* <ItemStats stats={item.stats} /> */}
+        <ItemStats stats={item.stats} />
       </div>
     );
   }
@@ -80,7 +63,7 @@ export const Item = ({ item }: ItemProps) => {
         >
           <div className={styles["info"]}>
             <div className={styles["info-meta"]}>
-              <h3 className={styles["title"]}>{item.content.title}</h3>
+              <h3 className={styles["title"]}>{item.title}</h3>
               {item.content.description ? (
                 <p className={styles["description"]}>
                   {item.content.description}
@@ -125,14 +108,14 @@ export const Item = ({ item }: ItemProps) => {
           <div className={styles["cover"]}>
             {item.content.image && (
               <picture>
-                <img src={item.content.image} alt={item.content.title} />
+                <img src={item.content.image} alt={item.title} />
               </picture>
             )}
           </div>
         </a>
 
         {item.caption && <p className={styles["caption"]}>{item.caption}</p>}
-        {/* <ItemStats stats={item.stats} /> */}
+        <ItemStats stats={item.stats} />
       </div>
     );
   }
@@ -148,21 +131,21 @@ export const Item = ({ item }: ItemProps) => {
             alt=""
           />
         )}
-        <h2>{item.content.title}</h2>
+        <h2>{item.title}</h2>
 
         {item.content.embed ? (
           <div dangerouslySetInnerHTML={{ __html: item.content.embed }} />
         ) : (
           item.content.image && (
             <div>
-              <img src={item.content.image} alt={item.content.title} />
+              <img src={item.content.image} alt={item.title} />
             </div>
           )
         )}
       </div>
 
       {item.caption && <p className={styles["caption"]}>{item.caption}</p>}
-      {/* <ItemStats stats={item.stats} /> */}
+      <ItemStats stats={item.stats} />
     </div>
   );
 };

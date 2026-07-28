@@ -12,7 +12,7 @@ const Footer: React.FC<FooterProps> = ({}) => (
   <footer className={styles['container']}>
     <div className={styles['content']}>
       <div className={styles['copy']}>
-        <span>© 2025</span>
+        <span>© {new Date().getFullYear()}</span>
         <span>TidyCards</span>
       </div>
 

@@ -1,3 +1,7 @@
+.muted {
+  color: var(--text-muted);
+}
+
 .featured {
   color: var(--text-type-featured);
 }
@@ -13,7 +17,8 @@
 .visibility,
 .pinned,
 .shared,
-.tag {
+.tag,
+.handle {
   color: var(--text-body);
 
   .icon {
