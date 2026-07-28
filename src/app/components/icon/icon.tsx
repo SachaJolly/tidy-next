@@ -14,23 +14,12 @@ interface IconProps
 
 const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
   ({ name, size = 24, className, ...svgProps }, ref) => {
-    const getModuleClasses = (classNames: string | string[] | undefined) => {
-      if (!classNames) return [];
-      const names = Array.isArray(classNames) ? classNames : [classNames];
-      return names.map((name) => styles[name]).filter(Boolean);
-    };
-
-    const classes = [
-      styles.icon,
-      ...getModuleClasses(className),
-    ].filter(Boolean);
-
     const icon = icons[name];
 
     return (
-      <span 
+      <span
         ref={ref}
-        className={classes.join(" ")}
+        className={[styles.icon, className].filter(Boolean).join(' ')}
       >
         {React.isValidElement(icon)
           ? React.cloneElement(icon as React.ReactElement<any>, {

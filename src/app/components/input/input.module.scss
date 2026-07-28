@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.input {
+  width: 100%;
+  padding: .5rem .75rem;
+  border-radius: var(--radius-interactive);
+  border: var(--stroke-thin) solid var(--border-default);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-family: var(--font-interface);
+
+  &:focus {
+    border: var(--stroke-thin) solid var(--border-active);
+    outline-color: var(--surface-interactive);
+    outline-offset: 0.125rem;
+    outline-width: var(--stroke-thin);
+    outline-style: dashed;
+  }
+}
