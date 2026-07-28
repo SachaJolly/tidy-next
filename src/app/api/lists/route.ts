@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import listsData from '@/data/lists.json';
-import { getUserById } from '../users/route';
+import { getUserById, getActiveUsers, User } from '../users/route';
 import { getListItems } from '../items/route';
 
 export type List = {
@@ -111,7 +111,28 @@ export function getLatestLists(limit?: number): List[] {
   return limit ? activeLists.slice(0, limit) : activeLists;
 }
 
-// Nouvelle fonction qui retourne tout en une seule requête
+export type UserWithRecentLists = {
+  user: User;
+  recentLists: List[];
+};
+
+/**
+ * Returns all active users, each with their 3 most recent public lists.
+ * Intended for the /curators page.
+ */
+export function getActiveUsersWithRecentPublicLists(limit = 3): UserWithRecentLists[] {
+  return getActiveUsers().map((user) => ({
+    user,
+    recentLists: sortByDate(
+      lists.filter(
+        (l) =>
+          l.authorId === user.id &&
+          l.visibility === 'PUBLIC' &&
+          l.status === 'ACTIVE',
+      ),
+    ).slice(0, limit),
+  }));
+}
 export async function getListWithItemsAndAuthor(listId: string) {
   // Récupérer la liste
   const list = getListById(listId);
