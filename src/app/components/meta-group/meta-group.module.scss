@@ -2,7 +2,6 @@
   position: relative;
   display: flex;
   flex: 0 1 auto;
-  flex-direction: row;
   gap: .25rem;
   list-style: none;
   font-size: 0.875rem;
@@ -18,11 +17,26 @@
     gap: .25rem;
     margin: 0;
     white-space: nowrap;
-
-    &:not(:last-child):after {
-      content: "·";
-      margin: 0;
-      color: var(--text-muted);
-    }
   }
+}
+
+/* ── horizontal (default) ─────────────────────────────────────────────────── */
+
+.horizontal {
+  flex-direction: row;
+  align-items: center;
+
+  li:not(:last-child):after {
+    content: "·";
+    margin: 0;
+    color: var(--text-muted);
+  }
+}
+
+/* ── vertical ─────────────────────────────────────────────────────────────── */
+
+.vertical {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .5rem;
 }
