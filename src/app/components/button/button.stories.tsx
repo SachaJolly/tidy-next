@@ -9,83 +9,87 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['ai-generated', 'autodocs'],
+  tags: ['autodocs'],
   argTypes: {
+    label: { control: 'text' }, // Added label to controls
     icon: {
       control: 'select',
-      options: [undefined, 'search'],
+      options: [undefined, 'search', 'favorite'],
     },
     size: {
       control: 'select',
       options: ['default', 'small'],
     },
-    type: {
+    variant: {
       control: 'select',
       options: ['default', 'interactive'],
     },
     tinted: { control: 'boolean' },
     transparent: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
   args: {
-    label: 'Label',
+    label: 'Button Label', // Use label as the default for stories
     size: 'default',
-    type: 'default',
+    variant: 'default',
     tinted: false,
     transparent: false,
+    disabled: false,
   },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {},
+// --- Stories for the Link version (<a />) ---
+
+export const Link: Story = {
+  name: 'As a Link (using label)',
+  args: {
+    href: '#',
+  },
   play: async ({ canvas }) => {
-    const button = canvas.getByRole('link', { name: /label/i });
+    const button = canvas.getByRole('link', { name: /button label/i });
     await expect(button).toBeVisible();
   },
 };
 
-export const Small: Story = {
+export const LinkWithChildren: Story = {
+  name: 'As a Link (using children)',
   args: {
-    size: 'small',
+    href: '#',
+    label: 'This is ignored', // To demonstrate that children takes priority
+    children: <span>Click <strong>Me</strong></span>,
   },
 };
 
-export const Transparent: Story = {
-  args: {
-    transparent: true,
-  },
-};
+// --- Stories for the Button version (<button />) ---
 
-export const Interactive: Story = {
+export const AsButton: Story = {
+  name: 'As a Button',
   args: {
-    type: 'interactive',
-  },
-};
-
-export const Tinted: Story = {
-  args: {
-    type: 'interactive',
-    tinted: true,
-  },
-};
-
-export const WithIcon: Story = {
-  args: {
-    label: 'Like',
-    icon: 'favorite',
-  },
-};
-
-export const CssCheck: Story = {
-  args: {
-    label: 'Check Style',
-    type: 'default',
+    // No href prop makes it a <button>
   },
   play: async ({ canvas }) => {
-    const button = canvas.getByRole('link', { name: /check style/i });
-    const styles = window.getComputedStyle(button);
-    await expect(styles.display).toBeTruthy();
+    const button = canvas.getByRole('button', { name: /button label/i });
+    await expect(button).toBeVisible();
+  },
+};
+
+export const AsButtonSubmit: Story = {
+  name: 'As a Button (Submit)',
+  args: {
+    variant: 'interactive',
+    type: 'submit',
+    label: 'Submit Form',
+  },
+};
+
+export const AsButtonDisabled: Story = {
+  name: 'As a Button (Disabled)',
+  args: {
+    variant: 'interactive',
+    disabled: true,
+    label: 'Cannot Click',
   },
 };

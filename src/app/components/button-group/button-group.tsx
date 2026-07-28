@@ -1,12 +1,14 @@
 import React from "react";
+import clsx from "clsx";
 import styles from "./button-group.module.scss"; // Assuming you're using CSS Modules
 
 interface ButtonGroupProps {
   children: React.ReactNode;
+  className?: string;
 }
 
-const ButtonGroup: React.FC<ButtonGroupProps> = ({ children }) => (
-  <div className={styles["btn-group"]}>{children}</div>
+const ButtonGroup: React.FC<ButtonGroupProps> = ({ children, className }) => (
+  <div className={clsx(styles["btn-group"], className)}>{children}</div>
 );
 
 export default ButtonGroup;
