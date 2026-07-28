@@ -1,5 +1,5 @@
 import React from 'react';
-import Page from '@/components/page/page';
+import Page from '@/app/layouts/page';
 import PageHeader from '@/components/page-header/page-header';
 import CollectionList from '@/components/collection-list/collection-list';
 import Section from '@/components/section/section';

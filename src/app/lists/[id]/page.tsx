@@ -1,40 +1,47 @@
-import { notFound } from "next/navigation";
-import { getListById, getListWithItemsAndAuthor } from "@/app/api/lists/route";
-import { getListItems } from "@/app/api/items/route";
-import { getUserById } from "@/app/api/users/route";
-import Link from "next/link";
-import { Item } from "@/app/components/item/item";
-import Page from "@/app/components/page/page";
-import PageHeader from "@/app/components/page-header/page-header";
-import Section from "@/app/components/section/section";
+import { notFound } from 'next/navigation';
+import Page from '@/app/layouts/page';
+import PageHeader from '@/app/components/page-header/page-header';
+import Section from '@/app/components/section/section';
+import { Item } from '@/app/components/item/item'; // Renamed to avoid conflict
+import Link from 'next/link';
+
+import { api } from '@/lib/api';
+import { List, Item as ItemType } from '@/lib/types'; // Import Item type
 
 interface PageProps {
   params: { id: string };
 }
 
-// Gérer les paramètres dynamiques
 export async function generateMetadata({ params }: PageProps) {
-  const { list } = await getListWithItemsAndAuthor(params.id);
-  if (!list) return { title: "Liste non trouvée" };
+  // In recent Next.js versions, props can be Promises. We need to await them.
+  const awaitedParams = await params;
+  const list = await api.get<List>(`/api/v1/lists/${awaitedParams.id}`);
+
+  if (!list) return { title: 'List not found' };
   return { title: list.title };
 }
 
 export default async function ListPage({ params }: PageProps) {
-  const { list, items, author } = await getListWithItemsAndAuthor(params.id);
+  // We also await the params here.
+  const awaitedParams = await params;
+  const list = await api.get<List>(`/api/v1/lists/${awaitedParams.id}`);
 
   if (!list) {
     notFound();
   }
 
+  const author = list.author;
+  const items = list.items || [];
+
   return (
     <Page>
       <PageHeader title={list.title} caption={list.description}>
-        <Link href={`/profile/${author?.id}`}>{author?.name}</Link>
+        <Link href={`/${author?.username}`}>{author?.name}</Link>
       </PageHeader>
       <Section>
         {/* Items Grid */}
-        {items.map((item: any) => (
-          <Item key={item.id} item={item} />
+        {items.map((item: ItemType) => (
+          <Item item={item} key={item.id} />
         ))}
 
         {/* Empty State */}
