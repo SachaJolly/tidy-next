@@ -1,6 +1,6 @@
 /**
- * A centralized API client for interacting with the Tidy API.
- * This handles URL construction, headers, authentication, and basic error handling.
+ * A centralized API client for interacting with the Tidy-API.
+ * This handles URL construction, headers, authentication, and data transformation.
  */
 
 // We use Zod for runtime validation of API responses.
@@ -17,23 +17,53 @@ const ErrorResponseSchema = z.object({
 /**
  * Transforms a JSON:API response object (or array of objects) into a simple JS object.
  * It flattens the `attributes` into the main object alongside the `id`.
+ * It also handles `included` relationships, attaching them to their parent objects.
  * @example
- * // Transforms: { id: '1', type: 'list', attributes: { title: 'My List' } }
- * // Into: { id: '1', title: 'My List' }
+ * // Transforms: { data: { id: '1', type: 'list', attributes: { title: 'My List' }, relationships: { author: { data: { id: 'u1', type: 'user' } } } }, included: [{ id: 'u1', type: 'user', attributes: { name: 'John' } }] }
+ * // Into: { id: '1', title: 'My List', author: { id: 'u1', name: 'John' } }
  */
 function transformApiData(response: any) {
-  if (!response || !response.data) return response;
+  if (!response) return response;
 
-  const transformObject = (obj: any) => {
-    if (!obj.attributes) return obj;
-    return { id: obj.id, ...obj.attributes };
+  const data = response.data;
+  const included = response.included || [];
+
+  // Create a map for quick lookup of included resources
+  const includedMap = new Map<string, any>();
+  included.forEach((item: any) => {
+    includedMap.set(`${item.type}-${item.id}`, { id: item.id, ...item.attributes });
+  });
+
+  const processResource = (resource: any) => {
+    if (!resource || !resource.attributes) return resource;
+
+    const transformed = { id: resource.id, ...resource.attributes };
+
+    // Process relationships
+    if (resource.relationships) {
+      for (const key in resource.relationships) {
+        const relationship = resource.relationships[key];
+        if (relationship.data) {
+          if (Array.isArray(relationship.data)) {
+            // Handle hasMany relationships
+            transformed[key] = relationship.data
+              .map((rel: any) => includedMap.get(`${rel.type}-${rel.id}`))
+              .filter(Boolean); // Filter out any relationships not found in included
+          } else {
+            // Handle belongsTo relationships
+            transformed[key] = includedMap.get(`${relationship.data.type}-${relationship.data.id}`);
+          }
+        }
+      }
+    }
+    return transformed;
   };
 
-  if (Array.isArray(response.data)) {
-    return response.data.map(transformObject);
+  if (Array.isArray(data)) {
+    return data.map(processResource);
   }
 
-  return transformObject(response.data);
+  return processResource(data);
 }
 
 /**
@@ -43,9 +73,11 @@ function transformApiData(response: any) {
  * @returns The transformed, flattened JSON response body.
  */
 async function apiFetch(path: string, options: RequestInit = {}) {
-  const apiUrl = process.env.TIDY_API_URL;
+  // Use the NEXT_PUBLIC_ variable which is available on both server and client.
+  const apiUrl = process.env.NEXT_PUBLIC_TIDY_API_URL;
   if (!apiUrl) {
-    throw new Error("TIDY_API_URL is not configured in your environment variables.");
+    // This error will be thrown if the .env.local file is not configured correctly.
+    throw new Error("NEXT_PUBLIC_TIDY_API_URL is not configured in your environment variables.");
   }
 
   const response = await fetch(`${apiUrl}${path}`, options);
@@ -70,20 +102,6 @@ async function apiFetch(path: string, options: RequestInit = {}) {
 
 /**
  * A collection of simplified methods for making API calls.
- *
- * @example
- * // Fetching public data (e.g., in a Server Component)
- * const { data } = await api.get<ApiResponse>('/api/v1/lists/featured');
- *
- * @example
- * // Fetching protected data (e.g., in a client component)
- * const token = getAuthToken(); // Assume this function exists
- * const { data } = await api.get<ApiResponse>('/api/v1/me/lists', token);
- *
- * @example
- * // Posting data
- * const { data, headers } = await api.post('/api/v1/login', { email, password });
- * const jwt = headers.get('Authorization');
  */
 export const api = {
   /**
@@ -109,7 +127,13 @@ export const api = {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${process.env.TIDY_API_URL}${path}`, {
+    // Use the NEXT_PUBLIC_ variable here as well for consistency.
+    const apiUrl = process.env.NEXT_PUBLIC_TIDY_API_URL;
+    if (!apiUrl) {
+      throw new Error("NEXT_PUBLIC_TIDY_API_URL is not configured.");
+    }
+
+    const response = await fetch(`${apiUrl}${path}`, {
       method: 'POST',
       headers,
       body: JSON.stringify(body),

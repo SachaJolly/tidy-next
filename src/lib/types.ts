@@ -8,6 +8,7 @@ export interface User {
   email: string;
   name: string;
   username: string;
+  bio: string | null;
   createdAt: string;
 }
 
@@ -15,17 +16,21 @@ export interface Item {
   id: string;
   title: string;
   caption: string | null;
-  content: {
-    url?: string;
-  };
+  // `content` is a flexible object that can hold any key-value pairs
+  content: { [key: string]: any };
   position: number;
   itemType: 'URL' | 'TEXT' | 'IMAGE'; // Example types
   displayMode: string;
-  viewsCount: number;
-  likesCount: number;
-  commentsCount: number;
   createdAt: string;
   updatedAt: string;
+  deleted_at: string | null;
+
+  // The `stats` object is constructed by the API serializer
+  stats: {
+    views: number;
+    likes: number;
+    comments: number;
+  };
 }
 
 export interface List {
@@ -46,14 +51,14 @@ export interface List {
   isPopular: boolean;
   createdAt: string;
   updatedAt: string;
+  deleted_at: string | null;
 
   // Relationships (included via serializer)
   author?: User;
   items?: Item[];
 }
 
-// A standard API response structure from our Rails backend (using jsonapi-serializer)
+// A standard API response structure from our Rails backend
 export type ApiResponse<T> = {
   data: T;
-  // You can add 'included' here if you use compound documents
 };
