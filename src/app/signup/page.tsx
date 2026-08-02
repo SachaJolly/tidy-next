@@ -7,9 +7,7 @@ import Auth from '@/app/layouts/auth';
 import Button from '@/components/button/button';
 import Input from '@/components/input/input';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
-import { User } from '@/lib/types';
-import { LOGIN_REDIRECT_EXCEPTIONS } from '@/lib/auth-routes';
+import { signupAction } from '@/app/actions/auth';
 
 export default function SignupPage() {
   const [username, setUsername] = useState('');
@@ -23,7 +21,6 @@ export default function SignupPage() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login } = useAuth();
 
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,51 +42,28 @@ export default function SignupPage() {
     let navigationStarted = false;
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_TIDY_API_URL}/api/v1/signup`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user: {
-              username: usernameValue,
-              email: emailValue,
-              password: passwordValue,
-              password_confirmation: passwordConfirmationValue,
-            },
-          }),
-        },
+      const callbackUrl = searchParams.get('callbackUrl') ?? undefined;
+      const result = await signupAction(
+        usernameValue,
+        emailValue,
+        passwordValue,
+        passwordConfirmationValue,
+        callbackUrl,
       );
 
-      const token = response.headers.get('Authorization');
-      const body  = await response.json();
-
-      if (!response.ok) {
-        throw new Error(body.errors?.join(', ') || 'An unknown error occurred.');
+      if (result.error) {
+        throw new Error(result.error);
       }
 
-      const user: User = body.user;
-
-      if (token && user) {
-        login(token, user);
-
-        navigationStarted = true;
-
-        const callbackUrl = searchParams.get('callbackUrl');
-        if (!callbackUrl || LOGIN_REDIRECT_EXCEPTIONS.includes(callbackUrl as any)) {
-          router.push('/dashboard');
-        } else {
-          router.push(callbackUrl);
-        }
-      } else {
-        throw new Error('Signup succeeded but no token or user data was received.');
-      }
+      navigationStarted = true;
+      router.refresh();
+      router.push(result.redirectTo ?? '/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred.');
     } finally {
       if (!navigationStarted) setIsLoading(false);
     }
-  }, [username, email, password, passwordConfirmation, login, router, searchParams]);
+  }, [username, email, password, passwordConfirmation, router, searchParams]);
 
   return (
     <Page>
@@ -172,4 +146,3 @@ export default function SignupPage() {
     </Page>
   );
 }
-

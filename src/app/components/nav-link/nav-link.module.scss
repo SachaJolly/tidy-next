@@ -14,7 +14,8 @@
   border-radius: var(--radius-interactive);
   transition: all 0.2s ease-in-out;
 
-  &:hover {
+  &:hover,
+  &[aria-expanded="true"] {
     background-color: var(--surface-highlight);
     color: var(--text-heading);
   }

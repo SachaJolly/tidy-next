@@ -1,4 +1,5 @@
 import React from 'react';
+import { cookies } from 'next/headers';
 import Page from '@/app/layouts/page';
 import PageHeader from '@/components/page-header/page-header';
 import CollectionList from '@/components/collection-list/collection-list';
@@ -10,13 +11,18 @@ import Hero from '@/components/hero/hero';
 import { api } from '@/lib/api';
 import { List } from '@/lib/types';
 
-import { getAuthStatus } from '@/lib/auth';
+export default async function Latest() {
+  // Public page stays accessible to everyone; we only use the auth cookie to
+  // decide whether to show the marketing hero.
+  const cookieStore = await cookies();
+  const isAuthenticated = !!cookieStore.get('tidy_token');
 
-const Discover = async () => {
-  // We now await the getAuthStatus function, as it correctly handles the async nature of cookies().
-  const isAuthenticated = await getAuthStatus();
-
-  const latestLists = await api.get<List[]>('/api/v1/lists/latest');
+  // Latest remains a public page, but the fetch is still centrally cached so
+  // identical requests collapse together across renders.
+  const latestLists = await api.public.get<List[]>('/api/v1/lists/latest', {
+    cache: 'force-cache',
+    revalidate: 60,
+  });
 
   const latestToDisplay = latestLists.slice(0, 32);
 
@@ -39,6 +45,4 @@ const Discover = async () => {
       </Page>
     </>
   );
-};
-
-export default Discover;
+}

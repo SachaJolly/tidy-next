@@ -42,7 +42,7 @@ type Theme    = (typeof THEMES)[number]['value'];
 interface AccountDropdownProps {
   /** Null when the user is not authenticated. */
   user: User | null;
-  onLogout: () => void;
+  onLogout: () => void | Promise<void>;
   /**
    * Renders the panel inline (no portal, no fixed positioning).
    * Pass this in Storybook stories to display the menu directly in the canvas.
@@ -97,12 +97,12 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
                 </>
               )}
               <DropdownItem icon="person_add">Add account</DropdownItem>
-              <DropdownItem icon="logout" destructive onSelect={() => onLogout()}>Sign out</DropdownItem>
+              <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>Sign out</DropdownItem>
 
             </DropdownSubContent>
           </DropdownSub>
 
-          <DropdownItem icon="logout" destructive onSelect={() => onLogout()}>Sign out</DropdownItem>
+          <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>Sign out</DropdownItem>
 
           <DropdownSeparator />
         </>

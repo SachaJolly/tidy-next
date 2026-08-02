@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AuthProvider } from "@/contexts/AuthContext";
 import Navbar from "@/app/components/navbar/navbar";
 import Footer from "@/app/components/footer/footer";
 
@@ -36,13 +35,11 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
       <body>
-        <AuthProvider>
-          <div className={styles['application-ui']}>
-            <Navbar />
-            {children}
-            <Footer />
-          </div>
-        </AuthProvider>
+        <div className={styles['application-ui']}>
+          <Navbar />
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );

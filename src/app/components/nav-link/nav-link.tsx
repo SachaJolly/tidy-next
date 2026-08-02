@@ -1,5 +1,7 @@
+"use client";
+
 import React from "react";
-import Icon from "../icon/icon";
+import Icon from "@/app/components/icon/icon";
 import styles from "./nav-link.module.scss";
 
 interface NavLinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'className' | 'prefix'> {

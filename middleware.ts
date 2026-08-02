@@ -1,12 +1,19 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { isProtectedRoute } from '@/lib/auth-routes';
+import { isProtectedRoute } from './src/lib/auth-routes';
 
-export function proxy(request: NextRequest) {
+/**
+ * Route guard executed before the app renders.
+ *
+ * Why middleware still matters even with Server Components:
+ * - It prevents unauthenticated users from ever reaching protected pages.
+ * - It runs before the request hits the page tree, so redirects are instant.
+ * - It complements the server-rendered navbar by keeping navigation honest.
+ */
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Pass through immediately if this is not a protected route — avoids
-  // any performance cost for the vast majority of requests.
+  // Public routes should stay cheap: no cookie lookup, no redirect work.
   if (!isProtectedRoute(pathname)) {
     return NextResponse.next();
   }
@@ -14,8 +21,6 @@ export function proxy(request: NextRequest) {
   const token = request.cookies.get('tidy_token')?.value;
 
   if (!token) {
-    // Preserve the originally requested path so the login page can return
-    // the user there after a successful authentication.
     const signinUrl = request.nextUrl.clone();
     signinUrl.pathname = '/signin';
     signinUrl.searchParams.set('callbackUrl', pathname);
@@ -26,8 +31,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Explicitly exclude static assets, Next.js build output, images, and API
-  // routes from the proxy. Matching these would cause broken responses or —
-  // for /signin itself — an infinite redirect loop.
   matcher: ['/((?!_next/static|_next/image|favicon.ico|api/).*)'],
 };

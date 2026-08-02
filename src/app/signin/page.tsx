@@ -7,8 +7,7 @@ import Auth from '@/app/layouts/auth';
 import Button from '@/components/button/button';
 import Input from '@/components/input/input';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
-import { LOGIN_REDIRECT_EXCEPTIONS } from '@/lib/auth-routes';
+import { signinAction } from '@/app/actions/auth';
 
 export default function SigninPage() {
   const [email, setEmail] = useState('');
@@ -22,7 +21,6 @@ export default function SigninPage() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login } = useAuth();
 
   // useCallback gives the handler a stable reference so the <form onSubmit>
   // prop never changes between renders — avoids unnecessary reconciliation
@@ -48,38 +46,16 @@ export default function SigninPage() {
     let navigationStarted = false;
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_TIDY_API_URL}/api/v1/login`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user: { email: emailValue, password: passwordValue } }),
-        },
-      );
+      const callbackUrl = searchParams.get('callbackUrl') ?? undefined;
+      const result = await signinAction(emailValue, passwordValue, callbackUrl);
 
-      const token = response.headers.get('Authorization');
-      const body  = await response.json();
-
-      if (!response.ok) throw new Error(body.error || 'Invalid email or password.');
-
-      const user = body.user;
-
-      if (token && user) {
-        login(token, user);
-
-        navigationStarted = true;
-
-        // Send the user back to where they came from, unless that page is in
-        // the exception list (public landing pages with no meaningful context).
-        const callbackUrl = searchParams.get('callbackUrl');
-        if (!callbackUrl || LOGIN_REDIRECT_EXCEPTIONS.includes(callbackUrl as any)) {
-          router.push('/dashboard');
-        } else {
-          router.push(callbackUrl);
-        }
-      } else {
-        throw new Error('Login succeeded but no token or user was returned.');
+      if (result.error) {
+        throw new Error(result.error);
       }
+
+      navigationStarted = true;
+      router.refresh();
+      router.push(result.redirectTo ?? '/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred.');
     } finally {
@@ -88,7 +64,7 @@ export default function SigninPage() {
       // the route transition plays out and the component unmounts.
       if (!navigationStarted) setIsLoading(false);
     }
-  }, [email, password, login, router, searchParams]);
+  }, [email, password, router, searchParams]);
 
   return (
     <Page>
@@ -157,4 +133,3 @@ export default function SigninPage() {
     </Page>
   );
 }
-

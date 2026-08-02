@@ -42,6 +42,8 @@ export interface Profile {
   recentLists: ApiList[];
 }
 
+export type CuratorEntry = Profile;
+
 interface CuratorMetaProps {
   profile: Profile;
 }

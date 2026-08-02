@@ -1,4 +1,5 @@
 import React from 'react';
+import { cookies } from 'next/headers';
 import Page from '@/app/layouts/page';
 import PageHeader from '@/components/page-header/page-header';
 import CollectionList from '@/components/collection-list/collection-list';
@@ -10,14 +11,26 @@ import Hero from '@/components/hero/hero';
 import { api } from '@/lib/api';
 import { List } from '@/lib/types';
 
-import { getAuthStatus } from '@/lib/auth';
+type DiscoverPayload = {
+  featuredLists: List[];
+  trendingLists: List[];
+};
 
-const Discover = async () => {
-  // We now await the getAuthStatus function, as it correctly handles the async nature of cookies().
-  const isAuthenticated = await getAuthStatus();
+export default async function Discover() {
+  // Public page stays accessible to everyone; we only use the auth cookie to
+  // decide whether to show the marketing hero.
+  const cookieStore = await cookies();
+  const isAuthenticated = !!cookieStore.get('tidy_token');
 
-  const featuredLists = await api.get<List[]>('/api/v1/lists/featured');
-  const trendingLists = await api.get<List[]>('/api/v1/lists/trending');
+  // Discover used to call two endpoints. The Rails controller now aggregates
+  // both sections into a single public payload, which is then cached by Next.
+  const { featuredLists, trendingLists } = await api.public.get<DiscoverPayload>(
+    '/api/v1/lists/discover',
+    {
+      cache: 'force-cache',
+      revalidate: 60,
+    },
+  );
 
   const featuredToDisplay = featuredLists.slice(0, 9);
   const trendingToDisplay = trendingLists.slice(0, 32);
@@ -49,6 +62,4 @@ const Discover = async () => {
       </Page>
     </>
   );
-};
-
-export default Discover;
+}
