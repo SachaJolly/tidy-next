@@ -38,3 +38,10 @@ The application follows a strict routing architecture. You MUST respect this top
 - **`/dashboard`:** Primary authenticated user view. STRICTLY PROTECTED.
 - **`/settings`:** User configuration and account management. STRICTLY PROTECTED.
 - *(Expand this list as new core routes are added, explicitly defining their public/protected status)*
+
+## 7. Code Quality & Security (Linting & Scanning)
+Before submitting significant code changes, proactively verify code quality:
+- **Type Checking:** Run `npx tsc --noEmit` to ensure there are no TypeScript errors.
+- **Linting & Auto-fixing:** Run `npm run lint` or `npx eslint . --fix` to enforce coding standards.
+- **Formatting:** Run `npx prettier --write .` for consistent code styling.
+- **Dependency Security:** Run `npm audit` to check for vulnerable dependencies and suggest updates if necessary.
