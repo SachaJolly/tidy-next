@@ -3,7 +3,6 @@
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import Button from '@/components/button/button';
 import { Modal, ModalContent, ModalHeader, ModalClose } from './modal';
 import ListForm from '@/app/components/lists/list-form';
 import type { List } from '@/lib/types';
@@ -34,34 +33,26 @@ export default function NewListModal() {
     router.refresh();
   }, [locale, router]);
 
+  // This component is now pure modal content: the visibility and trigger live in
+  // the URL/query layer, not beside the form. That makes the modal reusable from
+  // the global hub and keeps the trigger placement free to change per screen.
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <>
-      <Button
-        icon="add"
-        label={t('title')}
-        variant="interactive"
-        tinted={true}
-        type="button"
-        aria-haspopup="dialog"
-        aria-expanded={isOpen}
-        onClick={() => queryModal.openModal('new-list')}
-      />
+    <Modal size="default" onClose={closeModal}>
+      <ModalHeader>
+        <h2>{t('title')}</h2>
+        <ModalClose />
+      </ModalHeader>
 
-      {isOpen && (
-        <Modal size="default" onClose={closeModal}>
-          <ModalHeader>
-            <h2>{t('title')}</h2>
-            <ModalClose />
-          </ModalHeader>
-
-          <ModalContent>
-            <p className={styles.small}>
-              {t('description')}
-            </p>
-            <ListForm onCancel={closeModal} onSuccess={handleSuccess} />
-          </ModalContent>
-        </Modal>
-      )}
-    </>
+      <ModalContent>
+        <p className={styles.small}>
+          {t('description')}
+        </p>
+        <ListForm onCancel={closeModal} onSuccess={handleSuccess} />
+      </ModalContent>
+    </Modal>
   );
 }

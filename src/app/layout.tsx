@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/app/components/navbar/navbar";
 import Footer from "@/app/components/footer/footer";
+import GlobalModals from "@/app/components/global-modals";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 
@@ -46,6 +47,8 @@ export default async function RootLayout({
             {children}
             <Footer />
           </div>
+          <GlobalModals />
+          <div id="application-overlays"></div>
         </NextIntlClientProvider>
       </body>
     </html>

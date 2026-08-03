@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useCallback, useEffect, useId, useRef } from 'react';
+import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 import styles from './modal.module.scss';
 import Icon from '../icon/icon';
 
@@ -40,6 +41,7 @@ interface ModalProps {
 
 export function Modal({ children, size = 'default', onClose }: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   // Guard: prevents onClose from firing more than once when multiple close
   // paths trigger in the same tick (e.g. Esc fires both 'cancel' + 'close').
@@ -49,6 +51,13 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
   // giving assistive technology a meaningful dialog label when a header is present.
   const titleId = useId();
 
+  useEffect(() => {
+    // The modal portal can only resolve once the browser has created the DOM.
+    // We keep the first render null so SSR never touches `document`, which avoids
+    // hydration mismatches and keeps the server/client trees identical.
+    setMounted(true);
+  }, []);
+
   const dismiss = useCallback(() => {
     if (isDismissing.current) return;
     isDismissing.current = true;
@@ -57,6 +66,10 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
   }, [onClose]);
 
   useEffect(() => {
+    if (!mounted) {
+      return;
+    }
+
     const dialog = dialogRef.current;
     if (!dialog) return;
 
@@ -123,7 +136,7 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
       Object.assign(document.body.style, prev);
       window.scrollTo(0, scrollY);
     };
-  }, []);
+  }, [mounted, onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
     // The native <dialog> fires click events on itself when the user clicks its
@@ -137,31 +150,43 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
     if (isOutside) dismiss();
   };
 
+  if (!mounted) {
+    return null;
+  }
+
+  const portalTarget = document.getElementById('application-overlays');
+  if (!portalTarget) {
+    return null;
+  }
+
   return (
-    // The overlay renders the scrim behind the dialog. The <dialog> is promoted
-    // to the browser's top layer via showModal(), so it always appears above the
-    // overlay visually regardless of DOM nesting or z-index.
-    <div className={styles.overlay}>
-      <ModalContext.Provider value={{ dismiss, titleId }}>
-        <dialog
-          ref={dialogRef}
-          className={styles.modal}
-          data-size={size}
-          // aria-modal tells screen readers that content outside the dialog is
-          // inert, matching the pointer/keyboard behaviour enforced above.
-          aria-modal="true"
-          // aria-labelledby links to the id set on ModalHeader's root element.
-          // When no ModalHeader is rendered the attribute harmlessly references a
-          // missing id; browsers and AT ignore dangling labelledby references.
-          aria-labelledby={titleId}
-          // onClose fires for both Esc and programmatic .close() calls.
-          onClose={dismiss}
-          onClick={handleBackdropClick}
-        >
-          {children}
-        </dialog>
-      </ModalContext.Provider>
-    </div>
+    ReactDOM.createPortal(
+      // The overlay renders the scrim behind the dialog. The <dialog> is promoted
+      // to the browser's top layer via showModal(), so it always appears above the
+      // overlay visually regardless of DOM nesting or z-index.
+      <div className={styles.overlay}>
+        <ModalContext.Provider value={{ dismiss, titleId }}>
+          <dialog
+            ref={dialogRef}
+            className={styles.modal}
+            data-size={size}
+            // aria-modal tells screen readers that content outside the dialog is
+            // inert, matching the pointer/keyboard behaviour enforced above.
+            aria-modal="true"
+            // aria-labelledby links to the id set on ModalHeader's root element.
+            // When no ModalHeader is rendered the attribute harmlessly references a
+            // missing id; browsers and AT ignore dangling labelledby references.
+            aria-labelledby={titleId}
+            // onClose fires for both Esc and programmatic .close() calls.
+            onClose={dismiss}
+            onClick={handleBackdropClick}
+          >
+            {children}
+          </dialog>
+        </ModalContext.Provider>
+      </div>,
+      portalTarget,
+    )
   );
 }
 

@@ -5,7 +5,6 @@ import { api, ApiFetchError } from '@/lib/api';
 import { User } from '@/lib/types';
 import ButtonGroup from '@/components/button-group/button-group';
 import Button from '@/components/button/button';
-import NewListModal from '@/app/components/modal/new-list-modal';
 import NavbarAccountMenu from './navbar-account-menu';
 import { localizePath } from '@/lib/locale-path';
 
@@ -36,7 +35,14 @@ export default async function NavbarAuthContent() {
     if (user) {
       return (
         <>
-          <NewListModal />
+          <Button
+            icon="add"
+            label={t('createList')}
+            variant="interactive"
+            tinted={true}
+            href="?modal=new-list"
+            scroll={false}
+          />
           <NavbarAccountMenu user={user} />
         </>
       );
