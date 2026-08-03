@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import Button from '@/components/button/button';
@@ -10,6 +10,7 @@ import type { List } from '@/lib/types';
 import styles from './modal.module.scss';
 import { useTranslations } from 'next-intl';
 import { localizePath } from '@/lib/locale-path';
+import { useQueryModal } from '@/hooks/use-query-modal';
 
 /**
  * Dedicated modal for creating a new list.
@@ -19,17 +20,17 @@ import { localizePath } from '@/lib/locale-path';
  */
 export default function NewListModal() {
   const t = useTranslations('NewList');
-  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const locale = useLocale();
+  const queryModal = useQueryModal();
+  const isOpen = queryModal.isOpen('new-list');
 
   const closeModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    queryModal.closeModal();
+  }, [queryModal]);
 
   const handleSuccess = useCallback((list: List) => {
-    setIsOpen(false);
-    router.push(localizePath(`/lists/${list.id}`, locale));
+    router.replace(localizePath(`/lists/${list.id}`, locale), { scroll: false });
     router.refresh();
   }, [locale, router]);
 
@@ -43,7 +44,7 @@ export default function NewListModal() {
         type="button"
         aria-haspopup="dialog"
         aria-expanded={isOpen}
-        onClick={() => setIsOpen(true)}
+        onClick={() => queryModal.openModal('new-list')}
       />
 
       {isOpen && (

@@ -16,6 +16,7 @@ import { Modal, ModalClose, ModalContent, ModalHeader } from "@/components/modal
 import type { List } from "@/lib/types";
 import EditListModal from "@/app/components/lists/edit-list-modal";
 import { updateListVisibilityAction } from "@/app/actions/lists";
+import { useQueryModal } from "@/hooks/use-query-modal";
 
 type ListVisibility = List["visibility"];
 
@@ -27,6 +28,7 @@ interface ListOptionsDropdownProps {
   listDescription: string | null;
   authorName: string;
   updatedAt: string;
+  inline?: boolean;
 }
 
 const VISIBILITY_OPTIONS: Array<{
@@ -71,6 +73,7 @@ export default function ListOptionsDropdown({
   listDescription,
   authorName,
   updatedAt,
+  inline = false,
 }: ListOptionsDropdownProps) {
   const router = useRouter();
   const locale = useLocale();
@@ -78,9 +81,11 @@ export default function ListOptionsDropdown({
   const listPage = useTranslations("ListPage");
   const common = useTranslations("Common");
   const [isPending, startTransition] = useTransition();
-  const [isCollaboratorsModalOpen, setIsCollaboratorsModalOpen] = useState(false);
   const [visibility, setVisibility] = useState<ListVisibility>(initialVisibility);
   const [error, setError] = useState<string | null>(null);
+  const queryModal = useQueryModal();
+  const isEditModalOpen = queryModal.isOpen("edit-list", listId);
+  const isCollaboratorsModalOpen = queryModal.isOpen("manage-collaborators", listId);
 
   const updatedLabel = useMemo(
     () => listPage("updated", { date: formatUpdatedDate(updatedAt, locale) }),
@@ -117,21 +122,18 @@ export default function ListOptionsDropdown({
 
   return (
     <>
-      <DropdownMenu align="end">
+      <DropdownMenu align="end" inline={inline}>
         {isAuthor ? (
           <>
-            <EditListModal
-              listId={listId}
-              initialTitle={listTitle}
-              initialDescription={listDescription}
-              trigger={(open) => (
-                <DropdownItem icon="edit" label={t("edit")} onSelect={open} />
-              )}
+            <DropdownItem
+              icon="edit"
+              label={t("edit")}
+              onSelect={() => queryModal.openModal("edit-list", listId)}
             />
             <DropdownItem
               icon="group"
               label={t("manageCollaborators")}
-              onSelect={() => setIsCollaboratorsModalOpen(true)}
+              onSelect={() => queryModal.openModal("manage-collaborators", listId)}
             />
             <DropdownItem icon="archive" destructive label={t("archiveList")} />
             <DropdownSeparator />
@@ -174,8 +176,20 @@ export default function ListOptionsDropdown({
         </DropdownText>
       </DropdownMenu>
 
+      <EditListModal
+        listId={listId}
+        initialTitle={listTitle}
+        initialDescription={listDescription}
+        open={isEditModalOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            queryModal.closeModal();
+          }
+        }}
+      />
+
       {isCollaboratorsModalOpen && (
-        <Modal size="default" onClose={() => setIsCollaboratorsModalOpen(false)}>
+        <Modal size="default" onClose={() => queryModal.closeModal()}>
           <ModalHeader>
             <h2>{t("manageCollaborators")}</h2>
             <ModalClose />

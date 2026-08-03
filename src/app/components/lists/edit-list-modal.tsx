@@ -13,6 +13,8 @@ interface EditListModalProps {
   initialTitle: string;
   initialDescription: string | null;
   trigger?: (open: () => void) => React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export default function EditListModal({
@@ -20,15 +22,27 @@ export default function EditListModal({
   initialTitle,
   initialDescription,
   trigger,
+  open: controlledOpen,
+  onOpenChange,
 }: EditListModalProps) {
   const router = useRouter();
   const t = useTranslations("EditListModal");
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const isOpen = isControlled ? controlledOpen : internalOpen;
+
+  const setOpen = useCallback(
+    (next: boolean) => {
+      if (!isControlled) setInternalOpen(next);
+      onOpenChange?.(next);
+    },
+    [isControlled, onOpenChange],
+  );
 
   const closeModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    setOpen(false);
+  }, [setOpen]);
 
   const handleEdit = useCallback(
     async (values: { title: string; description: string }) => updateListAction(listId, values),
@@ -36,19 +50,21 @@ export default function EditListModal({
   );
 
   const handleSuccess = useCallback(() => {
-    setIsOpen(false);
+    setOpen(false);
     router.refresh();
-  }, [router]);
+  }, [router, setOpen]);
 
   const openModal = useCallback(() => {
-    setIsOpen(true);
-  }, []);
+    setOpen(true);
+  }, [setOpen]);
+
+  const showDefaultTrigger = !trigger && !isControlled;
 
   return (
     <>
       {trigger ? (
         trigger(openModal)
-      ) : (
+      ) : showDefaultTrigger ? (
         <Button
           icon="edit"
           label={t("trigger")}
@@ -59,7 +75,7 @@ export default function EditListModal({
           aria-expanded={isOpen}
           onClick={openModal}
         />
-      )}
+      ) : null}
 
       {isOpen && (
         <Modal size="default" onClose={closeModal}>
