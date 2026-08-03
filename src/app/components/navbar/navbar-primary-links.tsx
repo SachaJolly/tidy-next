@@ -6,14 +6,13 @@ import { useLocale } from 'next-intl';
 import { useTranslations } from 'next-intl';
 import styles from './navbar.module.scss';
 import NavLink from '@/app/components/nav-link/nav-link';
-import { User } from '@/lib/types';
 import { stripLocalePrefix } from '@/lib/locale-path';
 
 interface NavbarPrimaryLinksProps {
-  user: User | null;
+  hasAuthToken: boolean;
 }
 
-export default function NavbarPrimaryLinks({ user }: NavbarPrimaryLinksProps) {
+export default function NavbarPrimaryLinks({ hasAuthToken }: NavbarPrimaryLinksProps) {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations('Navbar');
@@ -21,12 +20,8 @@ export default function NavbarPrimaryLinks({ user }: NavbarPrimaryLinksProps) {
 
   return (
     <div className={styles['nav-links']}>
-      {user && (
-        <NavLink
-          href="/dashboard"
-          label={t('dashboard')}
-          active={normalizedPathname === '/dashboard'}
-        />
+      {hasAuthToken && (
+        <NavLink href="/dashboard" label={t('dashboard')} active={normalizedPathname === '/dashboard'} />
       )}
       <NavLink href="/discover" label={t('discover')} active={normalizedPathname === '/discover'} />
       <NavLink href="/curators" label={t('curators')} active={normalizedPathname === '/curators'} />
