@@ -7,8 +7,13 @@ import Hero from '@/components/hero/hero';
 import CuratorMeta, { type CuratorEntry } from '@/components/curator-meta/curator-meta';
 
 import { api } from '@/lib/api';
+import { getTranslations } from 'next-intl/server';
+
+const CURATORS_LIMIT = 24;
+const CURATOR_RECENT_LISTS_LIMIT = 3;
 
 export default async function Curators() {
+  const t = await getTranslations('Curators');
   // Public page stays accessible to everyone; we only use the auth cookie to
   // decide whether to show the marketing hero.
   const cookieStore = await cookies();
@@ -16,18 +21,21 @@ export default async function Curators() {
 
   // The Rails endpoint already returns each curator with their recent public
   // lists. That means the page only needs one cacheable public fetch.
-  const curators = await api.public.get<CuratorEntry[]>('/api/v1/users/curators', {
+  const curators = await api.public.get<CuratorEntry[]>(
+    `/api/v1/users/curators?users_limit=${CURATORS_LIMIT}&recent_lists_limit=${CURATOR_RECENT_LISTS_LIMIT}`,
+    {
     cache: 'force-cache',
     revalidate: 60,
-  });
+    },
+  );
 
   return (
     <>
       {!isAuthenticated && <Hero variant="horizontal" />}
       <Page>
         <PageHeader
-          title="Curators"
-          caption="Discover the people behind the best lists on TidyCards."
+          title={t('title')}
+          caption={t('caption')}
         />
         <Section>
           {curators.map((curator) => (

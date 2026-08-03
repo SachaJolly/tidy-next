@@ -47,6 +47,25 @@
       border-color: var(--surface-highlight-hover);
     }
 
+    &.tinted {
+      color: var(--text-heading);
+      background-color: transparent;
+      border-color: var(--border-default);
+
+      &:hover,
+      &.hover,
+      &:focus,
+      &.focus,
+      &:active,
+      &.active {
+        background-color: var(--surface-highlight);
+      }
+
+      .icon {
+        color: var(--text-muted);
+      }
+    }
+
     &.transparent {
       background-color: transparent;
       border-color: transparent;

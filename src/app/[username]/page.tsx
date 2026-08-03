@@ -15,6 +15,9 @@ import ListCard from '@/components/list-card/list-card';
 
 import { api, ApiFetchError } from '@/lib/api';
 import { List, User } from '@/lib/types';
+import { getTranslations } from 'next-intl/server';
+
+const PROFILE_PUBLIC_LISTS_LIMIT = 12;
 
 type ProfileUser = User & {
   /**
@@ -40,9 +43,11 @@ export default async function UserPage({ params }: UserPageProps) {
   const { username } = await params;
 
   try {
+    const t = await getTranslations('Profile');
+    const common = await getTranslations('Common');
     // One public request is enough here because Rails returns the profile
     // snapshot plus the 12 public lists already attached to the user payload.
-    const user = await api.public.get<ProfileUser>(`/api/v1/users/${username}`, {
+    const user = await api.public.get<ProfileUser>(`/api/v1/users/${username}?lists_limit=${PROFILE_PUBLIC_LISTS_LIMIT}`, {
       cache: 'force-cache',
       revalidate: 60,
     });
@@ -51,14 +56,14 @@ export default async function UserPage({ params }: UserPageProps) {
       notFound();
     }
 
-    const publicLists = (user.publicLists ?? []).slice(0, 12);
+    const publicLists = user.publicLists ?? [];
 
     return (
       <Page>
         <PageHeader>
           <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
             <Avatar
-              initials={user.name ? user.name.charAt(0) : user.username.charAt(0)}
+              initials={user.name.charAt(0)}
               size="96"
               src={user.avatar ?? undefined}
               alt={user.name}
@@ -66,7 +71,7 @@ export default async function UserPage({ params }: UserPageProps) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-                  <h1 className={styles['title']}>{user.name ? user.name : user.username}</h1>
+                  <h1 className={styles['title']}>{user.name}</h1>
                   <MetaGroup>
                     <Meta>@{user.username}</Meta>
                   </MetaGroup>
@@ -76,12 +81,11 @@ export default async function UserPage({ params }: UserPageProps) {
               <MetaGroup>
                 <Meta>
                   <Icon name="verified" size={16} />
-                  <span>Verified user</span>
+                  <span>{common('verifiedUser')}</span>
                 </Meta>
                 <Meta>
                   <Icon name="list" size={16} />
-                  {user.public_lists_count}{' '}
-                  {user.public_lists_count === 1 ? 'public list' : 'public lists'}
+                  {t('publicLists', { count: user.public_lists_count })}
                 </Meta>
               </MetaGroup>
             </div>
@@ -89,7 +93,7 @@ export default async function UserPage({ params }: UserPageProps) {
         </PageHeader>
         {publicLists.length > 0 && (
           <Section>
-            <SectionHeader title="Public lists" />
+            <SectionHeader title={t('publicLists', { count: publicLists.length })} />
             <CollectionList>
               {publicLists.map((list) => (
                 <ListCard list={list} key={list.id} />

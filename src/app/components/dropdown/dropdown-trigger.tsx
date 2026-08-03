@@ -8,25 +8,30 @@ export interface DropdownTriggerProps {
   children: React.ReactNode;
   /**
    * When true, the trigger renders no DOM wrapper.
-   * React.cloneElement injects ref, onClick, and ARIA attributes directly into
+   * React.cloneElement injects onClick and ARIA attributes directly into
    * the single child element — ideal for custom-styled buttons or icon buttons.
-   * The child must be a DOM element or a component that uses React.forwardRef.
    */
   asChild?: boolean;
 }
 
-export function DropdownTrigger({ children, asChild = false, ...rest }: DropdownTriggerProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+type TriggerChildProps = React.HTMLAttributes<HTMLElement> & {
+  onClick?: (e: React.MouseEvent) => void;
+};
+
+export function DropdownTrigger({ children, asChild, ...rest }: DropdownTriggerProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const { open, setOpen, triggerRef } = useDropdownContext();
   const toggle = useCallback(() => setOpen(!open), [setOpen, open]);
   const restOnClick = rest.onClick as ((e: React.MouseEvent) => void) | undefined;
+  const shouldRenderAsChild = asChild ?? React.isValidElement(children);
 
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children as React.ReactElement<any>, {
-      ref: triggerRef,
+  if (shouldRenderAsChild && React.isValidElement(children)) {
+    const child = children as React.ReactElement<TriggerChildProps>;
+    return React.cloneElement(child, {
       onClick: (e: React.MouseEvent) => {
+        triggerRef.current = e.currentTarget as HTMLElement;
         toggle();
         restOnClick?.(e);
-        (children as React.ReactElement<any>).props.onClick?.(e);
+        child.props.onClick?.(e);
       },
       'aria-expanded': open,
       'aria-haspopup': 'menu',
@@ -39,6 +44,7 @@ export function DropdownTrigger({ children, asChild = false, ...rest }: Dropdown
       ref={triggerRef as React.RefObject<HTMLButtonElement>}
       type="button"
       onClick={(e) => {
+        triggerRef.current = e.currentTarget;
         toggle();
         restOnClick?.(e);
       }}

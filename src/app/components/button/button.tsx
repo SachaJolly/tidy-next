@@ -1,8 +1,12 @@
+ "use client";
+
 import React from 'react';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
 import Icon from '@/components/icon/icon';
 import type { IconName } from '@/components/icon/icons';
 import styles from './button.module.scss';
+import { localizePath } from '@/lib/locale-path';
 
 type BaseButtonProps = {
   icon?: IconName;
@@ -15,13 +19,6 @@ type BaseButtonProps = {
   className?: string;
   scroll?: boolean;
   replace?: boolean;
-  /**
-   * Controls route interception behaviour when `href` is set.
-   * - `true`  → soft navigation via <Link>, triggers intercepting routes (modal).
-   * - `false` → hard navigation via <a>, bypasses intercepting routes (full page).
-   * Defaults to `true` to preserve existing soft-navigation behaviour.
-   */
-  modal?: boolean;
 };
 
 type ButtonProps = BaseButtonProps & (
@@ -40,9 +37,9 @@ const Button: React.FC<ButtonProps> = ({
   className,
   scroll,
   replace,
-  modal = true,
   ...props
 }) => {
+  const locale = useLocale();
   const classes = [
     styles.btn,
     size === 'small' && styles.small,
@@ -57,26 +54,16 @@ const Button: React.FC<ButtonProps> = ({
 
   const innerContent = (
     <>
-      {icon && <Icon name={icon} size={20} />}
+      {icon && <Icon name={icon} size={20} className={styles.icon} />}
       {content && <span>{content}</span>}
     </>
   );
 
   if ('href' in props && props.href) {
-    // Hard navigation (<a>) bypasses Next.js intercepting routes entirely,
-    // loading the canonical full page instead of the modal overlay.
-    if (!modal) {
-      const { href, ...anchorProps } = props as { href: string } & React.ComponentPropsWithoutRef<'a'>;
-      return (
-        <a className={classes} href={href} {...anchorProps}>
-          {innerContent}
-        </a>
-      );
-    }
-
-    // Soft navigation (<Link>) triggers intercepting routes, rendering the modal.
+    const href = localizePath(props.href, locale);
+    const linkProps = props as React.ComponentPropsWithoutRef<'a'>;
     return (
-      <Link className={classes} scroll={scroll} replace={replace} {...(props as any)}>
+      <Link className={classes} href={href} scroll={scroll} replace={replace} {...linkProps}>
         {innerContent}
       </Link>
     );

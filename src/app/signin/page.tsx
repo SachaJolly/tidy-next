@@ -8,8 +8,12 @@ import Button from '@/components/button/button';
 import Input from '@/components/input/input';
 import Link from 'next/link';
 import { signinAction } from '@/app/actions/auth';
+import { useLocale, useTranslations } from 'next-intl';
+import { localizePath } from '@/lib/locale-path';
 
 export default function SigninPage() {
+  const t = useTranslations('Auth');
+  const locale = useLocale();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -55,7 +59,7 @@ export default function SigninPage() {
 
       navigationStarted = true;
       router.refresh();
-      router.push(result.redirectTo ?? '/dashboard');
+      router.push(localizePath(result.redirectTo ?? '/dashboard', locale));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred.');
     } finally {
@@ -64,16 +68,14 @@ export default function SigninPage() {
       // the route transition plays out and the component unmounts.
       if (!navigationStarted) setIsLoading(false);
     }
-  }, [email, password, router, searchParams]);
+  }, [email, password, locale, router, searchParams]);
 
   return (
     <Page>
       <Auth>
         <div>
-          <h2 className="h3 text-center mb-16px">Sign in to manage your lists</h2>
-          <p className="text-center">
-            Sign in to your account to share your passions and interests with the world.
-          </p>
+          <h2 className="h3 text-center mb-16px">{t('signinTitle')}</h2>
+          <p className="text-center">{t('signinSubtitle')}</p>
         </div>
 
         {/*
@@ -99,7 +101,7 @@ export default function SigninPage() {
             id="signin-email"
             name="email"
             type="email"
-            placeholder="Email"
+            placeholder={t('emailPlaceholder')}
             autoComplete="email"
             autoFocus={true}
             value={email}
@@ -111,7 +113,7 @@ export default function SigninPage() {
             id="signin-password"
             name="password"
             type="password"
-            placeholder="Password"
+            placeholder={t('passwordPlaceholder')}
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -122,12 +124,12 @@ export default function SigninPage() {
           {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem' }}>{error}</p>}
 
           <Button type="submit" variant="interactive" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign in'}
+            {isLoading ? t('signingIn') : t('signinButton')}
           </Button>
         </form>
 
         <div className="text-center py-24px">
-          <span className="text-bold">Not a member yet? <Link href="/signup">Join today</Link></span>
+          <span className="text-bold">{t('notMemberYet')} <Link href={localizePath('/signup', locale)}>{t('joinToday')}</Link></span>
         </div>
       </Auth>
     </Page>

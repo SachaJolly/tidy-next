@@ -1,3 +1,21 @@
+.meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: .25rem;
+  color: var(--text-muted);
+}
+
+.small {
+  font-size: 0.875rem;
+  line-height: 1rem;
+}
+
+.base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 .muted {
   color: var(--text-muted);
 }

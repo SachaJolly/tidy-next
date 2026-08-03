@@ -10,6 +10,10 @@ import { api, ApiFetchError } from '@/lib/api';
 import { User } from '@/lib/types';
 import NavbarAccountMenu from './navbar-account-menu';
 import NavbarPrimaryLinks from './navbar-primary-links';
+import NewListModal from '@/app/components/modal/new-list-modal';
+import { getTranslations } from 'next-intl/server';
+import { getLocale } from 'next-intl/server';
+import { localizePath } from '@/lib/locale-path';
 
 /**
  * Server-first navbar:
@@ -21,6 +25,8 @@ import NavbarPrimaryLinks from './navbar-primary-links';
  * navigations, because the navbar now re-renders from server state.
  */
 export default async function Navbar() {
+  const t = await getTranslations('Navbar');
+  const locale = await getLocale();
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
 
@@ -57,18 +63,18 @@ export default async function Navbar() {
             type="text"
             name="search"
             className={styles['search-input']}
-            placeholder="Search on Tidycards…"
+            placeholder={t('searchPlaceholder')}
           />
         </form>
 
         <NavbarPrimaryLinks user={user} />
 
         {user ? (
-          <Button icon="add" label="Create a list" variant="interactive" tinted={true} href="/lists/new" />
+          <NewListModal />
         ) : (
           <ButtonGroup>
-            <Button label="Signin" variant="default" href="/signin" />
-            <Button icon="join" label="Join today" variant="interactive" tinted={true} href="/signup" />
+            <Button label={t('signin')} variant="default" href={localizePath('/signin', locale)} />
+            <Button icon="join" label={t('joinToday')} variant="interactive" tinted={true} href={localizePath('/signup', locale)} />
           </ButtonGroup>
         )}
 

@@ -9,13 +9,17 @@ import MetaGroup from '@/components/meta-group/meta-group';
 import Meta from '@/components/meta/meta';
 import { api, ApiFetchError } from '@/lib/api';
 import { List } from '@/lib/types';
+import { getTranslations } from 'next-intl/server';
+
+const DASHBOARD_LIST_LIMIT = 32;
 
 export default async function Dashboard() {
+  const t = await getTranslations('Dashboard');
   try {
     // Protected pages should fail closed before any data is fetched.
     // The wrapper reads the session cookie and returns null if the user is not
     // authenticated, which prevents an unnecessary round-trip to Rails.
-    const lists = await api.auth.get<List[]>('/api/v1/me/lists', {
+    const lists = await api.auth.get<List[]>(`/api/v1/me/lists?limit=${DASHBOARD_LIST_LIMIT}`, {
       cache: 'no-store',
     });
 
@@ -25,22 +29,25 @@ export default async function Dashboard() {
 
     return (
       <Page>
-        <PageHeader
-          title="Dashboard"
-          caption="Create, organise and collaborate on your lists and collections."
-        />
-        <Section>
-          <SectionHeader title="My lists">
-            <MetaGroup>
-              <Meta>Default collection</Meta>
-              <Meta>Only public lists are visible to everyone</Meta>
-            </MetaGroup>
-          </SectionHeader>
+      <PageHeader title={t('title')} caption={t('caption')} />
+      <Section>
+        <SectionHeader title={t('myLists')}>
+          <MetaGroup>
+            <Meta>{t('defaultCollection')}</Meta>
+            <Meta>{t('onlyPublicVisible')}</Meta>
+          </MetaGroup>
+        </SectionHeader>
           <CollectionList>
             {lists.length > 0 ? (
-              lists.map((list) => <ListCard list={list} key={list.id} />)
+              lists.map((list) => (
+                <ListCard
+                  list={list}
+                  key={list.id}
+                  isAuthor={true}
+                />
+              ))
             ) : (
-              <p>You haven't created any lists yet.</p>
+              <p>{t('emptyLists')}</p>
             )}
           </CollectionList>
         </Section>

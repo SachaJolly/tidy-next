@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import MetaGroup from "@/components/meta-group/meta-group";
 import Meta from "@/components/meta/meta";
 import styles from "./item.module.scss";
@@ -9,22 +10,28 @@ interface ItemStatsProps {
     views: number;
     likes: number;
     comments: number;
-  }
+  };
 }
 
 interface ItemProps {
   item: ItemType;
 }
 
-const ItemStats = ({ stats }: ItemStatsProps) => (
-  <MetaGroup>
-    <Meta>{stats.views} views</Meta>
-    <Meta>{stats.likes} likes</Meta>
-    <Meta>{stats.comments} comments</Meta>
-  </MetaGroup>
-);
+const ItemStats = async ({ stats }: ItemStatsProps) => {
+  const t = await getTranslations('Item');
 
-export const Item = ({ item }: ItemProps) => {
+  return (
+  <MetaGroup>
+    <Meta>{stats.views} {t('views')}</Meta>
+    <Meta>{stats.likes} {t('likes')}</Meta>
+    <Meta>{stats.comments} {t('comments')}</Meta>
+  </MetaGroup>
+  );
+};
+
+export const Item = async ({ item }: ItemProps) => {
+  const t = await getTranslations('Item');
+
   // LINK display mode
   if (item.displayMode === "LINK") {
     return (
@@ -69,7 +76,7 @@ export const Item = ({ item }: ItemProps) => {
                   {item.content.description}
                 </p>
               ) : (
-                <p className={styles["description"]}>No description</p>
+                <p className={styles["description"]}>{t('noDescription')}</p>
               )}
             </div>
             {((item.content.label1 && item.content.value1) ||

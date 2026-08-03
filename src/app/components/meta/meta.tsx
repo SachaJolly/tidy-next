@@ -1,13 +1,20 @@
 import React from "react";
 import styles from "./meta.module.scss";
 
+type MetaType = 'muted' | 'featured' | 'popular' | 'trending' | 'visibility' | 'pinned' | 'shared' | 'tag' | 'handle';
+type MetaSize = 'small' | 'base';
+
 interface MetaProps {
-  type?: keyof typeof styles; // Use keyof to ensure type safety with your CSS module
+  type?: MetaType;
+  size?: MetaSize;
+  className?: string;
   children: React.ReactNode;
 }
 
-const Meta: React.FC<MetaProps> = ({ type, children }) => (
-  <li className={styles[type || ""]}>{children}</li>
-);
+const Meta: React.FC<MetaProps> = ({ type, size = 'small', className, children }) => {
+  const classes = [styles.meta, styles[size], type && styles[type], className].filter(Boolean).join(' ');
+
+  return <li className={classes}>{children}</li>;
+};
 
 export default Meta;

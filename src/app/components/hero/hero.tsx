@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./hero.module.scss";
 import ButtonGroup from "../button-group/button-group";
 import Button from "../button/button";
+import { getTranslations } from 'next-intl/server';
 
 type HeroVariant = 'centered' | 'horizontal';
 
@@ -66,32 +67,36 @@ const HeroIllustration = () => (
   </svg>
 );
 
-const Hero: React.FC<HeroProps> = ({
-  title = "Become a curator.",
-  subtitle = "Organize and make connections between your links! Whether articles, publications, videos, tweets or any kinds of content.",
+export default async function Hero({
+  title,
+  subtitle,
   children,
   variant = 'centered',
-}) => (
-  <header className={[styles.container, styles[variant]].filter(Boolean).join(' ')}>
-    <section className={styles["content"]}>
-      <div className={styles.media}>
-        <HeroIllustration />
-      </div>
-      <div className={styles.text}>
-        <h1 className={styles.title}>{title}</h1>
-        <p className="lead mb-24px">{subtitle}</p>
-        <ButtonGroup>
-          <Button href="/signup" variant="interactive" icon="join" scroll={false}>
-            Join today
-          </Button>
-          <Button href="/about" variant="interactive" tinted={true}>
-            About TidyCards
-          </Button>
-        </ButtonGroup>
-        {children && children}
-      </div>
-    </section>
-  </header>
-);
+}: HeroProps) {
+  const t = await getTranslations('Hero');
+  const resolvedTitle = title ?? t('title');
+  const resolvedSubtitle = subtitle ?? t('subtitle');
 
-export default Hero;
+  return (
+    <header className={[styles.container, styles[variant]].filter(Boolean).join(' ')}>
+      <section className={styles["content"]}>
+        <div className={styles.media}>
+          <HeroIllustration />
+        </div>
+        <div className={styles.text}>
+          <h1 className={styles.title}>{resolvedTitle}</h1>
+          <p className="lead mb-24px">{resolvedSubtitle}</p>
+          <ButtonGroup>
+            <Button href="/signup" variant="interactive" icon="join" scroll={false}>
+              {t('joinToday')}
+            </Button>
+            <Button href="/about" variant="interactive" tinted={true}>
+              {t('about')}
+            </Button>
+          </ButtonGroup>
+          {children && children}
+        </div>
+      </section>
+    </header>
+  );
+}

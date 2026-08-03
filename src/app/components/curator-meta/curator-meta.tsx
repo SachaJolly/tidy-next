@@ -8,28 +8,7 @@ import Meta from "@/components/meta/meta";
 import Icon from "@/components/icon/icon";
 import ListCard from "@/components/list-card/list-card";
 import type { List } from "@/lib/types";
-
-// Shape of a list as returned by the Rails ListSerializer (after transformApiData).
-// `deleted_at` is not serialized by the API so it is omitted here.
-export interface ApiList {
-  id: string;
-  title: string;
-  description?: string | null;
-  status: 'ACTIVE' | 'ARCHIVED' | 'DELETED';
-  visibility: 'PUBLIC' | 'PRIVATE' | 'UNINDEXED';
-  color: string;
-  thumbnail?: string | null;
-  displayMode: string;
-  itemsCount: number;
-  collaboratorsCount: number;
-  notesCount: number;
-  isPinned: boolean;
-  isFeatured: boolean;
-  isTrending: boolean;
-  isPopular: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { getTranslations } from 'next-intl/server';
 
 // Shape of a curator entry as returned by GET /api/v1/users/curators
 // after transformApiData resolves the recentLists relationship from included.
@@ -39,7 +18,7 @@ export interface Profile {
   username: string;
   bio: string | null;
   listsCount: number;
-  recentLists: ApiList[];
+  recentLists: List[];
 }
 
 export type CuratorEntry = Profile;
@@ -48,33 +27,10 @@ interface CuratorMetaProps {
   profile: Profile;
 }
 
-// Maps the API list shape to the @/lib/types List shape expected by ListCard.
-function toDisplayList(l: ApiList): List {
-  return {
-    id: l.id,
-    title: l.title,
-    description: l.description ?? null,
-    status: l.status === 'DELETED' ? 'ARCHIVED' : l.status,
-    visibility: l.visibility,
-    color: l.color,
-    thumbnail: l.thumbnail ?? null,
-    displayMode: l.displayMode,
-    itemsCount: l.itemsCount,
-    collaboratorsCount: l.collaboratorsCount,
-    notesCount: l.notesCount,
-    isPinned: l.isPinned,
-    isFeatured: l.isFeatured,
-    isTrending: l.isTrending,
-    isPopular: l.isPopular,
-    createdAt: l.createdAt,
-    updatedAt: l.updatedAt,
-    deleted_at: null,
-  };
-}
-
-const CuratorMeta: React.FC<CuratorMetaProps> = ({ profile }) => {
+const CuratorMeta = async ({ profile }: CuratorMetaProps) => {
+  const common = await getTranslations('Common');
+  const t = await getTranslations('CuratorMeta');
   const { name, username, bio, listsCount, recentLists } = profile;
-  const displayLists = recentLists.map(toDisplayList);
 
   return (
     <section className={styles["curator-list"]}>
@@ -97,21 +53,21 @@ const CuratorMeta: React.FC<CuratorMetaProps> = ({ profile }) => {
           <MetaGroup orientation="vertical">
             <Meta>
               <Icon name="verified" size={16} />
-              <span>Verified user</span>
+              <span>{common('verifiedUser')}</span>
             </Meta>
             <Meta>
               <Icon name="list" size={16} />
-              <span>{listsCount} {listsCount === 1 ? 'list' : 'lists'}</span>
+              <span>{t('lists', { count: listsCount })}</span>
             </Meta>
           </MetaGroup>
         </div>
         <ButtonGroup>
-          <Button label="Follow" size="small" variant="interactive" />
-          <Button label="See more" size="small" variant="interactive" tinted={true} />
+          <Button label={t('follow')} size="small" variant="interactive" />
+          <Button label={common('seeMore')} size="small" variant="interactive" tinted={true} />
         </ButtonGroup>
       </div>
-      {displayLists.length > 0 && (
-        displayLists.map((list) => (
+      {recentLists.length > 0 && (
+        recentLists.map((list) => (
           <ListCard key={list.id} list={list} />
         ))
       )}

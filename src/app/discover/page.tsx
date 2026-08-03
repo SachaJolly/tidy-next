@@ -10,13 +10,17 @@ import Hero from '@/components/hero/hero';
 
 import { api } from '@/lib/api';
 import { List } from '@/lib/types';
+import { getTranslations } from 'next-intl/server';
 
 type DiscoverPayload = {
   featuredLists: List[];
   trendingLists: List[];
 };
+const FEATURED_LIMIT = 9;
+const TRENDING_LIMIT = 32;
 
 export default async function Discover() {
+  const t = await getTranslations('Discover');
   // Public page stays accessible to everyone; we only use the auth cookie to
   // decide whether to show the marketing hero.
   const cookieStore = await cookies();
@@ -25,36 +29,33 @@ export default async function Discover() {
   // Discover used to call two endpoints. The Rails controller now aggregates
   // both sections into a single public payload, which is then cached by Next.
   const { featuredLists, trendingLists } = await api.public.get<DiscoverPayload>(
-    '/api/v1/lists/discover',
+    `/api/v1/lists/discover?featured_limit=${FEATURED_LIMIT}&trending_limit=${TRENDING_LIMIT}`,
     {
       cache: 'force-cache',
       revalidate: 60,
     },
   );
 
-  const featuredToDisplay = featuredLists.slice(0, 9);
-  const trendingToDisplay = trendingLists.slice(0, 32);
-
   return (
     <>
       {!isAuthenticated && <Hero />}
       <Page>
         <PageHeader
-          title="Discover"
-          caption="Explore and discover the most popular lists on TidyCards."
+          title={t('title')}
+          caption={t('caption')}
         />
         <Section>
-          <SectionHeader title="From our pick" />
+          <SectionHeader title={t('featured')} />
           <CollectionList>
-            {featuredToDisplay.map((list, index) => (
+            {featuredLists.map((list, index) => (
               <ListCard list={list} bigger={index === 0} key={list.id} />
             ))}
           </CollectionList>
         </Section>
         <Section>
-          <SectionHeader title="Trending" />
+          <SectionHeader title={t('trending')} />
           <CollectionList>
-            {trendingToDisplay.map((list) => (
+            {trendingLists.map((list) => (
               <ListCard list={list} key={list.id} />
             ))}
           </CollectionList>

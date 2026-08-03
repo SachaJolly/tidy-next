@@ -56,7 +56,7 @@
   border-radius: var(--radius-sm);
   overflow: hidden;
 
-  &:after {
+  &::after {
     content: "";
     position: absolute;
     top: 0;
@@ -107,6 +107,13 @@
   font-weight: 600;
   line-height: 1.5rem;
   word-break: break-word;
+}
+
+.actions {
+  position: absolute;
+  top: .25rem;
+  right: .25rem;
+  z-index: 2;
 }
 
 @media (min-width: 855px) {

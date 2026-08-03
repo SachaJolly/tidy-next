@@ -1,0 +1,190 @@
+"use client";
+
+import React, { useMemo, useState, useTransition } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import {
+  DropdownItem,
+  DropdownLabel,
+  DropdownMenu,
+  DropdownRadioGroup,
+  DropdownRadioItem,
+  DropdownSeparator,
+  DropdownText,
+} from "@/components/dropdown";
+import { Modal, ModalClose, ModalContent, ModalHeader } from "@/components/modal/modal";
+import type { List } from "@/lib/types";
+import EditListModal from "@/app/components/lists/edit-list-modal";
+import { updateListVisibilityAction } from "@/app/actions/lists";
+
+type ListVisibility = List["visibility"];
+
+interface ListOptionsDropdownProps {
+  listId: string;
+  isAuthor: boolean;
+  initialVisibility: ListVisibility;
+  listTitle: string;
+  listDescription: string | null;
+  authorName: string;
+  updatedAt: string;
+}
+
+const VISIBILITY_OPTIONS: Array<{
+  value: ListVisibility;
+  icon: "visibility_on" | "visibility_off" | "private";
+  labelKey: "publicLabel" | "unindexedLabel" | "privateLabel";
+  captionKey: "publicCaption" | "unindexedCaption" | "privateCaption";
+}> = [
+  {
+    value: "PUBLIC",
+    icon: "visibility_on",
+    labelKey: "publicLabel",
+    captionKey: "publicCaption",
+  },
+  {
+    value: "UNINDEXED",
+    icon: "visibility_off",
+    labelKey: "unindexedLabel",
+    captionKey: "unindexedCaption",
+  },
+  {
+    value: "PRIVATE",
+    icon: "private",
+    labelKey: "privateLabel",
+    captionKey: "privateCaption",
+  },
+];
+
+function formatUpdatedDate(value: string, locale: string): string {
+  return new Intl.DateTimeFormat(locale, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(value));
+}
+
+export default function ListOptionsDropdown({
+  listId,
+  isAuthor,
+  initialVisibility,
+  listTitle,
+  listDescription,
+  authorName,
+  updatedAt,
+}: ListOptionsDropdownProps) {
+  const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("ListOptionsDropdown");
+  const listPage = useTranslations("ListPage");
+  const common = useTranslations("Common");
+  const [isPending, startTransition] = useTransition();
+  const [isCollaboratorsModalOpen, setIsCollaboratorsModalOpen] = useState(false);
+  const [visibility, setVisibility] = useState<ListVisibility>(initialVisibility);
+  const [error, setError] = useState<string | null>(null);
+
+  const updatedLabel = useMemo(
+    () => listPage("updated", { date: formatUpdatedDate(updatedAt, locale) }),
+    [listPage, locale, updatedAt],
+  );
+
+  const handleCopyLink = async () => {
+    const url = `${window.location.origin}/lists/${listId}`;
+    await navigator.clipboard.writeText(url);
+  };
+
+  const handleVisibilityChange = (value: string) => {
+    if (!isAuthor || isPending) return;
+
+    const nextVisibility = value as ListVisibility;
+    if (nextVisibility === visibility) return;
+
+    const previousVisibility = visibility;
+    setVisibility(nextVisibility);
+    setError(null);
+
+    startTransition(async () => {
+      const result = await updateListVisibilityAction(listId, nextVisibility);
+      if (result.error) {
+        setVisibility(previousVisibility);
+        setError(result.error);
+        return;
+      }
+
+      setVisibility(result.list?.visibility ?? nextVisibility);
+      router.refresh();
+    });
+  };
+
+  return (
+    <>
+      <DropdownMenu align="end">
+        {isAuthor ? (
+          <>
+            <EditListModal
+              listId={listId}
+              initialTitle={listTitle}
+              initialDescription={listDescription}
+              trigger={(open) => (
+                <DropdownItem icon="edit" label={t("edit")} onSelect={open} />
+              )}
+            />
+            <DropdownItem
+              icon="group"
+              label={t("manageCollaborators")}
+              onSelect={() => setIsCollaboratorsModalOpen(true)}
+            />
+            <DropdownItem icon="archive" destructive label={t("archiveList")} />
+            <DropdownSeparator />
+
+            <DropdownLabel>{t("setVisibility")}</DropdownLabel>
+            <DropdownRadioGroup
+              value={visibility}
+              onValueChange={handleVisibilityChange}
+              label={t("setVisibility")}
+              closeOnSelect
+            >
+              {VISIBILITY_OPTIONS.map(({ value, icon, labelKey, captionKey }) => (
+                <DropdownRadioItem
+                  key={value}
+                  value={value}
+                  icon={icon}
+                  label={t(labelKey)}
+                  caption={t(captionKey)}
+                />
+              ))}
+            </DropdownRadioGroup>
+            {error ? (
+              <DropdownText>
+                <p className="text-small" style={{ color: "var(--danger)" }}>
+                  {t("updateVisibilityError")}
+                </p>
+              </DropdownText>
+            ) : null}
+            <DropdownSeparator />
+          </>
+        ) : null}
+
+        <DropdownItem icon="copy" label={t("copyLink")} onSelect={() => void handleCopyLink()} />
+        <DropdownSeparator />
+        <DropdownText>
+          <p className="text-small">
+            {common("curatedBy")} {authorName}
+          </p>
+          <p className="text-small">{updatedLabel}</p>
+        </DropdownText>
+      </DropdownMenu>
+
+      {isCollaboratorsModalOpen && (
+        <Modal size="default" onClose={() => setIsCollaboratorsModalOpen(false)}>
+          <ModalHeader>
+            <h2>{t("manageCollaborators")}</h2>
+            <ModalClose />
+          </ModalHeader>
+          <ModalContent>
+            <p className="text-small">{t("manageCollaboratorsPlaceholder")}</p>
+          </ModalContent>
+        </Modal>
+      )}
+    </>
+  );
+}

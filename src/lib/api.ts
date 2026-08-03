@@ -154,28 +154,97 @@ function buildFetchInit(options: ApiRequestOptions): RequestInit {
  * The transformer only flattens the JSON:API case. Plain objects are returned
  * unchanged so endpoints can intentionally aggregate multiple lists in one payload.
  */
-function transformApiData(response: any) {
-  if (!response || typeof response !== 'object' || !('data' in response)) {
+type JsonApiIdentifier = {
+  id: string;
+  type: string;
+};
+
+type JsonApiRelationship = {
+  data?: JsonApiIdentifier | JsonApiIdentifier[] | null;
+};
+
+type JsonApiResource = {
+  id: string;
+  type: string;
+  attributes: Record<string, unknown>;
+  relationships?: Record<string, JsonApiRelationship>;
+};
+
+type JsonApiDocument = {
+  data: JsonApiResource | JsonApiResource[];
+  included?: JsonApiResource[];
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === 'object';
+}
+
+function isJsonApiIdentifier(value: unknown): value is JsonApiIdentifier {
+  return (
+    isRecord(value) &&
+    typeof value.id === 'string' &&
+    typeof value.type === 'string'
+  );
+}
+
+function isJsonApiResource(value: unknown): value is JsonApiResource {
+  return (
+    isRecord(value) &&
+    typeof value.id === 'string' &&
+    typeof value.type === 'string' &&
+    isRecord(value.attributes)
+  );
+}
+
+function isJsonApiDocument(value: unknown): value is JsonApiDocument {
+  if (!isRecord(value) || !('data' in value)) return false;
+  const data = value.data;
+  if (Array.isArray(data)) {
+    return data.every(isJsonApiResource);
+  }
+  return isJsonApiResource(data);
+}
+
+function transformApiData(response: unknown) {
+  if (isRecord(response) && 'data' in response && !isJsonApiDocument(response)) {
+    // Some endpoints intentionally return a plain `{ data: ... }` envelope
+    // (not JSON:API resources). In that case, consumers expect the inner payload.
+    return response.data;
+  }
+
+  if (!isJsonApiDocument(response)) {
     return response;
   }
 
   const data = response.data;
   const included = Array.isArray(response.included) ? response.included : [];
+  const dataResources = Array.isArray(data) ? data : [data];
+  const rawResources = [...included, ...dataResources];
 
-  // Build a lookup table so relationship resolution is O(1).
-  const includedMap = new Map<string, any>();
-  included.forEach((item: any) => {
-    if (item?.id && item?.type && item?.attributes) {
-      includedMap.set(`${item.type}-${item.id}`, { id: item.id, ...item.attributes });
-    }
+  // Build a lookup table so relationship resolution is O(1), including
+  // top-level resources for nested relationship chains.
+  const rawResourceMap = new Map<string, JsonApiResource>();
+  rawResources.forEach((item) => {
+    rawResourceMap.set(`${item.type}-${item.id}`, item);
   });
 
-  const flattenResource = (resource: any) => {
-    if (!resource || typeof resource !== 'object' || !('attributes' in resource)) {
-      return resource;
+  const flattenedResourceMap = new Map<string, Record<string, unknown>>();
+
+  const flattenFromResource = (
+    resource: JsonApiResource,
+    stack = new Set<string>(),
+  ): Record<string, unknown> => {
+    const resourceKey = `${resource.type}-${resource.id}`;
+    const cached = flattenedResourceMap.get(resourceKey);
+    if (cached) return cached;
+    if (stack.has(resourceKey)) {
+      return { id: resource.id, ...resource.attributes };
     }
 
-    const flattened: Record<string, any> = { id: resource.id, ...resource.attributes };
+    const nextStack = new Set(stack);
+    nextStack.add(resourceKey);
+
+    const flattened: Record<string, unknown> = { id: resource.id, ...resource.attributes };
 
     // Resolve relationships only when the backend has included the related
     // resource. That gives us normalized frontend data without extra requests.
@@ -186,18 +255,27 @@ function transformApiData(response: any) {
 
         if (Array.isArray(relationship.data)) {
           flattened[key] = relationship.data
-            .map((ref: any) => includedMap.get(`${ref.type}-${ref.id}`))
+            .map((ref) => flattenRef(ref, nextStack))
             .filter(Boolean);
         } else {
-          flattened[key] = includedMap.get(
-            `${relationship.data.type}-${relationship.data.id}`,
-          ) ?? null;
+          flattened[key] = flattenRef(relationship.data, nextStack) ?? null;
         }
       }
     }
 
+    flattenedResourceMap.set(resourceKey, flattened);
     return flattened;
   };
+
+  const flattenRef = (ref: unknown, stack: Set<string>) => {
+    if (!isJsonApiIdentifier(ref)) return null;
+    const key = `${ref.type}-${ref.id}`;
+    const raw = rawResourceMap.get(key);
+    if (!raw) return null;
+    return flattenFromResource(raw, stack);
+  };
+
+  const flattenResource = (resource: JsonApiResource) => flattenFromResource(resource);
 
   if (Array.isArray(data)) {
     return data.map(flattenResource);
@@ -354,6 +432,17 @@ const authClient = {
       ...options,
       authenticated: true,
       method: 'POST',
+      body: JSON.stringify(body),
+    }),
+  patch: async <T>(
+    path: string,
+    body: unknown,
+    options: Omit<ApiRequestOptions, 'method' | 'body' | 'authenticated'> = {},
+  ): Promise<T | null> =>
+    request<T>(path, {
+      ...options,
+      authenticated: true,
+      method: 'PATCH',
       body: JSON.stringify(body),
     }),
 };

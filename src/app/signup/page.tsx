@@ -8,8 +8,12 @@ import Button from '@/components/button/button';
 import Input from '@/components/input/input';
 import Link from 'next/link';
 import { signupAction } from '@/app/actions/auth';
+import { useLocale, useTranslations } from 'next-intl';
+import { localizePath } from '@/lib/locale-path';
 
 export default function SignupPage() {
+  const t = useTranslations('Auth');
+  const locale = useLocale();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,7 +36,7 @@ export default function SignupPage() {
     const passwordConfirmationValue = (data.get('password_confirmation') as string) || passwordConfirmation;
 
     if (passwordValue !== passwordConfirmationValue) {
-      setError('Passwords do not match.');
+      setError(t('passwordsDoNotMatch'));
       return;
     }
 
@@ -57,22 +61,20 @@ export default function SignupPage() {
 
       navigationStarted = true;
       router.refresh();
-      router.push(result.redirectTo ?? '/dashboard');
+      router.push(localizePath(result.redirectTo ?? '/dashboard', locale));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred.');
     } finally {
       if (!navigationStarted) setIsLoading(false);
     }
-  }, [username, email, password, passwordConfirmation, router, searchParams]);
+  }, [locale, username, email, password, passwordConfirmation, router, searchParams]);
 
   return (
     <Page>
       <Auth>
         <div>
-          <h2 className="h3 text-center mb-16px">Join today</h2>
-          <p className="text-center">
-            Create your account today to start organizing your lists.
-          </p>
+          <h2 className="h3 text-center mb-16px">{t('signupTitle')}</h2>
+          <p className="text-center">{t('signupSubtitle')}</p>
         </div>
 
         <form
@@ -86,7 +88,7 @@ export default function SignupPage() {
             id="signup-username"
             name="username"
             type="text"
-            placeholder="Username"
+            placeholder={t('usernamePlaceholder')}
             autoComplete="username"
             autoFocus={true}
             value={username}
@@ -98,7 +100,7 @@ export default function SignupPage() {
             id="signup-email"
             name="email"
             type="email"
-            placeholder="Email"
+            placeholder={t('emailPlaceholder')}
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -109,7 +111,7 @@ export default function SignupPage() {
             id="signup-password"
             name="password"
             type="password"
-            placeholder="Password"
+            placeholder={t('passwordPlaceholder')}
             autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -120,7 +122,7 @@ export default function SignupPage() {
             id="signup-password-confirmation"
             name="password_confirmation"
             type="password"
-            placeholder="Repeat password"
+            placeholder={t('repeatPasswordPlaceholder')}
             autoComplete="new-password"
             value={passwordConfirmation}
             onChange={(e) => setPasswordConfirmation(e.target.value)}
@@ -131,16 +133,16 @@ export default function SignupPage() {
           {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem' }}>{error}</p>}
 
           <Button type="submit" variant="interactive" disabled={isLoading}>
-            {isLoading ? 'Creating account...' : 'Create account'}
+            {isLoading ? t('creatingAccount') : t('createAccount')}
           </Button>
         </form>
 
         <p className="text-small text-muted text-center">
-          By clicking "Create account" above, you acknowledge that you have read, understood, and agreed to TidyCards' Terms and Privacy Policy.
+          {t('termsAcknowledgement')}
         </p>
 
         <div className="text-center py-24px">
-          <span className="text-bold">Already a member? <Link href="/signin">Sign in</Link></span>
+          <span className="text-bold">{t('alreadyMember')} <Link href={localizePath('/signin', locale)}>{t('signinButton')}</Link></span>
         </div>
       </Auth>
     </Page>

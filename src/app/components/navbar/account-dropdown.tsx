@@ -13,8 +13,10 @@ import {
   DropdownText,
 } from '@/app/components/dropdown';
 import Avatar from '@/app/components/avatar/avatar';
-import Icon from '@/app/components/icon/icon';
 import type { User } from '@/lib/types';
+import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
+import { localizePath } from '@/lib/locale-path';
 
 // Mock accounts — replace with real data from auth/API when available.
 const MOCK_ACCOUNTS = [
@@ -22,22 +24,8 @@ const MOCK_ACCOUNTS = [
   { value: 'alexandra', label: 'Alexandra', caption: 'alex.sacha.jolly@gmail.com' },
 ];
 
-const LANGUAGES = [
-  { value: 'english', label: 'English' },
-  { value: 'german',  label: 'German - Deutsch' },
-  { value: 'french',  label: 'French - Français' },
-  { value: 'russian', label: 'Russian - Русский' },
-  { value: 'spanish', label: 'Spanish - Español' },
-] as const;
-
-const THEMES = [
-  { value: 'system', label: 'System' },
-  { value: 'dark',   label: 'Dark' },
-  { value: 'light',  label: 'Light' },
-] as const;
-
-type Language = (typeof LANGUAGES)[number]['value'];
-type Theme    = (typeof THEMES)[number]['value'];
+type Language = 'english' | 'german' | 'french' | 'russian' | 'spanish';
+type Theme = 'system' | 'dark' | 'light';
 
 interface AccountDropdownProps {
   /** Null when the user is not authenticated. */
@@ -50,29 +38,46 @@ interface AccountDropdownProps {
   inline?: boolean;
 }
 
-/** Renders only the <DropdownMenu> panel — wrap with <Dropdown> + <DropdownTrigger> in the parent. */
+/** Renders only the <DropdownMenu> panel — mount inside <Dropdown> in the parent. */
 export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps) {
+  const t = useTranslations('AccountDropdown');
+  const common = useTranslations('Common');
+  const locale = useLocale();
   const [language, setLanguage] = useState<Language>('english');
   const [theme,    setTheme]    = useState<Theme>('system');
   const [activeAccount, setActiveAccount] = useState(MOCK_ACCOUNTS[1]?.value ?? '');
 
-  const currentLanguage = LANGUAGES.find(l => l.value === language)!;
-  const currentTheme    = THEMES.find(t => t.value === theme)!;
+  const languageOptions = [
+    { value: 'english', label: common('english') },
+    { value: 'german', label: common('german') },
+    { value: 'french', label: common('french') },
+    { value: 'russian', label: common('russian') },
+    { value: 'spanish', label: common('spanish') },
+  ] as const;
+
+  const themeOptions = [
+    { value: 'system', label: common('system') },
+    { value: 'dark', label: common('dark') },
+    { value: 'light', label: common('light') },
+  ] as const;
+
+  const currentLanguage = languageOptions.find(l => l.value === language)!;
+  const currentTheme = themeOptions.find(t => t.value === theme)!;
 
   return (
     <DropdownMenu align="end" inline={inline}>
 
-      <DropdownItem icon="subscription" label="Get TidyCards Pro" caption="Unlock new features like stats and more collections" />
+      <DropdownItem icon="subscription" label={t('proTitle')} caption={t('proCaption')} />
 
       <DropdownSeparator />
 
       {/* Account section — content differs based on auth state */}
       {user && (
         <>
-          <DropdownItem icon="settings" href={`/${user.username}/settings`}>Account</DropdownItem>
+      <DropdownItem icon="settings" href={localizePath(`/${user.username}/settings`, locale)}>{t('account')}</DropdownItem>
           <DropdownSub id="switch-account">
-            <DropdownSubTrigger icon="switch_account" title="Switch account">
-              Switch account
+            <DropdownSubTrigger icon="switch_account" title={t('switchAccount')}>
+              {t('switchAccount')}
             </DropdownSubTrigger>
             <DropdownSubContent>
               {MOCK_ACCOUNTS.length > 0 && (
@@ -80,7 +85,7 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
                   <DropdownRadioGroup
                     value={activeAccount}
                     onValueChange={setActiveAccount}
-                    label="Accounts"
+                    label={t('accounts')}
                     closeOnSelect
                   >
                     {MOCK_ACCOUNTS.map(({ value, label, caption }) => (
@@ -96,13 +101,13 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
                   <DropdownSeparator />
                 </>
               )}
-              <DropdownItem icon="person_add">Add account</DropdownItem>
-              <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>Sign out</DropdownItem>
+              <DropdownItem icon="person_add">{t('addAccount')}</DropdownItem>
+              <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>{t('signOut')}</DropdownItem>
 
             </DropdownSubContent>
           </DropdownSub>
 
-          <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>Sign out</DropdownItem>
+          <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>{t('signOut')}</DropdownItem>
 
           <DropdownSeparator />
         </>
@@ -110,12 +115,12 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
 
       {/* Preferences */}
       <DropdownSub id="language">
-        <DropdownSubTrigger icon="language" title="Language">
-          Language: {currentLanguage.label}
+        <DropdownSubTrigger icon="language" title={t('language')}>
+          {t('language')}: {currentLanguage.label}
         </DropdownSubTrigger>
         <DropdownSubContent>
-          <DropdownRadioGroup value={language} onValueChange={v => setLanguage(v as Language)} label="Language" closeOnSelect>
-            {LANGUAGES.map(({ value, label }) => (
+          <DropdownRadioGroup value={language} onValueChange={v => setLanguage(v as Language)} label={t('language')} closeOnSelect>
+            {languageOptions.map(({ value, label }) => (
               <DropdownRadioItem key={value} value={value} label={label} />
             ))}
           </DropdownRadioGroup>
@@ -123,35 +128,35 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
       </DropdownSub>
 
       <DropdownSub id="theme">
-        <DropdownSubTrigger icon="dark_mode" title="Theme">
-          Theme: {currentTheme.label}
+        <DropdownSubTrigger icon="dark_mode" title={t('theme')}>
+          {t('theme')}: {currentTheme.label}
         </DropdownSubTrigger>
         <DropdownSubContent>
-          <DropdownRadioGroup value={theme} onValueChange={v => setTheme(v as Theme)} label="Theme" closeOnSelect>
-            {THEMES.map(({ value, label }) => (
+          <DropdownRadioGroup value={theme} onValueChange={v => setTheme(v as Theme)} label={t('theme')} closeOnSelect>
+            {themeOptions.map(({ value, label }) => (
               <DropdownRadioItem key={value} value={value} label={label} />
             ))}
             <DropdownSeparator />
             <DropdownText>
-              <p className="text-small">Applies to your account</p>
+              <p className="text-small">{t('appliesToYourAccount')}</p>
             </DropdownText>
           </DropdownRadioGroup>
         </DropdownSubContent>
       </DropdownSub>
 
-      <DropdownItem icon="info">Cookie preferences</DropdownItem>
+      <DropdownItem icon="info">{t('cookiePreferences')}</DropdownItem>
 
       <DropdownSeparator />
 
       {/* Help */}
-      <DropdownItem icon="new">What&apos;s new?</DropdownItem>
-      <DropdownItem icon="flag">Send feedback</DropdownItem>
-      <DropdownItem icon="help" label="Help center" href="https://help.tidycards.app" target="_blank" rel="noreferrer" />
+      <DropdownItem icon="new">{t('whatsNew')}</DropdownItem>
+      <DropdownItem icon="flag">{t('sendFeedback')}</DropdownItem>
+      <DropdownItem icon="help" label={t('helpCenter')} href="https://help.tidycards.app" target="_blank" rel="noreferrer" />
       <DropdownSeparator />
 
       <DropdownText>
-        <p className="text-small">TidyCards v1.0.0</p>
-        <p className="text-small">Published on July 30, 2026</p>
+        <p className="text-small">{t('version')}</p>
+        <p className="text-small">{t('publishedOn')}</p>
       </DropdownText>
 
     </DropdownMenu>

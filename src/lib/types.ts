@@ -17,7 +17,7 @@ export interface Item {
   title: string;
   caption: string | null;
   // `content` is a flexible object that can hold any key-value pairs
-  content: { [key: string]: any };
+  content: Record<string, unknown>;
   position: number;
   itemType: 'URL' | 'TEXT' | 'IMAGE'; // Example types
   displayMode: string;
@@ -53,8 +53,8 @@ export interface List {
   updatedAt: string;
   deleted_at: string | null;
 
-  // Relationships (included via serializer)
-  author?: User;
+  // Lists must always expose their author in API responses consumed by the app.
+  author: User;
   items?: Item[];
 }
 

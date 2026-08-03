@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
 import { isProtectedRoute } from './src/lib/auth-routes';
+import { resolveLocaleFromRequest, routing } from './src/i18n-routing';
 
 /**
  * Route guard executed before the app renders.
@@ -12,22 +14,49 @@ import { isProtectedRoute } from './src/lib/auth-routes';
  */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const intlMiddleware = createMiddleware(routing);
 
-  // Public routes should stay cheap: no cookie lookup, no redirect work.
-  if (!isProtectedRoute(pathname)) {
-    return NextResponse.next();
-  }
+  const pathSegments = pathname.split('/').filter(Boolean);
+  const maybeLocale = pathSegments[0];
+  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
+  const acceptLanguage = request.headers.get('accept-language')?.toLowerCase() ?? '';
+  const detectedLocale = resolveLocaleFromRequest({
+   pathnameLocale: routing.locales.includes(maybeLocale as (typeof routing.locales)[number])
+     ? maybeLocale
+     : null,
+   cookieLocale,
+   acceptLanguage,
+  });
+  const pathnameWithoutLocale = routing.locales.includes(maybeLocale as (typeof routing.locales)[number])
+   ? `/${pathSegments.slice(1).join('/')}`
+   : pathname;
+  const hasLocalePrefix = routing.locales.includes(maybeLocale as (typeof routing.locales)[number]);
+  const canonicalPath = pathnameWithoutLocale === '' ? '/' : pathnameWithoutLocale;
 
   const token = request.cookies.get('tidy_token')?.value;
 
-  if (!token) {
-    const signinUrl = request.nextUrl.clone();
-    signinUrl.pathname = '/signin';
-    signinUrl.searchParams.set('callbackUrl', pathname);
-    return NextResponse.redirect(signinUrl);
+  if (hasLocalePrefix) {
+   const response = NextResponse.redirect(new URL(canonicalPath, request.url));
+   response.cookies.set('NEXT_LOCALE', detectedLocale, { path: '/' });
+   return response;
   }
 
-  return NextResponse.next();
+  // The auth guard runs first so protected pages never render for anonymous
+  // users. We still persist the detected locale so the next request renders in
+  // the user's language without exposing locale prefixes in the URL.
+  if (isProtectedRoute(pathnameWithoutLocale) && !token) {
+   const signinUrl = request.nextUrl.clone();
+   signinUrl.pathname = '/signin';
+   signinUrl.searchParams.set('callbackUrl', canonicalPath);
+   const response = NextResponse.redirect(signinUrl);
+   response.cookies.set('NEXT_LOCALE', detectedLocale, { path: '/' });
+   return response;
+  }
+
+  // next-intl owns locale detection, redirects, and the locale cookie. By
+  // delegating to it after auth checks, we keep the existing protection logic
+  // intact while serving one canonical URL per page.
+  return intlMiddleware(request);
 }
 
 export const config = {

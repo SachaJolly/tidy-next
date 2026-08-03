@@ -4,16 +4,18 @@ import React, { useState } from 'react';
 import Button from "@/components/button/button";
 import Link from "next/link";
 import Input from "@/components/input/input";
+import { useLocale, useTranslations } from 'next-intl';
+import { localizePath } from '@/lib/locale-path';
 
 export default function SigninForm() {
+  const locale = useLocale();
+  const t = useTranslations('Auth');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
     setIsLoading(true);
     console.log("Submitting:", { email, password });
     // API call logic will go here
@@ -24,15 +26,13 @@ export default function SigninForm() {
   return (
     <>
       <div>
-        <h2 className="h3 text-center mb-16px">Sign in to manage your lists</h2>
-        <p className="text-center">
-          Sign in to your account to share your passions and interests with the world.
-        </p>
+        <h2 className="h3 text-center mb-16px">{t('signinTitle')}</h2>
+        <p className="text-center">{t('signinSubtitle')}</p>
       </div>
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: ".5rem" }}>
         <Input
           type="email"
-          placeholder="Email"
+          placeholder={t('emailPlaceholder')}
           autoFocus={true}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -40,17 +40,22 @@ export default function SigninForm() {
         />
         <Input
           type="password"
-          placeholder="Password"
+          placeholder={t('passwordPlaceholder')}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
         <Button type="submit" variant="interactive" disabled={isLoading}>
-          {isLoading ? 'Signing In...' : 'Sign In'}
+          {isLoading ? t('signingIn') : t('signinButton')}
         </Button>
       </form>
       <div className="text-center py-24px">
-        <span className="text-bold">Not a member yet? <Link href="/signup" scroll={false} replace>Join today</Link></span>
+        <span className="text-bold">
+          {t('notMemberYet')}{' '}
+          <Link href={localizePath('/signup', locale)} scroll={false} replace>
+            {t('joinToday')}
+          </Link>
+        </span>
       </div>
     </>
   );

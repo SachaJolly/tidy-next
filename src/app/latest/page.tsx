@@ -10,8 +10,12 @@ import Hero from '@/components/hero/hero';
 
 import { api } from '@/lib/api';
 import { List } from '@/lib/types';
+import { getTranslations } from 'next-intl/server';
+
+const LATEST_LIMIT = 32;
 
 export default async function Latest() {
+  const t = await getTranslations('Latest');
   // Public page stays accessible to everyone; we only use the auth cookie to
   // decide whether to show the marketing hero.
   const cookieStore = await cookies();
@@ -19,25 +23,23 @@ export default async function Latest() {
 
   // Latest remains a public page, but the fetch is still centrally cached so
   // identical requests collapse together across renders.
-  const latestLists = await api.public.get<List[]>('/api/v1/lists/latest', {
+  const latestLists = await api.public.get<List[]>(`/api/v1/lists/latest?limit=${LATEST_LIMIT}`, {
     cache: 'force-cache',
     revalidate: 60,
   });
-
-  const latestToDisplay = latestLists.slice(0, 32);
 
   return (
     <>
       {!isAuthenticated && <Hero variant="horizontal" />}
       <Page>
         <PageHeader
-          title="Latest lists"
-          caption="Discover the latest lists published on TidyCards."
+          title={t('title')}
+          caption={t('caption')}
         />
         <Section>
-          <SectionHeader title="Last lists" />
+          <SectionHeader title={t('section')} />
           <CollectionList>
-            {latestToDisplay.map((list) => (
+            {latestLists.map((list) => (
               <ListCard list={list} key={list.id} />
             ))}
           </CollectionList>

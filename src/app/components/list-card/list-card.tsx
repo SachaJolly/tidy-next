@@ -2,20 +2,46 @@ import React from 'react';
 import Icon from '../icon/icon';
 import MetaGroup from '../meta-group/meta-group';
 import Meta from '../meta/meta';
+import Button from '@/components/button/button';
+import { Dropdown } from '@/components/dropdown';
+import ListOptionsDropdown from '@/app/components/lists/list-options-dropdown';
 import styles from './list-card.module.scss';
 import { List } from '@/lib/types';
+import { getTranslations } from 'next-intl/server';
 
 interface ListCardProps {
   list: List;
   bigger?: boolean;
+  isAuthor?: boolean;
 }
 
-const ListCard: React.FC<ListCardProps> = ({ list, bigger = false, ...props }) => {
+export default async function ListCard({
+  list,
+  bigger = false,
+  isAuthor = false,
+  ...props
+}: ListCardProps & React.ComponentPropsWithoutRef<'div'>) {
+  const t = await getTranslations('ListCard');
+  const listPage = await getTranslations('ListPage');
   const listClasses = `${styles.container} ${bigger ? styles.bigger : ''}`;
   const coverColor = { backgroundColor: list.color };
 
   return (
     <div className={listClasses} {...props}>
+      <div className={styles.actions}>
+        <Dropdown>
+          <Button icon="settings" aria-label={listPage('settings')} size="small" tinted={true} />
+          <ListOptionsDropdown
+            listId={list.id}
+            isAuthor={isAuthor}
+            initialVisibility={list.visibility}
+            listTitle={list.title}
+            listDescription={list.description}
+            authorName={list.author.name}
+            updatedAt={list.updatedAt}
+          />
+        </Dropdown>
+      </div>
       <a href={`/lists/${list.id}`} className={styles['content']}>
         <div className={styles['cover']} style={coverColor}>
           {list.thumbnail && (
@@ -37,61 +63,55 @@ const ListCard: React.FC<ListCardProps> = ({ list, bigger = false, ...props }) =
             {list.isPinned && (
               <Meta type="pinned">
                 <Icon name="pin" size={16}></Icon>
-                <span>Pinned</span>
+                <span>{t('pinned')}</span>
               </Meta>
             )}
 
             {list.visibility === 'PRIVATE' && (
               <Meta type="visibility">
                 <Icon name="private" size={16}></Icon>
-                <span>Private</span>
+                <span>{t('private')}</span>
               </Meta>
             )}
 
             {list.visibility === 'UNINDEXED' && (
               <Meta type="visibility">
                 <Icon name="visibility_off" size={16}></Icon>
-                <span>Unindexed</span>
+                <span>{t('unindexed')}</span>
               </Meta>
             )}
 
             {list.isTrending ? (
               <Meta type="trending">
                 <Icon name="hot" size={16}></Icon>
-                <span>Trending</span>
+                <span>{t('trending')}</span>
               </Meta>
             ) : list.isPopular ? (
               <Meta type="popular">
                 <Icon name="recommended" size={16}></Icon>
-                <span>Popular</span>
+                <span>{t('popular')}</span>
               </Meta>
             ) : (
               list.isFeatured && (
                 <Meta type="featured">
                   <Icon name="featured" size={16}></Icon>
-                  <span>Featured</span>
+                  <span>{t('featured')}</span>
                 </Meta>
               )
             )}
 
             {list.itemsCount > 0 ? (
-              <Meta>
-                {list.itemsCount} {list.itemsCount === 1 ? 'item' : 'items'}
-              </Meta>
+              <Meta>{t('item', { count: list.itemsCount })}</Meta>
             ) : (
-              <Meta>Empty</Meta>
+              <Meta>{t('empty')}</Meta>
             )}
 
             {list.notesCount > 0 && (
-              <Meta>
-                {list.notesCount} {list.notesCount === 1 ? 'note' : 'notes'}
-              </Meta>
+              <Meta>{t('note', { count: list.notesCount })}</Meta>
             )}
           </MetaGroup>
         </div>
       </a>
     </div>
   );
-};
-
-export default ListCard;
+}
