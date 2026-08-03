@@ -1,5 +1,6 @@
 import React, { cache } from 'react';
 import { notFound } from 'next/navigation';
+import { cookies } from 'next/headers';
 import PageHeader from '@/components/page-header/page-header';
 import CollectionList from '@/components/collection-list/collection-list';
 import Avatar from '@/components/avatar/avatar';
@@ -11,6 +12,7 @@ import Section from '@/components/section/section';
 import SectionHeader from '@/components/section-header/section-header';
 import ListCard from '@/components/list-card/list-card';
 import { api } from '@/lib/api';
+import { ApiFetchError } from '@/lib/api';
 import { List, User } from '@/lib/types';
 import { getTranslations } from 'next-intl/server';
 
@@ -91,6 +93,8 @@ export async function ProfileHeaderSection({ username }: { username: string }) {
 export async function ProfileListsSection({ username }: { username: string }) {
   const { user, t } = await getProfilePageData(username);
   const publicLists = user.publicLists ?? [];
+  const currentUser = await getCurrentUser();
+  const isAuthor = currentUser?.id === user.id;
 
   if (publicLists.length === 0) {
     return null;
@@ -101,7 +105,7 @@ export async function ProfileListsSection({ username }: { username: string }) {
       <SectionHeader title={t('publicLists', { count: publicLists.length })} />
       <CollectionList>
         {publicLists.map((list) => (
-          <ListCard list={list} key={list.id} />
+          <ListCard list={list} key={list.id} isAuthor={isAuthor} />
         ))}
       </CollectionList>
     </Section>
@@ -109,3 +113,28 @@ export async function ProfileListsSection({ username }: { username: string }) {
 }
 
 export { getProfilePageData };
+
+async function getCurrentUser(): Promise<User | null> {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get('tidy_token')?.value ?? null;
+
+  if (!authToken) {
+    return null;
+  }
+
+  // This fetch is intentionally uncached and isolated from the public profile
+  // snapshot so a signed-in viewer can get author-specific controls without
+  // polluting the shared cache for guest users.
+  try {
+    return await api.auth.get<User>('/api/v1/me', {
+      authorization: authToken,
+      cache: 'no-store',
+    });
+  } catch (error) {
+    if (error instanceof ApiFetchError && error.status === 401) {
+      return null;
+    }
+
+    throw error;
+  }
+}
