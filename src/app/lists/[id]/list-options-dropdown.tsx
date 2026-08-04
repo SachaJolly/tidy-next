@@ -17,6 +17,7 @@ import type { List } from '@/lib/types';
 import EditListModal from '@/components/lists/edit-list-modal';
 import { updateListVisibilityAction } from '@/app/actions/lists';
 import { useQueryModal } from '@/hooks/use-query-modal';
+import { formatDate } from '@/lib/date';
 
 type ListVisibility = List['visibility'];
 
@@ -34,36 +35,31 @@ interface ListOptionsDropdownProps {
 const VISIBILITY_OPTIONS: Array<{
   value: ListVisibility;
   icon: 'visibility_on' | 'visibility_off' | 'private';
-  labelKey: 'publicLabel' | 'unindexedLabel' | 'privateLabel';
-  captionKey: 'publicCaption' | 'unindexedCaption' | 'privateCaption';
+  labelKey: 'visibility.public.label' | 'visibility.unindexed.label' | 'visibility.private.label';
+  captionKey:
+    | 'visibility.public.caption'
+    | 'visibility.unindexed.caption'
+    | 'visibility.private.caption';
 }> = [
   {
     value: 'PUBLIC',
     icon: 'visibility_on',
-    labelKey: 'publicLabel',
-    captionKey: 'publicCaption',
+    labelKey: 'visibility.public.label',
+    captionKey: 'visibility.public.caption',
   },
   {
     value: 'UNINDEXED',
     icon: 'visibility_off',
-    labelKey: 'unindexedLabel',
-    captionKey: 'unindexedCaption',
+    labelKey: 'visibility.unindexed.label',
+    captionKey: 'visibility.unindexed.caption',
   },
   {
     value: 'PRIVATE',
     icon: 'private',
-    labelKey: 'privateLabel',
-    captionKey: 'privateCaption',
+    labelKey: 'visibility.private.label',
+    captionKey: 'visibility.private.caption',
   },
 ];
-
-function formatUpdatedDate(value: string, locale: string): string {
-  return new Intl.DateTimeFormat(locale, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }).format(new Date(value));
-}
 
 export default function ListOptionsDropdown({
   listId,
@@ -78,7 +74,7 @@ export default function ListOptionsDropdown({
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('ListOptionsDropdown');
-  const listPage = useTranslations('listPage');
+  const date = useTranslations('date');
   const common = useTranslations('common');
   const [isPending, startTransition] = useTransition();
   const [visibility, setVisibility] = useState<ListVisibility>(initialVisibility);
@@ -88,8 +84,15 @@ export default function ListOptionsDropdown({
   const isCollaboratorsModalOpen = queryModal.isOpen('manage-collaborators', listId);
 
   const updatedLabel = useMemo(
-    () => listPage('updated', { date: formatUpdatedDate(updatedAt, locale) }),
-    [listPage, locale, updatedAt],
+    () =>
+      date('lastUpdated', {
+        date: formatDate(updatedAt, locale, {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        }),
+      }),
+    [date, locale, updatedAt],
   );
 
   const handleCopyLink = async () => {

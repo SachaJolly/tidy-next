@@ -9,6 +9,7 @@
  *   locales/en/auth.json             - Authentication strings
  *   locales/en/navbar.json           - Navigation strings
  *   locales/en/footer.json           - Footer strings
+ *   locales/en/date.json            - Date formatting strings
  *   locales/en/listPage.json         - Page/domain namespace (lowercase)
  *   locales/en/NewList.json          - Modal namespace (PascalCase)
  *   locales/en/EditListModal.json    - Modal namespace (PascalCase)
@@ -18,6 +19,7 @@
  *
  * Naming convention:
  *   - Lowercase files → lowercase namespace keys: common, auth, navbar, footer, listPage, etc.
+ *     (date is also lowercase because it behaves like a global domain helper)
  *     (for App Router pages/views and global domains)
  *   - PascalCase files → PascalCase namespace keys: NewList, EditListModal, ListCard, etc.
  *     (for reusable components in src/components/)
@@ -46,6 +48,7 @@ import curatorsEn from '../../locales/en/curators.json';
 import profileEn from '../../locales/en/profile.json';
 import listPageEn from '../../locales/en/listPage.json';
 import formsEn from '../../locales/en/forms.json';
+import dateEn from '../../locales/en/date.json';
 
 // Modal namespaces (PascalCase files → PascalCase namespace keys)
 import NewListEn from '../../locales/en/NewList.json';
@@ -70,6 +73,7 @@ import curatorsFr from '../../locales/fr/curators.json';
 import profileFr from '../../locales/fr/profile.json';
 import listPageFr from '../../locales/fr/listPage.json';
 import formsFr from '../../locales/fr/forms.json';
+import dateFr from '../../locales/fr/date.json';
 
 // Modal namespaces (PascalCase files → PascalCase namespace keys)
 import NewListFr from '../../locales/fr/NewList.json';
@@ -104,6 +108,7 @@ const messagesEn = {
   profile: profileEn,
   item: itemEn,
   forms: formsEn,
+  date: dateEn,
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageEn,
   // Modal/Component namespaces (PascalCase for reusable components)
@@ -128,6 +133,7 @@ const messagesFr = {
   profile: profileFr,
   item: itemFr,
   forms: formsFr,
+  date: dateFr,
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageFr,
   // Modal/Component namespaces (PascalCase for reusable components)

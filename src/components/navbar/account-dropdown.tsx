@@ -17,6 +17,8 @@ import type { User } from '@/lib/types';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import { localizePath } from '@/lib/locale-path';
+import { formatDate } from '@/lib/date';
+import packageJson from '../../../package.json';
 
 // Mock accounts — replace with real data from auth/API when available.
 const MOCK_ACCOUNTS = [
@@ -175,8 +177,18 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
       <DropdownSeparator />
 
       <DropdownText>
-        <p className="text-small">{t('version')}</p>
-        <p className="text-small">{t('publishedOn')}</p>
+        <p className="text-small">{t('version', { version: packageJson.version })}</p>
+        {releaseDate && (
+          <p className="text-small">
+            {date('publishedOn', {
+              date: formatDate(releaseDate, locale, {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              }),
+            })}
+          </p>
+        )}
       </DropdownText>
     </DropdownMenu>
   );

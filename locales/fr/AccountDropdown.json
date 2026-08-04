@@ -16,6 +16,5 @@
   "whatsNew": "Quoi de neuf ?",
   "sendFeedback": "Envoyer un retour",
   "helpCenter": "Centre d'aide",
-  "version": "TidyCards v1.0.0",
-  "publishedOn": "Publié le 30 juillet 2026"
+  "version": "TidyCards v{version}"
 }

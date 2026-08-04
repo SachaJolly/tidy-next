@@ -15,6 +15,7 @@ import Button from '@/components/button/button';
 import ButtonGroup from '@/components/button-group/button-group';
 import { Dropdown } from '@/components/dropdown';
 import { localizePath } from '@/lib/locale-path';
+import { formatDate } from '@/lib/date';
 import ListOptionsDropdown from './list-options-dropdown';
 import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/loading-skeletons';
 
@@ -24,12 +25,14 @@ type ListPageData = {
   locale: string;
   t: Awaited<ReturnType<typeof getTranslations>>;
   common: Awaited<ReturnType<typeof getTranslations>>;
+  date: Awaited<ReturnType<typeof getTranslations>>;
 };
 
 const getListPageData = cache(async (id: string): Promise<ListPageData> => {
   const locale = await getLocale();
   const t = await getTranslations('listPage');
   const common = await getTranslations('common');
+  const date = await getTranslations('date');
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
 
@@ -82,19 +85,11 @@ const getListPageData = cache(async (id: string): Promise<ListPageData> => {
     notFound();
   }
 
-  return { list, currentUser, locale, t, common };
+  return { list, currentUser, locale, t, common, date };
 });
 
-function formatUpdatedDate(value: string, locale: string): string {
-  return new Intl.DateTimeFormat(locale, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }).format(new Date(value));
-}
-
 export async function ListHeaderSection({ id }: { id: string }) {
-  const { list, currentUser, locale, t, common } = await getListPageData(id);
+  const { list, currentUser, locale, t, common, date } = await getListPageData(id);
   const author = list.author!;
   const canCreateItem = !!currentUser;
   const isAuthor = currentUser?.id === author.id;
@@ -114,7 +109,13 @@ export async function ListHeaderSection({ id }: { id: string }) {
             </span>
           </Meta>
           <Meta size="base">
-            {t('updated', { date: formatUpdatedDate(list.updatedAt, locale) })}
+            {date('lastUpdated', {
+              date: formatDate(list.updatedAt, locale, {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              }),
+            })}
           </Meta>
           <Meta size="base">{t('items', { count: list.itemsCount })}</Meta>
         </MetaGroup>
