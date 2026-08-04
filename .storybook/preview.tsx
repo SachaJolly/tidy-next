@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/nextjs-vite';
 import { useEffect } from 'react';
+import { NextIntlClientProvider } from 'next-intl';
 import '@/styles/primitives.css';
 import '@/styles/semantics.css';
 import '@/styles/globals.css';
@@ -26,13 +27,42 @@ function ApplicationOverlaysRoot() {
   return null;
 }
 
+// Default message bundle for components that use useTranslations().
+// Extend this as needed for additional namespaces and languages.
+const defaultMessages = {
+  ListCard: {
+    pinned: 'Pinned',
+    private: 'Private',
+    unindexed: 'Unindexed',
+    trending: 'Trending',
+    popular: 'Popular',
+    featured: 'Featured',
+    item: '{count, plural, one {# item} other {# items}}',
+    empty: 'Empty',
+    note: '{count, plural, one {# note} other {# notes}}',
+  },
+  ListPage: {
+    settings: 'Settings',
+    updated: 'Updated {date}',
+  },
+  Common: {
+    curatedBy: 'Curated by',
+  },
+  CuratorMeta: {
+    lists: 'Lists',
+    curatedBy: 'Curated by',
+  },
+};
+
 const preview: Preview = {
   decorators: [
     (Story) => (
-      <>
-        <ApplicationOverlaysRoot />
-        <Story />
-      </>
+      <NextIntlClientProvider locale="en" messages={defaultMessages}>
+        <>
+          <ApplicationOverlaysRoot />
+          <Story />
+        </>
+      </NextIntlClientProvider>
     ),
   ],
   loaders: [mswLoader],
