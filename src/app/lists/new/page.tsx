@@ -1,10 +1,10 @@
-import Page from '@/app/layouts/page';
-import NewListPageComponent from '@/components/lists/new-list-page';
+import PageLayout from '@/layouts/PageLayout';
+import NewListPageComponent from './new-list-page';
 
 export default function NewListRoutePage() {
   return (
-    <Page>
+    <PageLayout>
       <NewListPageComponent />
-    </Page>
+    </PageLayout>
   );
 }

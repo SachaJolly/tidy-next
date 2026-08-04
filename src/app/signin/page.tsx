@@ -2,8 +2,7 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Page from '@/app/layouts/page';
-import Auth from '@/app/layouts/auth';
+import AuthLayout from "@/layouts/AuthLayout/AuthLayout";
 import Button from '@/components/button/button';
 import Input from '@/components/input/input';
 import Link from 'next/link';
@@ -74,69 +73,67 @@ export default function SigninPage() {
   );
 
   return (
-    <Page>
-      <Auth>
-        <div>
-          <h2 className="h3 text-center mb-16px">{t('signinTitle')}</h2>
-          <p className="text-center">{t('signinSubtitle')}</p>
-        </div>
+    <AuthLayout>
+      <div>
+        <h2 className="h3 text-center mb-16px">{t('signinTitle')}</h2>
+        <p className="text-center">{t('signinSubtitle')}</p>
+      </div>
 
+      {/*
+        The <form> is always present and never conditionally rendered during
+        loading — structural DOM stability is required for password manager
+        compatibility. Loading state is expressed only via `disabled` on the
+        interactive elements; the form node itself never changes.
+      */}
+      <form
+        ref={formRef}
+        id="signin-form"
+        onSubmit={handleSubmit}
+        autoComplete="on"
+        style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}
+      >
         {/*
-          The <form> is always present and never conditionally rendered during
-          loading — structural DOM stability is required for password manager
-          compatibility. Loading state is expressed only via `disabled` on the
-          interactive elements; the form node itself never changes.
+          `name` is required for FormData indexing and for password managers
+          to recognise which credential goes in which input.
+          `autoComplete="current-password"` signals this is a sign-in form,
+          not a registration form, preventing a new-password suggestion.
         */}
-        <form
-          ref={formRef}
-          id="signin-form"
-          onSubmit={handleSubmit}
-          autoComplete="on"
-          style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}
-        >
-          {/*
-            `name` is required for FormData indexing and for password managers
-            to recognise which credential goes in which input.
-            `autoComplete="current-password"` signals this is a sign-in form,
-            not a registration form, preventing a new-password suggestion.
-          */}
-          <Input
-            id="signin-email"
-            name="email"
-            type="email"
-            placeholder={t('emailPlaceholder')}
-            autoComplete="email"
-            autoFocus={true}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={isLoading}
-            required
-          />
-          <Input
-            id="signin-password"
-            name="password"
-            type="password"
-            placeholder={t('passwordPlaceholder')}
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={isLoading}
-            required
-          />
+        <Input
+          id="signin-email"
+          name="email"
+          type="email"
+          placeholder={t('emailPlaceholder')}
+          autoComplete="email"
+          autoFocus={true}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={isLoading}
+          required
+        />
+        <Input
+          id="signin-password"
+          name="password"
+          type="password"
+          placeholder={t('passwordPlaceholder')}
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={isLoading}
+          required
+        />
 
-          {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem' }}>{error}</p>}
+        {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem' }}>{error}</p>}
 
-          <Button type="submit" variant="interactive" disabled={isLoading}>
-            {isLoading ? t('signingIn') : t('signinButton')}
-          </Button>
-        </form>
+        <Button type="submit" variant="interactive" disabled={isLoading}>
+          {isLoading ? t('signingIn') : t('signinButton')}
+        </Button>
+      </form>
 
-        <div className="text-center py-24px">
-          <span className="text-bold">
-            {t('notMemberYet')} <Link href={localizePath('/signup', locale)}>{t('joinToday')}</Link>
-          </span>
-        </div>
-      </Auth>
-    </Page>
+      <div className="text-center py-24px">
+        <span className="text-bold">
+          {t('notMemberYet')} <Link href={localizePath('/signup', locale)}>{t('joinToday')}</Link>
+        </span>
+      </div>
+    </AuthLayout>
   );
 }

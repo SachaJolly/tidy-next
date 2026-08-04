@@ -1,6 +1,6 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import Page from '@/app/layouts/page';
+import PageLayout from '@/layouts/PageLayout';
 import PageHeader from '@/components/page-header/page-header';
 import CollectionList from '@/components/collection-list/collection-list';
 import Section from '@/components/section/section';
@@ -40,7 +40,7 @@ export default async function DiscoverContent() {
   return (
     <>
       {!isAuthenticated && <Hero />}
-      <Page>
+      <PageLayout>
         <PageHeader title={t('title')} caption={t('caption')} />
         <Section>
           <SectionHeader title={t('featured')} />
@@ -58,7 +58,7 @@ export default async function DiscoverContent() {
             ))}
           </CollectionList>
         </Section>
-      </Page>
+      </PageLayout>
     </>
   );
 }

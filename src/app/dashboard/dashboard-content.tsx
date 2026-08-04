@@ -1,6 +1,6 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
-import Page from '@/app/layouts/page';
+import PageLayout from '@/layouts/PageLayout';
 import PageHeader from '@/components/page-header/page-header';
 import CollectionList from '@/components/collection-list/collection-list';
 import Section from '@/components/section/section';
@@ -28,7 +28,7 @@ export default async function DashboardContent() {
     }
 
     return (
-      <Page>
+      <PageLayout>
         <PageHeader title={t('title')} caption={t('caption')} />
         <Section>
           <SectionHeader title={t('myLists')}>
@@ -51,7 +51,7 @@ export default async function DashboardContent() {
             )}
           </CollectionList>
         </Section>
-      </Page>
+      </PageLayout>
     );
   } catch (error: unknown) {
     if (error instanceof ApiFetchError && error.status === 401) {

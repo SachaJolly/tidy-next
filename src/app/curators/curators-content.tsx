@@ -1,6 +1,6 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import Page from '@/app/layouts/page';
+import PageLayout from '@/layouts/PageLayout';
 import PageHeader from '@/components/page-header/page-header';
 import Section from '@/components/section/section';
 import Hero from '@/components/hero/hero';
@@ -29,14 +29,14 @@ export default async function CuratorsContent() {
   return (
     <>
       {!isAuthenticated && <Hero variant="horizontal" />}
-      <Page>
+      <PageLayout>
         <PageHeader title={t('title')} caption={t('caption')} />
         <Section>
           {curators.map((curator) => (
             <CuratorMeta key={curator.id} profile={curator} />
           ))}
         </Section>
-      </Page>
+      </PageLayout>
     </>
   );
 }

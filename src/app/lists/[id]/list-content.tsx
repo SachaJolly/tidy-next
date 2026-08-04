@@ -5,7 +5,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import { api, ApiFetchError } from '@/lib/api';
 import { List, Item as ItemType, User } from '@/lib/types';
-import styles from '@/app/layouts/list-layout.module.scss';
+import styles from '@/layouts/ListLayout/ListLayout.module.scss';
 import Link from 'next/link';
 import { Item } from '@/components/item/item';
 import MetaGroup from '@/components/meta-group/meta-group';
@@ -15,7 +15,7 @@ import Button from '@/components/button/button';
 import ButtonGroup from '@/components/button-group/button-group';
 import { Dropdown } from '@/components/dropdown';
 import { localizePath } from '@/lib/locale-path';
-import ListOptionsDropdown from '@/components/lists/list-options-dropdown';
+import ListOptionsDropdown from './list-options-dropdown';
 import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/loading-skeletons';
 
 type ListPageData = {
@@ -28,7 +28,7 @@ type ListPageData = {
 
 const getListPageData = cache(async (id: string): Promise<ListPageData> => {
   const locale = await getLocale();
-  const t = await getTranslations('list-page');
+  const t = await getTranslations('listPage');
   const common = await getTranslations('common');
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;

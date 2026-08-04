@@ -2,8 +2,7 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Page from '@/app/layouts/page';
-import Auth from '@/app/layouts/auth';
+import AuthLayout from "@/layouts/AuthLayout/AuthLayout";
 import Button from '@/components/button/button';
 import Input from '@/components/input/input';
 import Link from 'next/link';
@@ -70,86 +69,84 @@ export default function SignupPage() {
         if (!navigationStarted) setIsLoading(false);
       }
     },
-    [locale, username, email, password, passwordConfirmation, router, searchParams],
+    [locale, username, email, password, passwordConfirmation, router, searchParams, t],
   );
 
   return (
-    <Page>
-      <Auth>
-        <div>
-          <h2 className="h3 text-center mb-16px">{t('signupTitle')}</h2>
-          <p className="text-center">{t('signupSubtitle')}</p>
-        </div>
+    <AuthLayout>
+      <div>
+        <h2 className="h3 text-center mb-16px">{t('signupTitle')}</h2>
+        <p className="text-center">{t('signupSubtitle')}</p>
+      </div>
 
-        <form
-          ref={formRef}
-          id="signup-form"
-          onSubmit={handleSubmit}
-          autoComplete="on"
-          style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}
-        >
-          <Input
-            id="signup-username"
-            name="username"
-            type="text"
-            placeholder={t('usernamePlaceholder')}
-            autoComplete="username"
-            autoFocus={true}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            disabled={isLoading}
-            required
-          />
-          <Input
-            id="signup-email"
-            name="email"
-            type="email"
-            placeholder={t('emailPlaceholder')}
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={isLoading}
-            required
-          />
-          <Input
-            id="signup-password"
-            name="password"
-            type="password"
-            placeholder={t('passwordPlaceholder')}
-            autoComplete="new-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={isLoading}
-            required
-          />
-          <Input
-            id="signup-password-confirmation"
-            name="password_confirmation"
-            type="password"
-            placeholder={t('repeatPasswordPlaceholder')}
-            autoComplete="new-password"
-            value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-            disabled={isLoading}
-            required
-          />
+      <form
+        ref={formRef}
+        id="signup-form"
+        onSubmit={handleSubmit}
+        autoComplete="on"
+        style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}
+      >
+        <Input
+          id="signup-username"
+          name="username"
+          type="text"
+          placeholder={t('usernamePlaceholder')}
+          autoComplete="username"
+          autoFocus={true}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          disabled={isLoading}
+          required
+        />
+        <Input
+          id="signup-email"
+          name="email"
+          type="email"
+          placeholder={t('emailPlaceholder')}
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={isLoading}
+          required
+        />
+        <Input
+          id="signup-password"
+          name="password"
+          type="password"
+          placeholder={t('passwordPlaceholder')}
+          autoComplete="new-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={isLoading}
+          required
+        />
+        <Input
+          id="signup-password-confirmation"
+          name="password_confirmation"
+          type="password"
+          placeholder={t('repeatPasswordPlaceholder')}
+          autoComplete="new-password"
+          value={passwordConfirmation}
+          onChange={(e) => setPasswordConfirmation(e.target.value)}
+          disabled={isLoading}
+          required
+        />
 
-          {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem' }}>{error}</p>}
+        {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem' }}>{error}</p>}
 
-          <Button type="submit" variant="interactive" disabled={isLoading}>
-            {isLoading ? t('creatingAccount') : t('createAccount')}
-          </Button>
-        </form>
+        <Button type="submit" variant="interactive" disabled={isLoading}>
+          {isLoading ? t('creatingAccount') : t('createAccount')}
+        </Button>
+      </form>
 
-        <p className="text-small text-muted text-center">{t('termsAcknowledgement')}</p>
+      <p className="text-small text-muted text-center">{t('termsAcknowledgement')}</p>
 
-        <div className="text-center py-24px">
-          <span className="text-bold">
-            {t('alreadyMember')}{' '}
-            <Link href={localizePath('/signin', locale)}>{t('signinButton')}</Link>
-          </span>
-        </div>
-      </Auth>
-    </Page>
+      <div className="text-center py-24px">
+        <span className="text-bold">
+          {t('alreadyMember')}{' '}
+          <Link href={localizePath('/signin', locale)}>{t('signinButton')}</Link>
+        </span>
+      </div>
+    </AuthLayout>
   );
 }
