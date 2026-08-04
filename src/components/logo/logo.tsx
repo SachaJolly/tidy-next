@@ -1,7 +1,7 @@
-import { SVGProps } from "react";
+import { SVGProps } from 'react';
 
 interface LogoProps extends SVGProps<SVGSVGElement> {
-  variant?: "default";
+  variant?: 'default';
 }
 
 const sizeMap = {
@@ -11,13 +11,7 @@ const sizeMap = {
   },
 };
 
-export function Logo({
-  variant = "default",
-  width,
-  height,
-  className = "",
-  ...props
-}: LogoProps) {
+export function Logo({ variant = 'default', width, height, className = '', ...props }: LogoProps) {
   const { width: defaultWidth, height: defaultHeight } = sizeMap[variant];
   const finalWidth = width || defaultWidth;
   const finalHeight = height || defaultHeight;
@@ -30,7 +24,7 @@ export function Logo({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`logo ${className}`}
-      aria-label="Logo"
+      aria-label="Homepage"
       {...props}
     >
       <path

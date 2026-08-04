@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 import { DropdownSubContext } from './context';
@@ -10,9 +10,5 @@ export interface DropdownSubProps {
 }
 
 export function DropdownSub({ id, children }: DropdownSubProps) {
-  return (
-    <DropdownSubContext.Provider value={{ id }}>
-      {children}
-    </DropdownSubContext.Provider>
-  );
+  return <DropdownSubContext.Provider value={{ id }}>{children}</DropdownSubContext.Provider>;
 }

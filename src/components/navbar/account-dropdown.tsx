@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import {
@@ -20,7 +20,7 @@ import { localizePath } from '@/lib/locale-path';
 
 // Mock accounts — replace with real data from auth/API when available.
 const MOCK_ACCOUNTS = [
-  { value: 'vivianne', label: 'Vivianne',  caption: 'vivianne.lebrec@gmail.com' },
+  { value: 'vivianne', label: 'Vivianne', caption: 'vivianne.lebrec@gmail.com' },
   { value: 'alexandra', label: 'Alexandra', caption: 'alex.sacha.jolly@gmail.com' },
 ];
 
@@ -44,7 +44,7 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
   const common = useTranslations('common');
   const locale = useLocale();
   const [language, setLanguage] = useState<Language>('english');
-  const [theme,    setTheme]    = useState<Theme>('system');
+  const [theme, setTheme] = useState<Theme>('system');
   const [activeAccount, setActiveAccount] = useState(MOCK_ACCOUNTS[1]?.value ?? '');
 
   const languageOptions = [
@@ -61,12 +61,11 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
     { value: 'light', label: common('light') },
   ] as const;
 
-  const currentLanguage = languageOptions.find(l => l.value === language)!;
-  const currentTheme = themeOptions.find(t => t.value === theme)!;
+  const currentLanguage = languageOptions.find((l) => l.value === language)!;
+  const currentTheme = themeOptions.find((t) => t.value === theme)!;
 
   return (
     <DropdownMenu align="end" inline={inline}>
-
       <DropdownItem icon="subscription" label={t('proTitle')} caption={t('proCaption')} />
 
       <DropdownSeparator />
@@ -74,7 +73,9 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
       {/* Account section — content differs based on auth state */}
       {user && (
         <>
-      <DropdownItem icon="settings" href={localizePath(`/${user.username}/settings`, locale)}>{t('account')}</DropdownItem>
+          <DropdownItem icon="settings" href={localizePath(`/${user.username}/settings`, locale)}>
+            {t('account')}
+          </DropdownItem>
           <DropdownSub id="switch-account">
             <DropdownSubTrigger icon="switch_account" title={t('switchAccount')}>
               {t('switchAccount')}
@@ -102,12 +103,15 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
                 </>
               )}
               <DropdownItem icon="person_add">{t('addAccount')}</DropdownItem>
-              <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>{t('signOut')}</DropdownItem>
-
+              <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>
+                {t('signOut')}
+              </DropdownItem>
             </DropdownSubContent>
           </DropdownSub>
 
-          <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>{t('signOut')}</DropdownItem>
+          <DropdownItem icon="logout" destructive onSelect={() => void onLogout()}>
+            {t('signOut')}
+          </DropdownItem>
 
           <DropdownSeparator />
         </>
@@ -119,7 +123,12 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
           {t('language')}: {currentLanguage.label}
         </DropdownSubTrigger>
         <DropdownSubContent>
-          <DropdownRadioGroup value={language} onValueChange={v => setLanguage(v as Language)} label={t('language')} closeOnSelect>
+          <DropdownRadioGroup
+            value={language}
+            onValueChange={(v) => setLanguage(v as Language)}
+            label={t('language')}
+            closeOnSelect
+          >
             {languageOptions.map(({ value, label }) => (
               <DropdownRadioItem key={value} value={value} label={label} />
             ))}
@@ -132,7 +141,12 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
           {t('theme')}: {currentTheme.label}
         </DropdownSubTrigger>
         <DropdownSubContent>
-          <DropdownRadioGroup value={theme} onValueChange={v => setTheme(v as Theme)} label={t('theme')} closeOnSelect>
+          <DropdownRadioGroup
+            value={theme}
+            onValueChange={(v) => setTheme(v as Theme)}
+            label={t('theme')}
+            closeOnSelect
+          >
             {themeOptions.map(({ value, label }) => (
               <DropdownRadioItem key={value} value={value} label={label} />
             ))}
@@ -151,14 +165,19 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
       {/* Help */}
       <DropdownItem icon="new">{t('whatsNew')}</DropdownItem>
       <DropdownItem icon="flag">{t('sendFeedback')}</DropdownItem>
-      <DropdownItem icon="help" label={t('helpCenter')} href="https://help.tidycards.app" target="_blank" rel="noreferrer" />
+      <DropdownItem
+        icon="help"
+        label={t('helpCenter')}
+        href="https://help.tidycards.app"
+        target="_blank"
+        rel="noreferrer"
+      />
       <DropdownSeparator />
 
       <DropdownText>
         <p className="text-small">{t('version')}</p>
         <p className="text-small">{t('publishedOn')}</p>
       </DropdownText>
-
     </DropdownMenu>
   );
 }

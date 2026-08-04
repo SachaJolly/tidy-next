@@ -2,10 +2,7 @@ import React, { Suspense, use } from 'react';
 import { api, ApiFetchError } from '@/lib/api';
 import type { List } from '@/lib/types';
 import ListLayout from '@/app/layouts/list-layout';
-import {
-  ListHeaderSection,
-  ListItemsSection,
-} from './list-content';
+import { ListHeaderSection, ListItemsSection } from './list-content';
 import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/loading-skeletons';
 
 interface PageProps {

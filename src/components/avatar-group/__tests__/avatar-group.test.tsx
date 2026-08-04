@@ -1,15 +1,15 @@
-import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import AvatarGroup from "@/components/avatar-group/avatar-group";
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import AvatarGroup from '@/components/avatar-group/avatar-group';
 
-describe("AvatarGroup", () => {
+describe('AvatarGroup', () => {
   const mockAvatars = [
-    { src: "", alt: "John Doe", initials: "JD" },
-    { src: "", alt: "Alice Brown", initials: "AB" },
-    { src: "", alt: "Charlie Davis", initials: "CD" },
+    { src: '', alt: 'John Doe', initials: 'JD' },
+    { src: '', alt: 'Alice Brown', initials: 'AB' },
+    { src: '', alt: 'Charlie Davis', initials: 'CD' },
   ];
 
-  it("renders all avatars", () => {
+  it('renders all avatars', () => {
     render(<AvatarGroup avatars={mockAvatars} />);
 
     mockAvatars.forEach((avatar) => {
@@ -17,26 +17,20 @@ describe("AvatarGroup", () => {
     });
   });
 
-  it("applies custom className", () => {
-    const customClass = "custom-class";
-    const { container } = render(
-      <AvatarGroup avatars={mockAvatars} className={customClass} />,
-    );
+  it('applies custom className', () => {
+    const customClass = 'custom-class';
+    const { container } = render(<AvatarGroup avatars={mockAvatars} className={customClass} />);
 
     expect(container.firstChild).toHaveClass(customClass);
   });
 
-  it("renders with different sizes", () => {
-    const sizes = ["24", "32", "56", "96"] as const;
+  it('renders with different sizes', () => {
+    const sizes = ['24', '32', '56', '96'] as const;
 
     sizes.forEach((size) => {
-      const { container } = render(
-        <AvatarGroup avatars={mockAvatars} size={size} />,
-      );
+      const { container } = render(<AvatarGroup avatars={mockAvatars} size={size} />);
 
-      const avatarElements = container.querySelectorAll(
-        `[class*='is-${size}']`,
-      );
+      const avatarElements = container.querySelectorAll(`[class*='is-${size}']`);
       expect(avatarElements.length).toBe(mockAvatars.length);
     });
   });

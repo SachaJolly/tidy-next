@@ -28,8 +28,8 @@ type ListPageData = {
 
 const getListPageData = cache(async (id: string): Promise<ListPageData> => {
   const locale = await getLocale();
-  const t = await getTranslations('ListPage');
-  const common = await getTranslations('Common');
+  const t = await getTranslations('list-page');
+  const common = await getTranslations('common');
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
 
@@ -76,8 +76,7 @@ const getListPageData = cache(async (id: string): Promise<ListPageData> => {
     notFound();
   }
 
-  const canAccessList =
-    list.visibility !== 'PRIVATE' || currentUser?.id === list.author?.id;
+  const canAccessList = list.visibility !== 'PRIVATE' || currentUser?.id === list.author?.id;
 
   if (!canAccessList) {
     notFound();
@@ -106,11 +105,7 @@ export async function ListHeaderSection({ id }: { id: string }) {
         <h1 className={styles.title}>{list.title}</h1>
         <MetaGroup>
           <Meta size="base">
-            <Avatar
-              initials={author.name.charAt(0)}
-              size="24"
-              alt={author.name}
-            />
+            <Avatar initials={author.name.charAt(0)} size="24" alt={author.name} />
             <span>
               {common('curatedBy')}{' '}
               <Link className={styles.metaLink} href={localizePath(`/${author.username}`, locale)}>
@@ -118,15 +113,19 @@ export async function ListHeaderSection({ id }: { id: string }) {
               </Link>
             </span>
           </Meta>
-          <Meta size="base">{t('updated', { date: formatUpdatedDate(list.updatedAt, locale) })}</Meta>
+          <Meta size="base">
+            {t('updated', { date: formatUpdatedDate(list.updatedAt, locale) })}
+          </Meta>
           <Meta size="base">{t('items', { count: list.itemsCount })}</Meta>
         </MetaGroup>
       </div>
 
-      {list.description && <p className={styles.description}>
-        <span className={styles.statusBadge}>{list.visibility}</span>
-        {list.description}
-      </p>}
+      {list.description && (
+        <p className={styles.description}>
+          <span className={styles.statusBadge}>{list.visibility}</span>
+          {list.description}
+        </p>
+      )}
 
       <div className={styles['list-header-actions']}>
         <div className={styles['list-header-buttons']}>
@@ -135,7 +134,9 @@ export async function ListHeaderSection({ id }: { id: string }) {
           )}
           <div className={styles['list-header-like']}>
             <Button icon="like" label={t('like')} size="small" tinted={true} />
-            <span className="text-muted">{t('peopleLikedThisList', { count: list.notesCount })}</span>
+            <span className="text-muted">
+              {t('peopleLikedThisList', { count: list.notesCount })}
+            </span>
           </div>
         </div>
         <ButtonGroup>

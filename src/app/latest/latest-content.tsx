@@ -14,7 +14,7 @@ import { getTranslations } from 'next-intl/server';
 const LATEST_LIMIT = 32;
 
 export default async function LatestContent() {
-  const t = await getTranslations('Latest');
+  const t = await getTranslations('latest');
   const cookieStore = await cookies();
   const isAuthenticated = !!cookieStore.get('tidy_token');
 
@@ -29,10 +29,7 @@ export default async function LatestContent() {
     <>
       {!isAuthenticated && <Hero variant="horizontal" />}
       <Page>
-        <PageHeader
-          title={t('title')}
-          caption={t('caption')}
-        />
+        <PageHeader title={t('title')} caption={t('caption')} />
         <Section>
           <SectionHeader title={t('section')} />
           <CollectionList>

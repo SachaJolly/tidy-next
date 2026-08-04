@@ -17,7 +17,7 @@ import { User } from '@/lib/types';
  * auth-specific fetch behind Suspense so slow user lookups do not freeze the UI.
  */
 export default async function Navbar() {
-  const t = await getTranslations('Navbar');
+  const t = await getTranslations('navbar');
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
   const isAuthenticated = await resolveNavbarSession(authToken);

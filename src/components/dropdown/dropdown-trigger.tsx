@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useCallback } from 'react';
 import { useDropdownContext } from './context';
@@ -18,7 +18,11 @@ type TriggerChildProps = React.HTMLAttributes<HTMLElement> & {
   onClick?: (e: React.MouseEvent) => void;
 };
 
-export function DropdownTrigger({ children, asChild, ...rest }: DropdownTriggerProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+export function DropdownTrigger({
+  children,
+  asChild,
+  ...rest
+}: DropdownTriggerProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const { open, setOpen, triggerRef } = useDropdownContext();
   const toggle = useCallback(() => setOpen(!open), [setOpen, open]);
   const restOnClick = rest.onClick as ((e: React.MouseEvent) => void) | undefined;

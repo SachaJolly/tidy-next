@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
@@ -88,7 +88,9 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
     const focusTimer = setTimeout(() => {
       const target =
         dialog.querySelector<HTMLElement>('[data-autofocus="true"], [autofocus]') ??
-        dialog.querySelector<HTMLElement>('input:not([type="hidden"]):not([type="button"]), textarea');
+        dialog.querySelector<HTMLElement>(
+          'input:not([type="hidden"]):not([type="button"]), textarea',
+        );
       // Fall back to the dialog itself so it is at least in the AT reading order.
       (target ?? dialog).focus();
     }, 10);
@@ -101,17 +103,26 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
       if (e.key !== 'Tab') return;
 
       const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS));
-      if (!focusable.length) { e.preventDefault(); return; }
+      if (!focusable.length) {
+        e.preventDefault();
+        return;
+      }
 
       const first = focusable[0];
-      const last  = focusable[focusable.length - 1];
+      const last = focusable[focusable.length - 1];
 
       if (e.shiftKey) {
         // Shift+Tab at the first element → wrap to the last
-        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
       } else {
         // Tab at the last element → wrap to the first
-        if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
 
@@ -125,10 +136,15 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
     const prev = {
       overflow: document.body.style.overflow,
       position: document.body.style.position,
-      top:      document.body.style.top,
-      width:    document.body.style.width,
+      top: document.body.style.top,
+      width: document.body.style.width,
     };
-    Object.assign(document.body.style, { overflow: 'hidden', position: 'fixed', top: `-${scrollY}px`, width: '100%' });
+    Object.assign(document.body.style, {
+      overflow: 'hidden',
+      position: 'fixed',
+      top: `-${scrollY}px`,
+      width: '100%',
+    });
 
     return () => {
       clearTimeout(focusTimer);
@@ -145,8 +161,10 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
     const rect = dialogRef.current?.getBoundingClientRect();
     if (!rect) return;
     const isOutside =
-      e.clientY < rect.top  || e.clientY > rect.bottom ||
-      e.clientX < rect.left || e.clientX > rect.right;
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom ||
+      e.clientX < rect.left ||
+      e.clientX > rect.right;
     if (isOutside) dismiss();
   };
 
@@ -159,34 +177,32 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
     return null;
   }
 
-  return (
-    ReactDOM.createPortal(
-      // The overlay renders the scrim behind the dialog. The <dialog> is promoted
-      // to the browser's top layer via showModal(), so it always appears above the
-      // overlay visually regardless of DOM nesting or z-index.
-      <div className={styles.overlay}>
-        <ModalContext.Provider value={{ dismiss, titleId }}>
-          <dialog
-            ref={dialogRef}
-            className={styles.modal}
-            data-size={size}
-            // aria-modal tells screen readers that content outside the dialog is
-            // inert, matching the pointer/keyboard behaviour enforced above.
-            aria-modal="true"
-            // aria-labelledby links to the id set on ModalHeader's root element.
-            // When no ModalHeader is rendered the attribute harmlessly references a
-            // missing id; browsers and AT ignore dangling labelledby references.
-            aria-labelledby={titleId}
-            // onClose fires for both Esc and programmatic .close() calls.
-            onClose={dismiss}
-            onClick={handleBackdropClick}
-          >
-            {children}
-          </dialog>
-        </ModalContext.Provider>
-      </div>,
-      portalTarget,
-    )
+  return ReactDOM.createPortal(
+    // The overlay renders the scrim behind the dialog. The <dialog> is promoted
+    // to the browser's top layer via showModal(), so it always appears above the
+    // overlay visually regardless of DOM nesting or z-index.
+    <div className={styles.overlay}>
+      <ModalContext.Provider value={{ dismiss, titleId }}>
+        <dialog
+          ref={dialogRef}
+          className={styles.modal}
+          data-size={size}
+          // aria-modal tells screen readers that content outside the dialog is
+          // inert, matching the pointer/keyboard behaviour enforced above.
+          aria-modal="true"
+          // aria-labelledby links to the id set on ModalHeader's root element.
+          // When no ModalHeader is rendered the attribute harmlessly references a
+          // missing id; browsers and AT ignore dangling labelledby references.
+          aria-labelledby={titleId}
+          // onClose fires for both Esc and programmatic .close() calls.
+          onClose={dismiss}
+          onClick={handleBackdropClick}
+        >
+          {children}
+        </dialog>
+      </ModalContext.Provider>
+    </div>,
+    portalTarget,
   );
 }
 
@@ -206,7 +222,13 @@ export function ModalClose() {
   );
 }
 
-export function ModalHeader({ children, className }: { children?: React.ReactNode; className?: string }) {
+export function ModalHeader({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) {
   const { titleId } = React.useContext(ModalContext);
   return (
     // id={titleId} is consumed by aria-labelledby on the parent <dialog>,
@@ -217,10 +239,22 @@ export function ModalHeader({ children, className }: { children?: React.ReactNod
   );
 }
 
-export function ModalContent({ children, className }: { children: React.ReactNode; className?: string }) {
+export function ModalContent({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return <div className={[styles.content, className].filter(Boolean).join(' ')}>{children}</div>;
 }
 
-export function ModalFooter({ children, className }: { children: React.ReactNode; className?: string }) {
+export function ModalFooter({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return <div className={[styles.footer, className].filter(Boolean).join(' ')}>{children}</div>;
 }

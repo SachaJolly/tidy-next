@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./section.module.scss";
+import React from 'react';
+import styles from './section.module.scss';
 
 interface SectionProps {
   className?: string;
@@ -13,11 +13,9 @@ const Section: React.FC<SectionProps> = ({ className, children }) => {
     return names.map((name) => styles[name]).filter(Boolean);
   };
 
-  const classes = [styles.container, ...getModuleClasses(className)].filter(
-    Boolean,
-  );
+  const classes = [styles.container, ...getModuleClasses(className)].filter(Boolean);
 
-  return <section className={classes.join(" ")}>{children}</section>;
+  return <section className={classes.join(' ')}>{children}</section>;
 };
 
 export default Section;

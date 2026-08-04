@@ -10,15 +10,17 @@ const localesDir = join(process.cwd(), 'locales');
  *
  * File structure:
  *   locales/{locale}/common.json
- *   locales/{locale}/account-dropdown.json (kebab-case)
- *   locales/{locale}/list-card.json (kebab-case)
+ *   locales/{locale}/auth.json
+ *   locales/{locale}/ListCard.json (PascalCase for components/pages)
+ *   locales/{locale}/ListPage.json (PascalCase for components/pages)
  *   ...etc
  *
- * Namespace key conversion logic:
- *   - Page/domain files (no hyphens or ending with '-page'): keep lowercase with hyphens
- *     Examples: auth, common, list-page, dashboard → 'auth', 'common', 'list-page', 'dashboard'
- *   - Component/modal files (contain hyphens, not '-page'): convert to PascalCase
- *     Examples: account-dropdown, list-card → 'AccountDropdown', 'ListCard'
+ * Namespace convention:
+ *   - Lowercase for global domains: auth, common, navbar, footer, forms, dashboard, etc.
+ *   - PascalCase for component/page namespaces: AccountDropdown, ListCard, ListPage, etc.
+ *
+ * The filename (without .json) is used directly as the namespace key.
+ * No conversion needed — consistency across files and components.
  *
  * If a module file is missing, it's silently skipped (fallback behavior).
  * This allows gradual migration of translation modules.
@@ -26,10 +28,6 @@ const localesDir = join(process.cwd(), 'locales');
 function loadMessages(locale: Locale): Record<string, unknown> {
   const localeDir = join(localesDir, locale);
   const messages: Record<string, unknown> = {};
-
-  // Explicit mapping for files that should keep kebab-case naming
-  // (page-level domains where the hyphen is intentional)
-  const kebabCaseFiles = new Set(['list-page']);
 
   try {
     // List all JSON files in the locale directory
@@ -39,39 +37,20 @@ function loadMessages(locale: Locale): Record<string, unknown> {
 
     // Load and merge each translation module
     files.forEach((file) => {
-      const fileBaseName = file.replace('.json', '');
+      const namespaceName = file.replace('.json', '');
       const filePath = join(localeDir, file);
 
       try {
         const raw = readFileSync(filePath, 'utf8');
         const moduleMessages = JSON.parse(raw) as Record<string, unknown>;
 
-        // Convert filename to namespace key.
-        // Special cases:
-        //   - Single-word names (no hyphens) stay lowercase: auth → 'auth'
-        //   - Explicitly-marked kebab-case files stay as-is: list-page → 'list-page'
-        //   - Other hyphenated names convert to PascalCase: account-dropdown → 'AccountDropdown'
-        let namespaceName = fileBaseName;
-        
-        if (!fileBaseName.includes('-')) {
-          // Single-word files: keep as lowercase (auth, common, dashboard, etc.)
-          namespaceName = fileBaseName;
-        } else if (kebabCaseFiles.has(fileBaseName)) {
-          // Explicit kebab-case files: keep as-is (list-page)
-          namespaceName = fileBaseName;
-        } else {
-          // Multi-word component/modal files: convert to PascalCase
-          // account-dropdown → AccountDropdown, list-card → ListCard
-          namespaceName = fileBaseName
-            .split('-')
-            .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-            .join('');
-        }
-
+        // Use the filename (without extension) directly as the namespace key.
+        // No conversion needed: lowercase filenames stay lowercase,
+        // PascalCase filenames stay PascalCase.
         messages[namespaceName] = moduleMessages;
       } catch (error) {
         console.error(
-          `Failed to load translation module "${fileBaseName}" for locale "${locale}":`,
+          `Failed to load translation module "${namespaceName}" for locale "${locale}":`,
           error
         );
       }

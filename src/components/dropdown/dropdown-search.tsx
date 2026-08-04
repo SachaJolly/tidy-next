@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useContext } from 'react';
 import { SearchContext } from './context';
@@ -24,7 +24,7 @@ export function DropdownSearch({ placeholder = 'Search…' }: DropdownSearchProp
         autoFocus
         placeholder={placeholder}
         className={styles.searchInput}
-        onChange={e => setQuery(e.target.value)}
+        onChange={(e) => setQuery(e.target.value)}
       />
     </div>
   );

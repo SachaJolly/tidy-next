@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -27,7 +27,7 @@ export function DropdownMenu({
 }: DropdownMenuProps) {
   const { open, close, triggerRef, currentView, subTitle, navigateBack } = useDropdownContext();
   const menuRef = useRef<HTMLDivElement>(null);
-  const isMobile   = useIsMobile();
+  const isMobile = useIsMobile();
 
   // Start hidden so the element can be measured before the first browser paint.
   // calculatePosition reveals it after measuring — the whole sequence happens
@@ -44,11 +44,11 @@ export function DropdownMenu({
   const calculatePosition = useCallback(() => {
     if (!triggerRef.current || !menuRef.current) return;
 
-    const PADDING    = 6; // px gap between trigger bottom edge and panel top edge
+    const PADDING = 6; // px gap between trigger bottom edge and panel top edge
     const triggerRect = triggerRef.current.getBoundingClientRect();
     const { width: cw, height: ch } = menuRef.current.getBoundingClientRect();
 
-    let top  = triggerRect.bottom + PADDING;
+    let top = triggerRect.bottom + PADDING;
     let left = align === 'end' ? triggerRect.right - cw : triggerRect.left;
 
     // Flip above the trigger when there is not enough room below the viewport fold.
@@ -126,7 +126,7 @@ export function DropdownMenu({
 
     // Snapshot existing values so we can restore them exactly on cleanup,
     // even if the consumer had set their own overflow/touch-action styles.
-    const prevOverflow    = document.body.style.overflow;
+    const prevOverflow = document.body.style.overflow;
     const prevTouchAction = document.body.style.touchAction;
 
     document.body.style.overflow = 'hidden';
@@ -139,7 +139,7 @@ export function DropdownMenu({
     return () => {
       // Restore originals — handles cases where the drawer closes, viewport
       // resizes from mobile to desktop, or the component unmounts.
-      document.body.style.overflow    = prevOverflow;
+      document.body.style.overflow = prevOverflow;
       document.body.style.touchAction = prevTouchAction;
     };
   }, [open, isMobile]);
@@ -164,7 +164,8 @@ export function DropdownMenu({
       if (
         menuRef.current?.contains(e.target as Node) ||
         triggerRef.current?.contains(e.target as Node)
-      ) return;
+      )
+        return;
       close();
     };
     document.addEventListener('pointerdown', onPointerDown);
@@ -177,14 +178,13 @@ export function DropdownMenu({
     e.preventDefault();
     const items = Array.from(
       menuRef.current?.querySelectorAll<HTMLElement>(
-        '[role="menuitem"]:not([disabled]), [role="radio"]:not([disabled])'
+        '[role="menuitem"]:not([disabled]), [role="radio"]:not([disabled])',
       ) ?? [],
     );
     if (!items.length) return;
-    const idx  = items.indexOf(document.activeElement as HTMLElement);
-    const next = e.key === 'ArrowDown'
-      ? (idx + 1) % items.length
-      : (idx - 1 + items.length) % items.length;
+    const idx = items.indexOf(document.activeElement as HTMLElement);
+    const next =
+      e.key === 'ArrowDown' ? (idx + 1) % items.length : (idx - 1 + items.length) % items.length;
     items[next]?.focus();
   };
 
@@ -199,12 +199,12 @@ export function DropdownMenu({
       role="menu"
       aria-orientation="vertical"
       tabIndex={-1}
-      className={[
-        styles.menu,
-        isMobile && !inline && styles.drawer,
-        className,
-      ].filter(Boolean).join(' ')}
-      style={inline ? { position: 'relative', visibility: 'visible' } : (!isMobile ? menuStyle : undefined)}
+      className={[styles.menu, isMobile && !inline && styles.drawer, className]
+        .filter(Boolean)
+        .join(' ')}
+      style={
+        inline ? { position: 'relative', visibility: 'visible' } : !isMobile ? menuStyle : undefined
+      }
       onKeyDown={handleKeyDown}
     >
       {/* Back-navigation header — rendered automatically whenever a sub-menu is active.
@@ -240,7 +240,9 @@ export function DropdownMenu({
         <div className={styles.drawerOverlay} onClick={close} aria-hidden="true" />
         {panel}
       </>
-    ) : panel,
+    ) : (
+      panel
+    ),
     document.body,
   );
 }

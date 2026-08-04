@@ -1,5 +1,5 @@
-import styles from "./page.module.scss";
-import React from "react";
+import styles from './page.module.scss';
+import React from 'react';
 
 interface PageProps {
   className?: string;
@@ -13,13 +13,11 @@ const Page: React.FC<PageProps> = ({ children, className }) => {
     return names.map((name) => styles[name]).filter(Boolean);
   };
 
-  const classes = [styles.container, ...getModuleClasses(className)].filter(
-    Boolean,
-  );
+  const classes = [styles.container, ...getModuleClasses(className)].filter(Boolean);
 
   return (
-    <main className={classes.join(" ")}>
-      <section className={styles["content"]}>{children}</section>
+    <main className={classes.join(' ')}>
+      <section className={styles['content']}>{children}</section>
     </main>
   );
 };

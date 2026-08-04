@@ -9,18 +9,22 @@
  *   locales/en/auth.json             - Authentication strings
  *   locales/en/navbar.json           - Navigation strings
  *   locales/en/footer.json           - Footer strings
- *   locales/en/new-list.json         - Modal namespace
- *   locales/en/edit-list-modal.json  - Modal namespace
- *   locales/en/account-dropdown.json - Component namespace
- *   locales/en/list-card.json        - Component namespace
+ *   locales/en/NewList.json          - Modal namespace (PascalCase)
+ *   locales/en/EditListModal.json    - Modal namespace (PascalCase)
+ *   locales/en/AccountDropdown.json  - Component namespace (PascalCase)
+ *   locales/en/ListCard.json         - Component namespace (PascalCase)
  *   ...and more
+ *
+ * Naming convention:
+ *   - Lowercase files → lowercase namespace keys: common, auth, navbar, footer, etc.
+ *   - PascalCase files → PascalCase namespace keys: NewList, EditListModal, ListCard, etc.
  *
  * The merged result:
  *   {
  *     "common": {...},
  *     "auth": {...},
  *     "navbar": {...},
- *     "NewList": {...},              // kebab-case file → camelCase namespace
+ *     "NewList": {...},
  *     "EditListModal": {...},
  *     "AccountDropdown": {...},
  *     "ListCard": {...},
@@ -36,21 +40,21 @@ import discoverEn from '../../locales/en/discover.json';
 import latestEn from '../../locales/en/latest.json';
 import curatorsEn from '../../locales/en/curators.json';
 import profileEn from '../../locales/en/profile.json';
-import listPageEn from '../../locales/en/list-page.json';
+import ListPageEn from '../../locales/en/ListPage.json';
 import formsEn from '../../locales/en/forms.json';
 
-// Modal namespaces (kebab-case files → camelCase namespace keys)
-import newListEn from '../../locales/en/new-list.json';
-import editListModalEn from '../../locales/en/edit-list-modal.json';
+// Modal namespaces (PascalCase files → PascalCase namespace keys)
+import NewListEn from '../../locales/en/NewList.json';
+import EditListModalEn from '../../locales/en/EditListModal.json';
 
-// Component namespaces (kebab-case files → camelCase namespace keys)
-import accountDropdownEn from '../../locales/en/account-dropdown.json';
-import listCardEn from '../../locales/en/list-card.json';
+// Component namespaces (PascalCase files → PascalCase namespace keys)
+import AccountDropdownEn from '../../locales/en/AccountDropdown.json';
+import ListCardEn from '../../locales/en/ListCard.json';
 import itemEn from '../../locales/en/item.json';
-import curatorMetaEn from '../../locales/en/curator-meta.json';
-import listOptionsDropdownEn from '../../locales/en/list-options-dropdown.json';
-import heroEn from '../../locales/en/hero.json';
-import sectionHeaderEn from '../../locales/en/section-header.json';
+import CuratorMetaEn from '../../locales/en/CuratorMeta.json';
+import ListOptionsDropdownEn from '../../locales/en/ListOptionsDropdown.json';
+import HeroEn from '../../locales/en/Hero.json';
+import SectionHeaderEn from '../../locales/en/SectionHeader.json';
 
 import commonFr from '../../locales/fr/common.json';
 import authFr from '../../locales/fr/auth.json';
@@ -61,26 +65,29 @@ import discoverFr from '../../locales/fr/discover.json';
 import latestFr from '../../locales/fr/latest.json';
 import curatorsFr from '../../locales/fr/curators.json';
 import profileFr from '../../locales/fr/profile.json';
-import listPageFr from '../../locales/fr/list-page.json';
+import ListPageFr from '../../locales/fr/ListPage.json';
 import formsFr from '../../locales/fr/forms.json';
 
-// Modal namespaces (kebab-case files → camelCase namespace keys)
-import newListFr from '../../locales/fr/new-list.json';
-import editListModalFr from '../../locales/fr/edit-list-modal.json';
+// Modal namespaces (PascalCase files → PascalCase namespace keys)
+import NewListFr from '../../locales/fr/NewList.json';
+import EditListModalFr from '../../locales/fr/EditListModal.json';
 
-// Component namespaces (kebab-case files → camelCase namespace keys)
-import accountDropdownFr from '../../locales/fr/account-dropdown.json';
-import listCardFr from '../../locales/fr/list-card.json';
+// Component namespaces (PascalCase files → PascalCase namespace keys)
+import AccountDropdownFr from '../../locales/fr/AccountDropdown.json';
+import ListCardFr from '../../locales/fr/ListCard.json';
 import itemFr from '../../locales/fr/item.json';
-import curatorMetaFr from '../../locales/fr/curator-meta.json';
-import listOptionsDropdownFr from '../../locales/fr/list-options-dropdown.json';
-import heroFr from '../../locales/fr/hero.json';
-import sectionHeaderFr from '../../locales/fr/section-header.json';
+import CuratorMetaFr from '../../locales/fr/CuratorMeta.json';
+import ListOptionsDropdownFr from '../../locales/fr/ListOptionsDropdown.json';
+import HeroFr from '../../locales/fr/Hero.json';
+import SectionHeaderFr from '../../locales/fr/SectionHeader.json';
 
 /**
  * Merge all modular translation files into a single namespace object.
  * Each module name becomes a top-level key in the messages object.
- * Kebab-case files are mapped to camelCase namespace keys.
+ *
+ * Naming convention:
+ *   - Lowercase files → lowercase namespace keys: common, auth, navbar, footer, etc.
+ *   - PascalCase files → PascalCase namespace keys: NewList, ListCard, ListPage, etc.
  */
 const messagesEn = {
   common: commonEn,
@@ -92,19 +99,19 @@ const messagesEn = {
   latest: latestEn,
   curators: curatorsEn,
   profile: profileEn,
-  'list-page': listPageEn,
+  item: itemEn,
   forms: formsEn,
-  // Modal namespaces (camelCase for useTranslations usage)
-  NewList: newListEn,
-  EditListModal: editListModalEn,
-  // Component namespaces (camelCase for useTranslations usage)
-  AccountDropdown: accountDropdownEn,
-  ListCard: listCardEn,
-  Item: itemEn,
-  CuratorMeta: curatorMetaEn,
-  ListOptionsDropdown: listOptionsDropdownEn,
-  Hero: heroEn,
-  SectionHeader: sectionHeaderEn,
+  // Page/Modal namespaces (PascalCase for useTranslations usage)
+  ListPage: ListPageEn,
+  NewList: NewListEn,
+  EditListModal: EditListModalEn,
+  // Component namespaces (PascalCase for useTranslations usage)
+  AccountDropdown: AccountDropdownEn,
+  ListCard: ListCardEn,
+  CuratorMeta: CuratorMetaEn,
+  ListOptionsDropdown: ListOptionsDropdownEn,
+  Hero: HeroEn,
+  SectionHeader: SectionHeaderEn,
 };
 
 const messagesFr = {
@@ -117,19 +124,19 @@ const messagesFr = {
   latest: latestFr,
   curators: curatorsFr,
   profile: profileFr,
-  'list-page': listPageFr,
+  item: itemFr,
   forms: formsFr,
-  // Modal namespaces (camelCase for useTranslations usage)
-  NewList: newListFr,
-  EditListModal: editListModalFr,
-  // Component namespaces (camelCase for useTranslations usage)
-  AccountDropdown: accountDropdownFr,
-  ListCard: listCardFr,
-  Item: itemFr,
-  CuratorMeta: curatorMetaFr,
-  ListOptionsDropdown: listOptionsDropdownFr,
-  Hero: heroFr,
-  SectionHeader: sectionHeaderFr,
+  // Page/Modal namespaces (PascalCase for useTranslations usage)
+  ListPage: ListPageFr,
+  NewList: NewListFr,
+  EditListModal: EditListModalFr,
+  // Component namespaces (PascalCase for useTranslations usage)
+  AccountDropdown: AccountDropdownFr,
+  ListCard: ListCardFr,
+  CuratorMeta: CuratorMetaFr,
+  ListOptionsDropdown: ListOptionsDropdownFr,
+  Hero: HeroFr,
+  SectionHeader: SectionHeaderFr,
 };
 
 export const messages = {

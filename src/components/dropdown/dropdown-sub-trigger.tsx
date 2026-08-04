@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useContext } from 'react';
 import { DropdownSubContext, useDropdownContext } from './context';
@@ -14,7 +14,7 @@ export interface DropdownSubTriggerProps {
 }
 
 export function DropdownSubTrigger({ children, icon, title }: DropdownSubTriggerProps) {
-  const subCtx  = useContext(DropdownSubContext);
+  const subCtx = useContext(DropdownSubContext);
   const { currentView, navigateTo } = useDropdownContext();
 
   // Sub triggers only appear in the root view — they are part of the parent

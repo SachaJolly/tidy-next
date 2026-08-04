@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
@@ -58,7 +58,11 @@ export default function NavbarPrimaryLinks({ hasAuthToken }: NavbarPrimaryLinksP
   return (
     <div className={styles['nav-links']}>
       {isAuthenticated && (
-        <NavLink href="/dashboard" label={t('dashboard')} active={normalizedPathname === '/dashboard'} />
+        <NavLink
+          href="/dashboard"
+          label={t('dashboard')}
+          active={normalizedPathname === '/dashboard'}
+        />
       )}
       <NavLink href="/discover" label={t('discover')} active={normalizedPathname === '/discover'} />
       <NavLink href="/curators" label={t('curators')} active={normalizedPathname === '/curators'} />

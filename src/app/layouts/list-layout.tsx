@@ -8,8 +8,8 @@ interface ListLayoutProps {
 
 export default function ListLayout({ children, className }: ListLayoutProps) {
   return (
-      <div className={styles["container"]}>
-        <section className={styles["content"]}>{children}</section>
-      </div>
+    <div className={styles['container']}>
+      <section className={styles['content']}>{children}</section>
+    </div>
   );
 }

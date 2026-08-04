@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -26,48 +26,52 @@ export default function SignupPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-    const data = new FormData(e.currentTarget);
-    const usernameValue             = (data.get('username')             as string) || username;
-    const emailValue                = (data.get('email')                as string) || email;
-    const passwordValue             = (data.get('password')             as string) || password;
-    const passwordConfirmationValue = (data.get('password_confirmation') as string) || passwordConfirmation;
+      const data = new FormData(e.currentTarget);
+      const usernameValue = (data.get('username') as string) || username;
+      const emailValue = (data.get('email') as string) || email;
+      const passwordValue = (data.get('password') as string) || password;
+      const passwordConfirmationValue =
+        (data.get('password_confirmation') as string) || passwordConfirmation;
 
-    if (passwordValue !== passwordConfirmationValue) {
-      setError(t('passwordsDoNotMatch'));
-      return;
-    }
-
-    setError(null);
-    setIsLoading(true);
-
-    let navigationStarted = false;
-
-    try {
-      const callbackUrl = searchParams.get('callbackUrl') ?? undefined;
-      const result = await signupAction(
-        usernameValue,
-        emailValue,
-        passwordValue,
-        passwordConfirmationValue,
-        callbackUrl,
-      );
-
-      if (result.error) {
-        throw new Error(result.error);
+      if (passwordValue !== passwordConfirmationValue) {
+        setError(t('passwordsDoNotMatch'));
+        return;
       }
 
-      navigationStarted = true;
-      router.refresh();
-      router.push(localizePath(result.redirectTo ?? '/dashboard', locale));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred.');
-    } finally {
-      if (!navigationStarted) setIsLoading(false);
-    }
-  }, [locale, username, email, password, passwordConfirmation, router, searchParams]);
+      setError(null);
+      setIsLoading(true);
+
+      let navigationStarted = false;
+
+      try {
+        const callbackUrl = searchParams.get('callbackUrl') ?? undefined;
+        const result = await signupAction(
+          usernameValue,
+          emailValue,
+          passwordValue,
+          passwordConfirmationValue,
+          callbackUrl,
+        );
+
+        if (result.error) {
+          throw new Error(result.error);
+        }
+
+        navigationStarted = true;
+        router.refresh();
+        router.push(localizePath(result.redirectTo ?? '/dashboard', locale));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+      } finally {
+        if (!navigationStarted) setIsLoading(false);
+      }
+    },
+    [locale, username, email, password, passwordConfirmation, router, searchParams],
+  );
 
   return (
     <Page>
@@ -137,12 +141,13 @@ export default function SignupPage() {
           </Button>
         </form>
 
-        <p className="text-small text-muted text-center">
-          {t('termsAcknowledgement')}
-        </p>
+        <p className="text-small text-muted text-center">{t('termsAcknowledgement')}</p>
 
         <div className="text-center py-24px">
-          <span className="text-bold">{t('alreadyMember')} <Link href={localizePath('/signin', locale)}>{t('signinButton')}</Link></span>
+          <span className="text-bold">
+            {t('alreadyMember')}{' '}
+            <Link href={localizePath('/signin', locale)}>{t('signinButton')}</Link>
+          </span>
         </div>
       </Auth>
     </Page>

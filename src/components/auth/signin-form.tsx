@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
-import Button from "@/components/button/button";
-import Link from "next/link";
-import Input from "@/components/input/input";
+import Button from '@/components/button/button';
+import Link from 'next/link';
+import Input from '@/components/input/input';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizePath } from '@/lib/locale-path';
 
@@ -17,9 +17,9 @@ export default function SigninForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log("Submitting:", { email, password });
+    console.log('Submitting:', { email, password });
     // API call logic will go here
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsLoading(false);
   };
 
@@ -29,7 +29,10 @@ export default function SigninForm() {
         <h2 className="h3 text-center mb-16px">{t('signinTitle')}</h2>
         <p className="text-center">{t('signinSubtitle')}</p>
       </div>
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: ".5rem" }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}
+      >
         <Input
           type="email"
           placeholder={t('emailPlaceholder')}

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useMemo, useState, useTransition } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import React, { useMemo, useState, useTransition } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import {
   DropdownItem,
   DropdownLabel,
@@ -11,14 +11,14 @@ import {
   DropdownRadioItem,
   DropdownSeparator,
   DropdownText,
-} from "@/components/dropdown";
-import { Modal, ModalClose, ModalContent, ModalHeader } from "@/components/modal/modal";
-import type { List } from "@/lib/types";
-import EditListModal from "@/components/lists/edit-list-modal";
-import { updateListVisibilityAction } from "@/app/actions/lists";
-import { useQueryModal } from "@/hooks/use-query-modal";
+} from '@/components/dropdown';
+import { Modal, ModalClose, ModalContent, ModalHeader } from '@/components/modal/modal';
+import type { List } from '@/lib/types';
+import EditListModal from '@/components/lists/edit-list-modal';
+import { updateListVisibilityAction } from '@/app/actions/lists';
+import { useQueryModal } from '@/hooks/use-query-modal';
 
-type ListVisibility = List["visibility"];
+type ListVisibility = List['visibility'];
 
 interface ListOptionsDropdownProps {
   listId: string;
@@ -33,35 +33,35 @@ interface ListOptionsDropdownProps {
 
 const VISIBILITY_OPTIONS: Array<{
   value: ListVisibility;
-  icon: "visibility_on" | "visibility_off" | "private";
-  labelKey: "publicLabel" | "unindexedLabel" | "privateLabel";
-  captionKey: "publicCaption" | "unindexedCaption" | "privateCaption";
+  icon: 'visibility_on' | 'visibility_off' | 'private';
+  labelKey: 'publicLabel' | 'unindexedLabel' | 'privateLabel';
+  captionKey: 'publicCaption' | 'unindexedCaption' | 'privateCaption';
 }> = [
   {
-    value: "PUBLIC",
-    icon: "visibility_on",
-    labelKey: "publicLabel",
-    captionKey: "publicCaption",
+    value: 'PUBLIC',
+    icon: 'visibility_on',
+    labelKey: 'publicLabel',
+    captionKey: 'publicCaption',
   },
   {
-    value: "UNINDEXED",
-    icon: "visibility_off",
-    labelKey: "unindexedLabel",
-    captionKey: "unindexedCaption",
+    value: 'UNINDEXED',
+    icon: 'visibility_off',
+    labelKey: 'unindexedLabel',
+    captionKey: 'unindexedCaption',
   },
   {
-    value: "PRIVATE",
-    icon: "private",
-    labelKey: "privateLabel",
-    captionKey: "privateCaption",
+    value: 'PRIVATE',
+    icon: 'private',
+    labelKey: 'privateLabel',
+    captionKey: 'privateCaption',
   },
 ];
 
 function formatUpdatedDate(value: string, locale: string): string {
   return new Intl.DateTimeFormat(locale, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
   }).format(new Date(value));
 }
 
@@ -77,18 +77,18 @@ export default function ListOptionsDropdown({
 }: ListOptionsDropdownProps) {
   const router = useRouter();
   const locale = useLocale();
-  const t = useTranslations("ListOptionsDropdown");
-  const listPage = useTranslations("list-page");
-  const common = useTranslations("common");
+  const t = useTranslations('ListOptionsDropdown');
+  const listPage = useTranslations('ListPage');
+  const common = useTranslations('common');
   const [isPending, startTransition] = useTransition();
   const [visibility, setVisibility] = useState<ListVisibility>(initialVisibility);
   const [error, setError] = useState<string | null>(null);
   const queryModal = useQueryModal();
-  const isEditModalOpen = queryModal.isOpen("edit-list", listId);
-  const isCollaboratorsModalOpen = queryModal.isOpen("manage-collaborators", listId);
+  const isEditModalOpen = queryModal.isOpen('edit-list', listId);
+  const isCollaboratorsModalOpen = queryModal.isOpen('manage-collaborators', listId);
 
   const updatedLabel = useMemo(
-    () => listPage("updated", { date: formatUpdatedDate(updatedAt, locale) }),
+    () => listPage('updated', { date: formatUpdatedDate(updatedAt, locale) }),
     [listPage, locale, updatedAt],
   );
 
@@ -127,22 +127,22 @@ export default function ListOptionsDropdown({
           <>
             <DropdownItem
               icon="edit"
-              label={common("edit")}
-              onSelect={() => queryModal.openModal("edit-list", listId)}
+              label={common('edit')}
+              onSelect={() => queryModal.openModal('edit-list', listId)}
             />
             <DropdownItem
               icon="group"
-              label={common("manageCollaborators")}
-              onSelect={() => queryModal.openModal("manage-collaborators", listId)}
+              label={common('manageCollaborators')}
+              onSelect={() => queryModal.openModal('manage-collaborators', listId)}
             />
-            <DropdownItem icon="archive" destructive label={common("archive")} />
+            <DropdownItem icon="archive" destructive label={common('archive')} />
             <DropdownSeparator />
 
-            <DropdownLabel>{common("setVisibility")}</DropdownLabel>
+            <DropdownLabel>{common('setVisibility')}</DropdownLabel>
             <DropdownRadioGroup
               value={visibility}
               onValueChange={handleVisibilityChange}
-              label={common("setVisibility")}
+              label={common('setVisibility')}
               closeOnSelect
             >
               {VISIBILITY_OPTIONS.map(({ value, icon, labelKey, captionKey }) => (
@@ -157,8 +157,8 @@ export default function ListOptionsDropdown({
             </DropdownRadioGroup>
             {error ? (
               <DropdownText>
-                <p className="text-small" style={{ color: "var(--danger)" }}>
-                  {common("updateVisibilityError")}
+                <p className="text-small" style={{ color: 'var(--danger)' }}>
+                  {common('updateVisibilityError')}
                 </p>
               </DropdownText>
             ) : null}
@@ -166,11 +166,15 @@ export default function ListOptionsDropdown({
           </>
         ) : null}
 
-        <DropdownItem icon="copy" label={common("copyLink")} onSelect={() => void handleCopyLink()} />
+        <DropdownItem
+          icon="copy"
+          label={common('copyLink')}
+          onSelect={() => void handleCopyLink()}
+        />
         <DropdownSeparator />
         <DropdownText>
           <p className="text-small">
-            {common("curatedBy")} {authorName}
+            {common('curatedBy')} {authorName}
           </p>
           <p className="text-small">{updatedLabel}</p>
         </DropdownText>
@@ -191,11 +195,11 @@ export default function ListOptionsDropdown({
       {isCollaboratorsModalOpen && (
         <Modal size="default" onClose={() => queryModal.closeModal()}>
           <ModalHeader>
-            <h2>{common("manageCollaborators")}</h2>
+            <h2>{common('manageCollaborators')}</h2>
             <ModalClose />
           </ModalHeader>
           <ModalContent>
-            <p className="text-small">{t("manageCollaboratorsPlaceholder")}</p>
+            <p className="text-small">{t('manageCollaboratorsPlaceholder')}</p>
           </ModalContent>
         </Modal>
       )}

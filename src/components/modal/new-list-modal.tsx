@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
@@ -28,10 +28,13 @@ export default function NewListModal() {
     queryModal.closeModal();
   }, [queryModal]);
 
-  const handleSuccess = useCallback((list: List) => {
-    router.replace(localizePath(`/lists/${list.id}`, locale), { scroll: false });
-    router.refresh();
-  }, [locale, router]);
+  const handleSuccess = useCallback(
+    (list: List) => {
+      router.replace(localizePath(`/lists/${list.id}`, locale), { scroll: false });
+      router.refresh();
+    },
+    [locale, router],
+  );
 
   // This component is now pure modal content: the visibility and trigger live in
   // the URL/query layer, not beside the form. That makes the modal reusable from
@@ -48,9 +51,7 @@ export default function NewListModal() {
       </ModalHeader>
 
       <ModalContent>
-        <p className={styles.small}>
-          {t('description')}
-        </p>
+        <p className={styles.small}>{t('description')}</p>
         <ListForm onCancel={closeModal} onSuccess={handleSuccess} />
       </ModalContent>
     </Modal>

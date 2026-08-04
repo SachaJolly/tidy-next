@@ -1,5 +1,5 @@
 import React from 'react';
-import "@/app/layout.module.scss";
+import '@/app/layout.module.scss';
 import styles from './auth.module.scss';
 
 interface AuthLayoutProps {
@@ -8,8 +8,8 @@ interface AuthLayoutProps {
 
 export default function Auth({ children }: AuthLayoutProps) {
   return (
-  <main className={styles.container}>
-    <section className={styles["content"]}>{children}</section>
-  </main>
+    <main className={styles.container}>
+      <section className={styles['content']}>{children}</section>
+    </main>
   );
 }

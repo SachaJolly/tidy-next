@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useContext } from 'react';
 import { SubContentActiveContext, useDropdownContext } from './context';
@@ -15,9 +15,5 @@ export function DropdownText({ children, className }: DropdownTextProps) {
   const { currentView } = useDropdownContext();
   if (!isInsideSubContent && currentView !== 'root') return null;
 
-  return (
-    <div className={[styles.text, className].filter(Boolean).join(' ')}>
-      {children}
-    </div>
-  );
+  return <div className={[styles.text, className].filter(Boolean).join(' ')}>{children}</div>;
 }

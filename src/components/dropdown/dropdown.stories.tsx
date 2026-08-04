@@ -16,7 +16,7 @@ import {
   DropdownText,
 } from '.';
 import Icon from '@/components/icon/icon';
-import NavLink from "@/components/nav-link/nav-link";
+import NavLink from '@/components/nav-link/nav-link';
 import { AccountDropdown } from '@/components/navbar/account-dropdown';
 import type { User } from '@/lib/types';
 
@@ -107,13 +107,11 @@ export const RadioGroup: Story = {
   name: 'Radio Group (dynamic trigger)',
   render: function Render() {
     const [visibility, setVisibility] = useState<string>('public');
-    const selected = VISIBILITY_OPTIONS.find(o => o.value === visibility)!;
+    const selected = VISIBILITY_OPTIONS.find((o) => o.value === visibility)!;
 
     return (
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-          Visibility:
-        </span>
+        <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Visibility:</span>
 
         {/* The trigger's content (icon + label) re-renders reactively when
             `visibility` state changes — no asChild or forwardRef required. */}
@@ -128,13 +126,15 @@ export const RadioGroup: Story = {
             <DropdownLabel>Set visibility</DropdownLabel>
             {/* closeOnSelect={false} keeps the menu open so the user can see
                 the checkmark update before dismissing. Default behaviour. */}
-            <DropdownRadioGroup
-              value={visibility}
-              onValueChange={setVisibility}
-              label="Visibility"
-            >
+            <DropdownRadioGroup value={visibility} onValueChange={setVisibility} label="Visibility">
               {VISIBILITY_OPTIONS.map(({ value, icon, label, caption }) => (
-                <DropdownRadioItem key={value} value={value} icon={icon} label={label} caption={caption} />
+                <DropdownRadioItem
+                  key={value}
+                  value={value}
+                  icon={icon}
+                  label={label}
+                  caption={caption}
+                />
               ))}
             </DropdownRadioGroup>
           </DropdownMenu>
@@ -156,8 +156,8 @@ export const ItemWithCaption: Story = {
     return (
       <Dropdown>
         <DropdownTrigger>
-          <Icon name={VISIBILITY_OPTIONS.find(o => o.value === visibility)!.icon} size={20} />
-          <span>{VISIBILITY_OPTIONS.find(o => o.value === visibility)!.label}</span>
+          <Icon name={VISIBILITY_OPTIONS.find((o) => o.value === visibility)!.icon} size={20} />
+          <span>{VISIBILITY_OPTIONS.find((o) => o.value === visibility)!.label}</span>
           <Icon name="dropdown" size={16} />
         </DropdownTrigger>
 
@@ -183,9 +183,16 @@ export const ItemWithCaption: Story = {
 // The Back button (rendered automatically by DropdownMenu) returns to root.
 
 const LISTS = [
-  'My Watchlist', 'Books to Read', 'Travel Bucket List', 'Favorite Albums',
-  'Movies of the 90s', 'Must-Try Restaurants', 'Dev Resources', 'Gift Ideas',
-  'Career Goals', 'Weekend Plans',
+  'My Watchlist',
+  'Books to Read',
+  'Travel Bucket List',
+  'Favorite Albums',
+  'Movies of the 90s',
+  'Must-Try Restaurants',
+  'Dev Resources',
+  'Gift Ideas',
+  'Career Goals',
+  'Weekend Plans',
 ];
 
 export const DrillDownSearch: Story = {
@@ -194,7 +201,9 @@ export const DrillDownSearch: Story = {
     const [targetList, setTargetList] = useState<string | null>(null);
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
+      <div
+        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}
+      >
         {targetList && (
           <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
             Moved to: <strong>{targetList}</strong>
@@ -232,10 +241,10 @@ export const DrillDownSearch: Story = {
                 <DropdownRadioGroup
                   value={targetList ?? ''}
                   onValueChange={setTargetList}
-                  closeOnSelect  // close the whole dropdown after picking
+                  closeOnSelect // close the whole dropdown after picking
                   label="Available lists"
                 >
-                  {LISTS.map(name => (
+                  {LISTS.map((name) => (
                     <DropdownRadioItem key={name} value={name} icon="list">
                       {name}
                     </DropdownRadioItem>
@@ -245,7 +254,9 @@ export const DrillDownSearch: Story = {
             </DropdownSub>
 
             <DropdownSeparator />
-            <DropdownItem icon="delete" destructive>Delete item</DropdownItem>
+            <DropdownItem icon="delete" destructive>
+              Delete item
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
@@ -263,8 +274,8 @@ export const ModalInteroperability: Story = {
   render: function Render() {
     // Controlled dropdown so external code can close it after confirmation.
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [confirmOpen,  setConfirmOpen]  = useState(false);
-    const [deleted,      setDeleted]      = useState(false);
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [deleted, setDeleted] = useState(false);
 
     const handleDeleteSelect = (e: Event) => {
       // Prevent the default auto-close so the dropdown stays mounted
@@ -287,11 +298,11 @@ export const ModalInteroperability: Story = {
     };
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
+      <div
+        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}
+      >
         {deleted && (
-          <p style={{ fontSize: '0.875rem', color: 'var(--color-red-500)' }}>
-            List deleted.
-          </p>
+          <p style={{ fontSize: '0.875rem', color: 'var(--color-red-500)' }}>List deleted.</p>
         )}
 
         <Dropdown open={dropdownOpen} onOpenChange={setDropdownOpen}>
@@ -427,7 +438,9 @@ export const AsChildTrigger: Story = {
 
       <DropdownMenu align="end">
         <DropdownItem icon="settings">Settings</DropdownItem>
-        <DropdownItem icon="logout" destructive>Sign out</DropdownItem>
+        <DropdownItem icon="logout" destructive>
+          Sign out
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   ),
@@ -443,15 +456,15 @@ export const AsChildTrigger: Story = {
 
 const LANGUAGES = [
   { value: 'english', label: 'English' },
-  { value: 'german',  label: 'German - Deutsch' },
-  { value: 'french',  label: 'French - Français' },
+  { value: 'german', label: 'German - Deutsch' },
+  { value: 'french', label: 'French - Français' },
   { value: 'russian', label: 'Russian - Русский' },
   { value: 'spanish', label: 'Spanish - Español' },
 ];
 
 const THEMES = [
-  { value: 'dark',   label: 'Dark' },
-  { value: 'light',  label: 'Light' },
+  { value: 'dark', label: 'Dark' },
+  { value: 'light', label: 'Light' },
   { value: 'system', label: 'System' },
 ];
 
@@ -459,10 +472,10 @@ export const AccountMenu: Story = {
   name: 'Account Menu',
   render: function Render() {
     const [language, setLanguage] = useState('english');
-    const [theme,    setTheme]    = useState('dark');
+    const [theme, setTheme] = useState('dark');
 
-    const currentLanguage = LANGUAGES.find(l => l.value === language)!;
-    const currentTheme    = THEMES.find(t => t.value === theme)!;
+    const currentLanguage = LANGUAGES.find((l) => l.value === language)!;
+    const currentTheme = THEMES.find((t) => t.value === theme)!;
 
     return (
       <Dropdown>
@@ -472,8 +485,11 @@ export const AccountMenu: Story = {
         </DropdownTrigger>
 
         <DropdownMenu align="end">
-
-          <DropdownItem icon="subscription" label="Get TidyCards Pro" caption="Unlock new features like stats and more collections" />
+          <DropdownItem
+            icon="subscription"
+            label="Get TidyCards Pro"
+            caption="Unlock new features like stats and more collections"
+          />
 
           <DropdownSeparator />
 
@@ -487,11 +503,15 @@ export const AccountMenu: Story = {
             </DropdownSubTrigger>
             <DropdownSubContent>
               <DropdownSeparator />
-              <DropdownItem icon="person" disabled>No other accounts</DropdownItem>
+              <DropdownItem icon="person" disabled>
+                No other accounts
+              </DropdownItem>
             </DropdownSubContent>
           </DropdownSub>
 
-          <DropdownItem icon="logout" destructive>Sign out</DropdownItem>
+          <DropdownItem icon="logout" destructive>
+            Sign out
+          </DropdownItem>
 
           <DropdownSeparator />
 
@@ -548,7 +568,15 @@ export const AccountMenu: Story = {
 
           {/* Help center: external link — `open` icon on the right signals new tab */}
           <DropdownItem icon="help" href="https://help.tidycards.app">
-            <span style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
+            <span
+              style={{
+                display: 'flex',
+                width: '100%',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '0.5rem',
+              }}
+            >
               Help center
               <Icon name="open" size={16} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
             </span>
@@ -561,7 +589,6 @@ export const AccountMenu: Story = {
             <span>TidyCards v1.0.0</span>
             <span>Published on Oct 1, 2023</span>
           </DropdownText>
-
         </DropdownMenu>
       </Dropdown>
     );

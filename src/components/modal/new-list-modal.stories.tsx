@@ -1,9 +1,9 @@
-import React from "react";
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { NextIntlClientProvider } from "next-intl";
-import NewListModal from "./new-list-modal";
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { NextIntlClientProvider } from 'next-intl';
+import NewListModal from './new-list-modal';
 // Import centralized messages to avoid duplication
-import messages from "@/lib/messages";
+import messages from '@/lib/messages';
 
 // Storybook doesn't run the app-level NextIntl provider, so we inject the
 // centralized message dictionary that covers all strings used by the modal and its form.
@@ -14,11 +14,11 @@ const withIntl = (Story: React.ComponentType) => (
 );
 
 const meta = {
-  title: "Components/Modals/NewListModal",
+  title: 'Components/Modals/NewListModal',
   component: NewListModal,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     nextjs: {
       appDirectory: true,
     },
@@ -34,7 +34,7 @@ export const Closed: Story = {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: "/dashboard",
+        pathname: '/dashboard',
       },
     },
   },
@@ -47,9 +47,9 @@ export const Open: Story = {
       // The Next.js addon mocks next/navigation from these params, which makes
       // the modal open as if the URL were `?modal=new-list`.
       navigation: {
-        pathname: "/dashboard",
+        pathname: '/dashboard',
         query: {
-          modal: "new-list",
+          modal: 'new-list',
         },
       },
     },

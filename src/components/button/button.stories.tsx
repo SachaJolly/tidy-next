@@ -59,7 +59,11 @@ export const LinkWithChildren: Story = {
   args: {
     href: '#',
     label: 'This is ignored', // To demonstrate that children takes priority
-    children: <span>Click <strong>Me</strong></span>,
+    children: (
+      <span>
+        Click <strong>Me</strong>
+      </span>
+    ),
   },
 };
 

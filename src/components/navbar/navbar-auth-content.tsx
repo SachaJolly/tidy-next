@@ -9,7 +9,7 @@ import NavbarAccountMenu from './navbar-account-menu';
 import { localizePath } from '@/lib/locale-path';
 
 export default async function NavbarAuthContent() {
-  const t = await getTranslations('Navbar');
+  const t = await getTranslations('navbar');
   const locale = await getLocale();
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
@@ -19,7 +19,13 @@ export default async function NavbarAuthContent() {
       <>
         <ButtonGroup>
           <Button label={t('signin')} variant="default" href={localizePath('/signin', locale)} />
-          <Button icon="join" label={t('joinToday')} variant="interactive" tinted={true} href={localizePath('/signup', locale)} />
+          <Button
+            icon="join"
+            label={t('joinToday')}
+            variant="interactive"
+            tinted={true}
+            href={localizePath('/signup', locale)}
+          />
         </ButtonGroup>
         <NavbarAccountMenu user={null} />
       </>
@@ -57,7 +63,13 @@ export default async function NavbarAuthContent() {
     <>
       <ButtonGroup>
         <Button label={t('signin')} variant="default" href={localizePath('/signin', locale)} />
-        <Button icon="join" label={t('joinToday')} variant="interactive" tinted={true} href={localizePath('/signup', locale)} />
+        <Button
+          icon="join"
+          label={t('joinToday')}
+          variant="interactive"
+          tinted={true}
+          href={localizePath('/signup', locale)}
+        />
       </ButtonGroup>
       <NavbarAccountMenu user={null} />
     </>

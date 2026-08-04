@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
 import { DropdownContext } from './context';
@@ -27,12 +27,15 @@ export function Dropdown({ children, trigger, open: controlledOpen, onOpenChange
   // 'root' is always the first frame; pushing adds a sub-menu frame.
   const [viewStack, setViewStack] = useState([{ id: 'root', title: '' }]);
   const currentView = viewStack[viewStack.length - 1].id;
-  const subTitle    = viewStack[viewStack.length - 1].title;
+  const subTitle = viewStack[viewStack.length - 1].title;
 
-  const setOpen = useCallback((v: boolean) => {
-    if (!isControlled) setInternalOpen(v);
-    onOpenChange?.(v);
-  }, [isControlled, onOpenChange]);
+  const setOpen = useCallback(
+    (v: boolean) => {
+      if (!isControlled) setInternalOpen(v);
+      onOpenChange?.(v);
+    },
+    [isControlled, onOpenChange],
+  );
 
   const close = useCallback(() => {
     setOpen(false);
@@ -41,11 +44,11 @@ export function Dropdown({ children, trigger, open: controlledOpen, onOpenChange
   }, [setOpen]);
 
   const navigateTo = useCallback((id: string, title: string) => {
-    setViewStack(prev => [...prev, { id, title }]);
+    setViewStack((prev) => [...prev, { id, title }]);
   }, []);
 
   const navigateBack = useCallback(() => {
-    setViewStack(prev => (prev.length > 1 ? prev.slice(0, -1) : prev));
+    setViewStack((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev));
   }, []);
 
   const childArray = React.Children.toArray(children);

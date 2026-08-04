@@ -15,7 +15,7 @@ import { getTranslations } from 'next-intl/server';
 const DASHBOARD_LIST_LIMIT = 32;
 
 export default async function DashboardContent() {
-  const t = await getTranslations('Dashboard');
+  const t = await getTranslations('dashboard');
 
   // Protected routes fail closed inside the streamed child. The page shell is
   // already visible, so the user never stares at a blank screen while auth is

@@ -69,7 +69,7 @@ export function FeedPageSkeleton({
             <div
               style={{
                 display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(16rem, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(16rem, 1fr))',
                 gap: '1rem',
               }}
             >
@@ -104,7 +104,7 @@ export function ProfileListsSkeleton() {
       <div
         style={{
           display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(16rem, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(16rem, 1fr))',
           gap: '1rem',
         }}
       >
@@ -141,7 +141,7 @@ export function ListItemsSkeleton() {
       <div
         style={{
           display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(16rem, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(16rem, 1fr))',
           gap: '1rem',
         }}
       >

@@ -12,15 +12,7 @@ const meta = {
     label: { control: 'text' },
     type: {
       control: 'select',
-      options: [
-        'text',
-        'email',
-        'password',
-        'tel',
-        'date',
-        'datetime-local',
-        'number',
-      ],
+      options: ['text', 'email', 'password', 'tel', 'date', 'datetime-local', 'number'],
     },
     placeholder: { control: 'text' },
     disabled: { control: 'boolean' },

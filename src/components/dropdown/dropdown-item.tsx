@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useContext } from 'react';
 import { SubContentActiveContext, useDropdownContext } from './context';
@@ -54,7 +54,10 @@ export function DropdownItem({
   if (!isInsideSubContent && currentView !== 'root') return null;
 
   const handleActivate = (e: React.MouseEvent) => {
-    if (disabled) { e.preventDefault(); return; }
+    if (disabled) {
+      e.preventDefault();
+      return;
+    }
 
     if (onSelect) {
       // A cancelable DOM Event mirrors the pattern used by Radix UI and WAI-ARIA
@@ -69,7 +72,8 @@ export function DropdownItem({
   };
 
   // Leading slot: custom prefix node takes precedence over named icon.
-  const leading = prefix ?? (icon ? <Icon name={icon} size={16} className={styles.itemIcon} /> : null);
+  const leading =
+    prefix ?? (icon ? <Icon name={icon} size={16} className={styles.itemIcon} /> : null);
 
   // Trailing slot: show an external-link indicator when the link opens in a new tab.
   const isBlank = target === '_blank';

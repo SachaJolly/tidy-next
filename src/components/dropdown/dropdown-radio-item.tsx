@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useContext } from 'react';
 import { RadioGroupContext, SearchContext, useDropdownContext } from './context';
@@ -21,10 +21,17 @@ export interface DropdownRadioItemProps {
   icon?: IconName;
 }
 
-export function DropdownRadioItem({ value, children, label, caption, prefix, icon }: DropdownRadioItemProps) {
+export function DropdownRadioItem({
+  value,
+  children,
+  label,
+  caption,
+  prefix,
+  icon,
+}: DropdownRadioItemProps) {
   const radioCtx = useContext(RadioGroupContext);
-  const { close }  = useDropdownContext();
-  const { query }  = useContext(SearchContext);
+  const { close } = useDropdownContext();
+  const { query } = useContext(SearchContext);
 
   // Resolve the display label: explicit `label` prop > string children > value fallback.
   // The resolved string is also used for search filtering.
@@ -39,7 +46,8 @@ export function DropdownRadioItem({ value, children, label, caption, prefix, ico
   };
 
   // Leading slot: custom prefix node takes precedence over named icon.
-  const leading = prefix ?? (icon ? <Icon name={icon} size={16} className={styles.itemIcon} /> : null);
+  const leading =
+    prefix ?? (icon ? <Icon name={icon} size={16} className={styles.itemIcon} /> : null);
 
   return (
     <button

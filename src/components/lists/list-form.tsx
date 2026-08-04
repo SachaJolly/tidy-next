@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useCallback, useState } from 'react';
 import Button from '@/components/button/button';
@@ -42,45 +42,44 @@ export default function ListForm({
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    const titleValue = title.trim();
-    const descriptionValue = description.trim();
+      const titleValue = title.trim();
+      const descriptionValue = description.trim();
 
-    if (!titleValue) {
-      setError(t('titleRequired'));
-      return;
-    }
-
-    setError(null);
-    setIsSubmitting(true);
-
-    try {
-      const result = await action({
-        title: titleValue,
-        description: descriptionValue,
-      });
-
-      if (result.error) {
-        throw new Error(result.error);
+      if (!titleValue) {
+        setError(t('titleRequired'));
+        return;
       }
 
-      if (!result.list) {
-        throw new Error(t('didNotReturnList'));
-      }
+      setError(null);
+      setIsSubmitting(true);
 
-      onSuccess?.(result.list);
-    } catch (submissionError) {
-      setError(
-        submissionError instanceof Error
-          ? submissionError.message
-        : t('creationFailed'),
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [action, description, onSuccess, title, t]);
+      try {
+        const result = await action({
+          title: titleValue,
+          description: descriptionValue,
+        });
+
+        if (result.error) {
+          throw new Error(result.error);
+        }
+
+        if (!result.list) {
+          throw new Error(t('didNotReturnList'));
+        }
+
+        onSuccess?.(result.list);
+      } catch (submissionError) {
+        setError(submissionError instanceof Error ? submissionError.message : t('creationFailed'));
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [action, description, onSuccess, title, t],
+  );
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -106,7 +105,11 @@ export default function ListForm({
         disabled={isSubmitting}
       />
 
-      {error && <p role="alert" style={{ color: 'var(--danger)', margin: 0 }}>{error}</p>}
+      {error && (
+        <p role="alert" style={{ color: 'var(--danger)', margin: 0 }}>
+          {error}
+        </p>
+      )}
 
       <ButtonGroup className="ml-auto">
         <Button type="button" transparent={true} onClick={onCancel} disabled={isSubmitting}>

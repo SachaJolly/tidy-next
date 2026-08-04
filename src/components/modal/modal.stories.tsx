@@ -1,29 +1,27 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Modal, ModalHeader, ModalContent, ModalFooter, ModalClose } from "./modal";
-import Button from "@/components/button/button";
-import Input from "@/components/input/input";
-import React, { useState } from "react";
-import ButtonGroup from "@/components/button-group/button-group";
-import { Logo } from "@/components/logo/logo";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Modal, ModalHeader, ModalContent, ModalFooter, ModalClose } from './modal';
+import Button from '@/components/button/button';
+import React from 'react';
+import ButtonGroup from '@/components/button-group/button-group';
 
 const meta: Meta<typeof Modal> = {
-  title: "Overlays/Modal",
+  title: 'Overlays/Modal',
   component: Modal,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     size: {
-      control: "radio",
-      options: ["small", "default", "large"],
+      control: 'radio',
+      options: ['small', 'default', 'large'],
       table: {
         defaultValue: { summary: '"default"' },
       },
     },
   },
   args: {
-    size: "default",
+    size: 'default',
   },
   parameters: {
-    layout: "fullscreen",
+    layout: 'fullscreen',
     nextjs: {
       appDirectory: true,
     },
@@ -58,8 +56,9 @@ export const Default: Story = {
         <ModalClose />
       </ModalHeader>
       <ModalContent>
-        <p style={{ color: "var(--text-muted, #666)" }}>
-          This is a simple default modal example. You can use it to display alerts, confirmations, or any generic content.
+        <p style={{ color: 'var(--text-muted, #666)' }}>
+          This is a simple default modal example. You can use it to display alerts, confirmations,
+          or any generic content.
         </p>
       </ModalContent>
       <ModalFooter>
@@ -71,4 +70,3 @@ export const Default: Story = {
     </Modal>
   ),
 };
-

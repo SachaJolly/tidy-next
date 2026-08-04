@@ -9,14 +9,15 @@ interface SectionHeaderProps {
 }
 
 export default async function SectionHeader({ title, children }: SectionHeaderProps) {
-  const t = await getTranslations('SectionHeader');
+  const common = await getTranslations('common');
+  const t = await getTranslations('section-header');
 
   return (
     <div className={styles['header']}>
       <div className={styles['heading']}>
         <h2 className={styles['heading__title']}>{title}</h2>
         <a href="#" className={styles['heading__more']}>
-          <span>{t('seeMore')}</span>
+          <span>{common('seeMore')}</span>
           <Icon name={'arrow_right'} size={16} />
         </a>
       </div>

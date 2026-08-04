@@ -12,7 +12,7 @@ const CURATORS_LIMIT = 24;
 const CURATOR_RECENT_LISTS_LIMIT = 3;
 
 export default async function CuratorsContent() {
-  const t = await getTranslations('Curators');
+  const t = await getTranslations('curators');
   const cookieStore = await cookies();
   const isAuthenticated = !!cookieStore.get('tidy_token');
 
@@ -30,10 +30,7 @@ export default async function CuratorsContent() {
     <>
       {!isAuthenticated && <Hero variant="horizontal" />}
       <Page>
-        <PageHeader
-          title={t('title')}
-          caption={t('caption')}
-        />
+        <PageHeader title={t('title')} caption={t('caption')} />
         <Section>
           {curators.map((curator) => (
             <CuratorMeta key={curator.id} profile={curator} />

@@ -24,7 +24,7 @@ export default function ListCard({
   ...props
 }: ListCardProps & React.ComponentPropsWithoutRef<'div'>) {
   const t = useTranslations('ListCard');
-  const listPage = useTranslations('list-page');
+  const listPage = useTranslations('ListPage');
   const listClasses = `${styles.container} ${bigger ? styles.bigger : ''}`;
   const coverColor = { backgroundColor: list.color };
 
@@ -108,9 +108,7 @@ export default function ListCard({
               <Meta>{t('empty')}</Meta>
             )}
 
-            {list.notesCount > 0 && (
-              <Meta>{t('note', { count: list.notesCount })}</Meta>
-            )}
+            {list.notesCount > 0 && <Meta>{t('note', { count: list.notesCount })}</Meta>}
           </MetaGroup>
         </div>
       </a>

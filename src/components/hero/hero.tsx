@@ -1,9 +1,9 @@
 'use client';
 
-import React from "react";
-import styles from "./hero.module.scss";
-import ButtonGroup from "../button-group/button-group";
-import Button from "../button/button";
+import React from 'react';
+import styles from './hero.module.scss';
+import ButtonGroup from '../button-group/button-group';
+import Button from '../button/button';
 import { useTranslations } from 'next-intl';
 
 type HeroVariant = 'centered' | 'horizontal';
@@ -17,10 +17,10 @@ interface HeroProps {
 }
 
 const illuStyles = {
-  maxWidth: "90%",
+  maxWidth: '90%',
 };
 const planeStyles = {
-  animation: "hoveringPlane 2s ease-in-out infinite",
+  animation: 'hoveringPlane 2s ease-in-out infinite',
 };
 
 const HeroIllustration = () => (
@@ -69,19 +69,14 @@ const HeroIllustration = () => (
   </svg>
 );
 
-export default function Hero({
-  title,
-  subtitle,
-  children,
-  variant = 'centered',
-}: HeroProps) {
+export default function Hero({ title, subtitle, children, variant = 'centered' }: HeroProps) {
   const t = useTranslations('Hero');
   const resolvedTitle = title ?? t('title');
   const resolvedSubtitle = subtitle ?? t('subtitle');
 
   return (
     <header className={[styles.container, styles[variant]].filter(Boolean).join(' ')}>
-      <section className={styles["content"]}>
+      <section className={styles['content']}>
         <div className={styles.media}>
           <HeroIllustration />
         </div>

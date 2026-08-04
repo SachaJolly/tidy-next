@@ -1,4 +1,4 @@
- "use client";
+'use client';
 
 import React from 'react';
 import Link from 'next/link';
@@ -21,10 +21,11 @@ type BaseButtonProps = {
   replace?: boolean;
 };
 
-type ButtonProps = BaseButtonProps & (
-  | (Omit<React.ComponentPropsWithoutRef<'button'>, 'children'> & { href?: never })
-  | (Omit<React.ComponentPropsWithoutRef<'a'>, 'children' | 'href'> & { href: string })
-);
+type ButtonProps = BaseButtonProps &
+  (
+    | (Omit<React.ComponentPropsWithoutRef<'button'>, 'children'> & { href?: never })
+    | (Omit<React.ComponentPropsWithoutRef<'a'>, 'children' | 'href'> & { href: string })
+  );
 
 const Button: React.FC<ButtonProps> = ({
   children,
@@ -47,7 +48,9 @@ const Button: React.FC<ButtonProps> = ({
     tinted && styles.tinted,
     transparent && styles.transparent,
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   // Determine the content: prioritize `children`, fall back to `label`
   const content = children || label;

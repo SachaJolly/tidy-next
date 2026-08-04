@@ -20,7 +20,7 @@ const FEATURED_LIMIT = 9;
 const TRENDING_LIMIT = 32;
 
 export default async function DiscoverContent() {
-  const t = await getTranslations('Discover');
+  const t = await getTranslations('discover');
 
   // This auth check only decides whether we show the marketing hero. It stays
   // inside the streamed content so the page shell can paint immediately.
@@ -41,10 +41,7 @@ export default async function DiscoverContent() {
     <>
       {!isAuthenticated && <Hero />}
       <Page>
-        <PageHeader
-          title={t('title')}
-          caption={t('caption')}
-        />
+        <PageHeader title={t('title')} caption={t('caption')} />
         <Section>
           <SectionHeader title={t('featured')} />
           <CollectionList>

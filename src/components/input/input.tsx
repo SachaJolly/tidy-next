@@ -17,7 +17,13 @@ const Input: React.FC<InputProps> = ({ label, id, className, autoFocus, ...props
           {label}
         </label>
       )}
-      <input id={id} className={styles.input} autoFocus={autoFocus} data-autofocus={autoFocus ? "true" : undefined} {...props} />
+      <input
+        id={id}
+        className={styles.input}
+        autoFocus={autoFocus}
+        data-autofocus={autoFocus ? 'true' : undefined}
+        {...props}
+      />
     </div>
   );
 };

@@ -1,7 +1,16 @@
-import React from "react";
-import styles from "./meta.module.scss";
+import React from 'react';
+import styles from './meta.module.scss';
 
-type MetaType = 'muted' | 'featured' | 'popular' | 'trending' | 'visibility' | 'pinned' | 'shared' | 'tag' | 'handle';
+type MetaType =
+  | 'muted'
+  | 'featured'
+  | 'popular'
+  | 'trending'
+  | 'visibility'
+  | 'pinned'
+  | 'shared'
+  | 'tag'
+  | 'handle';
 type MetaSize = 'small' | 'base';
 
 interface MetaProps {
@@ -12,7 +21,9 @@ interface MetaProps {
 }
 
 const Meta: React.FC<MetaProps> = ({ type, size = 'small', className, children }) => {
-  const classes = [styles.meta, styles[size], type && styles[type], className].filter(Boolean).join(' ');
+  const classes = [styles.meta, styles[size], type && styles[type], className]
+    .filter(Boolean)
+    .join(' ');
 
   return <li className={classes}>{children}</li>;
 };

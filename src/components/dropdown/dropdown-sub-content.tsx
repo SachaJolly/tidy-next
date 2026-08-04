@@ -1,14 +1,19 @@
-"use client";
+'use client';
 
 import React, { useContext, useState } from 'react';
-import { DropdownSubContext, SubContentActiveContext, SearchContext, useDropdownContext } from './context';
+import {
+  DropdownSubContext,
+  SubContentActiveContext,
+  SearchContext,
+  useDropdownContext,
+} from './context';
 
 export interface DropdownSubContentProps {
   children: React.ReactNode;
 }
 
 export function DropdownSubContent({ children }: DropdownSubContentProps) {
-  const subCtx  = useContext(DropdownSubContext);
+  const subCtx = useContext(DropdownSubContext);
   const { currentView } = useDropdownContext();
   const [query, setQuery] = useState('');
 
@@ -24,9 +29,7 @@ export function DropdownSubContent({ children }: DropdownSubContentProps) {
     // an active sub-menu and should render unconditionally (no root-view check).
     <SubContentActiveContext.Provider value={true}>
       {/* SearchContext is provided HERE so its scope is exactly one sub-menu. */}
-      <SearchContext.Provider value={{ query, setQuery }}>
-        {children}
-      </SearchContext.Provider>
+      <SearchContext.Provider value={{ query, setQuery }}>{children}</SearchContext.Provider>
     </SubContentActiveContext.Provider>
   );
 }

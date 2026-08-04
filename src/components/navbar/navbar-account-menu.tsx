@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
@@ -28,13 +28,7 @@ export default function NavbarAccountMenu({ user }: NavbarAccountMenuProps) {
           href={`/${user.username}`}
           label={user.name}
           active={normalizedPathname === `/${user.username}`}
-          suffix={
-            <Avatar
-              initials={user.name.charAt(0)}
-              size="32"
-              alt={user.name}
-            />
-          }
+          suffix={<Avatar initials={user.name.charAt(0)} size="32" alt={user.name} />}
         />
       )}
 

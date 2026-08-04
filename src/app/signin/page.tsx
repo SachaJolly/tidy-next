@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -29,46 +29,49 @@ export default function SigninPage() {
   // useCallback gives the handler a stable reference so the <form onSubmit>
   // prop never changes between renders — avoids unnecessary reconciliation
   // that could cause password managers to see a different form object.
-  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    // Must be the very first synchronous call. Calling it after any await
-    // means the browser's default form submission has already fired,
-    // disconnecting the form from the DOM ("form is not connected" crash).
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      // Must be the very first synchronous call. Calling it after any await
+      // means the browser's default form submission has already fired,
+      // disconnecting the form from the DOM ("form is not connected" crash).
+      e.preventDefault();
 
-    // Password managers set input.value via direct DOM assignment, bypassing
-    // React's synthetic onChange. FormData reads actual DOM values regardless
-    // of how they were set; React state is kept as a fallback for typed input.
-    const data = new FormData(e.currentTarget);
-    const emailValue    = (data.get('email')    as string) || email;
-    const passwordValue = (data.get('password') as string) || password;
+      // Password managers set input.value via direct DOM assignment, bypassing
+      // React's synthetic onChange. FormData reads actual DOM values regardless
+      // of how they were set; React state is kept as a fallback for typed input.
+      const data = new FormData(e.currentTarget);
+      const emailValue = (data.get('email') as string) || email;
+      const passwordValue = (data.get('password') as string) || password;
 
-    setError(null);
-    setIsLoading(true);
+      setError(null);
+      setIsLoading(true);
 
-    // Set before calling router.push() so the finally block can skip the
-    // loading reset on the success path and avoid a re-render race.
-    let navigationStarted = false;
+      // Set before calling router.push() so the finally block can skip the
+      // loading reset on the success path and avoid a re-render race.
+      let navigationStarted = false;
 
-    try {
-      const callbackUrl = searchParams.get('callbackUrl') ?? undefined;
-      const result = await signinAction(emailValue, passwordValue, callbackUrl);
+      try {
+        const callbackUrl = searchParams.get('callbackUrl') ?? undefined;
+        const result = await signinAction(emailValue, passwordValue, callbackUrl);
 
-      if (result.error) {
-        throw new Error(result.error);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+
+        navigationStarted = true;
+        router.refresh();
+        router.push(localizePath(result.redirectTo ?? '/dashboard', locale));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+      } finally {
+        // Error path only: reset loading so the user can retry.
+        // Success path: leave isLoading=true — the button stays locked while
+        // the route transition plays out and the component unmounts.
+        if (!navigationStarted) setIsLoading(false);
       }
-
-      navigationStarted = true;
-      router.refresh();
-      router.push(localizePath(result.redirectTo ?? '/dashboard', locale));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred.');
-    } finally {
-      // Error path only: reset loading so the user can retry.
-      // Success path: leave isLoading=true — the button stays locked while
-      // the route transition plays out and the component unmounts.
-      if (!navigationStarted) setIsLoading(false);
-    }
-  }, [email, password, locale, router, searchParams]);
+    },
+    [email, password, locale, router, searchParams],
+  );
 
   return (
     <Page>
@@ -129,7 +132,9 @@ export default function SigninPage() {
         </form>
 
         <div className="text-center py-24px">
-          <span className="text-bold">{t('notMemberYet')} <Link href={localizePath('/signup', locale)}>{t('joinToday')}</Link></span>
+          <span className="text-bold">
+            {t('notMemberYet')} <Link href={localizePath('/signup', locale)}>{t('joinToday')}</Link>
+          </span>
         </div>
       </Auth>
     </Page>

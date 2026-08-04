@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
@@ -10,10 +10,13 @@ export default function NewListPage() {
   const t = useTranslations('NewList');
   const router = useRouter();
 
-  const handleSuccess = useCallback((list: List) => {
-    router.push(`/lists/${list.id}`);
-    router.refresh();
-  }, [router]);
+  const handleSuccess = useCallback(
+    (list: List) => {
+      router.push(`/lists/${list.id}`);
+      router.refresh();
+    },
+    [router],
+  );
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

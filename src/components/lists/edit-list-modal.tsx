@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React, { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import Button from "@/components/button/button";
-import { Modal, ModalClose, ModalContent, ModalHeader } from "@/components/modal/modal";
-import ListForm from "@/components/lists/list-form";
-import { updateListAction } from "@/app/actions/lists";
+import React, { useCallback, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import Button from '@/components/button/button';
+import { Modal, ModalClose, ModalContent, ModalHeader } from '@/components/modal/modal';
+import ListForm from '@/components/lists/list-form';
+import { updateListAction } from '@/app/actions/lists';
 
 interface EditListModalProps {
   listId: string;
@@ -26,7 +26,7 @@ export default function EditListModal({
   onOpenChange,
 }: EditListModalProps) {
   const router = useRouter();
-  const t = useTranslations("EditListModal");
+  const t = useTranslations('EditListModal');
 
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined;
@@ -67,7 +67,7 @@ export default function EditListModal({
       ) : showDefaultTrigger ? (
         <Button
           icon="edit"
-          label={t("trigger")}
+          label={t('trigger')}
           variant="interactive"
           tinted={true}
           type="button"
@@ -80,17 +80,17 @@ export default function EditListModal({
       {isOpen && (
         <Modal size="default" onClose={closeModal}>
           <ModalHeader>
-            <h2>{t("title")}</h2>
+            <h2>{t('title')}</h2>
             <ModalClose />
           </ModalHeader>
 
           <ModalContent>
-            <p className="text-small">{t("description")}</p>
+            <p className="text-small">{t('description')}</p>
             <ListForm
               action={handleEdit}
-              submitLabel={t("save")}
+              submitLabel={t('save')}
               initialTitle={initialTitle}
-              initialDescription={initialDescription ?? ""}
+              initialDescription={initialDescription ?? ''}
               onCancel={closeModal}
               onSuccess={handleSuccess}
             />
