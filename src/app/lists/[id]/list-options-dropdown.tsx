@@ -174,7 +174,7 @@ export default function ListOptionsDropdown({
         <DropdownSeparator />
         <DropdownText>
           <p className="text-small">
-            {common('curatedBy')} {authorName}
+            {common('curatedByAuthor', { author: authorName })}
           </p>
           <p className="text-small">{updatedLabel}</p>
         </DropdownText>
