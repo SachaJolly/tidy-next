@@ -4,25 +4,34 @@
   "curatedBy": "Curated by",
   "curatedByAuthor": "Curated by {author}",
   "noItemsYet": "No items in this list yet.",
-  "updated": "Updated {date}",
   "items": "{count, plural, =0 {Empty} =1 {1 item} other {# items}}",
   "publicLists": "{count, plural, =0 {No public lists} =1 {1 public list} other {# public lists}}",
-  "english": "English",
-  "german": "German - Deutsch",
-  "french": "French - Français",
-  "russian": "Russian - Русский",
-  "spanish": "Spanish - Español",
-  "system": "System",
-  "dark": "Dark",
-  "light": "Light",
+  "language": {
+    "english": "English",
+    "german": "German - Deutsch",
+    "french": "French - Français",
+    "russian": "Russian - Русский",
+    "spanish": "Spanish - Español"
+  },
+  "theme": {
+    "system": "System",
+    "dark": "Dark",
+    "light": "Light"
+  },
   "updateVisibilityError": "Visibility update failed. Please try again.",
   "visibility": {
-    "publicLabel": "Public",
-    "publicCaption": "Anyone can see",
-    "unindexedLabel": "Unindexed",
-    "unindexedCaption": "Only people with the link can see",
-    "privateLabel": "Private",
-    "privateCaption": "Only you can see"
+    "public": {
+      "label": "Public",
+      "caption": "Anyone can see"
+    },
+    "unindexed": {
+      "label": "Unindexed",
+      "caption": "Only people with the link can see"
+    },
+    "private": {
+      "label": "Private",
+      "caption": "Only you can see"
+    }
   },
   "action": {
     "edit": "Edit",

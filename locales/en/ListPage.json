@@ -1,5 +1,4 @@
 {
-  "updated": "Updated {date}",
   "items": "{count, plural, =0 {Empty} =1 {1 item} other {# items}}",
   "addItem": "Add item",
   "like": "Like",

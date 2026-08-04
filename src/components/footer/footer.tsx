@@ -28,8 +28,8 @@ export default function Footer({}: FooterProps) {
             className={`${styles['nav-select']} ${styles['dropdown-toggle']}`}
             name="language"
           >
-            <option value="en">{common('english')}</option>
-            <option value="fr">{common('french')}</option>
+            <option value="en">{common('language.english')}</option>
+            <option value="fr">{common('language.french')}</option>
           </select>
         </nav>
         <nav className={styles['nav']}>

@@ -43,24 +43,26 @@ interface AccountDropdownProps {
 /** Renders only the <DropdownMenu> panel — mount inside <Dropdown> in the parent. */
 export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps) {
   const t = useTranslations('AccountDropdown');
+  const date = useTranslations('date');
   const common = useTranslations('common');
   const locale = useLocale();
+  const releaseDate = process.env.NEXT_PUBLIC_RELEASE_DATE;
   const [language, setLanguage] = useState<Language>('english');
   const [theme, setTheme] = useState<Theme>('system');
   const [activeAccount, setActiveAccount] = useState(MOCK_ACCOUNTS[1]?.value ?? '');
 
   const languageOptions = [
-    { value: 'english', label: common('english') },
-    { value: 'german', label: common('german') },
-    { value: 'french', label: common('french') },
-    { value: 'russian', label: common('russian') },
-    { value: 'spanish', label: common('spanish') },
+    { value: 'english', label: common('language.english') },
+    { value: 'german', label: common('language.german') },
+    { value: 'french', label: common('language.french') },
+    { value: 'russian', label: common('language.russian') },
+    { value: 'spanish', label: common('language.spanish') },
   ] as const;
 
   const themeOptions = [
-    { value: 'system', label: common('system') },
-    { value: 'dark', label: common('dark') },
-    { value: 'light', label: common('light') },
+    { value: 'system', label: common('theme.system') },
+    { value: 'dark', label: common('theme.dark') },
+    { value: 'light', label: common('theme.light') },
   ] as const;
 
   const currentLanguage = languageOptions.find((l) => l.value === language)!;

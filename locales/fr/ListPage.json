@@ -1,5 +1,4 @@
 {
-  "updated": "Mis à jour le {date}",
   "items": "{count, plural, =0 {Vide} =1 {1 item} other {# items}}",
   "addItem": "Ajouter un item",
   "like": "Aimer",

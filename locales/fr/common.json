@@ -4,25 +4,34 @@
   "curatedBy": "Curaté par",
   "curatedByAuthor": "Curaté par {author}",
   "noItemsYet": "Aucun item dans cette liste pour le moment.",
-  "updated": "Mis à jour le {date}",
   "items": "{count, plural, =0 {Vide} =1 {1 item} other {# items}}",
   "publicLists": "{count, plural, =0 {Aucune liste publique} =1 {1 liste publique} other {# listes publiques}}",
-  "english": "Anglais - English",
-  "german": "Allemand - Deutsch",
-  "french": "Français",
-  "russian": "Russe - Русский",
-  "spanish": "Espagnol - Español",
-  "system": "Système",
-  "dark": "Sombre",
-  "light": "Clair",
+  "language": {
+    "english": "Anglais - English",
+    "german": "Allemand - Deutsch",
+    "french": "Français",
+    "russian": "Russe - Русский",
+    "spanish": "Espagnol - Español"
+  },
+  "theme": {
+    "system": "Système",
+    "dark": "Sombre",
+    "light": "Clair"
+  },
   "updateVisibilityError": "La mise à jour de la visibilité a échoué. Veuillez réessayer.",
   "visibility": {
-    "publicLabel": "Publique",
-    "publicCaption": "Tout le monde peut voir",
-    "unindexedLabel": "Non indexée",
-    "unindexedCaption": "Seules les personnes avec le lien peuvent voir",
-    "privateLabel": "Privée",
-    "privateCaption": "Vous seul pouvez voir"
+    "public": {
+      "label": "Publique",
+      "caption": "Tout le monde peut voir"
+    },
+    "unindexed": {
+      "label": "Non indexée",
+      "caption": "Seules les personnes avec le lien peuvent voir"
+    },
+    "private": {
+      "label": "Privée",
+      "caption": "Vous seul pouvez voir"
+    }
   },
   "action": {
     "edit": "Modifier",
