@@ -1,0 +1,11 @@
+{
+  "pinned": "Pinned",
+  "private": "Private",
+  "unindexed": "Unindexed",
+  "trending": "Trending",
+  "popular": "Popular",
+  "featured": "Featured",
+  "item": "{count, plural, =1 {1 item} other {# items}}",
+  "note": "{count, plural, =1 {1 note} other {# notes}}",
+  "empty": "Empty"
+}

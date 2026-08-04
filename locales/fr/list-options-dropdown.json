@@ -1,0 +1,15 @@
+{
+  "edit": "Modifier",
+  "manageCollaborators": "Gérer les collaborateurs",
+  "manageCollaboratorsPlaceholder": "La gestion des collaborateurs sera ajoutée ici prochainement.",
+  "archiveList": "Archiver la liste",
+  "setVisibility": "Définir la visibilité",
+  "updateVisibilityError": "La mise à jour de la visibilité a échoué. Veuillez réessayer.",
+  "publicLabel": "Publique",
+  "publicCaption": "Tout le monde peut voir",
+  "unindexedLabel": "Non indexée",
+  "unindexedCaption": "Seules les personnes avec le lien peuvent voir",
+  "privateLabel": "Privée",
+  "privateCaption": "Vous seul pouvez voir",
+  "copyLink": "Copier le lien"
+}

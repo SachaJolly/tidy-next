@@ -1,0 +1,11 @@
+{
+  "pinned": "Épinglée",
+  "private": "Privée",
+  "unindexed": "Non indexée",
+  "trending": "Tendance",
+  "popular": "Populaire",
+  "featured": "À la une",
+  "item": "{count, plural, =1 {1 item} other {# items}}",
+  "note": "{count, plural, =1 {1 note} other {# notes}}",
+  "empty": "Vide"
+}

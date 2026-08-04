@@ -1,0 +1,15 @@
+{
+  "edit": "Edit",
+  "manageCollaborators": "Manage collaborators",
+  "manageCollaboratorsPlaceholder": "Collaborator management will be added here soon.",
+  "archiveList": "Archive list",
+  "setVisibility": "Set visibility",
+  "updateVisibilityError": "Visibility update failed. Please try again.",
+  "publicLabel": "Public",
+  "publicCaption": "Anyone can see",
+  "unindexedLabel": "Unindexed",
+  "unindexedCaption": "Only people with the link can see",
+  "privateLabel": "Private",
+  "privateCaption": "Only you can see",
+  "copyLink": "Copy link"
+}

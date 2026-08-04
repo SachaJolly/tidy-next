@@ -10,15 +10,15 @@ const localesDir = join(process.cwd(), 'locales');
  *
  * File structure:
  *   locales/{locale}/common.json
- *   locales/{locale}/auth.json
- *   locales/{locale}/navbar.json
+ *   locales/{locale}/account-dropdown.json (kebab-case)
+ *   locales/{locale}/list-card.json (kebab-case)
  *   ...etc
  *
- * Each file is parsed as JSON and merged into a flat namespace object:
+ * Each file is parsed as JSON and merged with namespace key converted to camelCase:
  *   {
  *     "common": {...},
- *     "auth": {...},
- *     "navbar": {...}
+ *     "AccountDropdown": {...},    // kebab-case filename → camelCase namespace
+ *     "ListCard": {...},
  *   }
  *
  * If a module file is missing, it's silently skipped (fallback behavior).
@@ -36,20 +36,31 @@ function loadMessages(locale: Locale): Record<string, unknown> {
 
     // Load and merge each translation module
     files.forEach((file) => {
-      const moduleName = file.replace('.json', '');
+      const fileBaseName = file.replace('.json', '');
       const filePath = join(localeDir, file);
 
       try {
         const raw = readFileSync(filePath, 'utf8');
         const moduleMessages = JSON.parse(raw) as Record<string, unknown>;
 
-        // Merge module into the main messages object.
-        // The namespace key (module name) can be used to organize translations hierarchically
-        // if needed, but for now we spread them at the top level for backward compatibility.
-        messages[moduleName] = moduleMessages;
+        // Convert kebab-case filenames to camelCase namespace keys.
+        // E.g., "account-dropdown" → "AccountDropdown", "list-card" → "ListCard"
+        // This allows components to use useTranslations('ComponentName') with camelCase.
+        const namespaceName = fileBaseName
+          .split('-')
+          .map((part, idx) => {
+            // First part keeps its original case (e.g., "common" stays "common"),
+            // subsequent parts are capitalized (e.g., "dropdown" → "Dropdown")
+            return idx === 0
+              ? part
+              : part.charAt(0).toUpperCase() + part.slice(1);
+          })
+          .join('');
+
+        messages[namespaceName] = moduleMessages;
       } catch (error) {
         console.error(
-          `Failed to load translation module "${moduleName}" for locale "${locale}":`,
+          `Failed to load translation module "${fileBaseName}" for locale "${locale}":`,
           error
         );
       }
