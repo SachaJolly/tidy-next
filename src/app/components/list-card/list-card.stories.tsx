@@ -12,18 +12,24 @@ const mockList = {
   visibility: 'PUBLIC' as const,
   displayMode: 'LIST' as const,
   color: '#FF887A',
-  items: 0,
-  collaborators: 0,
-  notes: 0,
-  isOnDiscover: true,
+  itemsCount: 0,
+  collaboratorsCount: 0,
+  notesCount: 0,
   isFeatured: false,
   isPinned: false,
   isTrending: false,
   isPopular: false,
-  authorId: '584348bf79a3c400042a5940',
+  author: {
+    id: '584348bf79a3c400042a5940',
+    email: 'example@example.com',
+    name: 'John Doe',
+    username: 'johndoe',
+    bio: null,
+    createdAt: '2024-01-01T00:00:00Z',
+  },
   createdAt: '2024-01-01T00:00:00Z',
   updatedAt: '2024-01-01T00:00:00Z',
-  deletedAt: null,
+  deleted_at: null,
 };
 
 const meta = {
@@ -56,7 +62,7 @@ export const Items: Story = {
   args: {
     list: {
       ...mockList,
-      items: 67,
+      itemsCount: 67,
     },
   },
 };
@@ -65,7 +71,7 @@ export const Notes: Story = {
   args: {
     list: {
       ...mockList,
-      notes: 5,
+      notesCount: 5,
     },
   },
 };
@@ -74,8 +80,8 @@ export const Thumbnail: Story = {
   args: {
     list: {
       ...mockList,
-      items: 67,
-      notes: 1,
+      itemsCount: 67,
+      notesCount: 1,
       thumbnail: '5ca7a2cfd0e7b90004198839',
     },
   },
@@ -85,8 +91,8 @@ export const Pinned: Story = {
   args: {
     list: {
       ...mockList,
-      items: 67,
-      notes: 1,
+      itemsCount: 67,
+      notesCount: 1,
       thumbnail: '5ca7a2cfd0e7b90004198839',
       isPinned: true,
     },
@@ -97,8 +103,8 @@ export const Private: Story = {
   args: {
     list: {
       ...mockList,
-      items: 67,
-      notes: 1,
+      itemsCount: 67,
+      notesCount: 1,
       thumbnail: '5ca7a2cfd0e7b90004198839',
       visibility: 'PRIVATE',
     },
@@ -109,8 +115,8 @@ export const Unindexed: Story = {
   args: {
     list: {
       ...mockList,
-      items: 67,
-      notes: 1,
+      itemsCount: 67,
+      notesCount: 1,
       thumbnail: '5ca7a2cfd0e7b90004198839',
       visibility: 'UNINDEXED',
     },
@@ -121,8 +127,8 @@ export const Featured: Story = {
   args: {
     list: {
       ...mockList,
-      items: 67,
-      notes: 1,
+      itemsCount: 67,
+      notesCount: 1,
       thumbnail: '5ca7a2cfd0e7b90004198839',
       visibility: 'PUBLIC',
       isFeatured: true,
@@ -134,8 +140,8 @@ export const Popular: Story = {
   args: {
     list: {
       ...mockList,
-      items: 67,
-      notes: 1,
+      itemsCount: 67,
+      notesCount: 1,
       thumbnail: '5ca7a2cfd0e7b90004198839',
       visibility: 'PUBLIC',
       isPopular: true,
@@ -147,8 +153,8 @@ export const Trending: Story = {
   args: {
     list: {
       ...mockList,
-      items: 67,
-      notes: 1,
+      itemsCount: 67,
+      notesCount: 1,
       thumbnail: '5ca7a2cfd0e7b90004198839',
       visibility: 'PUBLIC',
       isTrending: true,
