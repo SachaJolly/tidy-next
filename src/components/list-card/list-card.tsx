@@ -7,7 +7,7 @@ import MetaGroup from '../meta-group/meta-group';
 import Meta from '../meta/meta';
 import Button from '@/components/button/button';
 import { Dropdown } from '@/components/dropdown';
-import ListOptionsDropdown from '@/components/lists/list-options-dropdown';
+import ListOptionsDropdown from '@/app/lists/[id]/list-options-dropdown';
 import styles from './list-card.module.scss';
 import { List } from '@/lib/types';
 

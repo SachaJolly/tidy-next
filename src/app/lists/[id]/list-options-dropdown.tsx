@@ -127,22 +127,22 @@ export default function ListOptionsDropdown({
           <>
             <DropdownItem
               icon="edit"
-              label={common('edit')}
+              label={common('action.edit')}
               onSelect={() => queryModal.openModal('edit-list', listId)}
             />
             <DropdownItem
               icon="group"
-              label={common('manageCollaborators')}
+              label={common('action.manageCollaborators')}
               onSelect={() => queryModal.openModal('manage-collaborators', listId)}
             />
-            <DropdownItem icon="archive" destructive label={common('archive')} />
+            <DropdownItem icon="archive" destructive label={common('action.archive')} />
             <DropdownSeparator />
 
-            <DropdownLabel>{common('setVisibility')}</DropdownLabel>
+            <DropdownLabel>{common('action.setVisibility')}</DropdownLabel>
             <DropdownRadioGroup
               value={visibility}
               onValueChange={handleVisibilityChange}
-              label={common('setVisibility')}
+              label={common('action.setVisibility')}
               closeOnSelect
             >
               {VISIBILITY_OPTIONS.map(({ value, icon, labelKey, captionKey }) => (
@@ -168,7 +168,7 @@ export default function ListOptionsDropdown({
 
         <DropdownItem
           icon="copy"
-          label={common('copyLink')}
+          label={common('action.copyLink')}
           onSelect={() => void handleCopyLink()}
         />
         <DropdownSeparator />
@@ -195,7 +195,7 @@ export default function ListOptionsDropdown({
       {isCollaboratorsModalOpen && (
         <Modal size="default" onClose={() => queryModal.closeModal()}>
           <ModalHeader>
-            <h2>{common('manageCollaborators')}</h2>
+          <h2>{common('action.manageCollaborators')}</h2>
             <ModalClose />
           </ModalHeader>
           <ModalContent>

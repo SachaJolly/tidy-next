@@ -2,9 +2,9 @@
 
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import ListForm from './list-form';
-import type { List } from '@/lib/types';
 import { useTranslations } from 'next-intl';
+import ListForm from '@/components/lists/list-form';
+import type { List } from '@/lib/types';
 
 export default function NewListPage() {
   const t = useTranslations('NewList');

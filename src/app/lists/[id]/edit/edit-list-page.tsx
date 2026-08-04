@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import ListForm from './list-form';
+import ListForm from '@/components/lists/list-form';
 import { updateListAction } from '@/app/actions/lists';
 
 interface EditListPageProps {

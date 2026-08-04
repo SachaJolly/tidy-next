@@ -41,7 +41,7 @@ const listArgs = {
   updatedAt: '2024-04-01T12:00:00.000Z',
 } as const;
 
-const renderOpenMenu = (args: any) => (
+const renderOpenMenu = (args: React.ComponentProps<typeof ListOptionsDropdown>) => (
   <Dropdown open={true}>
     <Button icon="settings" aria-label="Settings" size="small" tinted={true} />
     <ListOptionsDropdown {...args} inline={true} />
