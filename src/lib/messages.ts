@@ -10,7 +10,7 @@
  *   locales/en/navbar.json           - Navigation strings
  *   locales/en/footer.json           - Footer strings
  *   locales/en/date.json            - Date formatting strings
- *   locales/en/listPage.json         - Page/domain namespace (lowercase)
+ *   locales/en/ListPage.json         - Page/domain namespace (lowercase)
  *   locales/en/NewList.json          - Modal namespace (PascalCase)
  *   locales/en/EditListModal.json    - Modal namespace (PascalCase)
  *   locales/en/AccountDropdown.json  - Component namespace (PascalCase)
@@ -46,7 +46,7 @@ import discoverEn from '../../locales/en/discover.json';
 import latestEn from '../../locales/en/latest.json';
 import curatorsEn from '../../locales/en/curators.json';
 import profileEn from '../../locales/en/profile.json';
-import listPageEn from '../../locales/en/listPage.json';
+import listPageEn from '../../locales/en/ListPage.json';
 import formsEn from '../../locales/en/forms.json';
 import dateEn from '../../locales/en/date.json';
 
@@ -71,7 +71,7 @@ import discoverFr from '../../locales/fr/discover.json';
 import latestFr from '../../locales/fr/latest.json';
 import curatorsFr from '../../locales/fr/curators.json';
 import profileFr from '../../locales/fr/profile.json';
-import listPageFr from '../../locales/fr/listPage.json';
+import listPageFr from '../../locales/fr/ListPage.json';
 import formsFr from '../../locales/fr/forms.json';
 import dateFr from '../../locales/fr/date.json';
 
