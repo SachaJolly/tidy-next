@@ -2,28 +2,11 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { NextIntlClientProvider } from "next-intl";
 import NewListModal from "./new-list-modal";
+// Import centralized messages to avoid duplication
+import messages from "@/lib/messages";
 
-const messages = {
-  NewList: {
-    title: "Create a list",
-    description: "Add a title and an optional description, then save to publish the new list.",
-  },
-  ListForm: {
-    createList: "Create list",
-    cancel: "Cancel",
-    saving: "Saving...",
-    titleLabel: "Title",
-    descriptionLabel: "Description",
-    titlePlaceholder: "My reading list",
-    descriptionPlaceholder: "Tell people what this list is about",
-    titleRequired: "Please enter a list title.",
-    didNotReturnList: "The server did not return a list.",
-    creationFailed: "List creation failed.",
-  },
-};
-
-// Storybook doesn't run the app-level NextIntl provider, so we inject a tiny
-// local dictionary that covers the strings used by the modal and its form.
+// Storybook doesn't run the app-level NextIntl provider, so we inject the
+// centralized message dictionary that covers all strings used by the modal and its form.
 const withIntl = (Story: React.ComponentType) => (
   <NextIntlClientProvider locale="en" messages={messages}>
     <Story />
