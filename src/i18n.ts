@@ -11,13 +11,13 @@ const localesDir = join(process.cwd(), 'locales');
  * File structure:
  *   locales/{locale}/common.json
  *   locales/{locale}/auth.json
- *   locales/{locale}/ListCard.json (PascalCase for components/pages)
+ *   locales/{locale}/ListCard.json (PascalCase for components)
  *   locales/{locale}/ListPage.json (PascalCase for components/pages)
  *   ...etc
  *
  * Namespace convention:
  *   - Lowercase for global domains: auth, common, navbar, footer, forms, dashboard, etc.
- *   - PascalCase for component/page namespaces: AccountDropdown, ListCard, ListPage, etc.
+ *   - PascalCase for component namespaces: AccountDropdown, ListCard, etc.
  *
  * The filename (without .json) is used directly as the namespace key.
  * No conversion needed — consistency across files and components.

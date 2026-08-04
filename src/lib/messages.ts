@@ -60,7 +60,7 @@ import ListCardEn from '../../locales/en/ListCard.json';
 import itemEn from '../../locales/en/item.json';
 import ProfileCardEn from '../../locales/en/ProfileCard.json';
 import ListOptionsDropdownEn from '../../locales/en/ListOptionsDropdown.json';
-import HeroEn from '../../locales/en/Hero.json';
+import HeroEn from '../../locales/en/hero.json';
 
 import commonFr from '../../locales/fr/common.json';
 import authFr from '../../locales/fr/auth.json';
@@ -85,7 +85,7 @@ import ListCardFr from '../../locales/fr/ListCard.json';
 import itemFr from '../../locales/fr/item.json';
 import ProfileCardFr from '../../locales/fr/ProfileCard.json';
 import ListOptionsDropdownFr from '../../locales/fr/ListOptionsDropdown.json';
-import HeroFr from '../../locales/fr/Hero.json';
+import HeroFr from '../../locales/fr/hero.json';
 
 /**
  * Merge all modular translation files into a single namespace object.
