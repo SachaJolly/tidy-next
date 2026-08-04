@@ -11,10 +11,10 @@ import {
   DropdownRadioItem,
   DropdownSeparator,
   DropdownText,
-} from '@/components/dropdown';
-import { Modal, ModalClose, ModalContent, ModalHeader } from '@/components/modal/modal';
+} from '@/components/Dropdown';
+import { Modal, ModalClose, ModalContent, ModalHeader } from '@/components/Modal/Modal';
 import type { List } from '@/lib/types';
-import EditListModal from '@/components/lists/edit-list-modal';
+import EditListModal from '@/components/Lists/EditListModal';
 import { updateListVisibilityAction } from '@/app/actions/lists';
 import { useQueryModal } from '@/hooks/use-query-modal';
 import { formatDate } from '@/lib/date';
@@ -153,8 +153,8 @@ export default function ListOptionsDropdown({
                   key={value}
                   value={value}
                   icon={icon}
-                  label={common(`visibility.${labelKey}`)}
-                  caption={common(`visibility.${captionKey}`)}
+                  label={common(labelKey)}
+                  caption={common(captionKey)}
                 />
               ))}
             </DropdownRadioGroup>
