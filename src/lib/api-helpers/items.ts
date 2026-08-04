@@ -41,9 +41,7 @@ export type Item = {
 };
 
 export function getListItems(listId: string): { items: Item[] } {
-  const items = itemsData.items.filter(
-    (item: any) => item.ownership.listId === listId,
-  ) as Item[];
+  const items = (itemsData.items as Item[]).filter((item) => item.ownership.listId === listId);
 
   return { items };
 }

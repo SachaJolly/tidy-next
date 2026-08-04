@@ -10,7 +10,6 @@ interface SectionHeaderProps {
 
 export default async function SectionHeader({ title, children }: SectionHeaderProps) {
   const common = await getTranslations('common');
-  const t = await getTranslations('section-header');
 
   return (
     <div className={styles['header']}>

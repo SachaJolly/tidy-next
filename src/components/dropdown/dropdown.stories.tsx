@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import React, { useState } from 'react';
 import {
   Dropdown,
@@ -46,7 +46,6 @@ type Story = StoryObj<typeof Dropdown>;
 // ─── Story A: Basic Actions (links + button actions) ─────────────────────────
 
 export const BasicActions: Story = {
-  name: 'Basic Actions',
   render: () => (
     <Dropdown>
       <DropdownTrigger>
@@ -270,7 +269,6 @@ export const DrillDownSearch: Story = {
 // confirms (or the dialog is dismissed intentionally).
 
 export const ModalInteroperability: Story = {
-  name: 'Modal Interoperability',
   render: function Render() {
     // Controlled dropdown so external code can close it after confirmation.
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -469,7 +467,6 @@ const THEMES = [
 ];
 
 export const AccountMenu: Story = {
-  name: 'Account Menu',
   render: function Render() {
     const [language, setLanguage] = useState('english');
     const [theme, setTheme] = useState('dark');

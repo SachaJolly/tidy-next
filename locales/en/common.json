@@ -15,14 +15,6 @@
   "system": "System",
   "dark": "Dark",
   "light": "Light",
-  "edit": "Edit",
-  "archive": "Archive list",
-  "report": "Report",
-  "copyLink": "Copy link",
-  "copyTo": "Copy to...",
-  "moveTo": "Move to...",
-  "manageCollaborators": "Manage collaborators",
-  "setVisibility": "Set visibility",
   "updateVisibilityError": "Visibility update failed. Please try again.",
   "visibility": {
     "publicLabel": "Public",
@@ -31,5 +23,17 @@
     "unindexedCaption": "Only people with the link can see",
     "privateLabel": "Private",
     "privateCaption": "Only you can see"
+  },
+  "action": {
+    "edit": "Edit",
+    "archive": "Archive",
+    "report": "Report",
+    "copyLink": "Copy link",
+    "copyTo": "Copy to...",
+    "moveTo": "Move to...",
+    "addTo": "Add to...",
+    "delete": "Delete",
+    "manageCollaborators": "Manage collaborators",
+    "setVisibility": "Set visibility"
   }
 }

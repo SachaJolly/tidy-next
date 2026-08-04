@@ -18,8 +18,7 @@ const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
     return (
       <span ref={ref} className={[styles.icon, className].filter(Boolean).join(' ')}>
         {React.isValidElement(icon)
-          ? React.cloneElement(icon as React.ReactElement<any>, {
-              size: String(size),
+          ? React.cloneElement(icon as React.ReactElement<React.SVGProps<SVGSVGElement>>, {
               width: size,
               height: size,
               ...svgProps,

@@ -116,7 +116,7 @@ export function DropdownMenu({
       // Cancel any pending frame so stale measurements don't apply after close.
       cancelAnimationFrame(rafId);
     };
-  }, [open, isMobile, calculatePosition]);
+  }, [inline, open, isMobile, calculatePosition]);
 
   // ─── Mobile: body scroll lock ──────────────────────────────────────────────
   // Prevent the background page from scrolling while the bottom drawer is open.
@@ -142,7 +142,7 @@ export function DropdownMenu({
       document.body.style.overflow = prevOverflow;
       document.body.style.touchAction = prevTouchAction;
     };
-  }, [open, isMobile]);
+  }, [inline, open, isMobile]);
 
   // Close on Escape — document-level so it fires regardless of where focus is
   useEffect(() => {
@@ -170,7 +170,7 @@ export function DropdownMenu({
     };
     document.addEventListener('pointerdown', onPointerDown);
     return () => document.removeEventListener('pointerdown', onPointerDown);
-  }, [open, close, triggerRef]);
+  }, [inline, open, close, triggerRef]);
 
   // Arrow-key navigation between focusable menu items
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {

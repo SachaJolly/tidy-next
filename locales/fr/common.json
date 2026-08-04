@@ -14,5 +14,26 @@
   "spanish": "Espagnol - Español",
   "system": "Système",
   "dark": "Sombre",
-  "light": "Clair"
+  "light": "Clair",
+  "updateVisibilityError": "La mise à jour de la visibilité a échoué. Veuillez réessayer.",
+  "visibility": {
+    "publicLabel": "Publique",
+    "publicCaption": "Tout le monde peut voir",
+    "unindexedLabel": "Non indexée",
+    "unindexedCaption": "Seules les personnes avec le lien peuvent voir",
+    "privateLabel": "Privée",
+    "privateCaption": "Vous seul pouvez voir"
+  },
+  "action": {
+    "edit": "Modifier",
+    "archive": "Archiver",
+    "report": "Signaler",
+    "copyLink": "Copier le lien",
+    "copyTo": "Copier vers...",
+    "moveTo": "Déplacer vers...",
+    "addTo": "Ajouter à...",
+    "delete": "Supprimer",
+    "manageCollaborators": "Gérer les collaborateurs",
+    "setVisibility": "Définir la visibilité"
+  }
 }

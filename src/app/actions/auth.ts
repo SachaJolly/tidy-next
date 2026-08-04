@@ -17,7 +17,9 @@ function isValidCallbackUrl(value: string | undefined): value is string {
 }
 
 function resolvePostAuthRedirect(callbackUrl?: string): string {
-  if (!isValidCallbackUrl(callbackUrl) || LOGIN_REDIRECT_EXCEPTIONS.includes(callbackUrl as any)) {
+  const isRedirectException = LOGIN_REDIRECT_EXCEPTIONS.some((path) => path === callbackUrl);
+
+  if (!isValidCallbackUrl(callbackUrl) || isRedirectException) {
     return '/dashboard';
   }
 

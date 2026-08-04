@@ -40,7 +40,7 @@ export function DropdownTrigger({
       'aria-expanded': open,
       'aria-haspopup': 'menu',
       ...rest,
-    } as any);
+    } as Partial<TriggerChildProps>);
   }
 
   return (

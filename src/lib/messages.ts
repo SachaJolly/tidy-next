@@ -58,7 +58,6 @@ import itemEn from '../../locales/en/item.json';
 import CuratorMetaEn from '../../locales/en/CuratorMeta.json';
 import ListOptionsDropdownEn from '../../locales/en/ListOptionsDropdown.json';
 import HeroEn from '../../locales/en/Hero.json';
-import SectionHeaderEn from '../../locales/en/SectionHeader.json';
 
 import commonFr from '../../locales/fr/common.json';
 import authFr from '../../locales/fr/auth.json';
@@ -83,7 +82,6 @@ import itemFr from '../../locales/fr/item.json';
 import CuratorMetaFr from '../../locales/fr/CuratorMeta.json';
 import ListOptionsDropdownFr from '../../locales/fr/ListOptionsDropdown.json';
 import HeroFr from '../../locales/fr/Hero.json';
-import SectionHeaderFr from '../../locales/fr/SectionHeader.json';
 
 /**
  * Merge all modular translation files into a single namespace object.
@@ -116,7 +114,6 @@ const messagesEn = {
   CuratorMeta: CuratorMetaEn,
   ListOptionsDropdown: ListOptionsDropdownEn,
   Hero: HeroEn,
-  SectionHeader: SectionHeaderEn,
 };
 
 const messagesFr = {
@@ -141,7 +138,6 @@ const messagesFr = {
   CuratorMeta: CuratorMetaFr,
   ListOptionsDropdown: ListOptionsDropdownFr,
   Hero: HeroFr,
-  SectionHeader: SectionHeaderFr,
 };
 
 export const messages = {

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Modal, ModalHeader, ModalContent, ModalFooter, ModalClose } from './modal';
 import Button from '@/components/button/button';
 import React from 'react';
@@ -36,16 +36,6 @@ const meta: Meta<typeof Modal> = {
 
 export default meta;
 type Story = StoryObj<typeof Modal>;
-
-// Simulates a network call for Storybook demos.
-const mockAuth = (values: any) =>
-  new Promise<{ message: string }>((resolve, reject) => {
-    setTimeout(() => {
-      values.password === 'password'
-        ? resolve({ message: 'Authentication successful!' })
-        : reject({ message: "Invalid credentials. Try 'password'." });
-    }, 1500);
-  });
 
 export const Default: Story = {
   args: {},
