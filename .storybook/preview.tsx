@@ -67,6 +67,15 @@ const preview: Preview = {
   ],
   loaders: [mswLoader],
   parameters: {
+    nextjs: {
+      appDirectory: true,
+      // Mock the Next.js App Router for components using useRouter(), useSearchParams(), etc.
+      // This allows Client Components to work properly in Storybook without the actual router.
+      navigation: {
+        pathname: '/',
+        query: {},
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
