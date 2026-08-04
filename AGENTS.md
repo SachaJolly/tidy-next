@@ -15,19 +15,20 @@ You MUST strictly follow these guidelines in all your responses and code generat
 The project follows a classic, clean architecture centered around a `src/` directory:
 - **`src/app/`**: Next.js App Router directory containing routing pages, layouts, templates, and colocated route-specific components.
 - **`src/components/`**: Global, highly reusable, or generic "dumb" UI components. Never place feature-specific or route-specific components here.
+- **`src/layouts/`**: Global templates or structural layout wrappers used across different pages (transverse layout components, distinct from Next.js App Router `layout.tsx` files).
 - **`src/lib/`**: Centralized utilities, helpers, and wrappers (e.g., `lib/api.ts` for network requests).
 - **`src/hooks/`**: Global custom React hooks (e.g., state management, query parameters tracking).
 - **`src/types/`**: Global TypeScript type definitions and ambient type declarations (e.g., `IntlMessages`).
 - **`locales/`**: Modular internationalization files structured by language and domain/page.
-- **Component-Specific Files & Colocation:**
-  - **Styles (`.module.scss`)**: Component-specific styles are stored right next to their corresponding component file (e.g., `Button.tsx` and `Button.module.scss`).
-  - **Stories (`.stories.tsx`)**: Component-specific stories are stored right next to their corresponding component file (e.g., `Button.tsx` and `Button.stories.tsx`).
+- **Component Folder Grouping & Colocation:**
+  - If a component has associated files (such as styles, stories, or skeletons), **all these files must be grouped together inside a dedicated folder** named after the component (e.g., `src/components/Button/Button.tsx`, `Button.module.scss`, `Button.stories.tsx`, `Button.skeleton.tsx`, and `Button.skeleton.stories.tsx`).
 - **Global/Unassociated Stories:** Housed in a dedicated `src/stories/` directory for general layout patterns, design tokens, or documentation stories.
 
 ## 3. Component Creation, Colocation & File Structure (CRITICAL)
-- **Colocation First:** Route-specific components MUST be colocated in the EXACT SAME directory as the Next.js routing files they serve (e.g., place `ListOptionsDropdown.tsx` directly next to `app/list/[id]/page.tsx`).
+- **Colocation First:** Route-specific components MUST be colocated in the EXACT SAME directory (or component sub-folder) as the Next.js routing files they serve.
 - **Global Components:** Only highly reusable, generic, or "dumb" UI components belong in the `src/components/` directory (which sits at the same level as `app/` inside `src/`). Never pollute the global `components/` folder with specific feature components.
-- **Styles Colocation (SCSS Modules):** Component styles must be colocated directly next to the component in a file with the `.module.scss` extension (e.g., `Button.tsx` and `Button.module.scss`), mirroring the story file convention.
+- **Component Directory Structure:** Every component possessing styles, stories, or skeletons must be isolated within its own dedicated folder containing all its respective files (`.tsx`, `.module.scss`, `.stories.tsx`, `.skeleton.tsx`, `.skeleton.stories.tsx`).
+- **Skeleton Fidelity:** Loading skeletons must strictly match the exact dimensions, spacing, layout structure, and responsive breakpoints of the target component to prevent layout shifts.
 - **Reuse Before Creating:** Before proposing any new UI component, you MUST analyze the existing codebase and maximize the use of already created components.
 - **Interactive Confirmation for New Code:** NEVER generate large blocks of inline code. If a new UI element is needed, you MUST ask the user: *"Should we create a new dedicated component for this, or write it inline?"* Wait for confirmation before proceeding.
 - **No CSS/UI Libraries:** We do not use external CSS libraries or pre-built UI component libraries (like Material UI, Chakra, Bootstrap, etc.). Everything is custom-built.
@@ -39,7 +40,7 @@ The project follows a classic, clean architecture centered around a `src/` direc
 - **Floating Menus & Portals:** Use React Portals (`createPortal`) for floating menus to avoid clipping in `overflow: hidden` containers, with dynamic viewport tracking (`requestAnimationFrame`) when appropriate.
 
 ## 5. Storybook Standards (CRITICAL)
-- **Synchronization:** Whenever you create a new component, modify an existing one, or change its API, you MUST simultaneously update or create its `.stories.tsx` file.
+- **Synchronization:** Whenever you create a new component, modify an existing one, or change its API, you MUST simultaneously update or create its `.stories.tsx` file (and its corresponding `.skeleton.stories.tsx` file if a skeleton exists).
 - **Modern CSF Format:** Always use Component Story Format (CSF) v3. Export a `default` meta object and use named exports for individual stories.
 - **Args over Hardcoding:** Use Storybook `args` to pass props to components rather than hardcoding them inside the render function. This ensures the controls panel in the Storybook UI remains interactive.
 - **Comprehensive Variants:** Every `.stories.tsx` file must demonstrate all visual states: Default, Hover/Active states (if applicable), Disabled, and Edge Cases (e.g., extremely long text wrapping, empty states).
