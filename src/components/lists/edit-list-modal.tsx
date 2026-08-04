@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import Button from "@/components/button/button";
 import { Modal, ModalClose, ModalContent, ModalHeader } from "@/components/modal/modal";
-import ListForm from "@/app/components/lists/list-form";
+import ListForm from "@/components/lists/list-form";
 import { updateListAction } from "@/app/actions/lists";
 
 interface EditListModalProps {

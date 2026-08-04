@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 import styles from './footer.module.scss';
 import Icon from '../icon/icon';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
 interface FooterProps {
   title?: string;
@@ -9,9 +11,9 @@ interface FooterProps {
   children?: React.ReactNode;
 }
 
-export default async function Footer({}: FooterProps) {
-  const t = await getTranslations('Footer');
-  const common = await getTranslations('Common');
+export default function Footer({}: FooterProps) {
+  const t = useTranslations('Footer');
+  const common = useTranslations('Common');
 
   return (
     <footer className={styles['container']}>
@@ -21,7 +23,7 @@ export default async function Footer({}: FooterProps) {
           <span>{t('brand')}</span>
         </div>
 
-        <nav className={styles['nav']}>
+        <nav className={`${styles['nav']}`}>
           <select className={`${styles['nav-select']} ${styles['dropdown-toggle']}`} name="language">
             <option value="en">{common('english')}</option>
             <option value="fr">{common('french')}</option>

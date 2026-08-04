@@ -1,4 +1,4 @@
-import Avatar from "@/app/components/avatar/avatar";
+import Avatar from "@/components/avatar/avatar";
 import styles from "./avatar-group.module.scss";
 
 interface AvatarGroupProps {

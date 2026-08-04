@@ -14,7 +14,7 @@ import {
 } from "@/components/dropdown";
 import { Modal, ModalClose, ModalContent, ModalHeader } from "@/components/modal/modal";
 import type { List } from "@/lib/types";
-import EditListModal from "@/app/components/lists/edit-list-modal";
+import EditListModal from "@/components/lists/edit-list-modal";
 import { updateListVisibilityAction } from "@/app/actions/lists";
 import { useQueryModal } from "@/hooks/use-query-modal";
 

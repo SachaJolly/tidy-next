@@ -17,7 +17,7 @@ import {
 } from '.';
 import Icon from '@/components/icon/icon';
 import NavLink from "@/components/nav-link/nav-link";
-import { AccountDropdown } from '@/app/components/navbar/account-dropdown';
+import { AccountDropdown } from '@/components/navbar/account-dropdown';
 import type { User } from '@/lib/types';
 
 // ─── Meta ─────────────────────────────────────────────────────────────────────

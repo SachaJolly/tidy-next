@@ -11,8 +11,8 @@ import {
   DropdownRadioGroup,
   DropdownRadioItem,
   DropdownText,
-} from '@/app/components/dropdown';
-import Avatar from '@/app/components/avatar/avatar';
+} from '@/components/dropdown';
+import Avatar from '@/components/avatar/avatar';
 import type { User } from '@/lib/types';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';

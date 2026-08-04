@@ -2,6 +2,7 @@
   "seeMore": "See more",
   "verifiedUser": "Verified user",
   "curatedBy": "Curated by",
+  "curatedByAuthor": "Curated by {author}",
   "noItemsYet": "No items in this list yet.",
   "updated": "Updated {date}",
   "items": "{count, plural, =0 {Empty} =1 {1 item} other {# items}}",

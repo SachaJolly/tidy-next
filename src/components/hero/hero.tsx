@@ -1,8 +1,10 @@
+'use client';
+
 import React from "react";
 import styles from "./hero.module.scss";
 import ButtonGroup from "../button-group/button-group";
 import Button from "../button/button";
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
 type HeroVariant = 'centered' | 'horizontal';
 
@@ -67,13 +69,13 @@ const HeroIllustration = () => (
   </svg>
 );
 
-export default async function Hero({
+export default function Hero({
   title,
   subtitle,
   children,
   variant = 'centered',
 }: HeroProps) {
-  const t = await getTranslations('Hero');
+  const t = useTranslations('Hero');
   const resolvedTitle = title ?? t('title');
   const resolvedSubtitle = subtitle ?? t('subtitle');
 

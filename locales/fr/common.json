@@ -2,6 +2,7 @@
   "seeMore": "Voir plus",
   "verifiedUser": "Utilisateur vérifié",
   "curatedBy": "Curaté par",
+  "curatedByAuthor": "Curaté par {author}",
   "noItemsYet": "Aucun item dans cette liste pour le moment.",
   "updated": "Mis à jour le {date}",
   "items": "{count, plural, =0 {Vide} =1 {1 item} other {# items}}",

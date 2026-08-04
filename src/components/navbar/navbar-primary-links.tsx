@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { useTranslations } from 'next-intl';
 import styles from './navbar.module.scss';
-import NavLink from '@/app/components/nav-link/nav-link';
+import NavLink from '@/components/nav-link/nav-link';
 import { stripLocalePrefix } from '@/lib/locale-path';
 
 interface NavbarPrimaryLinksProps {

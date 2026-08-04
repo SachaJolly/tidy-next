@@ -6,7 +6,7 @@ import {
   ListHeaderSection,
   ListItemsSection,
 } from './list-content';
-import { ListHeaderSkeleton, ListItemsSkeleton } from '@/app/components/loading-skeletons';
+import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/loading-skeletons';
 
 interface PageProps {
   params: Promise<{

@@ -2,8 +2,8 @@
 
 import React from "react";
 import { useLocale } from "next-intl";
-import Icon from "@/app/components/icon/icon";
-import type { IconName } from "@/app/components/icon/icons";
+import Icon from "@/components/icon/icon";
+import type { IconName } from "@/components/icon/icons";
 import styles from "./nav-link.module.scss";
 import { localizePath } from "@/lib/locale-path";
 

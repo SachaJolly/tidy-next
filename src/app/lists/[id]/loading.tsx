@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListPageSkeleton } from '@/app/components/loading-skeletons';
+import { ListPageSkeleton } from '@/components/loading-skeletons';
 
 export default function Loading() {
   return <ListPageSkeleton />;

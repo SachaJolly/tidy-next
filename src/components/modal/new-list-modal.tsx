@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { Modal, ModalContent, ModalHeader, ModalClose } from './modal';
-import ListForm from '@/app/components/lists/list-form';
+import ListForm from '@/components/lists/list-form';
 import type { List } from '@/lib/types';
 import styles from './modal.module.scss';
 import { useTranslations } from 'next-intl';

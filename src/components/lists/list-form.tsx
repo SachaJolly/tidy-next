@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 import Button from '@/components/button/button';
 import ButtonGroup from '@/components/button-group/button-group';
 import Input from '@/components/input/input';
-import Textarea from '@/app/components/textarea/textarea';
+import Textarea from '@/components/textarea/textarea';
 import { createListAction, type ListMutationResult } from '@/app/actions/lists';
 import type { List } from '@/lib/types';
 import { useTranslations } from 'next-intl';

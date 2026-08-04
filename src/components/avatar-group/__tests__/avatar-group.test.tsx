@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import AvatarGroup from "@/app/components/avatar-group/avatar-group";
+import AvatarGroup from "@/components/avatar-group/avatar-group";
 
 describe("AvatarGroup", () => {
   const mockAvatars = [
