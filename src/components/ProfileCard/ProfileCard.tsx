@@ -1,47 +1,47 @@
 import React from 'react';
-import styles from './curator-meta.module.scss';
-import ButtonGroup from '@/components/button-group/button-group';
-import Button from '@/components/button/button';
-import Avatar from '@/components/avatar/avatar';
-import MetaGroup from '@/components/meta-group/meta-group';
-import Meta from '@/components/meta/meta';
-import Icon from '@/components/icon/icon';
-import ListCard from '@/components/list-card/list-card';
+import styles from './ProfileCard.module.scss';
+import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
+import Button from '@/components/Button/Button';
+import Avatar from '@/components/Avatar/Avatar';
+import MetaGroup from '@/components/MetaGroup/MetaGroup';
+import Meta from '@/components/Meta/Meta';
+import Icon from '@/components/Icon/Icon';
+import ListCard from '@/components/ListCard/ListCard';
 import type { List } from '@/lib/types';
 import { getTranslations } from 'next-intl/server';
 
-// Shape of a curator entry as returned by GET /api/v1/users/curators
-// after transformApiData resolves the recentLists relationship from included.
-export interface Profile {
+export interface ProfileCardData {
   id: string;
   name: string;
-  username: string;
+  handle: string;
   bio: string | null;
   listsCount: number;
   recentLists: List[];
 }
 
-export type CuratorEntry = Profile;
+export type ProfileCardEntry = ProfileCardData;
 
-interface CuratorMetaProps {
-  profile: Profile;
+interface ProfileCardProps {
+  profile: ProfileCardData;
 }
 
-const CuratorMeta = async ({ profile }: CuratorMetaProps) => {
+const ProfileCard = async ({ profile }: ProfileCardProps) => {
   const common = await getTranslations('common');
-  const t = await getTranslations('curator-meta');
-  const { name, username, bio, listsCount, recentLists } = profile;
+  const t = await getTranslations('ProfileCard');
+  const { name, handle, bio, listsCount, recentLists } = profile;
+  const displayName = name || handle;
+  const initialsSource = displayName || handle || '?';
 
   return (
     <section className={styles['curator-list']}>
       <div className={styles['curator-meta-container']}>
         <div className={styles['curator-meta-content']}>
           <div className={styles['curator-meta-profile']}>
-            <Avatar size="56" initials={(name || username)[0]} />
+            <Avatar size="56" initials={initialsSource[0]} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-              <h4 className={styles['title']}>{name || username}</h4>
+              <h4 className={styles['title']}>{displayName}</h4>
               <MetaGroup>
-                <Meta type="handle">@{username}</Meta>
+                <Meta type="handle">@{handle}</Meta>
               </MetaGroup>
             </div>
           </div>
@@ -67,4 +67,4 @@ const CuratorMeta = async ({ profile }: CuratorMetaProps) => {
   );
 };
 
-export default CuratorMeta;
+export default ProfileCard;
