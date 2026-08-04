@@ -14,7 +14,24 @@
     "spanish": "Spanish - Español",
     "system": "System",
     "dark": "Dark",
-    "light": "Light"
+    "light": "Light",
+    "edit": "Edit",
+    "archive": "Archive list",
+    "report": "Report",
+    "copyLink": "Copy link",
+    "copyTo": "Copy to...",
+    "moveTo": "Move to...",
+    "manageCollaborators": "Manage collaborators",
+    "setVisibility": "Set visibility",
+    "updateVisibilityError": "Visibility update failed. Please try again.",
+    "visibility": {
+      "publicLabel": "Public",
+      "publicCaption": "Anyone can see",
+      "unindexedLabel": "Unindexed",
+      "unindexedCaption": "Only people with the link can see",
+      "privateLabel": "Private",
+      "privateCaption": "Only you can see"
+    }
   },
   "Auth": {
     "signinTitle": "Sign in to manage your lists",

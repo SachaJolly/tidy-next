@@ -127,22 +127,22 @@ export default function ListOptionsDropdown({
           <>
             <DropdownItem
               icon="edit"
-              label={t("edit")}
+              label={common("edit")}
               onSelect={() => queryModal.openModal("edit-list", listId)}
             />
             <DropdownItem
               icon="group"
-              label={t("manageCollaborators")}
+              label={common("manageCollaborators")}
               onSelect={() => queryModal.openModal("manage-collaborators", listId)}
             />
-            <DropdownItem icon="archive" destructive label={t("archiveList")} />
+            <DropdownItem icon="archive" destructive label={common("archive")} />
             <DropdownSeparator />
 
-            <DropdownLabel>{t("setVisibility")}</DropdownLabel>
+            <DropdownLabel>{common("setVisibility")}</DropdownLabel>
             <DropdownRadioGroup
               value={visibility}
               onValueChange={handleVisibilityChange}
-              label={t("setVisibility")}
+              label={common("setVisibility")}
               closeOnSelect
             >
               {VISIBILITY_OPTIONS.map(({ value, icon, labelKey, captionKey }) => (
@@ -150,15 +150,15 @@ export default function ListOptionsDropdown({
                   key={value}
                   value={value}
                   icon={icon}
-                  label={t(labelKey)}
-                  caption={t(captionKey)}
+                  label={common(`visibility.${labelKey}`)}
+                  caption={common(`visibility.${captionKey}`)}
                 />
               ))}
             </DropdownRadioGroup>
             {error ? (
               <DropdownText>
                 <p className="text-small" style={{ color: "var(--danger)" }}>
-                  {t("updateVisibilityError")}
+                  {common("updateVisibilityError")}
                 </p>
               </DropdownText>
             ) : null}
@@ -166,7 +166,7 @@ export default function ListOptionsDropdown({
           </>
         ) : null}
 
-        <DropdownItem icon="copy" label={t("copyLink")} onSelect={() => void handleCopyLink()} />
+        <DropdownItem icon="copy" label={common("copyLink")} onSelect={() => void handleCopyLink()} />
         <DropdownSeparator />
         <DropdownText>
           <p className="text-small">
@@ -191,7 +191,7 @@ export default function ListOptionsDropdown({
       {isCollaboratorsModalOpen && (
         <Modal size="default" onClose={() => queryModal.closeModal()}>
           <ModalHeader>
-            <h2>{t("manageCollaborators")}</h2>
+            <h2>{common("manageCollaborators")}</h2>
             <ModalClose />
           </ModalHeader>
           <ModalContent>
