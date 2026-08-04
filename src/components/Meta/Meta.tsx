@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './meta.module.scss';
+import styles from './Meta.module.scss';
 
 type MetaType =
   | 'muted'

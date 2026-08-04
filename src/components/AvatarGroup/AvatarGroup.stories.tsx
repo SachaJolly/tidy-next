@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
-import AvatarGroup from './avatar-group';
-import './avatar-group.module.scss';
+import AvatarGroup from './AvatarGroup';
+import './AvatarGroup.module.scss';
 
 const meta = {
   title: 'Components/AvatarGroup',

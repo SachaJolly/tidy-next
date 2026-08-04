@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
-import MetaGroup from '@/components/meta-group/meta-group';
-import Meta from '@/components/meta/meta';
-import styles from './item.module.scss';
+import MetaGroup from '@/components/MetaGroup/MetaGroup';
+import Meta from '@/components/Meta/Meta';
+import styles from './Item.module.scss';
 
 import { Item as ItemType } from '@/lib/types';
 

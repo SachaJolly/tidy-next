@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import styles from './footer.module.scss';
-import Icon from '../icon/icon';
+import styles from './Footer.module.scss';
+import Icon from '../Icon/Icon';
 import { useTranslations } from 'next-intl';
 
 interface FooterProps {

@@ -15,9 +15,9 @@ import {
   DropdownSearch,
   DropdownText,
 } from '.';
-import Icon from '@/components/icon/icon';
-import NavLink from '@/components/nav-link/nav-link';
-import { AccountDropdown } from '@/components/navbar/account-dropdown';
+import Icon from '@/components/Icon/Icon';
+import NavLink from '@/components/NavLink/NavLink';
+import { AccountDropdown } from '@/components/Navbar/AccountDropdown';
 import type { User } from '@/lib/types';
 
 // ─── Meta ─────────────────────────────────────────────────────────────────────

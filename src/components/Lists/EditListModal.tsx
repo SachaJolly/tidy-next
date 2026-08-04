@@ -3,9 +3,9 @@
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import Button from '@/components/button/button';
-import { Modal, ModalClose, ModalContent, ModalHeader } from '@/components/modal/modal';
-import ListForm from '@/components/lists/list-form';
+import Button from '@/components/Button/Button';
+import { Modal, ModalClose, ModalContent, ModalHeader } from '@/components/Modal/Modal';
+import ListForm from '@/components/Lists/ListForm';
 import { updateListAction } from '@/app/actions/lists';
 
 interface EditListModalProps {

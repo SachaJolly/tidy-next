@@ -1,40 +1,40 @@
 // Barrel  import all compound components from this single entry point.export
 // e.g. import { Dropdown, DropdownMenu, DropdownItem } from '@/components/dropdown'
 
-export { Dropdown } from './dropdown';
-export type { DropdownProps } from './dropdown';
+export { Dropdown } from './Dropdown';
+export type { DropdownProps } from './Dropdown';
 
-export { DropdownTrigger } from './dropdown-trigger';
-export type { DropdownTriggerProps } from './dropdown-trigger';
+export { DropdownTrigger } from './DropdownTrigger';
+export type { DropdownTriggerProps } from './DropdownTrigger';
 
-export { DropdownMenu } from './dropdown-menu';
-export type { DropdownMenuProps } from './dropdown-menu';
+export { DropdownMenu } from './DropdownMenu';
+export type { DropdownMenuProps } from './DropdownMenu';
 
-export { DropdownLabel } from './dropdown-label';
-export type { DropdownLabelProps } from './dropdown-label';
+export { DropdownLabel } from './DropdownLabel';
+export type { DropdownLabelProps } from './DropdownLabel';
 
-export { DropdownSeparator } from './dropdown-separator';
+export { DropdownSeparator } from './DropdownSeparator';
 
-export { DropdownItem } from './dropdown-item';
-export type { DropdownItemProps } from './dropdown-item';
+export { DropdownItem } from './DropdownItem';
+export type { DropdownItemProps } from './DropdownItem';
 
-export { DropdownRadioGroup } from './dropdown-radio-group';
-export type { DropdownRadioGroupProps } from './dropdown-radio-group';
+export { DropdownRadioGroup } from './DropdownRadioGroup';
+export type { DropdownRadioGroupProps } from './DropdownRadioGroup';
 
-export { DropdownRadioItem } from './dropdown-radio-item';
-export type { DropdownRadioItemProps } from './dropdown-radio-item';
+export { DropdownRadioItem } from './DropdownRadioItem';
+export type { DropdownRadioItemProps } from './DropdownRadioItem';
 
-export { DropdownSub } from './dropdown-sub';
-export type { DropdownSubProps } from './dropdown-sub';
+export { DropdownSub } from './DropdownSub';
+export type { DropdownSubProps } from './DropdownSub';
 
-export { DropdownSubTrigger } from './dropdown-sub-trigger';
-export type { DropdownSubTriggerProps } from './dropdown-sub-trigger';
+export { DropdownSubTrigger } from './DropdownSubTrigger';
+export type { DropdownSubTriggerProps } from './DropdownSubTrigger';
 
-export { DropdownSubContent } from './dropdown-sub-content';
-export type { DropdownSubContentProps } from './dropdown-sub-content';
+export { DropdownSubContent } from './DropdownSubContent';
+export type { DropdownSubContentProps } from './DropdownSubContent';
 
-export { DropdownSearch } from './dropdown-search';
-export type { DropdownSearchProps } from './dropdown-search';
+export { DropdownSearch } from './DropdownSearch';
+export type { DropdownSearchProps } from './DropdownSearch';
 
-export { DropdownText } from './dropdown-text';
-export type { DropdownTextProps } from './dropdown-text';
+export { DropdownText } from './DropdownText';
+export type { DropdownTextProps } from './DropdownText';

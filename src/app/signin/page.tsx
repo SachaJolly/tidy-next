@@ -2,9 +2,9 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import AuthLayout from "@/layouts/AuthLayout/AuthLayout";
-import Button from '@/components/button/button';
-import Input from '@/components/input/input';
+import AuthLayout from '@/layouts/AuthLayout/AuthLayout';
+import Button from '@/components/Button/Button';
+import Input from '@/components/Input/Input';
 import Link from 'next/link';
 import { signinAction } from '@/app/actions/auth';
 import { useLocale, useTranslations } from 'next-intl';
@@ -17,27 +17,14 @@ export default function SigninPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Stable ref so password managers can re-query the form by id if their
-  // cached DOM reference becomes stale (e.g. after a React StrictMode remount).
   const formRef = useRef<HTMLFormElement>(null);
-
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // useCallback gives the handler a stable reference so the <form onSubmit>
-  // prop never changes between renders — avoids unnecessary reconciliation
-  // that could cause password managers to see a different form object.
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
-      // Must be the very first synchronous call. Calling it after any await
-      // means the browser's default form submission has already fired,
-      // disconnecting the form from the DOM ("form is not connected" crash).
       e.preventDefault();
 
-      // Password managers set input.value via direct DOM assignment, bypassing
-      // React's synthetic onChange. FormData reads actual DOM values regardless
-      // of how they were set; React state is kept as a fallback for typed input.
       const data = new FormData(e.currentTarget);
       const emailValue = (data.get('email') as string) || email;
       const passwordValue = (data.get('password') as string) || password;
@@ -45,8 +32,6 @@ export default function SigninPage() {
       setError(null);
       setIsLoading(true);
 
-      // Set before calling router.push() so the finally block can skip the
-      // loading reset on the success path and avoid a re-render race.
       let navigationStarted = false;
 
       try {
@@ -63,9 +48,6 @@ export default function SigninPage() {
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred.');
       } finally {
-        // Error path only: reset loading so the user can retry.
-        // Success path: leave isLoading=true — the button stays locked while
-        // the route transition plays out and the component unmounts.
         if (!navigationStarted) setIsLoading(false);
       }
     },
@@ -79,12 +61,6 @@ export default function SigninPage() {
         <p className="text-center">{t('signinSubtitle')}</p>
       </div>
 
-      {/*
-        The <form> is always present and never conditionally rendered during
-        loading — structural DOM stability is required for password manager
-        compatibility. Loading state is expressed only via `disabled` on the
-        interactive elements; the form node itself never changes.
-      */}
       <form
         ref={formRef}
         id="signin-form"
@@ -92,12 +68,6 @@ export default function SigninPage() {
         autoComplete="on"
         style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}
       >
-        {/*
-          `name` is required for FormData indexing and for password managers
-          to recognise which credential goes in which input.
-          `autoComplete="current-password"` signals this is a sign-in form,
-          not a registration form, preventing a new-password suggestion.
-        */}
         <Input
           id="signin-email"
           name="email"

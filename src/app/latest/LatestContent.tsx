@@ -1,12 +1,12 @@
 import React from 'react';
 import { cookies } from 'next/headers';
 import PageLayout from '@/layouts/PageLayout';
-import PageHeader from '@/components/page-header/page-header';
-import CollectionList from '@/components/collection-list/collection-list';
-import Section from '@/components/section/section';
-import SectionHeader from '@/components/section-header/section-header';
-import ListCard from '@/components/list-card/list-card';
-import Hero from '@/components/hero/hero';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import CollectionList from '@/components/CollectionList/CollectionList';
+import Section from '@/components/Section/Section';
+import SectionHeader from '@/components/SectionHeader/SectionHeader';
+import ListCard from '@/components/ListCard/ListCard';
+import Hero from '@/components/Hero/Hero';
 import { api } from '@/lib/api';
 import { List } from '@/lib/types';
 import { getTranslations } from 'next-intl/server';

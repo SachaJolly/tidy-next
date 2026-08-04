@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
-import CuratorsContent from './curators-content';
-import { FeedPageSkeleton } from '@/components/loading-skeletons';
+import CuratorsContent from './CuratorsContent';
+import { FeedPageSkeleton } from '@/components/LoadingSkeletons';
 
 export default function CuratorsPage() {
   return (

@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
-import DashboardContent from './dashboard-content';
-import { FeedPageSkeleton } from '@/components/loading-skeletons';
+import DashboardContent from './DashboardContent';
+import { FeedPageSkeleton } from '@/components/LoadingSkeletons';
 
 export default function DashboardPage() {
   return (

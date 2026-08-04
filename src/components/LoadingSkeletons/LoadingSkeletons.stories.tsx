@@ -7,7 +7,7 @@ import {
   NavbarAuthFallback,
   ProfileHeaderSkeleton,
   ProfileListsSkeleton,
-} from './loading-skeletons';
+} from './LoadingSkeletons';
 
 const meta = {
   title: 'Components/LoadingSkeletons',

@@ -2,9 +2,9 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import AuthLayout from "@/layouts/AuthLayout/AuthLayout";
-import Button from '@/components/button/button';
-import Input from '@/components/input/input';
+import AuthLayout from '@/layouts/AuthLayout/AuthLayout';
+import Button from '@/components/Button/Button';
+import Input from '@/components/Input/Input';
 import Link from 'next/link';
 import { signupAction } from '@/app/actions/auth';
 import { useLocale, useTranslations } from 'next-intl';
@@ -19,9 +19,7 @@ export default function SignupPage() {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const formRef = useRef<HTMLFormElement>(null);
-
   const router = useRouter();
   const searchParams = useSearchParams();
 

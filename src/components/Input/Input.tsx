@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './input.module.scss';
+import styles from './Input.module.scss';
 
 // We accept all standard input element props
 type InputProps = React.ComponentPropsWithoutRef<'input'> & {

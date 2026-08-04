@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './section.module.scss';
+import styles from './Section.module.scss';
 
 interface SectionProps {
   className?: string;

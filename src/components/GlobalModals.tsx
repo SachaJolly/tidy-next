@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { useQueryModal } from '@/hooks/use-query-modal';
 
-const NewListModal = dynamic(() => import('@/components/modal/new-list-modal'), {
+const NewListModal = dynamic(() => import('@/components/Modal/NewListModal'), {
   ssr: false,
 });
 

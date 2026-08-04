@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { useLocale } from 'next-intl';
-import Icon from '@/components/icon/icon';
-import type { IconName } from '@/components/icon/icons';
-import styles from './nav-link.module.scss';
+import Icon from '@/components/Icon/Icon';
+import type { IconName } from '@/components/Icon/icons';
+import styles from './NavLink.module.scss';
 import { localizePath } from '@/lib/locale-path';
 
 interface NavLinkProps extends Omit<

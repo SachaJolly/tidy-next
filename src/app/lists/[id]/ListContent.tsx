@@ -7,17 +7,17 @@ import { api, ApiFetchError } from '@/lib/api';
 import { List, Item as ItemType, User } from '@/lib/types';
 import styles from '@/layouts/ListLayout/ListLayout.module.scss';
 import Link from 'next/link';
-import { Item } from '@/components/item/item';
-import MetaGroup from '@/components/meta-group/meta-group';
-import Meta from '@/components/meta/meta';
-import Avatar from '@/components/avatar/avatar';
-import Button from '@/components/button/button';
-import ButtonGroup from '@/components/button-group/button-group';
-import { Dropdown } from '@/components/dropdown';
+import { Item } from '@/components/Item/Item';
+import MetaGroup from '@/components/MetaGroup/MetaGroup';
+import Meta from '@/components/Meta/Meta';
+import Avatar from '@/components/Avatar/Avatar';
+import Button from '@/components/Button/Button';
+import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
+import { Dropdown } from '@/components/Dropdown';
 import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
-import ListOptionsDropdown from './list-options-dropdown';
-import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/loading-skeletons';
+import ListOptionsDropdown from './ListOptionsDropdown';
+import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/LoadingSkeletons';
 
 type ListPageData = {
   list: List;

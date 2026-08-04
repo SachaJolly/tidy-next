@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './textarea.module.scss';
+import styles from './Textarea.module.scss';
 
 type TextareaProps = React.ComponentPropsWithoutRef<'textarea'> & {
   label?: string;

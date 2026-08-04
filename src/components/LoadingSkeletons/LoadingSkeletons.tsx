@@ -1,7 +1,7 @@
 import React from 'react';
 import PageLayout from '@/layouts/PageLayout';
 import ListLayout from '@/layouts/ListLayout';
-import ListCardSkeleton from '@/components/list-card/list-card-skeleton';
+import ListCardSkeleton from '@/components/ListCard/ListCardSkeleton';
 
 type SkeletonBlockProps = {
   width?: string;

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
-import ListCard from './list-card';
-import './list-card.module.scss';
+import ListCard from './ListCard';
+import './ListCard.module.scss';
 
 const mockList = {
   id: '5a6f3d78b5df6d00042ceeb1',

@@ -2,8 +2,8 @@ import React, { Suspense, use } from 'react';
 import { api, ApiFetchError } from '@/lib/api';
 import type { List } from '@/lib/types';
 import ListLayout from '@/layouts/ListLayout';
-import { ListHeaderSection, ListItemsSection } from './list-content';
-import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/loading-skeletons';
+import { ListHeaderSection, ListItemsSection } from './ListContent';
+import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/LoadingSkeletons';
 
 interface PageProps {
   params: Promise<{

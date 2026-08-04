@@ -2,9 +2,9 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
 import { NextIntlClientProvider } from 'next-intl';
-import Footer from './footer';
+import Footer from './Footer';
 import messages from '@/lib/messages';
-import './footer.module.scss';
+import './Footer.module.scss';
 
 // Provide translations context for Footer component
 const withIntl = (Story: React.ComponentType) => (

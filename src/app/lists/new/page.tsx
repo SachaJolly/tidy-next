@@ -1,5 +1,5 @@
 import PageLayout from '@/layouts/PageLayout';
-import NewListPageComponent from './new-list-page';
+import NewListPageComponent from './NewListPage';
 
 export default function NewListRoutePage() {
   return (

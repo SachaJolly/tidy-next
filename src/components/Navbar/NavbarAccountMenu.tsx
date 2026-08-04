@@ -3,11 +3,11 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import styles from './navbar.module.scss';
-import NavLink from '@/components/nav-link/nav-link';
-import Avatar from '@/components/avatar/avatar';
-import { Dropdown } from '@/components/dropdown';
-import { AccountDropdown } from './account-dropdown';
+import styles from './Navbar.module.scss';
+import NavLink from '@/components/NavLink/NavLink';
+import Avatar from '@/components/Avatar/Avatar';
+import { Dropdown } from '@/components/Dropdown';
+import { AccountDropdown } from './AccountDropdown';
 import { logoutAction } from '@/app/actions/auth';
 import { User } from '@/lib/types';
 import { stripLocalePrefix } from '@/lib/locale-path';

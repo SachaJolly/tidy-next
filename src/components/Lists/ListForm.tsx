@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import Button from '@/components/button/button';
-import ButtonGroup from '@/components/button-group/button-group';
-import Input from '@/components/input/input';
-import Textarea from '@/components/textarea/textarea';
+import Button from '@/components/Button/Button';
+import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
+import Input from '@/components/Input/Input';
+import Textarea from '@/components/Textarea/Textarea';
 import { createListAction, type ListMutationResult } from '@/app/actions/lists';
 import type { List } from '@/lib/types';
 import { useTranslations } from 'next-intl';

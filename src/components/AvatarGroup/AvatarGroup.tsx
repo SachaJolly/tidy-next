@@ -1,5 +1,5 @@
-import Avatar from '@/components/avatar/avatar';
-import styles from './avatar-group.module.scss';
+import Avatar from '@/components/Avatar/Avatar';
+import styles from './AvatarGroup.module.scss';
 
 interface AvatarGroupProps {
   avatars: {

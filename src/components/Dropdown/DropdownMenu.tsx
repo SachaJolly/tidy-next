@@ -3,8 +3,8 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useDropdownContext, useIsMobile } from './context';
-import styles from './dropdown.module.scss';
-import Icon from '../icon/icon';
+import styles from './Dropdown.module.scss';
+import Icon from '../Icon/Icon';
 
 export interface DropdownMenuProps {
   children: React.ReactNode;

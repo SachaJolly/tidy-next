@@ -2,9 +2,9 @@
 
 import React, { useContext } from 'react';
 import { SubContentActiveContext, useDropdownContext } from './context';
-import styles from './dropdown.module.scss';
-import Icon from '@/components/icon/icon';
-import type { IconName } from '@/components/icon/icons';
+import styles from './Dropdown.module.scss';
+import Icon from '@/components/Icon/Icon';
+import type { IconName } from '@/components/Icon/icons';
 
 export interface DropdownItemProps {
   children?: React.ReactNode;

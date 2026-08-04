@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import ListCardSkeleton from './list-card-skeleton';
+import ListCardSkeleton from './ListCardSkeleton';
 
 const meta = {
   title: 'Components/ListCardSkeleton',

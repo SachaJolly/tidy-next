@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
 import { cookies } from 'next/headers';
-import styles from './navbar.module.scss';
-import NavLink from '@/components/nav-link/nav-link';
-import Icon from '@/components/icon/icon';
-import { Logo } from '@/components/logo/logo';
+import styles from './Navbar.module.scss';
+import NavLink from '@/components/NavLink/NavLink';
+import Icon from '@/components/Icon/Icon';
+import { Logo } from '@/components/Logo/Logo';
 import { getTranslations } from 'next-intl/server';
-import NavbarPrimaryLinks from './navbar-primary-links';
-import NavbarAuthContent from './navbar-auth-content';
-import { NavbarAuthFallback } from '@/components/loading-skeletons';
+import NavbarPrimaryLinks from './NavbarPrimaryLinks';
+import NavbarAuthContent from './NavbarAuthContent';
+import { NavbarAuthFallback } from '@/components/LoadingSkeletons';
 import { api, ApiFetchError } from '@/lib/api';
 import { User } from '@/lib/types';
 

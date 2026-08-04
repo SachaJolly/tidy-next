@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
-import LatestContent from './latest-content';
-import { FeedPageSkeleton } from '@/components/loading-skeletons';
+import LatestContent from './LatestContent';
+import { FeedPageSkeleton } from '@/components/LoadingSkeletons';
 
 export default function LatestPage() {
   return (

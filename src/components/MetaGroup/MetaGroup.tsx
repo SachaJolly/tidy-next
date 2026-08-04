@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './meta-group.module.scss';
+import styles from './MetaGroup.module.scss';
 
 interface MetaGroupProps {
   children: React.ReactNode;

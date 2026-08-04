@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import Icon from '../icon/icon';
-import MetaGroup from '../meta-group/meta-group';
-import Meta from '../meta/meta';
-import Button from '@/components/button/button';
-import { Dropdown } from '@/components/dropdown';
-import ListOptionsDropdown from '@/app/lists/[id]/list-options-dropdown';
-import styles from './list-card.module.scss';
+import Icon from '../Icon/Icon';
+import MetaGroup from '../MetaGroup/MetaGroup';
+import Meta from '../Meta/Meta';
+import Button from '@/components/Button/Button';
+import { Dropdown } from '@/components/Dropdown';
+import ListOptionsDropdown from '@/app/lists/[id]/ListOptionsDropdown';
+import styles from './ListCard.module.scss';
 import { List } from '@/lib/types';
 
 interface ListCardProps {

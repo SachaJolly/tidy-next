@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
 import { NextIntlClientProvider } from 'next-intl';
-import Hero from './hero';
+import Hero from './Hero';
 import messages from '@/lib/messages';
-import './hero.module.scss';
+import './Hero.module.scss';
 
 // Provide translations context for Hero component
 const withIntl = (Story: React.ComponentType) => (

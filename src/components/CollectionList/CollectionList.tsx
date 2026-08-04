@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './collection-list.module.scss'; // Assuming you're using CSS Modules
+import styles from './CollectionList.module.scss'; // Assuming you're using CSS Modules
 
 interface CollectionProps {
   children: React.ReactNode;

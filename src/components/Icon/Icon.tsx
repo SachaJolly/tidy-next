@@ -1,6 +1,6 @@
 import React from 'react';
 import { icons, type IconName } from './icons';
-import styles from './icon.module.scss';
+import styles from './Icon.module.scss';
 
 interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'ref' | 'color' | 'size'> {
   /** Icon name from the registry */

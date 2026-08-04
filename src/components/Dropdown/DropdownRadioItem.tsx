@@ -2,9 +2,9 @@
 
 import React, { useContext } from 'react';
 import { RadioGroupContext, SearchContext, useDropdownContext } from './context';
-import styles from './dropdown.module.scss';
-import Icon from '@/components/icon/icon';
-import type { IconName } from '@/components/icon/icons';
+import styles from './Dropdown.module.scss';
+import Icon from '@/components/Icon/Icon';
+import type { IconName } from '@/components/Icon/icons';
 
 export interface DropdownRadioItemProps {
   value: string;

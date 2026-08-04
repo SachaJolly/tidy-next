@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import styles from './hero.module.scss';
-import ButtonGroup from '../button-group/button-group';
-import Button from '../button/button';
+import styles from './Hero.module.scss';
+import ButtonGroup from '../ButtonGroup/ButtonGroup';
+import Button from '../Button/Button';
 import { useTranslations } from 'next-intl';
 
 type HeroVariant = 'centered' | 'horizontal';

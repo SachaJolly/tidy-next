@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import Navbar from '@/components/navbar/navbar';
-import Footer from '@/components/footer/footer';
-import GlobalModals from '@/components/global-modals';
+import Navbar from '@/components/Navbar/Navbar';
+import Footer from '@/components/Footer/Footer';
+import GlobalModals from '@/components/GlobalModals';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 

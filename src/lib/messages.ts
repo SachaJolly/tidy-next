@@ -58,7 +58,7 @@ import EditListModalEn from '../../locales/en/EditListModal.json';
 import AccountDropdownEn from '../../locales/en/AccountDropdown.json';
 import ListCardEn from '../../locales/en/ListCard.json';
 import itemEn from '../../locales/en/item.json';
-import CuratorMetaEn from '../../locales/en/CuratorMeta.json';
+import ProfileCardEn from '../../locales/en/ProfileCard.json';
 import ListOptionsDropdownEn from '../../locales/en/ListOptionsDropdown.json';
 import HeroEn from '../../locales/en/Hero.json';
 
@@ -83,7 +83,7 @@ import EditListModalFr from '../../locales/fr/EditListModal.json';
 import AccountDropdownFr from '../../locales/fr/AccountDropdown.json';
 import ListCardFr from '../../locales/fr/ListCard.json';
 import itemFr from '../../locales/fr/item.json';
-import CuratorMetaFr from '../../locales/fr/CuratorMeta.json';
+import ProfileCardFr from '../../locales/fr/ProfileCard.json';
 import ListOptionsDropdownFr from '../../locales/fr/ListOptionsDropdown.json';
 import HeroFr from '../../locales/fr/Hero.json';
 
@@ -116,7 +116,7 @@ const messagesEn = {
   EditListModal: EditListModalEn,
   AccountDropdown: AccountDropdownEn,
   ListCard: ListCardEn,
-  CuratorMeta: CuratorMetaEn,
+  ProfileCard: ProfileCardEn,
   ListOptionsDropdown: ListOptionsDropdownEn,
   Hero: HeroEn,
 };
@@ -141,7 +141,7 @@ const messagesFr = {
   EditListModal: EditListModalFr,
   AccountDropdown: AccountDropdownFr,
   ListCard: ListCardFr,
-  CuratorMeta: CuratorMetaFr,
+  ProfileCard: ProfileCardFr,
   ListOptionsDropdown: ListOptionsDropdownFr,
   Hero: HeroFr,
 };

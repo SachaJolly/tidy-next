@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { NextIntlClientProvider } from 'next-intl';
-import NewListModal from './new-list-modal';
+import NewListModal from './NewListModal';
 // Import centralized messages to avoid duplication
 import messages from '@/lib/messages';
 

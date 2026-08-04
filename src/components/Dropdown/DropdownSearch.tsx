@@ -2,8 +2,8 @@
 
 import React, { useContext } from 'react';
 import { SearchContext } from './context';
-import styles from './dropdown.module.scss';
-import Icon from '../icon/icon';
+import styles from './Dropdown.module.scss';
+import Icon from '../Icon/Icon';
 
 export interface DropdownSearchProps {
   placeholder?: string;

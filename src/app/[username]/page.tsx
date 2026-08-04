@@ -1,7 +1,7 @@
 import React, { Suspense, use } from 'react';
 import PageLayout from '@/layouts/PageLayout';
-import { ProfileHeaderSection, ProfileListsSection } from './profile-content';
-import { ProfileHeaderSkeleton, ProfileListsSkeleton } from '@/components/loading-skeletons';
+import { ProfileHeaderSection, ProfileListsSection } from './ProfileContent';
+import { ProfileHeaderSkeleton, ProfileListsSkeleton } from '@/components/LoadingSkeletons';
 
 interface UserPageProps {
   params: Promise<{

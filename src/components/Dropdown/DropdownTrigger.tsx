@@ -2,7 +2,7 @@
 
 import React, { useCallback } from 'react';
 import { useDropdownContext } from './context';
-import styles from './dropdown.module.scss';
+import styles from './Dropdown.module.scss';
 
 export interface DropdownTriggerProps {
   children: React.ReactNode;

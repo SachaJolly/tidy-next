@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
-import Avatar from './avatar';
-import './avatar.module.scss';
+import Avatar from './Avatar';
+import './Avatar.module.scss';
 
 const meta = {
   title: 'Components/Avatar',

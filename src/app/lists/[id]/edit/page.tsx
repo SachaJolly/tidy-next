@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { api, ApiFetchError } from '@/lib/api';
 import type { List, User } from '@/lib/types';
 import PageLayout from '@/layouts/PageLayout';
-import EditListPage from './edit-list-page';
+import EditListPage from './EditListPage';
 
 interface EditListRoutePageProps {
   params: { id: string };

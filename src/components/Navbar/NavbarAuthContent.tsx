@@ -3,9 +3,9 @@ import { cookies } from 'next/headers';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { api, ApiFetchError } from '@/lib/api';
 import { User } from '@/lib/types';
-import ButtonGroup from '@/components/button-group/button-group';
-import Button from '@/components/button/button';
-import NavbarAccountMenu from './navbar-account-menu';
+import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
+import Button from '@/components/Button/Button';
+import NavbarAccountMenu from './NavbarAccountMenu';
 import { localizePath } from '@/lib/locale-path';
 
 export default async function NavbarAuthContent() {

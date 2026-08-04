@@ -3,9 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
-import Icon from '@/components/icon/icon';
-import type { IconName } from '@/components/icon/icons';
-import styles from './button.module.scss';
+import Icon from '@/components/Icon/Icon';
+import type { IconName } from '@/components/Icon/icons';
+import styles from './Button.module.scss';
 import { localizePath } from '@/lib/locale-path';
 
 type BaseButtonProps = {
