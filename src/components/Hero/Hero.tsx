@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from './Hero.module.scss';
 import ButtonGroup from '../ButtonGroup/ButtonGroup';
-import Button from '../Button/Button';
+import Button from '../Button/button';
 import { useTranslations } from 'next-intl';
 
 type HeroVariant = 'centered' | 'horizontal';

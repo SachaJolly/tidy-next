@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import Button from './Button';
-import './Button.module.scss';
+import Button from './button';
+import './button.module.scss';
 import { icons, type IconName } from '@/components/Icon/icons';
 
 const DemoRow = ({ children }: { children: React.ReactNode }) => (
