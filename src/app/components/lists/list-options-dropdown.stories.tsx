@@ -4,51 +4,8 @@ import { NextIntlClientProvider } from "next-intl";
 import Button from "@/components/button/button";
 import { Dropdown } from "@/components/dropdown";
 import ListOptionsDropdown from "./list-options-dropdown";
-
-const messages = {
-  Common: {
-    curatedBy: "Curated by",
-    edit: "Edit",
-    archive: "Archive list",
-    copyLink: "Copy link",
-    manageCollaborators: "Manage collaborators",
-    setVisibility: "Set visibility",
-    updateVisibilityError: "Visibility update failed. Please try again.",
-    visibility: {
-      publicLabel: "Public",
-      publicCaption: "Anyone can see",
-      unindexedLabel: "Unindexed",
-      unindexedCaption: "Only people with the link can see",
-      privateLabel: "Private",
-      privateCaption: "Only you can see",
-    },
-  },
-  ListPage: {
-    updated: "Updated {date}",
-    settings: "Settings",
-  },
-  ListOptionsDropdown: {
-    manageCollaboratorsPlaceholder: "Collaborator management will be added here soon.",
-  },
-  EditListModal: {
-    trigger: "Edit",
-    title: "Edit list",
-    description: "Update the title and description, then save your changes.",
-    save: "Save changes",
-  },
-  ListForm: {
-    createList: "Create list",
-    cancel: "Cancel",
-    saving: "Saving...",
-    titleLabel: "Title",
-    descriptionLabel: "Description",
-    titlePlaceholder: "My reading list",
-    descriptionPlaceholder: "Tell people what this list is about",
-    titleRequired: "Please enter a list title.",
-    didNotReturnList: "The server did not return a list.",
-    creationFailed: "List creation failed.",
-  },
-};
+// Import translations from centralized export to avoid duplication
+import messages from "@/lib/messages";
 
 // This provider keeps the dropdown and modal copy localized in Storybook
 // without depending on the app router-level NextIntl setup.

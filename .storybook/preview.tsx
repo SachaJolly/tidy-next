@@ -9,6 +9,8 @@ import MockDate from 'mockdate';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import { mswHandlers } from './msw-handlers';
 import { theme } from './theme';
+// Import translations from centralized export to avoid duplication
+import messages from '../src/lib/messages';
 
 const serviceWorkerUrl = `${import.meta.env.BASE_URL ?? '/'}mockServiceWorker.js`;
 initialize({ onUnhandledRequest: 'bypass', serviceWorker: { url: serviceWorkerUrl } });
@@ -27,71 +29,10 @@ function ApplicationOverlaysRoot() {
   return null;
 }
 
-// Default message bundle for components that use useTranslations().
-// Extend this as needed for additional namespaces and languages.
-const defaultMessages = {
-  Common: {
-    seeMore: 'See more',
-    verifiedUser: 'Verified user',
-    curatedBy: 'Curated by',
-    noItemsYet: 'No items in this list yet.',
-    updated: 'Updated {date}',
-    items: '{count, plural, =0 {Empty} =1 {1 item} other {# items}}',
-    publicLists: '{count, plural, =0 {No public lists} =1 {1 public list} other {# public lists}}',
-    english: 'English',
-    german: 'German - Deutsch',
-    french: 'French - Français',
-    russian: 'Russian - Русский',
-    spanish: 'Spanish - Español',
-    system: 'System',
-    dark: 'Dark',
-    light: 'Light',
-    edit: 'Edit',
-    archive: 'Archive list',
-    report: 'Report',
-    copyLink: 'Copy link',
-    copyTo: 'Copy to...',
-    moveTo: 'Move to...',
-    manageCollaborators: 'Manage collaborators',
-    setVisibility: 'Set visibility',
-    updateVisibilityError: 'Visibility update failed. Please try again.',
-    visibility: {
-      publicLabel: 'Public',
-      publicCaption: 'Anyone can see',
-      unindexedLabel: 'Unindexed',
-      unindexedCaption: 'Only people with the link can see',
-      privateLabel: 'Private',
-      privateCaption: 'Only you can see',
-    },
-  },
-  ListCard: {
-    pinned: 'Pinned',
-    private: 'Private',
-    unindexed: 'Unindexed',
-    trending: 'Trending',
-    popular: 'Popular',
-    featured: 'Featured',
-    item: '{count, plural, one {# item} other {# items}}',
-    empty: 'Empty',
-    note: '{count, plural, one {# note} other {# notes}}',
-  },
-  ListPage: {
-    settings: 'Settings',
-    updated: 'Updated {date}',
-  },
-  CuratorMeta: {
-    lists: 'Lists',
-    curatedBy: 'Curated by',
-  },
-  ListOptionsDropdown: {
-    manageCollaboratorsPlaceholder: 'Collaborator management will be added here soon.',
-  },
-};
-
 const preview: Preview = {
   decorators: [
     (Story) => (
-      <NextIntlClientProvider locale="en" messages={defaultMessages}>
+      <NextIntlClientProvider locale="en" messages={messages}>
         <>
           <ApplicationOverlaysRoot />
           <Story />
