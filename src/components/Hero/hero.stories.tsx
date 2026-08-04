@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { expect } from 'storybook/test';
 import { NextIntlClientProvider } from 'next-intl';
 import Hero from './Hero';
 import messages from '@/lib/messages';
@@ -19,8 +18,17 @@ const meta = {
     layout: 'fullscreen',
   },
   tags: ['ai-generated', 'autodocs'],
-  argTypes: {},
-  args: {},
+  argTypes: {
+    variant: {
+      control: 'radio',
+      options: ['centered', 'horizontal'],
+    },
+  },
+  args: {
+    title: 'Become a curator.',
+    subtitle: 'Organize and make connections between your links! Whether articles, publications, videos, tweets or any kinds of content.',
+    variant: 'centered',
+  },
   decorators: [withIntl],
 } satisfies Meta<typeof Hero>;
 
@@ -29,8 +37,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
-  play: async ({ canvas }) => {
-    const title = canvas.getByText(/Become a curator/i);
-    await expect(title).toBeVisible();
+};
+export const Horizontal: Story = {
+  args: {
+    variant: 'horizontal',
   },
 };

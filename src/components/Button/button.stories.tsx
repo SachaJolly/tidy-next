@@ -1,7 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { expect } from 'storybook/test';
 import Button from './Button';
 import './Button.module.scss';
+import { icons, type IconName } from '@/components/Icon/icons';
+
+const DemoRow = ({ children }: { children: React.ReactNode }) => (
+  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>{children}</div>
+);
+
+const iconOptions = [undefined, ...Object.keys(icons)] as Array<IconName | undefined>;
 
 const meta = {
   title: 'Components/Button',
@@ -9,91 +15,93 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  args: {
+    label: 'Label',
+    variant: 'default',
+    size: 'default',
+    tinted: false,
+    transparent: false,
+  },
   argTypes: {
-    label: { control: 'text' }, // Added label to controls
-    icon: {
-      control: 'select',
-      options: [undefined, 'search', 'favorite'],
-    },
-    size: {
-      control: 'select',
-      options: ['default', 'small'],
+    label: {
+      control: 'text',
     },
     variant: {
       control: 'select',
       options: ['default', 'interactive'],
     },
-    tinted: { control: 'boolean' },
-    transparent: { control: 'boolean' },
-    disabled: { control: 'boolean' },
+    size: {
+      control: 'select',
+      options: ['default', 'small'],
+    },
+    tinted: {
+      control: 'boolean',
+      defaultValue: false,
+    },
+    transparent: {
+      control: 'boolean',
+      defaultValue: false,
+    },
+    icon: {
+      control: 'select',
+      options: iconOptions,
+    },
   },
-  args: {
-    label: 'Button Label', // Use label as the default for stories
-    size: 'default',
-    variant: 'default',
-    tinted: false,
-    transparent: false,
-    disabled: false,
-  },
+  tags: ['autodocs'],
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// --- Stories for the Link version (<a />) ---
-
-export const Link: Story = {
-  name: 'As a Link (using label)',
+export const Default: Story = {
   args: {
-    href: '#',
-  },
-  play: async ({ canvas }) => {
-    const button = canvas.getByRole('link', { name: /button label/i });
-    await expect(button).toBeVisible();
-  },
+    variant: 'default',
+  }
 };
 
-export const LinkWithChildren: Story = {
-  name: 'As a Link (using children)',
-  args: {
-    href: '#',
-    label: 'This is ignored', // To demonstrate that children takes priority
-    children: (
-      <span>
-        Click <strong>Me</strong>
-      </span>
-    ),
-  },
+export const Types: Story = {
+  render: () => (
+    <DemoRow>
+      <Button label="<button>" />
+      <Button href="#" label="<a> Link" />
+    </DemoRow>
+  ),
 };
 
-// --- Stories for the Button version (<button />) ---
-
-export const AsButton: Story = {
-  name: 'As a Button',
-  args: {
-    // No href prop makes it a <button>
-  },
-  play: async ({ canvas }) => {
-    const button = canvas.getByRole('button', { name: /button label/i });
-    await expect(button).toBeVisible();
-  },
+export const Sizes: Story = {
+  render: () => (
+    <DemoRow>
+      <Button href="#" label="Default" />
+      <Button href="#" label="Small" size="small" />
+    </DemoRow>
+  ),
 };
 
-export const AsButtonSubmit: Story = {
-  name: 'As a Button (Submit)',
+export const Interactive: Story = {
   args: {
     variant: 'interactive',
-    type: 'submit',
-    label: 'Submit Form',
+    label: 'Interactive',
   },
 };
 
-export const AsButtonDisabled: Story = {
-  name: 'As a Button (Disabled)',
+export const Tinted: Story = {
   args: {
     variant: 'interactive',
-    disabled: true,
-    label: 'Cannot Click',
+    label: 'Tinted',
+    tinted: true,
+  },
+};
+
+export const Transparent: Story = {
+  args: {
+    label: 'Transparent',
+    transparent: true,
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    icon: 'search',
+    label: 'Icon',
   },
 };

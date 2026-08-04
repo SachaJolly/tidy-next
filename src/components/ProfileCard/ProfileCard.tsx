@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import styles from './ProfileCard.module.scss';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
@@ -8,7 +10,7 @@ import Meta from '@/components/Meta/Meta';
 import Icon from '@/components/Icon/Icon';
 import ListCard from '@/components/ListCard/ListCard';
 import type { List } from '@/lib/types';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
 export interface ProfileCardData {
   id: string;
@@ -25,9 +27,9 @@ interface ProfileCardProps {
   profile: ProfileCardData;
 }
 
-const ProfileCard = async ({ profile }: ProfileCardProps) => {
-  const common = await getTranslations('common');
-  const t = await getTranslations('ProfileCard');
+const ProfileCard = ({ profile }: ProfileCardProps) => {
+  const common = useTranslations('common');
+  const t = useTranslations('ProfileCard');
   const { name, handle, bio, listsCount, recentLists } = profile;
   const displayName = name || handle;
   const initialsSource = displayName || handle || '?';

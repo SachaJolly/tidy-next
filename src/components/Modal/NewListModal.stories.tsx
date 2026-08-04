@@ -18,29 +18,32 @@ const meta = {
   component: NewListModal,
   tags: ['autodocs'],
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
     nextjs: {
       appDirectory: true,
     },
   },
   decorators: [withIntl],
+  render: () => (
+    <div
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        padding: '2rem',
+        background: 'var(--bg-app)',
+      }}
+    >
+      <div id="application-overlays" />
+      <NewListModal />
+    </div>
+  ),
 } satisfies Meta<typeof NewListModal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Closed: Story = {
-  parameters: {
-    nextjs: {
-      appDirectory: true,
-      navigation: {
-        pathname: '/dashboard',
-      },
-    },
-  },
-};
 
-export const Open: Story = {
+export const Default: Story = {
   parameters: {
     nextjs: {
       appDirectory: true,

@@ -176,9 +176,7 @@ export default function ListOptionsDropdown({
         />
         <DropdownSeparator />
         <DropdownText>
-          <p className="text-small">
-            {common('curatedByAuthor', { author: authorName })}
-          </p>
+          <p className="text-small">{common('curatedByAuthor', { author: authorName })}</p>
           <p className="text-small">{updatedLabel}</p>
         </DropdownText>
       </DropdownMenu>
@@ -198,7 +196,7 @@ export default function ListOptionsDropdown({
       {isCollaboratorsModalOpen && (
         <Modal size="default" onClose={() => queryModal.closeModal()}>
           <ModalHeader>
-          <h2>{common('action.manageCollaborators')}</h2>
+            <h2>{common('action.manageCollaborators')}</h2>
             <ModalClose />
           </ModalHeader>
           <ModalContent>

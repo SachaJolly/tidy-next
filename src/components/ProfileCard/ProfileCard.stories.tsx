@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import PageLayout from '@/layouts/PageLayout';
+import Section from '@/components/Section/Section';
 import ProfileCard, { type ProfileCardEntry } from './ProfileCard';
 
 const mockAuthor = {
   id: '1',
   email: 'alexandra@example.com',
-  name: 'Alexandra Jolly',
+  name: 'Alexandra',
   username: 'sachaaaj',
   bio: 'Profile card for fine links and digital discoveries.',
   createdAt: '2024-01-01T00:00:00Z',
@@ -12,7 +14,7 @@ const mockAuthor = {
 
 const mockProfile: ProfileCardEntry = {
   id: '1',
-  name: 'Alexandra Jolly',
+  name: 'Alexandra',
   handle: 'sachaaaj',
   bio: 'Profile card for fine links and digital discoveries.',
   listsCount: 12,
@@ -89,6 +91,13 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   tags: ['autodocs'],
   args: { profile: mockProfile },
+  render: (args) => (
+    <PageLayout>
+      <Section>
+        <ProfileCard {...args} />
+      </Section>
+    </PageLayout>
+  ),
 } satisfies Meta<typeof ProfileCard>;
 
 export default meta;
