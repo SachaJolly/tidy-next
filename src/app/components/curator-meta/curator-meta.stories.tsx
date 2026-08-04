@@ -30,6 +30,7 @@ const mockProfile: CuratorEntry = {
     },
     {
       id: '2', title: 'Frontend Architecture',
+      description: 'Modern patterns and best practices.',
       status: 'ACTIVE', visibility: 'PUBLIC', color: '#0ea5e9',
       displayMode: 'LIST', itemsCount: 11, collaboratorsCount: 0, notesCount: 0,
       isPinned: false, isFeatured: true, isTrending: false, isPopular: false,

@@ -8,6 +8,8 @@ import { getTranslations } from 'next-intl/server';
 import NavbarPrimaryLinks from './navbar-primary-links';
 import NavbarAuthContent from './navbar-auth-content';
 import { NavbarAuthFallback } from '@/app/components/loading-skeletons';
+import { api, ApiFetchError } from '@/lib/api';
+import { User } from '@/lib/types';
 
 /**
  * The navbar stays on the root layout, so it must render immediately even when
@@ -17,7 +19,8 @@ import { NavbarAuthFallback } from '@/app/components/loading-skeletons';
 export default async function Navbar() {
   const t = await getTranslations('Navbar');
   const cookieStore = await cookies();
-  const hasAuthToken = !!cookieStore.get('tidy_token');
+  const authToken = cookieStore.get('tidy_token')?.value ?? null;
+  const isAuthenticated = await resolveNavbarSession(authToken);
 
   return (
     <nav className={styles['container']}>
@@ -36,7 +39,7 @@ export default async function Navbar() {
           />
         </form>
 
-        <NavbarPrimaryLinks hasAuthToken={hasAuthToken} />
+        <NavbarPrimaryLinks hasAuthToken={isAuthenticated} />
 
         <Suspense fallback={<NavbarAuthFallback />}>
           <NavbarAuthContent />
@@ -44,4 +47,28 @@ export default async function Navbar() {
       </div>
     </nav>
   );
+}
+
+async function resolveNavbarSession(authToken: string | null): Promise<boolean> {
+  if (!authToken) {
+    return false;
+  }
+
+  // Presence of a cookie is not enough: expired/invalid tokens were keeping the
+  // dashboard link visible. We validate the session with /me to match real auth
+  // state and hide protected navigation when backend auth fails.
+  try {
+    const user = await api.auth.get<User>('/api/v1/me', {
+      authorization: authToken,
+      cache: 'no-store',
+    });
+
+    return !!user;
+  } catch (error) {
+    if (error instanceof ApiFetchError && error.status === 401) {
+      return false;
+    }
+
+    throw error;
+  }
 }

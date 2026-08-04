@@ -19,6 +19,7 @@ const mockList = {
   isPinned: false,
   isTrending: false,
   isPopular: false,
+  thumbnail: null,
   author: {
     id: '584348bf79a3c400042a5940',
     email: 'example@example.com',

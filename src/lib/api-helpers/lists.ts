@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import listsData from '@/data/lists.json';
-import { getUserById, getActiveUsers, User } from '../users/route';
-import { getListItems } from '../items/route';
+import { getUserById, getActiveUsers, User } from '@/lib/api-helpers/users';
+import { getListItems } from '@/lib/api-helpers/items';
 
 export type List = {
   id: string;

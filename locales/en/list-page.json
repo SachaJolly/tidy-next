@@ -1,0 +1,10 @@
+{
+  "updated": "Updated {date}",
+  "items": "{count, plural, =0 {Empty} =1 {1 item} other {# items}}",
+  "addItem": "Add item",
+  "like": "Like",
+  "share": "Share",
+  "addToFavorites": "Add to favorites",
+  "settings": "Settings",
+  "peopleLikedThisList": "{count, plural, =0 {No one liked this list yet} =1 {1 person liked this list} other {# people liked this list}}"
+}

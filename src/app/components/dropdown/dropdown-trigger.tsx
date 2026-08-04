@@ -36,7 +36,7 @@ export function DropdownTrigger({ children, asChild, ...rest }: DropdownTriggerP
       'aria-expanded': open,
       'aria-haspopup': 'menu',
       ...rest,
-    });
+    } as any);
   }
 
   return (

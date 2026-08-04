@@ -1,0 +1,15 @@
+{
+  "createListTitle": "Créer une liste",
+  "createListDescription": "Ajoutez un titre et une description facultative, puis enregistrez pour publier la nouvelle liste.",
+  "createList": "Créer la liste",
+  "saving": "Enregistrement…",
+  "cancel": "Annuler",
+  "back": "Retour",
+  "titleLabel": "Titre",
+  "descriptionLabel": "Description",
+  "titlePlaceholder": "Ma liste de lecture",
+  "descriptionPlaceholder": "Dites aux gens de quoi parle cette liste",
+  "titleRequired": "Veuillez saisir un titre pour la liste.",
+  "creationFailed": "La création de la liste a échoué.",
+  "didNotReturnList": "La création de la liste n'a pas renvoyé de nouvelle liste."
+}

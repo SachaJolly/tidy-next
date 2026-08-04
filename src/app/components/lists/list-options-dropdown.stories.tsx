@@ -34,14 +34,14 @@ type Story = StoryObj<typeof meta>;
 const listArgs = {
   listId: "list-1",
   isAuthor: true,
-  initialVisibility: "PUBLIC" as const,
+  initialVisibility: "PUBLIC",
   listTitle: "A curated list",
   listDescription: "A storybook-friendly list",
   authorName: "Alexandra",
   updatedAt: "2024-04-01T12:00:00.000Z",
-};
+} as const;
 
-const renderOpenMenu = (args: typeof listArgs) => (
+const renderOpenMenu = (args: any) => (
   <Dropdown open={true}>
     <Button icon="settings" aria-label="Settings" size="small" tinted={true} />
     <ListOptionsDropdown {...args} inline={true} />

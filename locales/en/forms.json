@@ -1,0 +1,15 @@
+{
+  "createListTitle": "Create a list",
+  "createListDescription": "Add a title and an optional description, then save to publish the new list.",
+  "createList": "Create list",
+  "saving": "Saving...",
+  "cancel": "Cancel",
+  "back": "Back",
+  "titleLabel": "Title",
+  "descriptionLabel": "Description",
+  "titlePlaceholder": "My reading list",
+  "descriptionPlaceholder": "Tell people what this list is about",
+  "titleRequired": "Please enter a list title.",
+  "creationFailed": "List creation failed.",
+  "didNotReturnList": "List creation did not return a new list."
+}

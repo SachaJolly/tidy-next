@@ -1,0 +1,17 @@
+{
+  "seeMore": "Voir plus",
+  "verifiedUser": "Utilisateur vérifié",
+  "curatedBy": "Curaté par",
+  "noItemsYet": "Aucun item dans cette liste pour le moment.",
+  "updated": "Mis à jour le {date}",
+  "items": "{count, plural, =0 {Vide} =1 {1 item} other {# items}}",
+  "publicLists": "{count, plural, =0 {Aucune liste publique} =1 {1 liste publique} other {# listes publiques}}",
+  "english": "Anglais - English",
+  "german": "Allemand - Deutsch",
+  "french": "Français",
+  "russian": "Russe - Русский",
+  "spanish": "Espagnol - Español",
+  "system": "Système",
+  "dark": "Sombre",
+  "light": "Clair"
+}

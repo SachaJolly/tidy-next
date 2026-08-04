@@ -17,6 +17,23 @@ interface ItemProps {
   item: ItemType;
 }
 
+// Type-safe content shape for items
+interface ItemContent {
+  url?: string;
+  favicon?: string;
+  title?: string;
+  description?: string;
+  label1?: string;
+  value1?: string;
+  label2?: string;
+  value2?: string;
+  author?: string;
+  siteName?: string;
+  host?: string;
+  image?: string;
+  embed?: string;
+}
+
 const ItemStats = async ({ stats }: ItemStatsProps) => {
   const t = await getTranslations('Item');
 
@@ -31,6 +48,8 @@ const ItemStats = async ({ stats }: ItemStatsProps) => {
 
 export const Item = async ({ item }: ItemProps) => {
   const t = await getTranslations('Item');
+  // Cast content to a type-safe shape
+  const content = item.content as ItemContent;
 
   // LINK display mode
   if (item.displayMode === "LINK") {
@@ -38,14 +57,14 @@ export const Item = async ({ item }: ItemProps) => {
       <div className={styles["container"]}>
         <a
           className={`${styles["content"]} ${styles["is-link"]}`}
-          href={item.content.url}
+          href={content.url}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {item.content.favicon && (
+          {content.favicon && (
             <img
               className={styles["favicon"]}
-              src={item.content.favicon}
+              src={content.favicon}
               alt=""
             />
           )}
@@ -64,58 +83,58 @@ export const Item = async ({ item }: ItemProps) => {
       <div className={styles["container"]}>
         <a
           className={`${styles["content"]} ${styles["is-bookmark"]}`}
-          href={item.content.url}
+          href={content.url}
           target="_blank"
           rel="noopener noreferrer"
         >
           <div className={styles["info"]}>
             <div className={styles["info-meta"]}>
               <h3 className={styles["title"]}>{item.title}</h3>
-              {item.content.description ? (
+              {content.description ? (
                 <p className={styles["description"]}>
-                  {item.content.description}
+                  {content.description}
                 </p>
               ) : (
                 <p className={styles["description"]}>{t('noDescription')}</p>
               )}
             </div>
-            {((item.content.label1 && item.content.value1) ||
-              (item.content.label2 && item.content.value2)) && (
+            {((content.label1 && content.value1) ||
+              (content.label2 && content.value2)) && (
               <dl className={styles["data-list"]}>
-                {item.content.label1 && item.content.value1 && (
+                {content.label1 && content.value1 && (
                   <div className={styles["data-list-item"]}>
-                    <dt>{item.content.label1}</dt>
-                    <dd>{item.content.value1}</dd>
+                    <dt>{content.label1}</dt>
+                    <dd>{content.value1}</dd>
                   </div>
                 )}
-                {item.content.label2 && item.content.value2 && (
+                {content.label2 && content.value2 && (
                   <div className={styles["data-list-item"]}>
-                    <dt>{item.content.label2}</dt>
-                    <dd>{item.content.value2}</dd>
+                    <dt>{content.label2}</dt>
+                    <dd>{content.value2}</dd>
                   </div>
                 )}
               </dl>
             )}
 
             <div className={styles["site"]}>
-              {item.content.favicon && (
+              {content.favicon && (
                 <img
                   className={styles["favicon"]}
-                  src={item.content.favicon}
+                  src={content.favicon}
                   alt=""
                 />
               )}
               <MetaGroup>
-                <Meta>{item.content.siteName || item.content.host}</Meta>
-                {item.content.author && <Meta>{item.content.author}</Meta>}
+                <Meta>{content.siteName || content.host}</Meta>
+                {content.author && <Meta>{content.author}</Meta>}
               </MetaGroup>
             </div>
           </div>
 
           <div className={styles["cover"]}>
-            {item.content.image && (
+            {content.image && (
               <picture>
-                <img src={item.content.image} alt={item.title} />
+                <img src={content.image} alt={item.title} />
               </picture>
             )}
           </div>
@@ -131,21 +150,21 @@ export const Item = async ({ item }: ItemProps) => {
   return (
     <div className={styles["container"]}>
       <div className={styles["content"]}>
-        {item.content.favicon && (
+        {content.favicon && (
           <img
             className={styles["favicon"]}
-            src={item.content.favicon}
+            src={content.favicon}
             alt=""
           />
         )}
         <h2>{item.title}</h2>
 
-        {item.content.embed ? (
-          <div dangerouslySetInnerHTML={{ __html: item.content.embed }} />
+        {content.embed ? (
+          <div dangerouslySetInnerHTML={{ __html: content.embed }} />
         ) : (
-          item.content.image && (
+          content.image && (
             <div>
-              <img src={item.content.image} alt={item.title} />
+              <img src={content.image} alt={item.title} />
             </div>
           )
         )}

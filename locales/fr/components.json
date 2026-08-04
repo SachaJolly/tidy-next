@@ -1,0 +1,68 @@
+{
+  "ListCard": {
+    "pinned": "Épinglée",
+    "private": "Privée",
+    "unindexed": "Non indexée",
+    "trending": "Tendance",
+    "popular": "Populaire",
+    "featured": "À la une",
+    "item": "{count, plural, =1 {1 item} other {# items}}",
+    "note": "{count, plural, =1 {1 note} other {# notes}}",
+    "empty": "Vide"
+  },
+  "Item": {
+    "views": "vues",
+    "likes": "j'aime",
+    "comments": "commentaires",
+    "noDescription": "Aucune description"
+  },
+  "CuratorMeta": {
+    "lists": "{count, plural, =1 {1 liste} other {# listes}}",
+    "follow": "Suivre"
+  },
+  "ListOptionsDropdown": {
+    "edit": "Modifier",
+    "manageCollaborators": "Gérer les collaborateurs",
+    "manageCollaboratorsPlaceholder": "La gestion des collaborateurs sera ajoutée ici prochainement.",
+    "archiveList": "Archiver la liste",
+    "setVisibility": "Définir la visibilité",
+    "updateVisibilityError": "La mise à jour de la visibilité a échoué. Veuillez réessayer.",
+    "publicLabel": "Publique",
+    "publicCaption": "Tout le monde peut voir",
+    "unindexedLabel": "Non indexée",
+    "unindexedCaption": "Seules les personnes avec le lien peuvent voir",
+    "privateLabel": "Privée",
+    "privateCaption": "Vous seul pouvez voir",
+    "copyLink": "Copier le lien"
+  },
+  "AccountDropdown": {
+    "proTitle": "Passer à TidyCards Pro",
+    "proCaption": "Débloquez de nouvelles fonctionnalités comme les statistiques et davantage de collections",
+    "account": "Compte",
+    "switchAccount": "Changer de compte",
+    "accounts": "Comptes",
+    "addAccount": "Ajouter un compte",
+    "signOut": "Se déconnecter",
+    "language": "Langue",
+    "theme": "Thème",
+    "system": "Système",
+    "dark": "Sombre",
+    "light": "Clair",
+    "appliesToYourAccount": "S'applique à votre compte",
+    "cookiePreferences": "Préférences des cookies",
+    "whatsNew": "Quoi de neuf ?",
+    "sendFeedback": "Envoyer un retour",
+    "helpCenter": "Centre d'aide",
+    "version": "TidyCards v1.0.0",
+    "publishedOn": "Publié le 30 juillet 2026"
+  },
+  "Hero": {
+    "title": "Devenez curateur.",
+    "subtitle": "Organisez et créez des liens entre vos contenus ! Qu'il s'agisse d'articles, de publications, de vidéos, de tweets ou de tout autre contenu.",
+    "joinToday": "Rejoindre",
+    "about": "À propos de TidyCards"
+  },
+  "SectionHeader": {
+    "seeMore": "Voir plus"
+  }
+}

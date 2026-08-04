@@ -1,0 +1,3 @@
+{
+  "publicLists": "{count, plural, =0 {No public lists} =1 {1 public list} other {# public lists}}"
+}

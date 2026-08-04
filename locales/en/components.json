@@ -1,0 +1,68 @@
+{
+  "ListCard": {
+    "pinned": "Pinned",
+    "private": "Private",
+    "unindexed": "Unindexed",
+    "trending": "Trending",
+    "popular": "Popular",
+    "featured": "Featured",
+    "item": "{count, plural, =1 {1 item} other {# items}}",
+    "note": "{count, plural, =1 {1 note} other {# notes}}",
+    "empty": "Empty"
+  },
+  "Item": {
+    "views": "views",
+    "likes": "likes",
+    "comments": "comments",
+    "noDescription": "No description"
+  },
+  "CuratorMeta": {
+    "lists": "{count, plural, =1 {1 list} other {# lists}}",
+    "follow": "Follow"
+  },
+  "ListOptionsDropdown": {
+    "edit": "Edit",
+    "manageCollaborators": "Manage collaborators",
+    "manageCollaboratorsPlaceholder": "Collaborator management will be added here soon.",
+    "archiveList": "Archive list",
+    "setVisibility": "Set visibility",
+    "updateVisibilityError": "Visibility update failed. Please try again.",
+    "publicLabel": "Public",
+    "publicCaption": "Anyone can see",
+    "unindexedLabel": "Unindexed",
+    "unindexedCaption": "Only people with the link can see",
+    "privateLabel": "Private",
+    "privateCaption": "Only you can see",
+    "copyLink": "Copy link"
+  },
+  "AccountDropdown": {
+    "proTitle": "Get TidyCards Pro",
+    "proCaption": "Unlock new features like stats and more collections",
+    "account": "Account",
+    "switchAccount": "Switch account",
+    "accounts": "Accounts",
+    "addAccount": "Add account",
+    "signOut": "Sign out",
+    "language": "Language",
+    "theme": "Theme",
+    "system": "System",
+    "dark": "Dark",
+    "light": "Light",
+    "appliesToYourAccount": "Applies to your account",
+    "cookiePreferences": "Cookie preferences",
+    "whatsNew": "What's new?",
+    "sendFeedback": "Send feedback",
+    "helpCenter": "Help center",
+    "version": "TidyCards v1.0.0",
+    "publishedOn": "Published on July 30, 2026"
+  },
+  "Hero": {
+    "title": "Become a curator.",
+    "subtitle": "Organize and make connections between your links! Whether articles, publications, videos, tweets or any kinds of content.",
+    "joinToday": "Join today",
+    "about": "About TidyCards"
+  },
+  "SectionHeader": {
+    "seeMore": "See more"
+  }
+}

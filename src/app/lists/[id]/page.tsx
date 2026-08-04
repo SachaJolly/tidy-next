@@ -34,14 +34,12 @@ export default function ListPage({ params }: PageProps) {
 
   return (
     <ListLayout>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <Suspense fallback={<ListHeaderSkeleton />}>
-          <ListHeaderSection id={id} />
-        </Suspense>
-        <Suspense fallback={<ListItemsSkeleton />}>
-          <ListItemsSection id={id} />
-        </Suspense>
-      </div>
+      <Suspense fallback={<ListHeaderSkeleton />}>
+        <ListHeaderSection id={id} />
+      </Suspense>
+      <Suspense fallback={<ListItemsSkeleton />}>
+        <ListItemsSection id={id} />
+      </Suspense>
     </ListLayout>
   );
 }
