@@ -78,7 +78,7 @@ export default function ListOptionsDropdown({
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('ListOptionsDropdown');
-  const listPage = useTranslations('ListPage');
+  const listPage = useTranslations('listPage');
   const common = useTranslations('common');
   const [isPending, startTransition] = useTransition();
   const [visibility, setVisibility] = useState<ListVisibility>(initialVisibility);
