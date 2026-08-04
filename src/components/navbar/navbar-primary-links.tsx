@@ -15,7 +15,7 @@ interface NavbarPrimaryLinksProps {
 export default function NavbarPrimaryLinks({ hasAuthToken }: NavbarPrimaryLinksProps) {
   const pathname = usePathname();
   const locale = useLocale();
-  const t = useTranslations('Navbar');
+  const t = useTranslations('navbar');
   const normalizedPathname = stripLocalePrefix(pathname, locale);
   const [isAuthenticated, setIsAuthenticated] = useState(hasAuthToken);
 

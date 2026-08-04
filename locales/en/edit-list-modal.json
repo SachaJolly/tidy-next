@@ -1,0 +1,6 @@
+{
+  "trigger": "Edit",
+  "title": "Edit list",
+  "description": "Update the title and description, then save your changes.",
+  "save": "Save changes"
+}

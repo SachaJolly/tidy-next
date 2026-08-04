@@ -12,7 +12,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { localizePath } from '@/lib/locale-path';
 
 export default function SigninPage() {
-  const t = useTranslations('Auth');
+  const t = useTranslations('auth');
   const locale = useLocale();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

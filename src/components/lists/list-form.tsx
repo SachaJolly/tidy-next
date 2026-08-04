@@ -34,7 +34,7 @@ export default function ListForm({
   onCancel,
   onSuccess,
 }: ListFormProps) {
-  const t = useTranslations('ListForm');
+  const t = useTranslations('forms');
   const resolvedSubmitLabel = submitLabel ?? t('createList');
   const resolvedCancelLabel = cancelLabel ?? t('cancel');
   const [title, setTitle] = useState(initialTitle);

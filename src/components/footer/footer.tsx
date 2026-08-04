@@ -12,8 +12,8 @@ interface FooterProps {
 }
 
 export default function Footer({}: FooterProps) {
-  const t = useTranslations('Footer');
-  const common = useTranslations('Common');
+  const t = useTranslations('footer');
+  const common = useTranslations('common');
 
   return (
     <footer className={styles['container']}>

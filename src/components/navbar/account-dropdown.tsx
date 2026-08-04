@@ -41,7 +41,7 @@ interface AccountDropdownProps {
 /** Renders only the <DropdownMenu> panel — mount inside <Dropdown> in the parent. */
 export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps) {
   const t = useTranslations('AccountDropdown');
-  const common = useTranslations('Common');
+  const common = useTranslations('common');
   const locale = useLocale();
   const [language, setLanguage] = useState<Language>('english');
   const [theme,    setTheme]    = useState<Theme>('system');

@@ -5,12 +5,14 @@
  * and merges them into a single object for both app and Storybook usage.
  *
  * Modular structure:
- *   locales/en/common.json        - Global UI strings
- *   locales/en/auth.json          - Authentication strings
- *   locales/en/navbar.json        - Navigation strings
- *   locales/en/footer.json        - Footer strings
+ *   locales/en/common.json           - Global UI strings
+ *   locales/en/auth.json             - Authentication strings
+ *   locales/en/navbar.json           - Navigation strings
+ *   locales/en/footer.json           - Footer strings
+ *   locales/en/new-list.json         - Modal namespace
+ *   locales/en/edit-list-modal.json  - Modal namespace
  *   locales/en/account-dropdown.json - Component namespace
- *   locales/en/list-card.json     - Component namespace
+ *   locales/en/list-card.json        - Component namespace
  *   ...and more
  *
  * The merged result:
@@ -18,7 +20,9 @@
  *     "common": {...},
  *     "auth": {...},
  *     "navbar": {...},
- *     "AccountDropdown": {...},   // kebab-case file → camelCase namespace
+ *     "NewList": {...},              // kebab-case file → camelCase namespace
+ *     "EditListModal": {...},
+ *     "AccountDropdown": {...},
  *     "ListCard": {...},
  *     ...etc
  *   }
@@ -33,8 +37,11 @@ import latestEn from '../../locales/en/latest.json';
 import curatorsEn from '../../locales/en/curators.json';
 import profileEn from '../../locales/en/profile.json';
 import listPageEn from '../../locales/en/list-page.json';
-import modalsEn from '../../locales/en/modals.json';
 import formsEn from '../../locales/en/forms.json';
+
+// Modal namespaces (kebab-case files → camelCase namespace keys)
+import newListEn from '../../locales/en/new-list.json';
+import editListModalEn from '../../locales/en/edit-list-modal.json';
 
 // Component namespaces (kebab-case files → camelCase namespace keys)
 import accountDropdownEn from '../../locales/en/account-dropdown.json';
@@ -55,8 +62,11 @@ import latestFr from '../../locales/fr/latest.json';
 import curatorsFr from '../../locales/fr/curators.json';
 import profileFr from '../../locales/fr/profile.json';
 import listPageFr from '../../locales/fr/list-page.json';
-import modalsFr from '../../locales/fr/modals.json';
 import formsFr from '../../locales/fr/forms.json';
+
+// Modal namespaces (kebab-case files → camelCase namespace keys)
+import newListFr from '../../locales/fr/new-list.json';
+import editListModalFr from '../../locales/fr/edit-list-modal.json';
 
 // Component namespaces (kebab-case files → camelCase namespace keys)
 import accountDropdownFr from '../../locales/fr/account-dropdown.json';
@@ -70,7 +80,7 @@ import sectionHeaderFr from '../../locales/fr/section-header.json';
 /**
  * Merge all modular translation files into a single namespace object.
  * Each module name becomes a top-level key in the messages object.
- * Kebab-case component files are mapped to camelCase namespace keys.
+ * Kebab-case files are mapped to camelCase namespace keys.
  */
 const messagesEn = {
   common: commonEn,
@@ -83,8 +93,10 @@ const messagesEn = {
   curators: curatorsEn,
   profile: profileEn,
   'list-page': listPageEn,
-  modals: modalsEn,
   forms: formsEn,
+  // Modal namespaces (camelCase for useTranslations usage)
+  NewList: newListEn,
+  EditListModal: editListModalEn,
   // Component namespaces (camelCase for useTranslations usage)
   AccountDropdown: accountDropdownEn,
   ListCard: listCardEn,
@@ -106,8 +118,10 @@ const messagesFr = {
   curators: curatorsFr,
   profile: profileFr,
   'list-page': listPageFr,
-  modals: modalsFr,
   forms: formsFr,
+  // Modal namespaces (camelCase for useTranslations usage)
+  NewList: newListFr,
+  EditListModal: editListModalFr,
   // Component namespaces (camelCase for useTranslations usage)
   AccountDropdown: accountDropdownFr,
   ListCard: listCardFr,

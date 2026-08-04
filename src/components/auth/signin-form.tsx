@@ -9,7 +9,7 @@ import { localizePath } from '@/lib/locale-path';
 
 export default function SigninForm() {
   const locale = useLocale();
-  const t = useTranslations('Auth');
+  const t = useTranslations('auth');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);

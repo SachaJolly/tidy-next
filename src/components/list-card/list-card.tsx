@@ -24,7 +24,7 @@ export default function ListCard({
   ...props
 }: ListCardProps & React.ComponentPropsWithoutRef<'div'>) {
   const t = useTranslations('ListCard');
-  const listPage = useTranslations('ListPage');
+  const listPage = useTranslations('list-page');
   const listClasses = `${styles.container} ${bigger ? styles.bigger : ''}`;
   const coverColor = { backgroundColor: list.color };
 
