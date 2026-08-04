@@ -19,7 +19,7 @@ export default function EditListPage({
 }: EditListPageProps) {
   const router = useRouter();
   const t = useTranslations("EditListModal");
-  const listForm = useTranslations("ListForm");
+  const listForm = useTranslations("forms");
 
   const handleSuccess = useCallback(() => {
     router.push(`/lists/${listId}`);
