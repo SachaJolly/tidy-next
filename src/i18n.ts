@@ -14,12 +14,11 @@ const localesDir = join(process.cwd(), 'locales');
  *   locales/{locale}/list-card.json (kebab-case)
  *   ...etc
  *
- * Each file is parsed as JSON and merged with namespace key converted to camelCase:
- *   {
- *     "common": {...},
- *     "AccountDropdown": {...},    // kebab-case filename → camelCase namespace
- *     "ListCard": {...},
- *   }
+ * Namespace key conversion logic:
+ *   - Page/domain files (no hyphens or ending with '-page'): keep lowercase with hyphens
+ *     Examples: auth, common, list-page, dashboard → 'auth', 'common', 'list-page', 'dashboard'
+ *   - Component/modal files (contain hyphens, not '-page'): convert to PascalCase
+ *     Examples: account-dropdown, list-card → 'AccountDropdown', 'ListCard'
  *
  * If a module file is missing, it's silently skipped (fallback behavior).
  * This allows gradual migration of translation modules.
@@ -27,6 +26,10 @@ const localesDir = join(process.cwd(), 'locales');
 function loadMessages(locale: Locale): Record<string, unknown> {
   const localeDir = join(localesDir, locale);
   const messages: Record<string, unknown> = {};
+
+  // Explicit mapping for files that should keep kebab-case naming
+  // (page-level domains where the hyphen is intentional)
+  const kebabCaseFiles = new Set(['list-page']);
 
   try {
     // List all JSON files in the locale directory
@@ -43,19 +46,27 @@ function loadMessages(locale: Locale): Record<string, unknown> {
         const raw = readFileSync(filePath, 'utf8');
         const moduleMessages = JSON.parse(raw) as Record<string, unknown>;
 
-        // Convert kebab-case filenames to camelCase namespace keys.
-        // E.g., "account-dropdown" → "AccountDropdown", "list-card" → "ListCard"
-        // This allows components to use useTranslations('ComponentName') with camelCase.
-        const namespaceName = fileBaseName
-          .split('-')
-          .map((part, idx) => {
-            // First part keeps its original case (e.g., "common" stays "common"),
-            // subsequent parts are capitalized (e.g., "dropdown" → "Dropdown")
-            return idx === 0
-              ? part
-              : part.charAt(0).toUpperCase() + part.slice(1);
-          })
-          .join('');
+        // Convert filename to namespace key.
+        // Special cases:
+        //   - Single-word names (no hyphens) stay lowercase: auth → 'auth'
+        //   - Explicitly-marked kebab-case files stay as-is: list-page → 'list-page'
+        //   - Other hyphenated names convert to PascalCase: account-dropdown → 'AccountDropdown'
+        let namespaceName = fileBaseName;
+        
+        if (!fileBaseName.includes('-')) {
+          // Single-word files: keep as lowercase (auth, common, dashboard, etc.)
+          namespaceName = fileBaseName;
+        } else if (kebabCaseFiles.has(fileBaseName)) {
+          // Explicit kebab-case files: keep as-is (list-page)
+          namespaceName = fileBaseName;
+        } else {
+          // Multi-word component/modal files: convert to PascalCase
+          // account-dropdown → AccountDropdown, list-card → ListCard
+          namespaceName = fileBaseName
+            .split('-')
+            .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+            .join('');
+        }
 
         messages[namespaceName] = moduleMessages;
       } catch (error) {
