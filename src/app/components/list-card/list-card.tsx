@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import Icon from '../icon/icon';
 import MetaGroup from '../meta-group/meta-group';
 import Meta from '../meta/meta';
@@ -7,7 +10,6 @@ import { Dropdown } from '@/components/dropdown';
 import ListOptionsDropdown from '@/app/components/lists/list-options-dropdown';
 import styles from './list-card.module.scss';
 import { List } from '@/lib/types';
-import { getTranslations } from 'next-intl/server';
 
 interface ListCardProps {
   list: List;
@@ -15,14 +17,14 @@ interface ListCardProps {
   isAuthor?: boolean;
 }
 
-export default async function ListCard({
+export default function ListCard({
   list,
   bigger = false,
   isAuthor = false,
   ...props
 }: ListCardProps & React.ComponentPropsWithoutRef<'div'>) {
-  const t = await getTranslations('ListCard');
-  const listPage = await getTranslations('ListPage');
+  const t = useTranslations('ListCard');
+  const listPage = useTranslations('ListPage');
   const listClasses = `${styles.container} ${bigger ? styles.bigger : ''}`;
   const coverColor = { backgroundColor: list.color };
 
