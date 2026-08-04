@@ -3,7 +3,7 @@
 import React, { useContext } from 'react';
 import { SearchContext } from './context';
 import styles from './Dropdown.module.scss';
-import Icon from '../Icon/Icon';
+import Icon from '@/components/Icon/Icon';
 
 export interface DropdownSearchProps {
   placeholder?: string;

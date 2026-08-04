@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, .9);
+  background-color: rgba(255, 255, 255, 0.9);
   width: 100%;
   height: 100%;
   display: flex;
@@ -27,15 +27,15 @@
   max-width: 100%;
   box-shadow: var(--shadow-overlay);
 
-  &[data-size="small"] {
+  &[data-size='small'] {
     width: 384px;
   }
 
-  &[data-size="default"] {
+  &[data-size='default'] {
     width: 700px;
   }
 
-  &[data-size="large"] {
+  &[data-size='large'] {
     width: 100%;
   }
 
@@ -67,21 +67,21 @@
 }
 
 .small {
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 1rem;
   color: var(--text-muted);
 }
 
 .closeButton {
   position: absolute;
-  top: .5rem;
-  right: .5rem;
+  top: 0.5rem;
+  right: 0.5rem;
   background: none;
   border: none;
   border-radius: var(--radius-full);
   cursor: pointer;
   color: var(--text-muted);
-  padding: .5rem;
+  padding: 0.5rem;
 
   &:hover {
     background-color: var(--surface-highlight);

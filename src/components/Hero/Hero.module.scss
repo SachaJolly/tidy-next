@@ -10,13 +10,9 @@
   padding: 8rem 0 6rem;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      var(--surface-background)
-    );
+    background: linear-gradient(to bottom, transparent, var(--surface-background));
     top: 0;
     left: 0;
     right: 0;
@@ -34,8 +30,8 @@
   gap: 1rem;
 
   width: 100%;
-  padding-right: .5rem;
-  padding-left: .5rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
   margin-right: auto;
   margin-left: auto;
 

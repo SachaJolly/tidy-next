@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { createPortal } from 'react-dom';
 import { useDropdownContext, useIsMobile } from './context';
 import styles from './Dropdown.module.scss';
-import Icon from '../Icon/Icon';
+import Icon from '@/components/Icon/Icon';
 
 export interface DropdownMenuProps {
   children: React.ReactNode;

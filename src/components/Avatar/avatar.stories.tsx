@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
+
 import Avatar from './Avatar';
+
 import './Avatar.module.scss';
 
 const meta = {

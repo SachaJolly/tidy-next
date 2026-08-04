@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import Icon from '../Icon/Icon';
-import MetaGroup from '../MetaGroup/MetaGroup';
-import Meta from '../Meta/Meta';
 import Button from '@/components/Button/Button';
+import Icon from '@/components/Icon/Icon';
 import { Dropdown } from '@/components/Dropdown';
+import Meta from '@/components/Meta/Meta';
+import MetaGroup from '@/components/MetaGroup/MetaGroup';
 import ListOptionsDropdown from '@/app/lists/[id]/ListOptionsDropdown';
 import styles from './ListCard.module.scss';
 import { List } from '@/lib/types';

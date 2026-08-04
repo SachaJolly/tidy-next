@@ -1,15 +1,18 @@
 import React, { Suspense } from 'react';
 import { cookies } from 'next/headers';
-import styles from './Navbar.module.scss';
-import NavLink from '@/components/NavLink/NavLink';
-import Icon from '@/components/Icon/Icon';
-import { Logo } from '@/components/Logo/Logo';
 import { getTranslations } from 'next-intl/server';
-import NavbarPrimaryLinks from './NavbarPrimaryLinks';
-import NavbarAuthContent from './NavbarAuthContent';
-import { NavbarAuthFallback } from '@/components/LoadingSkeletons';
+
+import Icon from '@/components/Icon/Icon';
+import NavLink from '@/components/NavLink/NavLink';
 import { api, ApiFetchError } from '@/lib/api';
+import { Logo } from '@/components/Logo/Logo';
+import { NavbarAuthFallback } from '@/components/LoadingSkeletons';
 import { User } from '@/lib/types';
+
+import NavbarAuthContent from './NavbarAuthContent';
+import NavbarPrimaryLinks from './NavbarPrimaryLinks';
+
+import styles from './Navbar.module.scss';
 
 /**
  * The navbar stays on the root layout, so it must render immediately even when

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './Footer.module.scss';
-import Icon from '../Icon/Icon';
+import Icon from '@/components/Icon/Icon';
 import { useTranslations } from 'next-intl';
 
 interface FooterProps {

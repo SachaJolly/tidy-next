@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styles from './CollectionList.module.scss'; // Assuming you're using CSS Modules
 
 interface CollectionProps {

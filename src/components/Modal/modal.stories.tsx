@@ -1,8 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { Modal, ModalHeader, ModalContent, ModalFooter, ModalClose } from './Modal';
-import Button from '@/components/Button/Button';
 import React from 'react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+
+import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
+
+import { Modal, ModalHeader, ModalContent, ModalFooter, ModalClose } from './Modal';
 
 const meta: Meta<typeof Modal> = {
   title: 'Overlays/Modal',

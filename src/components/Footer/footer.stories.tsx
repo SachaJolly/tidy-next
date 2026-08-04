@@ -2,8 +2,11 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
 import { NextIntlClientProvider } from 'next-intl';
-import Footer from './Footer';
+
 import messages from '@/lib/messages';
+
+import Footer from './Footer';
+
 import './Footer.module.scss';
 
 // Provide translations context for Footer component

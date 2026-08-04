@@ -1,12 +1,14 @@
 import React from 'react';
 import { cookies } from 'next/headers';
 import { getLocale, getTranslations } from 'next-intl/server';
-import { api, ApiFetchError } from '@/lib/api';
-import { User } from '@/lib/types';
-import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
+
 import Button from '@/components/Button/Button';
-import NavbarAccountMenu from './NavbarAccountMenu';
+import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
+import { api, ApiFetchError } from '@/lib/api';
 import { localizePath } from '@/lib/locale-path';
+import { User } from '@/lib/types';
+
+import NavbarAccountMenu from './NavbarAccountMenu';
 
 export default async function NavbarAuthContent() {
   const t = await getTranslations('navbar');

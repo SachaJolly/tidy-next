@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
+
 import Icon from './Icon';
+
 import './Icon.module.scss';
 
 const meta = {

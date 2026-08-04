@@ -18,7 +18,7 @@ import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
-import packageJson from '../../../package.json';
+import packageJson from '@/../package.json';
 
 // Mock accounts — replace with real data from auth/API when available.
 const MOCK_ACCOUNTS = [

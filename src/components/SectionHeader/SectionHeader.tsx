@@ -1,7 +1,9 @@
 import React from 'react';
-import styles from './SectionHeader.module.scss';
-import Icon from '@/components/Icon/Icon';
 import { getTranslations } from 'next-intl/server';
+
+import Icon from '@/components/Icon/Icon';
+
+import styles from './SectionHeader.module.scss';
 
 interface SectionHeaderProps {
   title: string;

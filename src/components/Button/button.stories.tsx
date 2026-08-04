@@ -1,10 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import Button from './Button';
-import './Button.module.scss';
+
 import { icons, type IconName } from '@/components/Icon/icons';
 
+import Button from './Button';
+
+import './Button.module.scss';
+
 const DemoRow = ({ children }: { children: React.ReactNode }) => (
-  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>{children}</div>
+  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+    {children}
+  </div>
 );
 
 const iconOptions = [undefined, ...Object.keys(icons)] as Array<IconName | undefined>;
@@ -56,7 +61,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     variant: 'default',
-  }
+  },
 };
 
 export const Types: Story = {

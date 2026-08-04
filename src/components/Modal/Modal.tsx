@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './Modal.module.scss';
-import Icon from '../Icon/Icon';
+import Icon from '@/components/Icon/Icon';
 
 // ─── Focus trap ───────────────────────────────────────────────────────────────
 // All element types that can receive keyboard focus. Used to cycle Tab/Shift+Tab

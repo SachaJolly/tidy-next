@@ -1,9 +1,11 @@
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
-import MetaGroup from '@/components/MetaGroup/MetaGroup';
-import Meta from '@/components/Meta/Meta';
-import styles from './Item.module.scss';
 
+import Meta from '@/components/Meta/Meta';
+import MetaGroup from '@/components/MetaGroup/MetaGroup';
 import { Item as ItemType } from '@/lib/types';
+
+import styles from './Item.module.scss';
 
 interface ItemStatsProps {
   stats: {
@@ -32,6 +34,29 @@ interface ItemContent {
   host?: string;
   image?: string;
   embed?: string;
+}
+
+const contentImageSizes = [
+  { media: '(max-width: 617px)' },
+  { media: '(min-width: 618px)' },
+] as const;
+
+function ResponsiveContentImage({ src, alt }: { src: string; alt: string }) {
+  return (
+    <picture>
+      {contentImageSizes.map(({ media }) => (
+        <source key={media} media={media} srcSet={src} />
+      ))}
+      <Image
+        alt={alt}
+        className={styles['cover-image']}
+        height={512}
+        src={src}
+        unoptimized={true}
+        width={1024}
+      />
+    </picture>
+  );
 }
 
 const ItemStats = async ({ stats }: ItemStatsProps) => {
@@ -67,7 +92,16 @@ export const Item = async ({ item }: ItemProps) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {content.favicon && <img className={styles['favicon']} src={content.favicon} alt="" />}
+          {content.favicon && (
+            <Image
+              alt=""
+              className={styles['favicon']}
+              height={16}
+              src={content.favicon}
+              unoptimized={true}
+              width={16}
+            />
+          )}
           <h3 className={styles['title']}>{item.title}</h3>
         </a>
 
@@ -115,7 +149,14 @@ export const Item = async ({ item }: ItemProps) => {
 
             <div className={styles['site']}>
               {content.favicon && (
-                <img className={styles['favicon']} src={content.favicon} alt="" />
+                <Image
+                  alt=""
+                  className={styles['favicon']}
+                  height={16}
+                  src={content.favicon}
+                  unoptimized={true}
+                  width={16}
+                />
               )}
               <MetaGroup>
                 <Meta>{content.siteName || content.host}</Meta>
@@ -125,11 +166,7 @@ export const Item = async ({ item }: ItemProps) => {
           </div>
 
           <div className={styles['cover']}>
-            {content.image && (
-              <picture>
-                <img src={content.image} alt={item.title} />
-              </picture>
-            )}
+            {content.image && <ResponsiveContentImage alt={item.title} src={content.image} />}
           </div>
         </a>
 
@@ -143,7 +180,16 @@ export const Item = async ({ item }: ItemProps) => {
   return (
     <div className={styles['container']}>
       <div className={styles['content']}>
-        {content.favicon && <img className={styles['favicon']} src={content.favicon} alt="" />}
+        {content.favicon && (
+          <Image
+            alt=""
+            className={styles['favicon']}
+            height={16}
+            src={content.favicon}
+            unoptimized={true}
+            width={16}
+          />
+        )}
         <h2>{item.title}</h2>
 
         {content.embed ? (
@@ -151,7 +197,7 @@ export const Item = async ({ item }: ItemProps) => {
         ) : (
           content.image && (
             <div>
-              <img src={content.image} alt={item.title} />
+              <ResponsiveContentImage alt={item.title} src={content.image} />
             </div>
           )
         )}

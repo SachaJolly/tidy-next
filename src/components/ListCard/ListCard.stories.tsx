@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
+
 import ListCard from './ListCard';
+
 import './ListCard.module.scss';
 
 const mockList = {

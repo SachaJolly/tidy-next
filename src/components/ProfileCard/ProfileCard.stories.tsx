@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+
 import PageLayout from '@/layouts/PageLayout';
 import Section from '@/components/Section/Section';
+
 import ProfileCard, { type ProfileCardEntry } from './ProfileCard';
 
 const mockAuthor = {

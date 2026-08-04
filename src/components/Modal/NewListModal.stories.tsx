@@ -1,7 +1,9 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { NextIntlClientProvider } from 'next-intl';
+
 import NewListModal from './NewListModal';
+
 // Import centralized messages to avoid duplication
 import messages from '@/lib/messages';
 
@@ -41,7 +43,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
 
 export const Default: Story = {
   parameters: {

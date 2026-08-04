@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { NextIntlClientProvider } from 'next-intl';
-import Hero from './Hero';
+
 import messages from '@/lib/messages';
+
+import Hero from './Hero';
+
 import './Hero.module.scss';
 
 // Provide translations context for Hero component
@@ -26,7 +29,8 @@ const meta = {
   },
   args: {
     title: 'Become a curator.',
-    subtitle: 'Organize and make connections between your links! Whether articles, publications, videos, tweets or any kinds of content.',
+    subtitle:
+      'Organize and make connections between your links! Whether articles, publications, videos, tweets or any kinds of content.',
     variant: 'centered',
   },
   decorators: [withIntl],

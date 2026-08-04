@@ -3,8 +3,8 @@
 import React, { useContext } from 'react';
 import { DropdownSubContext, useDropdownContext } from './context';
 import styles from './Dropdown.module.scss';
-import Icon from '../Icon/Icon';
-import type { IconName } from '../Icon/icons';
+import Icon from '@/components/Icon/Icon';
+import type { IconName } from '@/components/Icon/icons';
 
 export interface DropdownSubTriggerProps {
   children: React.ReactNode;
