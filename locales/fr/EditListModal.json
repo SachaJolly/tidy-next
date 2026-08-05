@@ -1,7 +1,7 @@
 {
   "title": "Modifier la liste",
   "description": "Mettez à jour le titre et la description, puis enregistrez vos modifications.",
-  "save": "Enregistrer les modifications",
+  "save": "Mettre à jour",
   "loading": "Chargement de la liste…",
   "error": {
     "notFound": "Cette liste est introuvable.",

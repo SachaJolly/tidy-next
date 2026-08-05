@@ -2,7 +2,7 @@
   "trigger": "Edit",
   "title": "Edit list",
   "description": "Update the title and description, then save your changes.",
-  "save": "Save changes",
+  "save": "Update",
   "loading": "Loading list…",
   "error": {
     "notFound": "This list could not be found.",
