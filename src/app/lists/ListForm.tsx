@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import Input from '@/components/Input/Input';
@@ -73,6 +73,14 @@ export default function ListForm({
   );
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Sync form state when props change (e.g., when modal opens with new list data)
+  useEffect(() => {
+    setTitle(initialTitle);
+    setDescription(initialDescription);
+    setVisibility(normalizeVisibility(initialVisibility));
+    setError(null);
+  }, [initialTitle, initialDescription, initialVisibility]);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
