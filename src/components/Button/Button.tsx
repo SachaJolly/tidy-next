@@ -60,15 +60,15 @@ const Button: React.FC<ButtonProps> = ({
   const innerContent = (
     <>
       {icon && (
-        <div className={styles.icon}>
+        <span className={styles.icon}>
           <Icon name={icon} size={20} />
-        </div>
+        </span>
       )}
       {content && <span>{content}</span>}
       {hasDropdown && (
-        <div className={styles.dropdown}>
+        <span className={styles.dropdown}>
           <Icon name="dropdown" size={20} />
-        </div>
+        </span>
       )}
     </>
   );
