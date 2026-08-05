@@ -7,6 +7,7 @@ import type { List } from '@/lib/types';
 type ListMutationInput = {
   title: string;
   description: string;
+  visibility?: string;
 };
 type ListVisibility = List['visibility'];
 
@@ -18,6 +19,7 @@ export type ListMutationResult = {
 export async function createListAction({
   title,
   description,
+  visibility,
 }: ListMutationInput): Promise<ListMutationResult> {
   try {
     const list = await api.auth.post<List>(
@@ -26,6 +28,7 @@ export async function createListAction({
         list: {
           title,
           description: description || undefined,
+          visibility: visibility || 'restricted',
         },
       },
       { cache: 'no-store' },
@@ -49,7 +52,7 @@ export async function createListAction({
 
 export async function updateListAction(
   listId: string,
-  { title, description }: ListMutationInput,
+  { title, description, visibility }: ListMutationInput,
 ): Promise<ListMutationResult> {
   try {
     const list = await api.auth.patch<List>(
@@ -58,6 +61,7 @@ export async function updateListAction(
         list: {
           title,
           description: description || undefined,
+          visibility,
         },
       },
       { cache: 'no-store' },

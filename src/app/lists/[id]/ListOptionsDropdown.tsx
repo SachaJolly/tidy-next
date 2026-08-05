@@ -185,6 +185,7 @@ export default function ListOptionsDropdown({
         listId={listId}
         initialTitle={listTitle}
         initialDescription={listDescription}
+        initialVisibility={visibility}
         open={isEditModalOpen}
         onOpenChange={(open) => {
           if (!open) {

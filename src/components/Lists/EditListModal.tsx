@@ -12,6 +12,7 @@ interface EditListModalProps {
   listId: string;
   initialTitle: string;
   initialDescription: string | null;
+  initialVisibility?: string;
   trigger?: (open: () => void) => React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -21,6 +22,7 @@ export default function EditListModal({
   listId,
   initialTitle,
   initialDescription,
+  initialVisibility,
   trigger,
   open: controlledOpen,
   onOpenChange,
@@ -45,7 +47,7 @@ export default function EditListModal({
   }, [setOpen]);
 
   const handleEdit = useCallback(
-    async (values: { title: string; description: string }) => updateListAction(listId, values),
+    async (values: { title: string; description: string; visibility?: string }) => updateListAction(listId, values),
     [listId],
   );
 
@@ -91,6 +93,7 @@ export default function EditListModal({
               submitLabel={t('save')}
               initialTitle={initialTitle}
               initialDescription={initialDescription ?? ''}
+              initialVisibility={initialVisibility}
               onCancel={closeModal}
               onSuccess={handleSuccess}
             />
