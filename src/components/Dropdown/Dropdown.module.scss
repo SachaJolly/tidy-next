@@ -137,6 +137,7 @@
   white-space: nowrap;
 
   &:hover,
+  &:focus,
   &:focus-visible {
     background: var(--surface-highlight);
     outline: none;

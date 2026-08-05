@@ -91,6 +91,12 @@ export function DropdownMenu({
     if (inline || !open || isMobile) return;
     calculatePosition();
 
+    // Show the popover when the menu opens. Popover API will position it in
+    // the top layer, ensuring it appears above modals (showModal() elements).
+    if (!inline && menuRef.current && (menuRef.current as any).showPopover) {
+      (menuRef.current as any).showPopover();
+    }
+
     // Auto-focus the first focusable menu item so keyboard users can navigate
     // immediately with arrow keys or Tab after opening the menu.
     // We use requestAnimationFrame to let the panel finish rendering and
@@ -233,6 +239,7 @@ export function DropdownMenu({
       role="menu"
       aria-orientation="vertical"
       tabIndex={-1}
+      popover={inline ? undefined : 'auto'}
       className={[styles.menu, isMobile && !inline && styles.drawer, className]
         .filter(Boolean)
         .join(' ')}
