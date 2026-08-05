@@ -90,9 +90,19 @@ export function DropdownMenu({
   useLayoutEffect(() => {
     if (inline || !open || isMobile) return;
     calculatePosition();
+
+    // Auto-focus the first focusable menu item so keyboard users can navigate
+    // immediately with arrow keys or Tab after opening the menu.
+    // We use requestAnimationFrame to let the panel finish rendering and
+    // become visible before focusing, avoiding focus on a hidden element.
+    const rafId = requestAnimationFrame(() => {
+      const firstItem = menuRef.current?.querySelector<HTMLElement>(
+        '[role="menuitem"]:not([disabled]), [role="radio"]:not([disabled])',
+      );
+      firstItem?.focus();
+    });
+    return () => cancelAnimationFrame(rafId);
   }, [inline, open, isMobile, calculatePosition, currentView]);
-  // currentView dep: sub-menu views have different heights; re-measure when the
-  // visible view changes to prevent misalignment after a drill-down.
 
   // ─── Desktop: continuous scroll / resize tracking ─────────────────────────
   // The panel is positioned with `fixed` relative to the viewport, but the
@@ -180,17 +190,33 @@ export function DropdownMenu({
     return () => document.removeEventListener('pointerdown', onPointerDown);
   }, [inline, open, close, triggerRef]);
 
-  // Arrow-key navigation between focusable menu items
+  // Arrow-key navigation between focusable menu items + Tab focus trap
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-    e.preventDefault();
+    const isArrow = e.key === 'ArrowDown' || e.key === 'ArrowUp';
+    const isTab = e.key === 'Tab';
+    if (!isArrow && !isTab) return;
+
     const items = Array.from(
       menuRef.current?.querySelectorAll<HTMLElement>(
         '[role="menuitem"]:not([disabled]), [role="radio"]:not([disabled])',
       ) ?? [],
     );
     if (!items.length) return;
+
     const idx = items.indexOf(document.activeElement as HTMLElement);
+
+    if (isTab) {
+      // Trap focus inside the panel: loop forward (Tab) and backward (Shift+Tab).
+      e.preventDefault();
+      const next = e.shiftKey
+        ? (idx - 1 + items.length) % items.length  // Shift+Tab → go up, wrap to last
+        : (idx + 1) % items.length;                 // Tab       → go down, wrap to first
+      items[next]?.focus();
+      return;
+    }
+
+    // Arrow keys — same looping behaviour
+    e.preventDefault();
     const next =
       e.key === 'ArrowDown' ? (idx + 1) % items.length : (idx - 1 + items.length) % items.length;
     items[next]?.focus();
