@@ -5,7 +5,7 @@ import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import Input from '@/components/Input/Input';
 import Textarea from '@/components/Textarea/Textarea';
-import { Dropdown, DropdownRadioGroup, DropdownRadioItem, DropdownLabel } from '@/components/Dropdown';
+import { Dropdown, DropdownMenu, DropdownRadioGroup, DropdownRadioItem, DropdownLabel } from '@/components/Dropdown';
 import Icon from '@/components/Icon/Icon';
 import { createListAction, type ListMutationResult } from '@/app/actions/lists';
 import type { List } from '@/lib/types';
@@ -135,22 +135,24 @@ export default function ListForm({
             {currentVisibility?.label}
           </Button>
 
-          <DropdownRadioGroup value={visibility} onValueChange={setVisibility}>
-            <DropdownLabel>{tCommon('action.setVisibility')}</DropdownLabel>
-            {visibilityOptions.map(option => (
-              <DropdownRadioItem key={option.value} value={option.value}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                    <Icon name={option.icon as any} size={16} />
-                    {option.label}
+          <DropdownMenu>
+            <DropdownRadioGroup value={visibility} onValueChange={setVisibility}>
+              <DropdownLabel>{tCommon('action.setVisibility')}</DropdownLabel>
+              {visibilityOptions.map(option => (
+                <DropdownRadioItem key={option.value} value={option.value}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                      <Icon name={option.icon as any} size={16} />
+                      {option.label}
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                      {option.caption}
+                    </span>
                   </div>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    {option.caption}
-                  </span>
-                </div>
-              </DropdownRadioItem>
-            ))}
-          </DropdownRadioGroup>
+                </DropdownRadioItem>
+              ))}
+            </DropdownRadioGroup>
+          </DropdownMenu>
         </Dropdown>
 
         {/* Buttons */}
