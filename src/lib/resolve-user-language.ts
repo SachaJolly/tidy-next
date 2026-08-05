@@ -1,9 +1,7 @@
 import { cookies } from 'next/headers';
 import {
   LANGUAGE_COOKIE_NAME,
-  toLanguage,
   type Language,
-  type Locale,
 } from './language-mapper';
 
 /**
@@ -20,27 +18,24 @@ export async function resolveUserLanguage(options: {
   const { userLanguageFromDb, acceptLanguage } = options;
 
   // Priority 1: User's database preference (if authenticated)
-  if (userLanguageFromDb) {
-    const normalized = userLanguageFromDb.toLowerCase();
-    const language = toLanguage(normalized);
-    if (language) return language;
+  if (userLanguageFromDb === 'en' || userLanguageFromDb === 'fr') {
+    return userLanguageFromDb;
   }
 
   // Priority 2: Cookie preference (persists when logged out)
   const cookieStore = await cookies();
   const cookieLanguage = cookieStore.get(LANGUAGE_COOKIE_NAME)?.value;
-  if (cookieLanguage) {
-    const language = toLanguage(cookieLanguage);
-    if (language) return language;
+  if (cookieLanguage === 'en' || cookieLanguage === 'fr') {
+    return cookieLanguage;
   }
 
   // Priority 3: Browser's Accept-Language header (first preference)
   if (acceptLanguage) {
     const preferred = acceptLanguage.split(',')[0]?.trim().split('-')[0];
-    if (preferred === 'fr') return 'french';
-    if (preferred === 'en') return 'english';
+    if (preferred === 'fr') return 'fr';
+    if (preferred === 'en') return 'en';
   }
 
   // Priority 4: Default to English
-  return 'english';
+  return 'en';
 }
