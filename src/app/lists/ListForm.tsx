@@ -5,12 +5,13 @@ import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import Input from '@/components/Input/Input';
 import Textarea from '@/components/Textarea/Textarea';
-import { Dropdown, DropdownRadioGroup, DropdownRadioItem, DropdownLabel } from '@/components/Dropdown';
+import {Dropdown, DropdownRadioGroup, DropdownRadioItem, DropdownLabel, DropdownMenu} from '@/components/Dropdown';
 import Icon from '@/components/Icon/Icon';
 import type { IconName } from '@/components/Icon/icons';
 import { createListAction } from '@/app/actions/lists';
 import type { List } from '@/lib/types';
 import { useTranslations } from 'next-intl';
+import {ModalContent, ModalFooter} from "@/components/Modal/Modal";
 
 type ListFormProps = {
   action?: (values: { title: string; description: string; visibility?: string }) => Promise<{ list?: List; error?: string }>;
@@ -107,82 +108,69 @@ export default function ListForm({
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <Input
-        id="list-title"
-        name="title"
-        label={t('titleLabel')}
-        placeholder={t('titlePlaceholder')}
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-        autoFocus={true}
-        disabled={isSubmitting}
-        required
-      />
+      <ModalContent>
+        <Input
+          id="list-title"
+          name="title"
+          label={t('titleLabel')}
+          placeholder={t('titlePlaceholder')}
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+          autoFocus={true}
+          disabled={isSubmitting}
+          required
+        />
 
-      <Textarea
-        id="list-description"
-        name="description"
-        label={t('descriptionLabel')}
-        placeholder={t('descriptionPlaceholder')}
-        value={description}
-        onChange={(event) => setDescription(event.target.value)}
-        disabled={isSubmitting}
-      />
+        <Textarea
+          id="list-description"
+          name="description"
+          label={t('descriptionLabel')}
+          placeholder={t('descriptionPlaceholder')}
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+          disabled={isSubmitting}
+        />
 
-      {error && (
-        <p role="alert" style={{ color: 'var(--danger)', margin: 0 }}>
-          {error}
-        </p>
-      )}
-
-      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* Visibility dropdown in modal footer */}
-        <Dropdown>
-          <button
-            type="button"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.375rem 0.75rem',
-              background: 'var(--surface-highlight)',
-              border: '1px solid transparent',
-              borderRadius: 'var(--radius-interactive)',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: 'var(--text-body)',
-              fontFamily: 'inherit',
-            }}
-            disabled={isSubmitting}
-          >
-            {currentVisibility && <Icon name={currentVisibility.icon} size={16} />}
-            {currentVisibility?.label}
-          </button>
-
-          <DropdownRadioGroup value={visibility} onValueChange={setVisibility}>
-            <DropdownLabel>{tCommon('action.setVisibility')}</DropdownLabel>
-            {visibilityOptions.map(option => (
-              <DropdownRadioItem key={option.value} value={option.value}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                    <Icon name={option.icon} size={16} />
-                    {option.label}
-                  </div>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+        {error && (
+          <p role="alert" style={{ color: 'var(--danger)', margin: 0 }}>
+            {error}
+          </p>
+        )}
+      </ModalContent>
+cc
+      <ModalFooter>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Dropdown>
+            <Button disabled={isSubmitting}>
+              {currentVisibility && <Icon name={currentVisibility.icon} size={16} />}
+              <span>{currentVisibility?.label}</span>
+            </Button>
+            <DropdownMenu>
+              <DropdownRadioGroup value={visibility} onValueChange={setVisibility}>
+                <DropdownLabel>{tCommon('action.setVisibility')}</DropdownLabel>
+                {visibilityOptions.map(option => (
+                  <DropdownRadioItem key={option.value} value={option.value}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                        <Icon name={option.icon} size={16} />
+                        {option.label}
+                      </div>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                     {option.caption}
                   </span>
-                </div>
-              </DropdownRadioItem>
-            ))}
-          </DropdownRadioGroup>
-        </Dropdown>
+                    </div>
+                  </DropdownRadioItem>
+                ))}
+              </DropdownRadioGroup>
+            </DropdownMenu>
+          </Dropdown>
 
-        <ButtonGroup>
-          <Button label={resolvedCancelLabel} variant="default" onClick={onCancel} disabled={isSubmitting} />
-          <Button label={resolvedSubmitLabel} variant="interactive" type="submit" disabled={isSubmitting} />
-        </ButtonGroup>
-      </div>
+          <ButtonGroup>
+            <Button label={resolvedCancelLabel} variant="default" onClick={onCancel} disabled={isSubmitting} />
+            <Button label={resolvedSubmitLabel} variant="interactive" type="submit" disabled={isSubmitting} />
+          </ButtonGroup>
+        </div>
+      </ModalFooter>
     </form>
   );
 }

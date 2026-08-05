@@ -2,8 +2,8 @@
 
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Modal, ModalContent, ModalHeader, ModalClose } from '@/components/Modal/Modal';
-import ListForm from '../../ListForm';
+import { Modal, ModalHeader, ModalClose } from '@/components/Modal/Modal';
+import ListForm from '@/app/lists/ListForm';
 import { updateListAction } from '@/app/actions/lists';
 
 interface EditListPageProps {
@@ -36,17 +36,15 @@ export default function EditListPage({
         <h2>Edit list</h2>
         <ModalClose />
       </ModalHeader>
-      <ModalContent>
-        <ListForm
-          action={(values) => updateListAction(listId, values)}
-          submitLabel="Save changes"
-          initialTitle={initialTitle}
-          initialDescription={initialDescription ?? ''}
-          initialVisibility={initialVisibility}
-          onCancel={handleCancel}
-          onSuccess={handleSuccess}
-        />
-      </ModalContent>
+      <ListForm
+        action={(values) => updateListAction(listId, values)}
+        submitLabel="Save changes"
+        initialTitle={initialTitle}
+        initialDescription={initialDescription ?? ''}
+        initialVisibility={initialVisibility}
+        onCancel={handleCancel}
+        onSuccess={handleSuccess}
+      />
     </Modal>
   );
 }

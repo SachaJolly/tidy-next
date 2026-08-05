@@ -23,9 +23,7 @@ export default function NewListPage() {
         <h2>Create a new list</h2>
         <ModalClose />
       </ModalHeader>
-      <ModalContent>
-        <ListForm onCancel={handleCancel} onSuccess={handleSuccess} />
-      </ModalContent>
+      <ListForm onCancel={handleCancel} onSuccess={handleSuccess} />
     </Modal>
   );
 }
