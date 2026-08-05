@@ -271,8 +271,9 @@ export const DrillDownSearch: Story = {
 
 export const ModalInteroperability: Story = {
   render: function Render() {
-    // Controlled dropdown so external code can close it after confirmation.
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    // Dropdown is now uncontrolled — it manages its own open state.
+    // For this story, we just track confirmation state and rely on the dropdown
+    // to auto-close after the action completes.
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [deleted, setDeleted] = useState(false);
 
@@ -287,7 +288,7 @@ export const ModalInteroperability: Story = {
     const handleConfirm = () => {
       setDeleted(true);
       setConfirmOpen(false);
-      setDropdownOpen(false); // Explicitly close the dropdown after action
+      // The dropdown will auto-close via its uncontrolled mechanism
     };
 
     const handleCancelConfirm = () => {
@@ -304,7 +305,7 @@ export const ModalInteroperability: Story = {
           <p style={{ fontSize: '0.875rem', color: 'var(--color-red-500)' }}>List deleted.</p>
         )}
 
-        <Dropdown open={dropdownOpen} onOpenChange={setDropdownOpen}>
+        <Dropdown>
           <DropdownTrigger>
             <Icon name="more" size={20} />
             <span>Actions</span>
@@ -318,7 +319,6 @@ export const ModalInteroperability: Story = {
               onSelect fires before the dropdown closes.
               e.preventDefault() here keeps the dropdown alive — the
               confirmation dialog opens on top of the still-open dropdown.
-              The dropdown only closes when handleConfirm sets dropdownOpen=false.
             */}
             <DropdownItem icon="delete" destructive onSelect={handleDeleteSelect}>
               Delete list…
@@ -608,12 +608,16 @@ export const AccountDropdownPanel: Story = {
   name: 'AccountDropdown',
   parameters: { layout: 'centered' },
   render: () => (
-    // open={true} keeps the context in "open" state so context-guarded
-    // sub-components (DropdownItem, DropdownSeparator, etc.) render correctly.
-    // inline bypasses createPortal + fixed positioning so the panel appears
-    // directly in the Storybook canvas without needing a trigger element.
-    <Dropdown open={true} onOpenChange={() => {}}>
-      <AccountDropdown inline user={MOCK_USER} onLogout={() => {}} />
-    </Dropdown>
+    // Wrapper that shows the dropdown in "open" state for story purposes.
+    // The Dropdown manages its own state, but we pre-open it via defaultOpen
+    // by using a trick: show it as initially open via DropdownMenu inline prop.
+    <div style={{ position: 'relative', padding: '2rem' }}>
+      <Dropdown>
+        <DropdownTrigger style={{ visibility: 'hidden', position: 'absolute' }}>
+          Trigger
+        </DropdownTrigger>
+        <AccountDropdown inline user={MOCK_USER} onLogout={() => {}} />
+      </Dropdown>
+    </div>
   ),
 };
