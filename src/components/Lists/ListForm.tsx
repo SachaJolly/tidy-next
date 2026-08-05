@@ -130,27 +130,10 @@ export default function ListForm({
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* Visibility dropdown in modal footer */}
         <Dropdown>
-          <button
-            type="button"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.375rem 0.75rem',
-              background: 'var(--surface-highlight)',
-              border: '1px solid transparent',
-              borderRadius: 'var(--radius-interactive)',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: 'var(--text-body)',
-              fontFamily: 'inherit',
-            }}
-            disabled={isSubmitting}
-          >
+          <Button type="button" disabled={isSubmitting} transparent>
             {currentVisibility && <Icon name={currentVisibility.icon as any} size={16} />}
             {currentVisibility?.label}
-          </button>
+          </Button>
 
           <DropdownRadioGroup value={visibility} onValueChange={setVisibility}>
             <DropdownLabel>{tCommon('action.setVisibility')}</DropdownLabel>
