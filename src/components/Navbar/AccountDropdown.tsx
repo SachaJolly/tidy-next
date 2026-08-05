@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   DropdownMenu,
   DropdownItem,
@@ -49,22 +50,24 @@ export function AccountDropdown({ user, initialLanguage, onLogout, inline }: Acc
   const date = useTranslations('date');
   const common = useTranslations('common');
   const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
   const releaseDate = process.env.NEXT_PUBLIC_RELEASE_DATE;
   const [language, setLanguage] = useState<Language>(initialLanguage);
   const [theme, setTheme] = useState<Theme>('system');
   const [activeAccount, setActiveAccount] = useState(MOCK_ACCOUNTS[1]?.value ?? '');
 
-  // Handle language change: save to cookie (and DB if authenticated)
+  // Handle language change: save to cookie and refresh page
   const handleLanguageChange = async (newLanguage: Language) => {
     setLanguage(newLanguage);
     await saveLanguagePreference(newLanguage);
-    // Note: Actual locale switch (URL/i18n routing) is handled by the parent
-    // or via middleware after cookie is set
+    // Refresh current page to apply new language via next-intl
+    router.refresh();
   };
 
   const languageOptions = [
-    { value: 'english', label: common('language.english') },
-    { value: 'french', label: common('language.french') },
+    { value: 'en' as const, label: common('language.en') },
+    { value: 'fr' as const, label: common('language.fr') },
   ] as const;
 
   const themeOptions = [

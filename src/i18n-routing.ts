@@ -1,5 +1,5 @@
 import { defineRouting } from 'next-intl/routing';
-import { LANGUAGE_COOKIE_NAME, toLocale, type Language } from '@/lib/language-mapper';
+import { LANGUAGE_COOKIE_NAME } from '@/lib/language-mapper';
 
 export const locales = ['en', 'fr'] as const;
 export type Locale = (typeof locales)[number];
