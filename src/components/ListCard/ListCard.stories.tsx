@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
+import { http, HttpResponse } from 'msw';
 
 import ListCard from './ListCard';
 
@@ -104,12 +105,32 @@ export const Pinned: Story = {
 
 export const Private: Story = {
   args: {
+    isAuthor: true,
     list: {
       ...mockList,
       itemsCount: 67,
       notesCount: 1,
       thumbnail: '5ca7a2cfd0e7b90004198839',
       visibility: 'PRIVATE',
+    },
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        // Mock the PATCH visibility API call made by updateListVisibilityAction.
+        // Returns the updated list so the dropdown radio reflects the new state.
+        http.patch(
+          'http://localhost:3001/api/v1/lists/:id',
+          async ({ params, request }) => {
+            const body = await request.json() as { list: { visibility: string } };
+            return HttpResponse.json({
+              ...mockList,
+              id: params.id as string,
+              visibility: body?.list?.visibility ?? 'PRIVATE',
+            });
+          },
+        ),
+      ],
     },
   },
 };
