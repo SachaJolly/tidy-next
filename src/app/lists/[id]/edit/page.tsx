@@ -1,38 +1,55 @@
-import { notFound, redirect } from 'next/navigation';
-import { api, ApiFetchError } from '@/lib/api';
-import type { List, User } from '@/lib/types';
-import PageLayout from '@/layouts/PageLayout';
-import EditListPage from './EditListPage';
+'use client';
 
-interface EditListRoutePageProps {
-  params: { id: string };
+import React, { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { Modal, ModalContent, ModalHeader, ModalClose } from '@/components/Modal/Modal';
+import EditListForm from './EditListForm';
+import type { List } from '@/lib/types';
+
+interface EditListPageProps {
+  listId: string;
+  initialTitle: string;
+  initialDescription: string | null;
+  initialVisibility?: string;
 }
 
-export default async function EditListRoutePage({ params }: EditListRoutePageProps) {
-  const { id } = await params;
+export default function EditListPage({
+  listId,
+  initialTitle,
+  initialDescription,
+  initialVisibility,
+}: EditListPageProps) {
+  const router = useRouter();
 
-  let currentUser: User | null = null;
-  try {
-    currentUser = await api.auth.get<User>('/api/v1/me', { cache: 'no-store' });
-  } catch (error: unknown) {
-    if (error instanceof ApiFetchError && error.status === 401) {
-      redirect('/signin');
-    }
-    throw error;
-  }
+  const handleSuccess = useCallback(
+    (list: List) => {
+      router.back();
+      router.refresh();
+    },
+    [router],
+  );
 
-  const list = await api.get<List>(`/api/v1/lists/${id}`, { cache: 'no-store' });
-  if (!list || !currentUser || list.author?.id !== currentUser.id) {
-    notFound();
-  }
+  const handleCancel = useCallback(() => {
+    router.back();
+  }, [router]);
 
   return (
-    <PageLayout>
-      <EditListPage
-        listId={list.id}
-        initialTitle={list.title}
-        initialDescription={list.description}
-      />
-    </PageLayout>
+    <Modal size="default" onClose={handleCancel}>
+      <ModalHeader>
+        <h2>Edit List</h2>
+        <ModalClose />
+      </ModalHeader>
+
+      <ModalContent>
+        <EditListForm
+          listId={listId}
+          initialTitle={initialTitle}
+          initialDescription={initialDescription}
+          initialVisibility={initialVisibility}
+          onCancel={handleCancel}
+          onSuccess={handleSuccess}
+        />
+      </ModalContent>
+    </Modal>
   );
 }

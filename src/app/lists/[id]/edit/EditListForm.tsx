@@ -7,43 +7,31 @@ import Input from '@/components/Input/Input';
 import Textarea from '@/components/Textarea/Textarea';
 import { Dropdown, DropdownRadioGroup, DropdownRadioItem, DropdownLabel } from '@/components/Dropdown';
 import Icon from '@/components/Icon/Icon';
-import { createListAction, type ListMutationResult } from '@/app/actions/lists';
+import { updateListAction, type ListMutationResult } from '@/app/actions/lists';
 import type { List } from '@/lib/types';
 import { useTranslations } from 'next-intl';
 
-type ListFormProps = {
-  action?: (values: { title: string; description: string; visibility?: string }) => Promise<ListMutationResult>;
-  submitLabel?: string;
-  cancelLabel?: string;
-  initialTitle?: string;
-  initialDescription?: string;
+type EditListFormProps = {
+  listId: string;
+  initialTitle: string;
+  initialDescription: string | null;
   initialVisibility?: string;
   onCancel: () => void;
   onSuccess?: (list: List) => void;
 };
 
-/**
- * Shared list form body.
- *
- * The `action` prop lets future edit modals reuse the same UI while swapping
- * the server mutation underneath.
- */
-export default function ListForm({
-  action = createListAction,
-  submitLabel,
-  cancelLabel,
-  initialTitle = '',
-  initialDescription = '',
+export default function EditListForm({
+  listId,
+  initialTitle,
+  initialDescription,
   initialVisibility = 'restricted',
   onCancel,
   onSuccess,
-}: ListFormProps) {
+}: EditListFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
-  const resolvedSubmitLabel = submitLabel ?? t('createList');
-  const resolvedCancelLabel = cancelLabel ?? t('cancel');
   const [title, setTitle] = useState(initialTitle);
-  const [description, setDescription] = useState(initialDescription);
+  const [description, setDescription] = useState(initialDescription ?? '');
   const [visibility, setVisibility] = useState(initialVisibility);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,7 +52,7 @@ export default function ListForm({
       setIsSubmitting(true);
 
       try {
-        const result = await action({
+        const result = await updateListAction(listId, {
           title: titleValue,
           description: descriptionValue,
           visibility,
@@ -80,15 +68,14 @@ export default function ListForm({
 
         onSuccess?.(result.list);
       } catch (submissionError) {
-        setError(submissionError instanceof Error ? submissionError.message : t('creationFailed'));
+        setError(submissionError instanceof Error ? submissionError.message : t('updateFailed'));
       } finally {
         setIsSubmitting(false);
       }
     },
-    [action, description, onSuccess, title, visibility, t],
+    [description, listId, onSuccess, title, visibility, t],
   );
 
-  // Visibility dropdown options
   const visibilityOptions = [
     { value: 'published', label: tCommon('visibility.public.label'), caption: tCommon('visibility.public.caption'), icon: 'globe' },
     { value: 'unindexed', label: tCommon('visibility.unindexed.label'), caption: tCommon('visibility.unindexed.caption'), icon: 'eye-off' },
@@ -128,7 +115,6 @@ export default function ListForm({
       )}
 
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* Visibility dropdown in modal footer */}
         <Dropdown>
           <button
             type="button"
@@ -170,13 +156,12 @@ export default function ListForm({
           </DropdownRadioGroup>
         </Dropdown>
 
-        {/* Buttons */}
         <ButtonGroup>
           <Button type="button" transparent={true} onClick={onCancel} disabled={isSubmitting}>
-            {resolvedCancelLabel}
+            {t('cancel')}
           </Button>
           <Button type="submit" variant="interactive" disabled={isSubmitting}>
-            {isSubmitting ? t('saving') : resolvedSubmitLabel}
+            {isSubmitting ? t('saving') : t('save')}
           </Button>
         </ButtonGroup>
       </div>

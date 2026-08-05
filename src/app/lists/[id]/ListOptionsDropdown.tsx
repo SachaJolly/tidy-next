@@ -12,12 +12,10 @@ import {
   DropdownSeparator,
   DropdownText,
 } from '@/components/Dropdown';
-import { Modal, ModalClose, ModalContent, ModalHeader } from '@/components/Modal/Modal';
 import type { List } from '@/lib/types';
-import EditListModal from '@/components/Lists/EditListModal';
 import { updateListVisibilityAction } from '@/app/actions/lists';
-import { useQueryModal } from '@/hooks/use-query-modal';
 import { formatDate } from '@/lib/date';
+import { localizePath } from '@/lib/locale-path';
 
 type ListVisibility = List['visibility'];
 
@@ -79,9 +77,6 @@ export default function ListOptionsDropdown({
   const [isPending, startTransition] = useTransition();
   const [visibility, setVisibility] = useState<ListVisibility>(initialVisibility);
   const [error, setError] = useState<string | null>(null);
-  const queryModal = useQueryModal();
-  const isEditModalOpen = queryModal.isOpen('edit-list', listId);
-  const isCollaboratorsModalOpen = queryModal.isOpen('manage-collaborators', listId);
 
   const updatedLabel = useMemo(
     () =>
@@ -98,6 +93,10 @@ export default function ListOptionsDropdown({
   const handleCopyLink = async () => {
     const url = `${window.location.origin}/lists/${listId}`;
     await navigator.clipboard.writeText(url);
+  };
+
+  const handleEdit = () => {
+    router.push(localizePath(`/lists/${listId}/edit`, locale));
   };
 
   const handleVisibilityChange = (value: string) => {
@@ -124,87 +123,55 @@ export default function ListOptionsDropdown({
   };
 
   return (
-    <>
-      <DropdownMenu align="end" inline={inline}>
-        {isAuthor ? (
-          <>
-            <DropdownItem
-              icon="edit"
-              label={common('action.edit')}
-              onSelect={() => queryModal.openModal('edit-list', listId)}
-            />
-            <DropdownItem
-              icon="group"
-              label={common('action.manageCollaborators')}
-              onSelect={() => queryModal.openModal('manage-collaborators', listId)}
-            />
-            <DropdownItem icon="archive" destructive label={common('action.archive')} />
-            <DropdownSeparator />
+    <DropdownMenu align="end" inline={inline}>
+      {isAuthor ? (
+        <>
+          <DropdownItem
+            icon="edit"
+            label={common('action.edit')}
+            onSelect={handleEdit}
+          />
+          <DropdownItem icon="archive" destructive label={common('action.archive')} />
+          <DropdownSeparator />
 
-            <DropdownLabel>{common('action.setVisibility')}</DropdownLabel>
-            <DropdownRadioGroup
-              value={visibility}
-              onValueChange={handleVisibilityChange}
-              label={common('action.setVisibility')}
-              closeOnSelect
-            >
-              {VISIBILITY_OPTIONS.map(({ value, icon, labelKey, captionKey }) => (
-                <DropdownRadioItem
-                  key={value}
-                  value={value}
-                  icon={icon}
-                  label={common(labelKey)}
-                  caption={common(captionKey)}
-                />
-              ))}
-            </DropdownRadioGroup>
-            {error ? (
-              <DropdownText>
-                <p className="text-small" style={{ color: 'var(--danger)' }}>
-                  {common('updateVisibilityError')}
-                </p>
-              </DropdownText>
-            ) : null}
-            <DropdownSeparator />
-          </>
-        ) : null}
+          <DropdownLabel>{common('action.setVisibility')}</DropdownLabel>
+          <DropdownRadioGroup
+            value={visibility}
+            onValueChange={handleVisibilityChange}
+            label={common('action.setVisibility')}
+            closeOnSelect
+          >
+            {VISIBILITY_OPTIONS.map(({ value, icon, labelKey, captionKey }) => (
+              <DropdownRadioItem
+                key={value}
+                value={value}
+                icon={icon}
+                label={common(labelKey)}
+                caption={common(captionKey)}
+              />
+            ))}
+          </DropdownRadioGroup>
+          {error ? (
+            <DropdownText>
+              <p className="text-small" style={{ color: 'var(--danger)' }}>
+                {common('updateVisibilityError')}
+              </p>
+            </DropdownText>
+          ) : null}
+          <DropdownSeparator />
+        </>
+      ) : null}
 
-        <DropdownItem
-          icon="copy"
-          label={common('action.copyLink')}
-          onSelect={() => void handleCopyLink()}
-        />
-        <DropdownSeparator />
-        <DropdownText>
-          <p className="text-small">{common('curatedByAuthor', { author: authorName })}</p>
-          <p className="text-small">{updatedLabel}</p>
-        </DropdownText>
-      </DropdownMenu>
-
-      <EditListModal
-        listId={listId}
-        initialTitle={listTitle}
-        initialDescription={listDescription}
-        initialVisibility={visibility}
-        open={isEditModalOpen}
-        onOpenChange={(open) => {
-          if (!open) {
-            queryModal.closeModal();
-          }
-        }}
+      <DropdownItem
+        icon="copy"
+        label={common('action.copyLink')}
+        onSelect={() => void handleCopyLink()}
       />
-
-      {isCollaboratorsModalOpen && (
-        <Modal size="default" onClose={() => queryModal.closeModal()}>
-          <ModalHeader>
-            <h2>{common('action.manageCollaborators')}</h2>
-            <ModalClose />
-          </ModalHeader>
-          <ModalContent>
-            <p className="text-small">{t('manageCollaboratorsPlaceholder')}</p>
-          </ModalContent>
-        </Modal>
-      )}
-    </>
+      <DropdownSeparator />
+      <DropdownText>
+        <p className="text-small">{common('curatedByAuthor', { author: authorName })}</p>
+        <p className="text-small">{updatedLabel}</p>
+      </DropdownText>
+    </DropdownMenu>
   );
 }

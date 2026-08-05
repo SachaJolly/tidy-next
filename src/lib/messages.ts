@@ -11,8 +11,6 @@
  *   locales/en/footer.json           - Footer strings
  *   locales/en/date.json            - Date formatting strings
  *   locales/en/listPage.json         - Page/domain namespace (lowercase)
- *   locales/en/NewList.json          - Modal namespace (PascalCase)
- *   locales/en/EditListModal.json    - Modal namespace (PascalCase)
  *   locales/en/AccountDropdown.json  - Component namespace (PascalCase)
  *   locales/en/ListCard.json         - Component namespace (PascalCase)
  *   ...and more
@@ -21,7 +19,7 @@
  *   - Lowercase files → lowercase namespace keys: common, auth, navbar, footer, listPage, etc.
  *     (date is also lowercase because it behaves like a global domain helper)
  *     (for App Router pages/views and global domains)
- *   - PascalCase files → PascalCase namespace keys: NewList, EditListModal, ListCard, etc.
+ *   - PascalCase files → PascalCase namespace keys: AccountDropdown, ListCard, etc.
  *     (for reusable components in src/components/)
  *
  * The merged result:
@@ -30,8 +28,6 @@
  *     "auth": {...},
  *     "navbar": {...},
  *     "listPage": {...},
- *     "NewList": {...},
- *     "EditListModal": {...},
  *     "AccountDropdown": {...},
  *     "ListCard": {...},
  *     ...etc
@@ -49,10 +45,6 @@ import profileEn from '../../locales/en/profile.json';
 import listPageEn from '../../locales/en/listPage.json';
 import formsEn from '../../locales/en/forms.json';
 import dateEn from '../../locales/en/date.json';
-
-// Modal namespaces (PascalCase files → PascalCase namespace keys)
-import NewListEn from '../../locales/en/NewList.json';
-import EditListModalEn from '../../locales/en/EditListModal.json';
 
 // Component namespaces (PascalCase files → PascalCase namespace keys)
 import AccountDropdownEn from '../../locales/en/AccountDropdown.json';
@@ -75,10 +67,6 @@ import listPageFr from '../../locales/fr/listPage.json';
 import formsFr from '../../locales/fr/forms.json';
 import dateFr from '../../locales/fr/date.json';
 
-// Modal namespaces (PascalCase files → PascalCase namespace keys)
-import NewListFr from '../../locales/fr/NewList.json';
-import EditListModalFr from '../../locales/fr/EditListModal.json';
-
 // Component namespaces (PascalCase files → PascalCase namespace keys)
 import AccountDropdownFr from '../../locales/fr/AccountDropdown.json';
 import ListCardFr from '../../locales/fr/ListCard.json';
@@ -93,7 +81,7 @@ import HeroFr from '../../locales/fr/hero.json';
  *
  * Naming convention:
  *   - Lowercase files → lowercase namespace keys: common, auth, navbar, footer, listPage, etc.
- *   - PascalCase files → PascalCase namespace keys: NewList, ListCard, EditListModal, etc.
+ *   - PascalCase files → PascalCase namespace keys: AccountDropdown, ListCard, etc.
  *     (for reusable components in src/components/)
  */
 const messagesEn = {
@@ -111,9 +99,7 @@ const messagesEn = {
   date: dateEn,
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageEn,
-  // Modal/Component namespaces (PascalCase for reusable components)
-  NewList: NewListEn,
-  EditListModal: EditListModalEn,
+  // Component namespaces (PascalCase for reusable components)
   AccountDropdown: AccountDropdownEn,
   ListCard: ListCardEn,
   ProfileCard: ProfileCardEn,
@@ -136,9 +122,7 @@ const messagesFr = {
   date: dateFr,
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageFr,
-  // Modal/Component namespaces (PascalCase for reusable components)
-  NewList: NewListFr,
-  EditListModal: EditListModalFr,
+  // Component namespaces (PascalCase for reusable components)
   AccountDropdown: AccountDropdownFr,
   ListCard: ListCardFr,
   ProfileCard: ProfileCardFr,
