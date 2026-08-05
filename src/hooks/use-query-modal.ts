@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useCallback, useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useMemo } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 type QueryModalName = string;
 
@@ -17,15 +17,15 @@ interface UseQueryModalOptions {
  * deep-linked, shared, and restored with the browser back button.
  */
 export function useQueryModal({
-  modalKey = "modal",
-  modalIdKey = "modalId",
+  modalKey = 'modal',
+  modalIdKey = 'modalId',
 }: UseQueryModalOptions = {}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const currentModal = searchParams.get(modalKey);
-  const currentModalId = searchParams.get(modalIdKey);
+  const currentModalId = searchParams.get(modalIdKey) ?? searchParams.get('listId');
 
   const buildUrl = useCallback(
     (updater: (params: URLSearchParams) => void) => {
@@ -58,8 +58,10 @@ export function useQueryModal({
           params.set(modalKey, modalName);
           if (modalId) {
             params.set(modalIdKey, modalId);
+            params.delete('listId');
           } else {
             params.delete(modalIdKey);
+            params.delete('listId');
           }
         }),
         { scroll: false },
@@ -75,6 +77,7 @@ export function useQueryModal({
       buildUrl((params) => {
         params.delete(modalKey);
         params.delete(modalIdKey);
+        params.delete('listId');
       }),
       { scroll: false },
     );

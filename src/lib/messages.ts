@@ -49,6 +49,8 @@ import profileEn from '../../locales/en/profile.json';
 import listPageEn from '../../locales/en/listPage.json';
 import formsEn from '../../locales/en/forms.json';
 import dateEn from '../../locales/en/date.json';
+import NewListEn from '../../locales/en/NewList.json';
+import EditListModalEn from '../../locales/en/EditListModal.json';
 
 // Component namespaces (PascalCase files → PascalCase namespace keys)
 import AccountDropdownEn from '../../locales/en/AccountDropdown.json';
@@ -70,6 +72,8 @@ import profileFr from '../../locales/fr/profile.json';
 import listPageFr from '../../locales/fr/listPage.json';
 import formsFr from '../../locales/fr/forms.json';
 import dateFr from '../../locales/fr/date.json';
+import NewListFr from '../../locales/fr/NewList.json';
+import EditListModalFr from '../../locales/fr/EditListModal.json';
 
 // Component namespaces (PascalCase files → PascalCase namespace keys)
 import AccountDropdownFr from '../../locales/fr/AccountDropdown.json';
@@ -101,6 +105,8 @@ const messagesEn = {
   item: itemEn,
   forms: formsEn,
   date: dateEn,
+  NewList: NewListEn,
+  EditListModal: EditListModalEn,
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageEn,
   // Component namespaces (PascalCase for reusable components)
@@ -124,6 +130,8 @@ const messagesFr = {
   item: itemFr,
   forms: formsFr,
   date: dateFr,
+  NewList: NewListFr,
+  EditListModal: EditListModalFr,
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageFr,
   // Component namespaces (PascalCase for reusable components)

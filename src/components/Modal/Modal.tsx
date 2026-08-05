@@ -2,8 +2,9 @@
 
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+
 import styles from './Modal.module.scss';
-import Icon from '@/components/Icon/Icon';
+import { ModalContext } from './ModalContext';
 
 // ─── Focus trap ───────────────────────────────────────────────────────────────
 // All element types that can receive keyboard focus. Used to cycle Tab/Shift+Tab
@@ -16,19 +17,6 @@ const FOCUSABLE_SELECTORS = [
   'textarea:not([disabled])',
   '[tabindex]:not([tabindex="-1"])',
 ].join(', ');
-
-// ─── Context ──────────────────────────────────────────────────────────────────
-// Sharing dismiss() and titleId via context avoids passing props through every
-// sub-component and keeps routing logic (router.back) in a single place.
-// Any future slot (@lists, @items…) wrapping its page in <Modal> gets the same
-// dismiss behaviour for free.
-interface ModalContextValue {
-  dismiss: () => void;
-  titleId: string;
-}
-const ModalContext = React.createContext<ModalContextValue>({ dismiss: () => {}, titleId: '' });
-
-// ─── Modal ────────────────────────────────────────────────────────────────────
 
 interface ModalProps {
   children: React.ReactNode;
@@ -206,55 +194,7 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
   );
 }
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
-
-export function ModalClose() {
-  const { dismiss } = React.useContext(ModalContext);
-  return (
-    <button
-      type="button"
-      aria-label="Close dialog"
-      onClick={dismiss}
-      className={styles.closeButton}
-    >
-      <Icon name="close" size={24} />
-    </button>
-  );
-}
-
-export function ModalHeader({
-  children,
-  className,
-}: {
-  children?: React.ReactNode;
-  className?: string;
-}) {
-  const { titleId } = React.useContext(ModalContext);
-  return (
-    // id={titleId} is consumed by aria-labelledby on the parent <dialog>,
-    // giving assistive technology a meaningful label for the dialog role.
-    <div id={titleId} className={[styles.header, className].filter(Boolean).join(' ')}>
-      {children}
-    </div>
-  );
-}
-
-export function ModalContent({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return <div className={[styles.content, className].filter(Boolean).join(' ')}>{children}</div>;
-}
-
-export function ModalFooter({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return <div className={[styles.footer, className].filter(Boolean).join(' ')}>{children}</div>;
-}
+export { ModalClose } from './ModalClose';
+export { ModalHeader } from './ModalHeader';
+export { ModalContent } from './ModalContent';
+export { ModalFooter } from './ModalFooter';

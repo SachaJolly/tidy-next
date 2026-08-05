@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState, useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import {
   DropdownItem,
   DropdownLabel,
@@ -14,7 +14,7 @@ import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
 import type { List } from '@/lib/types';
 import { updateListVisibilityAction } from '@/app/actions/lists';
 import { formatDate } from '@/lib/date';
-import { localizePath } from '@/lib/locale-path';
+import { useQueryModal } from '@/hooks/use-query-modal';
 
 type ListVisibility = List['visibility'];
 
@@ -27,35 +27,6 @@ interface ListOptionsDropdownProps {
   inline?: boolean;
 }
 
-const VISIBILITY_OPTIONS: Array<{
-  value: ListVisibility;
-  icon: 'public' | 'visibility_off' | 'private';
-  labelKey: 'visibility.public.label' | 'visibility.unindexed.label' | 'visibility.private.label';
-  captionKey:
-    | 'visibility.public.caption'
-    | 'visibility.unindexed.caption'
-    | 'visibility.private.caption';
-}> = [
-  {
-    value: 'PUBLIC',
-    icon: 'public',
-    labelKey: 'visibility.public.label',
-    captionKey: 'visibility.public.caption',
-  },
-  {
-    value: 'UNINDEXED',
-    icon: 'visibility_off',
-    labelKey: 'visibility.unindexed.label',
-    captionKey: 'visibility.unindexed.caption',
-  },
-  {
-    value: 'PRIVATE',
-    icon: 'private',
-    labelKey: 'visibility.private.label',
-    captionKey: 'visibility.private.caption',
-  },
-];
-
 export default function ListOptionsDropdown({
   listId,
   isAuthor,
@@ -65,11 +36,10 @@ export default function ListOptionsDropdown({
   inline = false,
 }: ListOptionsDropdownProps) {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const locale = useLocale();
   const date = useTranslations('date');
   const common = useTranslations('common');
+  const queryModal = useQueryModal();
   const [isPending, startTransition] = useTransition();
   const [visibility, setVisibility] = useState<ListVisibility>(initialVisibility);
   const [error, setError] = useState<string | null>(null);
@@ -87,11 +57,7 @@ export default function ListOptionsDropdown({
   );
 
   const handleEdit = () => {
-    // Build URL with current pathname and add/update query params
-    const params = new URLSearchParams(searchParams);
-    params.set('modal', 'edit-list');
-    params.set('listId', listId);
-    router.push(`${pathname}?${params.toString()}`);
+    queryModal.openModal('edit-list', listId);
   };
 
   const handleVisibilityChange = (value: string) => {
@@ -121,16 +87,16 @@ export default function ListOptionsDropdown({
     <DropdownMenu align="end" inline={inline}>
       {isAuthor ? (
         <>
-          <DropdownItem
-            icon="edit"
-            label={common('action.edit')}
-            onSelect={handleEdit}
-          />
+          <DropdownItem icon="edit" label={common('action.edit')} onSelect={handleEdit} />
           <DropdownItem icon="archive" destructive label={common('action.archive')} />
           <DropdownSeparator />
 
           <DropdownLabel>{common('action.setVisibility')}</DropdownLabel>
-          <VisibilityRadioGroup value={visibility} onValueChange={handleVisibilityChange} showLabel={false} />
+          <VisibilityRadioGroup
+            value={visibility}
+            onValueChange={handleVisibilityChange}
+            showLabel={false}
+          />
           {error ? (
             <DropdownText>
               <p className="text-small" style={{ color: 'var(--danger)' }}>
@@ -145,7 +111,9 @@ export default function ListOptionsDropdown({
       <DropdownItem
         icon="copy"
         label={common('action.copyLink')}
-        onSelect={() => void navigator.clipboard.writeText(`${window.location.origin}/lists/${listId}`)}
+        onSelect={() =>
+          void navigator.clipboard.writeText(`${window.location.origin}/lists/${listId}`)
+        }
       />
       <DropdownSeparator />
       <DropdownText>

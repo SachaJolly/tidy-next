@@ -51,6 +51,9 @@ const meta = {
       control: 'select',
       options: iconOptions,
     },
+    hasDropdown: {
+      control: 'boolean',
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof Button>;
@@ -108,5 +111,13 @@ export const WithIcon: Story = {
   args: {
     icon: 'search',
     label: 'Icon',
+  },
+};
+
+export const WithDropdownIcon: Story = {
+  args: {
+    icon: 'search',
+    label: 'Dropdown',
+    hasDropdown: true,
   },
 };

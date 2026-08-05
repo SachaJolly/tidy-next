@@ -2,5 +2,11 @@
   "trigger": "Edit",
   "title": "Edit list",
   "description": "Update the title and description, then save your changes.",
-  "save": "Save changes"
+  "save": "Save changes",
+  "loading": "Loading list…",
+  "error": {
+    "notFound": "This list could not be found.",
+    "forbidden": "You are not allowed to edit this list.",
+    "loadFailed": "Failed to load the list. Please try again."
+  }
 }

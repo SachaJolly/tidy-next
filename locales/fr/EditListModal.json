@@ -1,6 +1,11 @@
 {
-  "trigger": "Modifier",
   "title": "Modifier la liste",
   "description": "Mettez à jour le titre et la description, puis enregistrez vos modifications.",
-  "save": "Enregistrer les modifications"
+  "save": "Enregistrer les modifications",
+  "loading": "Chargement de la liste…",
+  "error": {
+    "notFound": "Cette liste est introuvable.",
+    "forbidden": "Vous n'êtes pas autorisé à modifier cette liste.",
+    "loadFailed": "Le chargement de la liste a échoué. Veuillez réessayer."
+  }
 }

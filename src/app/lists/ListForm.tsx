@@ -1,21 +1,25 @@
 'use client';
 
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
+
 import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
-import Input from '@/components/Input/Input';
-import Textarea from '@/components/Textarea/Textarea';
-import {Dropdown, DropdownMenu} from '@/components/Dropdown';
-import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
-import Icon from '@/components/Icon/Icon';
+import { Dropdown, DropdownMenu } from '@/components/Dropdown';
 import type { IconName } from '@/components/Icon/icons';
+import Input from '@/components/Input/Input';
+import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
+import { ModalContent, ModalFooter } from '@/components/Modal/Modal';
+import Textarea from '@/components/Textarea/Textarea';
 import { createListAction } from '@/app/actions/lists';
 import type { List } from '@/lib/types';
-import { useTranslations } from 'next-intl';
-import {ModalContent, ModalFooter} from "@/components/Modal/Modal";
 
 type ListFormProps = {
-  action?: (values: { title: string; description: string; visibility?: string }) => Promise<{ list?: List; error?: string }>;
+  action?: (values: {
+    title: string;
+    description: string;
+    visibility?: string;
+  }) => Promise<{ list?: List; error?: string }>;
   submitLabel?: string;
   cancelLabel?: string;
   initialTitle?: string;
@@ -31,6 +35,19 @@ type VisibilityOption = {
   caption: string;
   icon: IconName;
 };
+
+function normalizeVisibility(value: string): 'published' | 'unindexed' | 'restricted' {
+  const mapping: Record<string, 'published' | 'unindexed' | 'restricted'> = {
+    PUBLIC: 'published',
+    published: 'published',
+    UNINDEXED: 'unindexed',
+    unindexed: 'unindexed',
+    PRIVATE: 'restricted',
+    restricted: 'restricted',
+  };
+
+  return mapping[value] || 'restricted';
+}
 
 /**
  * Shared list form body.
@@ -53,23 +70,10 @@ export default function ListForm({
   const resolvedSubmitLabel = submitLabel ?? t('createList');
   const resolvedCancelLabel = cancelLabel ?? t('cancel');
 
-  // Normalize API visibility values (PUBLIC, UNINDEXED, PRIVATE) to form values (published, unindexed, restricted)
-  const normalizeVisibility = (value: string): 'published' | 'unindexed' | 'restricted' => {
-    const mapping: Record<string, 'published' | 'unindexed' | 'restricted'> = {
-      'PUBLIC': 'published',
-      'published': 'published',
-      'UNINDEXED': 'unindexed',
-      'unindexed': 'unindexed',
-      'PRIVATE': 'restricted',
-      'restricted': 'restricted',
-    };
-    return mapping[value] || 'restricted';
-  };
-
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription);
   const [visibility, setVisibility] = useState<'published' | 'unindexed' | 'restricted'>(
-    normalizeVisibility(initialVisibility)
+    normalizeVisibility(initialVisibility),
   );
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -124,12 +128,27 @@ export default function ListForm({
 
   // Visibility dropdown options
   const visibilityOptions: VisibilityOption[] = [
-    { value: 'published', label: tCommon('visibility.public.label'), caption: tCommon('visibility.public.caption'), icon: 'visibility_on' },
-    { value: 'unindexed', label: tCommon('visibility.unindexed.label'), caption: tCommon('visibility.unindexed.caption'), icon: 'visibility_off' },
-    { value: 'restricted', label: tCommon('visibility.private.label'), caption: tCommon('visibility.private.caption'), icon: 'private' },
+    {
+      value: 'published',
+      label: tCommon('visibility.public.label'),
+      caption: tCommon('visibility.public.caption'),
+      icon: 'public',
+    },
+    {
+      value: 'unindexed',
+      label: tCommon('visibility.unindexed.label'),
+      caption: tCommon('visibility.unindexed.caption'),
+      icon: 'visibility_off',
+    },
+    {
+      value: 'restricted',
+      label: tCommon('visibility.private.label'),
+      caption: tCommon('visibility.private.caption'),
+      icon: 'private',
+    },
   ];
 
-  const currentVisibility = visibilityOptions.find(opt => opt.value === visibility);
+  const currentVisibility = visibilityOptions.find((opt) => opt.value === visibility);
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -163,23 +182,47 @@ export default function ListForm({
         )}
       </ModalContent>
       <ModalFooter>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '1rem',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
           <Dropdown>
-            <Button disabled={isSubmitting}>
-              {currentVisibility && <Icon name={currentVisibility.icon} size={16} />}
-              <span>{currentVisibility?.label}</span>
-            </Button>
+            <Button
+              type="button"
+              icon={currentVisibility?.icon}
+              label={currentVisibility?.label}
+              hasDropdown
+              disabled={isSubmitting}
+              transparent
+            />
             <DropdownMenu>
               <VisibilityRadioGroup
                 value={visibility}
-                onValueChange={(val) => setVisibility(val as 'published' | 'unindexed' | 'restricted')}
+                onValueChange={(val) =>
+                  setVisibility(val as 'published' | 'unindexed' | 'restricted')
+                }
               />
             </DropdownMenu>
           </Dropdown>
 
           <ButtonGroup>
-            <Button label={resolvedCancelLabel} variant="default" onClick={onCancel} disabled={isSubmitting} />
-            <Button label={resolvedSubmitLabel} variant="interactive" type="submit" disabled={isSubmitting} />
+            <Button
+              type="button"
+              label={resolvedCancelLabel}
+              variant="default"
+              onClick={onCancel}
+              disabled={isSubmitting}
+            />
+            <Button
+              label={resolvedSubmitLabel}
+              variant="interactive"
+              type="submit"
+              disabled={isSubmitting}
+            />
           </ButtonGroup>
         </div>
       </ModalFooter>

@@ -1,50 +1,37 @@
-'use client';
+import { notFound, redirect } from 'next/navigation';
 
-import React, { useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { Modal, ModalHeader, ModalClose } from '@/components/Modal/Modal';
-import ListForm from '@/app/lists/ListForm';
-import { updateListAction } from '@/app/actions/lists';
+import EditListModal from '../EditListModal';
+import { api, ApiFetchError } from '@/lib/api';
+import type { List } from '@/lib/types';
 
-interface EditListPageProps {
-  listId: string;
-  initialTitle: string;
-  initialDescription: string | null;
-  initialVisibility?: string;
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
 }
 
-export default function EditListPage({
-  listId,
-  initialTitle,
-  initialDescription,
-  initialVisibility,
-}: EditListPageProps) {
-  const router = useRouter();
+export default async function EditListPage({ params }: PageProps) {
+  const { id } = await params;
 
-  const handleSuccess = useCallback(() => {
-    router.back();
-    router.refresh();
-  }, [router]);
+  try {
+    const list = await api.auth.get<List>(`/api/v1/lists/${id}`, {
+      cache: 'no-store',
+    });
 
-  const handleCancel = useCallback(() => {
-    router.back();
-  }, [router]);
+    if (!list) {
+      redirect('/signin');
+    }
 
-  return (
-    <Modal size="default" onClose={handleCancel}>
-      <ModalHeader>
-        <h2>Edit list</h2>
-        <ModalClose />
-      </ModalHeader>
-      <ListForm
-        action={(values) => updateListAction(listId, values)}
-        submitLabel="Save changes"
-        initialTitle={initialTitle}
-        initialDescription={initialDescription ?? ''}
-        initialVisibility={initialVisibility}
-        onCancel={handleCancel}
-        onSuccess={handleSuccess}
-      />
-    </Modal>
-  );
+    return <EditListModal forceOpen initialList={list} />;
+  } catch (error) {
+    if (error instanceof ApiFetchError && (error.status === 404 || error.status === 403)) {
+      notFound();
+    }
+
+    if (error instanceof ApiFetchError && error.status === 401) {
+      redirect('/signin');
+    }
+
+    throw error;
+  }
 }

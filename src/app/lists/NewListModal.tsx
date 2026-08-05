@@ -3,29 +3,34 @@
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { Modal, ModalContent, ModalHeader, ModalClose } from '@/components/Modal/Modal';
-import ListForm from './ListForm';
-import type { List } from '@/lib/types';
-import styles from '@/components/Modal/Modal.module.scss';
 import { localizePath } from '@/lib/locale-path';
 import { useQueryModal } from '@/hooks/use-query-modal';
+import type { List } from '@/lib/types';
+
+import ListModal from './ListModal';
+import ListForm from './ListForm';
 
 /**
  * Dedicated modal for creating a new list.
  *
- * Keeping this entity-specific makes later create/edit flows for items and
- * collections follow the same pattern without reintroducing a generic shell.
+ * The shell stays reusable, while the action wiring and redirect logic remain
+ * specific to the list-create flow.
  */
-export default function NewListModal() {
+export default function NewListModal({ forceOpen = false }: { forceOpen?: boolean } = {}) {
   const t = useTranslations('NewList');
   const router = useRouter();
   const locale = useLocale();
   const queryModal = useQueryModal();
-  const isOpen = queryModal.isOpen('new-list');
+  const isOpen = forceOpen || queryModal.isOpen('new-list');
 
   const closeModal = useCallback(() => {
+    if (forceOpen) {
+      router.back();
+      return;
+    }
+
     queryModal.closeModal();
-  }, [queryModal]);
+  }, [forceOpen, queryModal, router]);
 
   const handleSuccess = useCallback(
     (list: List) => {
@@ -43,12 +48,8 @@ export default function NewListModal() {
   }
 
   return (
-    <Modal size="default" onClose={closeModal}>
-      <ModalHeader>
-        <h2>{t('title')}</h2>
-        <ModalClose />
-      </ModalHeader>
+    <ListModal title={t('title')} onClose={closeModal}>
       <ListForm onCancel={closeModal} onSuccess={handleSuccess} />
-    </Modal>
+    </ListModal>
   );
 }

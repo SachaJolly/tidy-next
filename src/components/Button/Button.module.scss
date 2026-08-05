@@ -26,6 +26,23 @@
   font-family: inherit;
   margin: 0;
 
+  .icon,
+  .dropdown {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    opacity: .7;
+  }
+
+  .icon {
+    margin: 0 0 0 -.125rem;
+  }
+
+  .dropdown {
+    margin: 0 -.25rem;
+  }
+
   &.small {
     min-height: 2rem;
     padding: 0.25rem 0.75rem;
@@ -42,7 +59,7 @@
     &.focus,
     &:focus-within,
     &:focus-visible,
-    &[aria-expanded="true"],
+    &[aria-expanded='true'],
     &:active,
     &.active {
       color: var(--text-body);
@@ -61,7 +78,7 @@
       &.focus,
       &:focus-within,
       &:focus-visible,
-      &[aria-expanded="true"],
+      &[aria-expanded='true'],
       &:active,
       &.active {
         background-color: var(--surface-highlight);
@@ -82,7 +99,7 @@
       &.focus,
       &:focus-within,
       &:focus-visible,
-      &[aria-expanded="true"],
+      &[aria-expanded='true'],
       &:active,
       &.active {
         background-color: var(--surface-highlight-hover);
@@ -102,7 +119,7 @@
     &.focus,
     &:focus-within,
     &:focus-visible,
-    &[aria-expanded="true"],
+    &[aria-expanded='true'],
     &:active,
     &.active {
       color: var(--text-on-interactive);
@@ -121,7 +138,7 @@
       &.focus,
       &:focus-within,
       &:focus-visible,
-      &[aria-expanded="true"],
+      &[aria-expanded='true'],
       &:active,
       &.active {
         color: var(--text-interactive);
@@ -140,7 +157,7 @@
       &.focus,
       &:focus-within,
       &:focus-visible,
-      &[aria-expanded="true"],
+      &[aria-expanded='true'],
       &:active,
       &.active {
         color: var(--text-interactive);

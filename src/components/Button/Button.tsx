@@ -10,6 +10,7 @@ import { localizePath } from '@/lib/locale-path';
 
 type BaseButtonProps = {
   icon?: IconName;
+  hasDropdown?: boolean;
   label?: string; // `label` is now an optional prop for simple text
   children?: React.ReactNode; // `children` is also optional
   size?: 'default' | 'small';
@@ -31,6 +32,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   label,
   icon,
+  hasDropdown = false,
   size = 'default',
   variant = 'default',
   tinted,
@@ -57,8 +59,17 @@ const Button: React.FC<ButtonProps> = ({
 
   const innerContent = (
     <>
-      {icon && <Icon name={icon} size={20} className={styles.icon} />}
+      {icon && (
+        <div className={styles.icon}>
+          <Icon name={icon} size={20} />
+        </div>
+      )}
       {content && <span>{content}</span>}
+      {hasDropdown && (
+        <div className={styles.dropdown}>
+          <Icon name="dropdown" size={20} />
+        </div>
+      )}
     </>
   );
 
