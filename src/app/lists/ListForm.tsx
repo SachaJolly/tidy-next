@@ -9,12 +9,14 @@ import { Dropdown, DropdownMenu } from '@/components/Dropdown';
 import type { IconName } from '@/components/Icon/icons';
 import Input from '@/components/Input/Input';
 import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
-import { ModalContent, ModalFooter } from '@/components/Modal/Modal';
+import { ModalHeader, ModalFooter } from '@/components/Modal/Modal';
 import Textarea from '@/components/Textarea/Textarea';
 import { createListAction } from '@/app/actions/lists';
 import type { List } from '@/lib/types';
+import {ModalFormFields} from "@/components/Modal/ModalFormFields";
 
 type ListFormProps = {
+  title: string;
   action?: (values: {
     title: string;
     description: string;
@@ -49,13 +51,8 @@ function normalizeVisibility(value: string): 'published' | 'unindexed' | 'restri
   return mapping[value] || 'restricted';
 }
 
-/**
- * Shared list form body.
- *
- * The `action` prop lets future edit modals reuse the same UI while swapping
- * the server mutation underneath.
- */
 export default function ListForm({
+  title,
   action = createListAction,
   submitLabel,
   cancelLabel,
@@ -68,9 +65,9 @@ export default function ListForm({
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const resolvedSubmitLabel = submitLabel ?? t('createList');
-  const resolvedCancelLabel = cancelLabel ?? t('cancel');
+  const resolvedCancelLabel = cancelLabel ?? t('discard');
 
-  const [title, setTitle] = useState(initialTitle);
+  const [formTitle, setFormTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription);
   const [visibility, setVisibility] = useState<'published' | 'unindexed' | 'restricted'>(
     normalizeVisibility(initialVisibility),
@@ -78,9 +75,8 @@ export default function ListForm({
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Sync form state when props change (e.g., when modal opens with new list data)
   useEffect(() => {
-    setTitle(initialTitle);
+    setFormTitle(initialTitle);
     setDescription(initialDescription);
     setVisibility(normalizeVisibility(initialVisibility));
     setError(null);
@@ -90,7 +86,7 @@ export default function ListForm({
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      const titleValue = title.trim();
+      const titleValue = formTitle.trim();
       const descriptionValue = description.trim();
 
       if (!titleValue) {
@@ -123,10 +119,9 @@ export default function ListForm({
         setIsSubmitting(false);
       }
     },
-    [action, description, onSuccess, title, visibility, t],
+    [action, description, formTitle, onSuccess, t, visibility],
   );
 
-  // Visibility dropdown options
   const visibilityOptions: VisibilityOption[] = [
     {
       value: 'published',
@@ -151,15 +146,16 @@ export default function ListForm({
   const currentVisibility = visibilityOptions.find((opt) => opt.value === visibility);
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <ModalContent>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+      <ModalHeader title={title} />
+      <ModalFormFields>
         <Input
           id="list-title"
           name="title"
           label={t('titleLabel')}
           placeholder={t('titlePlaceholder')}
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
+          value={formTitle}
+          onChange={(event) => setFormTitle(event.target.value)}
           autoFocus={true}
           disabled={isSubmitting}
           required
@@ -180,51 +176,42 @@ export default function ListForm({
             {error}
           </p>
         )}
-      </ModalContent>
-      <ModalFooter>
-        <div
-          style={{
-            display: 'flex',
-            gap: '1rem',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Dropdown>
-            <Button
-              type="button"
-              icon={currentVisibility?.icon}
-              label={currentVisibility?.label}
-              hasDropdown
-              disabled={isSubmitting}
-              transparent
+      </ModalFormFields>
+      <ModalFooter justify="space-between">
+        <Dropdown>
+          <Button
+            type="button"
+            icon={currentVisibility?.icon}
+            label={currentVisibility?.label}
+            hasDropdown
+            disabled={isSubmitting}
+            transparent
+          />
+          <DropdownMenu>
+            <VisibilityRadioGroup
+              value={visibility}
+              onValueChange={(val) =>
+                setVisibility(val as 'published' | 'unindexed' | 'restricted')
+              }
             />
-            <DropdownMenu>
-              <VisibilityRadioGroup
-                value={visibility}
-                onValueChange={(val) =>
-                  setVisibility(val as 'published' | 'unindexed' | 'restricted')
-                }
-              />
-            </DropdownMenu>
-          </Dropdown>
+          </DropdownMenu>
+        </Dropdown>
 
-          <ButtonGroup>
-            <Button
-              type="button"
-              label={resolvedCancelLabel}
-              variant="default"
-              onClick={onCancel}
-              disabled={isSubmitting}
-            />
-            <Button
-              label={resolvedSubmitLabel}
-              variant="interactive"
-              type="submit"
-              disabled={isSubmitting}
-            />
-          </ButtonGroup>
-        </div>
+        <ButtonGroup>
+          <Button
+            type="button"
+            label={resolvedCancelLabel}
+            variant="default"
+            onClick={onCancel}
+            disabled={isSubmitting}
+          />
+          <Button
+            label={resolvedSubmitLabel}
+            variant="interactive"
+            type="submit"
+            disabled={isSubmitting}
+          />
+        </ButtonGroup>
       </ModalFooter>
     </form>
   );

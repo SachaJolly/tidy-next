@@ -21,13 +21,14 @@ const FOCUSABLE_SELECTORS = [
 interface ModalProps {
   children: React.ReactNode;
   size?: 'small' | 'default' | 'large';
+  minHeight?: React.CSSProperties['minHeight'];
   // Called when the modal is dismissed (Esc, backdrop click, or ModalClose).
   // The consumer is responsible for any routing or state changes on close.
   // If omitted, the dialog simply closes with no side-effects.
   onClose?: () => void;
 }
 
-export function Modal({ children, size = 'default', onClose }: ModalProps) {
+export function Modal({ children, size = 'default', minHeight, onClose }: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -175,6 +176,7 @@ export function Modal({ children, size = 'default', onClose }: ModalProps) {
           ref={dialogRef}
           className={styles.modal}
           data-size={size}
+          style={minHeight ? { minHeight } : undefined}
           // aria-modal tells screen readers that content outside the dialog is
           // inert, matching the pointer/keyboard behaviour enforced above.
           aria-modal="true"

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useQueryModal } from '@/hooks/use-query-modal';
 import type { List } from '@/lib/types';
+import { ModalContent, ModalHeader } from '@/components/Modal/Modal';
 
 import { updateListAction } from '@/app/actions/lists';
 import ListForm from '@/app/lists/ListForm';
@@ -12,9 +13,6 @@ import ListModal from '@/app/lists/ListModal';
 
 /**
  * Modal component for editing an existing list via query param (?modal=edit-list&modalId=xxx).
- *
- * The modal can also be rendered directly by the standalone edit route with
- * `forceOpen`, which keeps the same form logic reusable across entry points.
  */
 type EditListModalProps = {
   forceOpen?: boolean;
@@ -74,17 +72,13 @@ export default function EditListModal({
           if (isActive) {
             setList(fetchedList);
           }
-        } else if (response.status === 401) {
+        } else if (response.status === 401 || response.status === 403) {
           if (isActive) {
             setError(t('error.forbidden'));
           }
         } else if (response.status === 404) {
           if (isActive) {
             setError(t('error.notFound'));
-          }
-        } else if (response.status === 403) {
-          if (isActive) {
-            setError(t('error.forbidden'));
           }
         } else {
           if (isActive) {
@@ -115,25 +109,28 @@ export default function EditListModal({
 
   if (isLoading) {
     return (
-      <ListModal title={t('title')} onClose={closeModal}>
-        <div style={{ padding: '1rem' }}>{t('loading')}</div>
+      <ListModal onClose={closeModal}>
+        <ModalHeader title={t('title')} />
+        <ModalContent>{t('loading')}</ModalContent>
       </ListModal>
     );
   }
 
   if (error || !list) {
     return (
-      <ListModal title={t('title')} onClose={closeModal}>
-        <div style={{ padding: '1rem', color: 'var(--danger)' }}>
-          {error || t('error.loadFailed')}
-        </div>
+      <ListModal onClose={closeModal}>
+        <ModalHeader title={t('title')} />
+        <ModalContent>
+          <div style={{ color: 'var(--danger)' }}>{error || t('error.loadFailed')}</div>
+        </ModalContent>
       </ListModal>
     );
   }
 
   return (
-    <ListModal title={t('title')} onClose={closeModal}>
+    <ListModal onClose={closeModal}>
       <ListForm
+        title={t('title')}
         action={(values) => updateListAction(listId, values)}
         submitLabel={t('save')}
         initialTitle={list.title}

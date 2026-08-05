@@ -9,5 +9,12 @@ export function ModalContent({
   children: React.ReactNode;
   className?: string;
 }) {
-  return <div className={[styles.content, className].filter(Boolean).join(' ')}>{children}</div>;
+  return (
+    <div
+      className={[styles.content, className].filter(Boolean).join(' ')}
+      style={{ flex: '1 1 auto', minHeight: 0 }}
+    >
+      {children}
+    </div>
+  );
 }
