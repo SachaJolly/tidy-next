@@ -11,37 +11,31 @@ export interface DropdownProps {
    * This avoids wrapper-trigger hydration pitfalls (e.g. button-in-button).
    */
   trigger?: React.ReactNode;
-  /** Controlled open state — leave unset for uncontrolled behaviour. */
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
 }
 
-export function Dropdown({ children, trigger, open: controlledOpen, onOpenChange }: DropdownProps) {
-  const isControlled = controlledOpen !== undefined;
-  const [internalOpen, setInternalOpen] = useState(false);
-  const open = isControlled ? controlledOpen! : internalOpen;
-
+/**
+ * Dropdown component with built-in positioning, mobile drawer support, and
+ * keyboard navigation. Uncontrolled by default — manages its own open state.
+ *
+ * - Desktop: Opens as a fixed-position dropdown next to the trigger
+ * - Mobile: Opens as a full-height bottom drawer
+ * - Keyboard: Escape to close, Arrow keys/Tab to navigate items
+ * - Click outside to dismiss
+ */
+export function Dropdown({ children, trigger }: DropdownProps) {
+  const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLElement | null>(null);
 
-  // Stack-based drill-down navigation: each entry is { id, title }.
-  // 'root' is always the first frame; pushing adds a sub-menu frame.
+  // Stack-based navigation for nested submenus
   const [viewStack, setViewStack] = useState([{ id: 'root', title: '' }]);
   const currentView = viewStack[viewStack.length - 1].id;
   const subTitle = viewStack[viewStack.length - 1].title;
 
-  const setOpen = useCallback(
-    (v: boolean) => {
-      if (!isControlled) setInternalOpen(v);
-      onOpenChange?.(v);
-    },
-    [isControlled, onOpenChange],
-  );
-
   const close = useCallback(() => {
     setOpen(false);
-    // Always reset the view stack when closing so re-opening starts at root.
+    // Reset view stack when closing so re-opening starts fresh
     setViewStack([{ id: 'root', title: '' }]);
-  }, [setOpen]);
+  }, []);
 
   const navigateTo = useCallback((id: string, title: string) => {
     setViewStack((prev) => [...prev, { id, title }]);

@@ -104,34 +104,24 @@ export function DropdownMenu({
     return () => cancelAnimationFrame(rafId);
   }, [inline, open, isMobile, calculatePosition, currentView]);
 
-  // ─── Desktop: continuous scroll / resize tracking ─────────────────────────
-  // The panel is positioned with `fixed` relative to the viewport, but the
-  // trigger moves as the page scrolls. Without tracking, the panel drifts away.
-  // We listen in the CAPTURE phase so events from ANY scrollable ancestor are
-  // caught, not just window-level scrolls.
+  // ─── Desktop: reposition on scroll/resize ──────────────────────────────────
+  // Keep the panel aligned with the trigger as the viewport changes.
   useEffect(() => {
     // Only activate on desktop — mobile uses the body scroll lock below.
     if (inline || !open || isMobile) return;
 
     let rafId = 0;
-
-    // Wrap in requestAnimationFrame so that rapid scroll/resize events are
-    // collapsed into at most one DOM measurement per animation frame (~16 ms),
-    // preventing unnecessary layout thrashing.
     const scheduleUpdate = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(calculatePosition);
     };
 
-    // capture: true ensures scroll events from nested scrollable elements
-    // bubble up to window and trigger repositioning.
     window.addEventListener('scroll', scheduleUpdate, { capture: true, passive: true });
     window.addEventListener('resize', scheduleUpdate);
 
     return () => {
       window.removeEventListener('scroll', scheduleUpdate, { capture: true });
       window.removeEventListener('resize', scheduleUpdate);
-      // Cancel any pending frame so stale measurements don't apply after close.
       cancelAnimationFrame(rafId);
     };
   }, [inline, open, isMobile, calculatePosition]);
@@ -162,33 +152,36 @@ export function DropdownMenu({
     };
   }, [inline, open, isMobile]);
 
-  // Close on Escape — document-level so it fires regardless of where focus is
+  // Close on Escape or outside click
   useEffect(() => {
     if (inline || !open) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return;
-      e.preventDefault();
-      close();
-      (triggerRef.current as HTMLElement | null)?.focus();
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+        (triggerRef.current as HTMLElement | null)?.focus();
+      }
     };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+
+    const handleClickOutside = (e: PointerEvent) => {
+      if (
+        !menuRef.current?.contains(e.target as Node) &&
+        !triggerRef.current?.contains(e.target as Node)
+      ) {
+        close();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    document.addEventListener('pointerdown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('pointerdown', handleClickOutside);
+    };
   }, [inline, open, close, triggerRef]);
 
-  // Close when a pointer-down lands outside both the panel and the trigger
-  useEffect(() => {
-    if (inline || !open) return;
-    const onPointerDown = (e: PointerEvent) => {
-      if (
-        menuRef.current?.contains(e.target as Node) ||
-        triggerRef.current?.contains(e.target as Node)
-      )
-        return;
-      close();
-    };
-    document.addEventListener('pointerdown', onPointerDown);
-    return () => document.removeEventListener('pointerdown', onPointerDown);
-  }, [inline, open, close, triggerRef]);
 
   // Arrow-key navigation between focusable menu items + Tab focus trap
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
