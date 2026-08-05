@@ -110,19 +110,16 @@ export function DropdownMenu({
     // Only activate on desktop — mobile uses the body scroll lock below.
     if (inline || !open || isMobile) return;
 
-    let rafId = 0;
-    const scheduleUpdate = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(calculatePosition);
+    const updatePosition = () => {
+      calculatePosition();
     };
 
-    window.addEventListener('scroll', scheduleUpdate, { capture: true, passive: true });
-    window.addEventListener('resize', scheduleUpdate);
+    window.addEventListener('scroll', updatePosition, { capture: true, passive: true });
+    window.addEventListener('resize', updatePosition);
 
     return () => {
-      window.removeEventListener('scroll', scheduleUpdate, { capture: true });
-      window.removeEventListener('resize', scheduleUpdate);
-      cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', updatePosition, { capture: true });
+      window.removeEventListener('resize', updatePosition);
     };
   }, [inline, open, isMobile, calculatePosition]);
 
@@ -182,7 +179,6 @@ export function DropdownMenu({
     };
   }, [inline, open, close, triggerRef]);
 
-
   // Arrow-key navigation between focusable menu items + Tab focus trap
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const isArrow = e.key === 'ArrowDown' || e.key === 'ArrowUp';
@@ -202,8 +198,8 @@ export function DropdownMenu({
       // Trap focus inside the panel: loop forward (Tab) and backward (Shift+Tab).
       e.preventDefault();
       const next = e.shiftKey
-        ? (idx - 1 + items.length) % items.length  // Shift+Tab → go up, wrap to last
-        : (idx + 1) % items.length;                 // Tab       → go down, wrap to first
+        ? (idx - 1 + items.length) % items.length // Shift+Tab → go up, wrap to last
+        : (idx + 1) % items.length; // Tab       → go down, wrap to first
       items[next]?.focus();
       return;
     }
@@ -257,9 +253,13 @@ export function DropdownMenu({
   // In inline mode, render directly in the document flow (no portal, no overlay).
   if (inline) return panel;
 
-  // Both desktop and mobile use createPortal to escape any overflow:hidden
-  // ancestor — including a parent Modal dialog. The panel is appended to
-  // document.body where z-index is resolved in the root stacking context.
+  const portalTarget =
+    triggerRef.current?.closest('dialog') ?? document.getElementById('application-overlays');
+  if (!portalTarget) return null;
+
+  // Dropdowns inside a modal must stay inside the modal's <dialog> top layer,
+  // otherwise they end up behind the dialog backdrop. Outside modals we still
+  // use the shared application-overlays layer so the menu escapes overflow.
   return createPortal(
     isMobile ? (
       <>
@@ -270,6 +270,6 @@ export function DropdownMenu({
     ) : (
       panel
     ),
-    document.body,
+    portalTarget,
   );
 }

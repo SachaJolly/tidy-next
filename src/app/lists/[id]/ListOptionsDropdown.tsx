@@ -88,7 +88,7 @@ export default function ListOptionsDropdown({
       {isAuthor ? (
         <>
           <DropdownItem icon="edit" label={common('action.edit')} onSelect={handleEdit} />
-          <DropdownItem icon="archive" destructive label={common('action.archive')} />
+          <DropdownItem icon="delete" destructive label={common('action.archive')} />
           <DropdownSeparator />
 
           <DropdownLabel>{common('action.setVisibility')}</DropdownLabel>

@@ -17,7 +17,9 @@
   white-space: nowrap;
   user-select: none;
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:focus-visible {
     background: var(--surface-highlight-hover);
   }
 }
@@ -97,7 +99,9 @@
   color: var(--text-muted);
   padding: 0.25rem;
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:focus-visible {
     background: var(--surface-highlight);
   }
 }
@@ -154,6 +158,12 @@
     .itemIcon {
       color: inherit;
     }
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      background: var(--surface-interactive-highlight);
+    }
   }
 
   /* Destructive action (e.g. Delete) */
@@ -165,6 +175,7 @@
     }
 
     &:hover,
+    &:focus,
     &:focus-visible {
       background: var(--color-red-050);
     }

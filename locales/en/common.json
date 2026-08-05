@@ -20,6 +20,7 @@
   },
   "updateVisibilityError": "Visibility update failed. Please try again.",
   "visibility": {
+    "label": "Change visibility",
     "public": {
       "label": "Public",
       "caption": "Anyone can see"
@@ -42,7 +43,6 @@
     "moveTo": "Move to...",
     "addTo": "Add to...",
     "delete": "Delete",
-    "manageCollaborators": "Manage collaborators",
-    "setVisibility": "Set visibility"
+    "manageCollaborators": "Manage collaborators"
   }
 }

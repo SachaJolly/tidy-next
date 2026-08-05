@@ -20,6 +20,7 @@
   },
   "updateVisibilityError": "La mise à jour de la visibilité a échoué. Veuillez réessayer.",
   "visibility": {
+    "label": "Changer la visibilité",
     "public": {
       "label": "Publique",
       "caption": "Tout le monde peut voir"
@@ -42,7 +43,6 @@
     "moveTo": "Déplacer vers...",
     "addTo": "Ajouter à...",
     "delete": "Supprimer",
-    "manageCollaborators": "Gérer les collaborateurs",
-    "setVisibility": "Définir la visibilité"
+    "manageCollaborators": "Gérer les collaborateurs"
   }
 }
