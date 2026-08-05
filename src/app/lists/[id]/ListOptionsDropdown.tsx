@@ -85,7 +85,7 @@ export default function ListOptionsDropdown({
   );
 
   const handleEdit = () => {
-    router.push(localizePath(`/lists/${listId}/edit`, locale));
+    router.push(`?modal=edit-list`);
   };
 
   const handleVisibilityChange = (value: string) => {

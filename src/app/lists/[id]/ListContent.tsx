@@ -17,6 +17,7 @@ import { Dropdown } from '@/components/Dropdown';
 import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
 import ListOptionsDropdown from './ListOptionsDropdown';
+import EditListModal from './EditListModal';
 import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/LoadingSkeletons';
 
 type ListPageData = {
@@ -95,67 +96,75 @@ export async function ListHeaderSection({ id }: { id: string }) {
   const isAuthor = currentUser?.id === author.id;
 
   return (
-    <header className={styles['list-header']}>
-      <div className={styles['list-header-title']}>
-        <h1 className={styles.title}>{list.title}</h1>
-        <MetaGroup>
-          <Meta size="base">
-            <Avatar initials={author.name.charAt(0)} size="24" alt={author.name} />
-            <span>
-              {common('curatedBy')}{' '}
-              <Link className={styles.metaLink} href={localizePath(`/${author.username}`, locale)}>
-                {author.name}
-              </Link>
-            </span>
-          </Meta>
-          <Meta size="base">
-            {date('lastUpdated', {
-              date: formatDate(list.updatedAt, locale, {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-              }),
-            })}
-          </Meta>
-          <Meta size="base">{t('items', { count: list.itemsCount })}</Meta>
-        </MetaGroup>
-      </div>
-
-      {list.description && (
-        <p className={styles.description}>
-          <span className={styles.statusBadge}>{list.visibility}</span>
-          {list.description}
-        </p>
-      )}
-
-      <div className={styles['list-header-actions']}>
-        <div className={styles['list-header-buttons']}>
-          {canCreateItem && (
-            <Button icon="add" label={t('addItem')} variant="interactive" size="small" />
-          )}
-          <div className={styles['list-header-like']}>
-            <Button icon="like" label={t('like')} size="small" tinted={true} />
-            <span className="text-muted">
-              {t('peopleLikedThisList', { count: list.notesCount })}
-            </span>
-          </div>
+    <>
+      <header className={styles['list-header']}>
+        <div className={styles['list-header-title']}>
+          <h1 className={styles.title}>{list.title}</h1>
+          <MetaGroup>
+            <Meta size="base">
+              <Avatar initials={author.name.charAt(0)} size="24" alt={author.name} />
+              <span>
+                {common('curatedBy')}{' '}
+                <Link className={styles.metaLink} href={localizePath(`/${author.username}`, locale)}>
+                  {author.name}
+                </Link>
+              </span>
+            </Meta>
+            <Meta size="base">
+              {date('lastUpdated', {
+                date: formatDate(list.updatedAt, locale, {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                }),
+              })}
+            </Meta>
+            <Meta size="base">{t('items', { count: list.itemsCount })}</Meta>
+          </MetaGroup>
         </div>
-        <ButtonGroup>
-          <Button icon="share" label={t('share')} size="small" tinted={true} />
-          <Button icon="favorite" aria-label={t('addToFavorites')} size="small" tinted={true} />
-          <Dropdown>
-            <Button icon="settings" aria-label={t('settings')} size="small" tinted={true} />
-            <ListOptionsDropdown
-              listId={list.id}
-              isAuthor={isAuthor}
-              initialVisibility={list.visibility}
-              authorName={author.name}
-              updatedAt={list.updatedAt}
-            />
-          </Dropdown>
-        </ButtonGroup>
-      </div>
-    </header>
+
+        {list.description && (
+          <p className={styles.description}>
+            <span className={styles.statusBadge}>{list.visibility}</span>
+            {list.description}
+          </p>
+        )}
+
+        <div className={styles['list-header-actions']}>
+          <div className={styles['list-header-buttons']}>
+            {canCreateItem && (
+              <Button icon="add" label={t('addItem')} variant="interactive" size="small" />
+            )}
+            <div className={styles['list-header-like']}>
+              <Button icon="like" label={t('like')} size="small" tinted={true} />
+              <span className="text-muted">
+                {t('peopleLikedThisList', { count: list.notesCount })}
+              </span>
+            </div>
+          </div>
+          <ButtonGroup>
+            <Button icon="share" label={t('share')} size="small" tinted={true} />
+            <Button icon="favorite" aria-label={t('addToFavorites')} size="small" tinted={true} />
+            <Dropdown>
+              <Button icon="settings" aria-label={t('settings')} size="small" tinted={true} />
+              <ListOptionsDropdown
+                listId={list.id}
+                isAuthor={isAuthor}
+                initialVisibility={list.visibility}
+                authorName={author.name}
+                updatedAt={list.updatedAt}
+              />
+            </Dropdown>
+          </ButtonGroup>
+        </div>
+      </header>
+      <EditListModal
+        listId={list.id}
+        initialTitle={list.title}
+        initialDescription={list.description}
+        initialVisibility={list.visibility}
+      />
+    </>
   );
 }
 
