@@ -9,6 +9,7 @@ export interface User {
   name: string;
   username: string;
   bio: string | null;
+  language?: string | null; // User's language preference (e.g., 'en', 'fr')
   createdAt: string;
   confirmedAt?: string | null;
   emailConfirmed?: boolean;
