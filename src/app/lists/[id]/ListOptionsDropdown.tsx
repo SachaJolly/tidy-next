@@ -7,11 +7,10 @@ import {
   DropdownItem,
   DropdownLabel,
   DropdownMenu,
-  DropdownRadioGroup,
-  DropdownRadioItem,
   DropdownSeparator,
   DropdownText,
 } from '@/components/Dropdown';
+import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
 import type { List } from '@/lib/types';
 import { updateListVisibilityAction } from '@/app/actions/lists';
 import { formatDate } from '@/lib/date';
@@ -125,22 +124,7 @@ export default function ListOptionsDropdown({
           <DropdownSeparator />
 
           <DropdownLabel>{common('action.setVisibility')}</DropdownLabel>
-          <DropdownRadioGroup
-            value={visibility}
-            onValueChange={handleVisibilityChange}
-            label={common('action.setVisibility')}
-            closeOnSelect
-          >
-            {VISIBILITY_OPTIONS.map(({ value, icon, labelKey, captionKey }) => (
-              <DropdownRadioItem
-                key={value}
-                value={value}
-                icon={icon}
-                label={common(labelKey)}
-                caption={common(captionKey)}
-              />
-            ))}
-          </DropdownRadioGroup>
+          <VisibilityRadioGroup value={visibility} onValueChange={handleVisibilityChange} showLabel={false} />
           {error ? (
             <DropdownText>
               <p className="text-small" style={{ color: 'var(--danger)' }}>

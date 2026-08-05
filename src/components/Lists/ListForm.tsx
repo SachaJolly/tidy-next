@@ -5,7 +5,8 @@ import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import Input from '@/components/Input/Input';
 import Textarea from '@/components/Textarea/Textarea';
-import { Dropdown, DropdownMenu, DropdownRadioGroup, DropdownRadioItem, DropdownLabel } from '@/components/Dropdown';
+import { Dropdown, DropdownMenu } from '@/components/Dropdown';
+import VisibilityRadioGroup from './VisibilityRadioGroup';
 import Icon from '@/components/Icon/Icon';
 import { createListAction, type ListMutationResult } from '@/app/actions/lists';
 import type { List } from '@/lib/types';
@@ -90,9 +91,9 @@ export default function ListForm({
 
   // Visibility dropdown options
   const visibilityOptions = [
-    { value: 'published', label: tCommon('visibility.public.label'), caption: tCommon('visibility.public.caption'), icon: 'globe' },
-    { value: 'unindexed', label: tCommon('visibility.unindexed.label'), caption: tCommon('visibility.unindexed.caption'), icon: 'eye-off' },
-    { value: 'restricted', label: tCommon('visibility.private.label'), caption: tCommon('visibility.private.caption'), icon: 'lock' },
+    { value: 'published', label: tCommon('visibility.public.label'), caption: tCommon('visibility.public.caption'), icon: 'visibility_on' as const },
+    { value: 'unindexed', label: tCommon('visibility.unindexed.label'), caption: tCommon('visibility.unindexed.caption'), icon: 'visibility_off' as const },
+    { value: 'restricted', label: tCommon('visibility.private.label'), caption: tCommon('visibility.private.caption'), icon: 'private' as const },
   ];
 
   const currentVisibility = visibilityOptions.find(opt => opt.value === visibility);
@@ -136,22 +137,7 @@ export default function ListForm({
           </Button>
 
           <DropdownMenu>
-            <DropdownRadioGroup value={visibility} onValueChange={setVisibility}>
-              <DropdownLabel>{tCommon('action.setVisibility')}</DropdownLabel>
-              {visibilityOptions.map(option => (
-                <DropdownRadioItem key={option.value} value={option.value}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                      <Icon name={option.icon as any} size={16} />
-                      {option.label}
-                    </div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                      {option.caption}
-                    </span>
-                  </div>
-                </DropdownRadioItem>
-              ))}
-            </DropdownRadioGroup>
+            <VisibilityRadioGroup value={visibility} onValueChange={setVisibility} />
           </DropdownMenu>
         </Dropdown>
 
