@@ -8,6 +8,10 @@ const NewListModal = dynamic(() => import('@/app/lists/NewListModal'), {
   ssr: false,
 });
 
+const EditListModal = dynamic(() => import('@/app/lists/[id]/EditListModal'), {
+  ssr: false,
+});
+
 export default function GlobalModals() {
   const { activeModal } = useQueryModal();
 
@@ -16,6 +20,10 @@ export default function GlobalModals() {
   // when the matching query param is active.
   if (activeModal === 'new-list') {
     return <NewListModal />;
+  }
+
+  if (activeModal === 'edit-list') {
+    return <EditListModal />;
   }
 
   return null;
