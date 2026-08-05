@@ -132,12 +132,15 @@ export default function ListForm({
         {/* Visibility dropdown in modal footer */}
         <Dropdown>
           <Button type="button" disabled={isSubmitting} transparent>
-            {currentVisibility && <Icon name={currentVisibility.icon as any} size={16} />}
+            {currentVisibility && <Icon name={currentVisibility.icon} size={16} />}
             {currentVisibility?.label}
           </Button>
 
           <DropdownMenu>
-            <VisibilityRadioGroup value={visibility} onValueChange={setVisibility} />
+            <VisibilityRadioGroup
+              value={visibility}
+              onValueChange={(val) => setVisibility(val as 'published' | 'unindexed' | 'restricted')}
+            />
           </DropdownMenu>
         </Dropdown>
 
