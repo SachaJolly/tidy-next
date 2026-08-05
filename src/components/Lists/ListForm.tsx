@@ -45,7 +45,7 @@ export default function ListForm({
   const resolvedCancelLabel = cancelLabel ?? t('cancel');
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription);
-  const [visibility, setVisibility] = useState(initialVisibility);
+  const [visibility, setVisibility] = useState<'published' | 'unindexed' | 'restricted'>(initialVisibility as 'published' | 'unindexed' | 'restricted');
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
