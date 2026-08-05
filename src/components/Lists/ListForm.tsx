@@ -170,46 +170,22 @@ export default function ListForm({
           </DropdownRadioGroup>
         </Dropdown>
 
-        {/* Buttons — using native buttons for type="submit" */}
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button
+        {/* Buttons */}
+        <ButtonGroup>
+          <Button
             type="button"
+            label={resolvedCancelLabel}
+            transparent
             onClick={onCancel}
             disabled={isSubmitting}
-            style={{
-              padding: '0.375rem 0.75rem',
-              background: 'transparent',
-              border: '1px solid var(--border-default)',
-              borderRadius: 'var(--radius-interactive)',
-              cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: isSubmitting ? 'var(--text-disabled)' : 'var(--text-body)',
-              fontFamily: 'inherit',
-              opacity: isSubmitting ? 0.6 : 1,
-            }}
-          >
-            {resolvedCancelLabel}
-          </button>
-          <button
+          />
+          <Button
             type="submit"
+            label={isSubmitting ? t('saving') : resolvedSubmitLabel}
+            variant="interactive"
             disabled={isSubmitting}
-            style={{
-              padding: '0.375rem 0.75rem',
-              background: 'var(--color-interactive)',
-              border: 'none',
-              borderRadius: 'var(--radius-interactive)',
-              cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: 'white',
-              fontFamily: 'inherit',
-              opacity: isSubmitting ? 0.7 : 1,
-            }}
-          >
-            {isSubmitting ? t('saving') : resolvedSubmitLabel}
-          </button>
-        </div>
+          />
+        </ButtonGroup>
       </div>
     </form>
   );
