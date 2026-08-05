@@ -8,7 +8,7 @@
   "publicLists": "{count, plural, =0 {No public lists} =1 {1 public list} other {# public lists}}",
   "language": {
     "en": "English",
-    "fr": "Français"
+    "fr": "French – Français"
   },
   "theme": {
     "system": "System",

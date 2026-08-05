@@ -1,4 +1,5 @@
 {
+  "trigger": "Modifier",
   "title": "Modifier la liste",
   "description": "Mettez à jour le titre et la description, puis enregistrez vos modifications.",
   "save": "Mettre à jour",

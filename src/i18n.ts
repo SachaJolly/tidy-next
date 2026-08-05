@@ -1,7 +1,9 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { getRequestConfig } from 'next-intl/server';
+import { cookies } from 'next/headers';
 import { defaultLocale, routing, type Locale } from './i18n-routing';
+import { LANGUAGE_COOKIE_NAME } from './lib/language-mapper';
 
 const localesDir = join(process.cwd(), 'locales');
 
@@ -73,9 +75,24 @@ function loadMessages(locale: Locale): Record<string, unknown> {
  * teams to own specific translation namespaces independently.
  */
 export default getRequestConfig(async ({ requestLocale }) => {
-  const locale = await requestLocale;
+  const cookieStore = await cookies();
+  const localeFromCookie = cookieStore.get(LANGUAGE_COOKIE_NAME)?.value ?? null;
+  const localeFromRequest = await requestLocale;
+
+  // Server components that call `getTranslations()` do not read from
+  // NextIntlClientProvider. They resolve locale from this request config.
+  //
+  // We prioritize our `tidy_language` cookie here because the proxy keeps it
+  // synchronized with DB language for authenticated users (DB is source of truth)
+  // and with guest preference for anonymous users.
   const normalizedLocale = (
-    routing.locales.includes(locale as Locale) ? locale : defaultLocale
+    (localeFromCookie && routing.locales.includes(localeFromCookie as Locale)
+      ? localeFromCookie
+      : null) ??
+    (localeFromRequest && routing.locales.includes(localeFromRequest as Locale)
+      ? localeFromRequest
+      : null) ??
+    defaultLocale
   ) as Locale;
 
   return {

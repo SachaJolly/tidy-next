@@ -1,6 +1,6 @@
 {
   "items": "{count, plural, =0 {Vide} =1 {1 item} other {# items}}",
-  "addItem": "Ajouter un item",
+  "addItem": "Ajouter un élément",
   "like": "Aimer",
   "share": "Partager",
   "addToFavorites": "Ajouter aux favoris",

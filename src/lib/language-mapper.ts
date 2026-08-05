@@ -1,6 +1,5 @@
 /**
- * Language preference type aligned with database and locale codes.
- * No conversion needed - same values used everywhere.
+ * Language preference mapping between display labels and locale codes.
  */
 
 export type Language = 'en' | 'fr';

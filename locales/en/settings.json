@@ -1,0 +1,8 @@
+{
+  "title": "{username}'s Settings",
+  "languageSectionTitle": "Language",
+  "languageDescription": "Choose your preferred language for the interface.",
+  "languageUpdated": "Language preference saved successfully.",
+  "saveFailed": "Failed to save settings. Please try again.",
+  "moreComingSoon": "More settings coming soon."
+}

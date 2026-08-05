@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import {
   DropdownMenu,
@@ -21,7 +21,7 @@ import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
 import packageJson from '@/../package.json';
 import { type Language } from '@/lib/language-mapper';
-import { saveLanguagePreference } from '@/lib/save-language';
+import { changeLanguage } from '@/app/actions/language';
 
 // Mock accounts — replace with real data from auth/API when available.
 const MOCK_ACCOUNTS = [
@@ -57,12 +57,36 @@ export function AccountDropdown({ user, initialLanguage, onLogout, inline }: Acc
   const [theme, setTheme] = useState<Theme>('system');
   const [activeAccount, setActiveAccount] = useState(MOCK_ACCOUNTS[1]?.value ?? '');
 
-  // Handle language change: save to cookie and refresh page
+  // BUG D FIX: keep local state in sync with the server-resolved language.
+  // `initialLanguage` comes from a parent Server Component (NavbarAuthContent),
+  // which is re-evaluated on every router.refresh()/navigation. Without this
+  // effect, a reconciliation elsewhere (e.g. middleware syncing DB -> cookie
+  // after a change made on another device) would update `initialLanguage` on
+  // the server, but this component's local `useState` would keep showing the
+  // stale value since it only reads its initial value once on mount.
+  useEffect(() => {
+    setLanguage(initialLanguage);
+  }, [initialLanguage]);
+
+  // Handle language change following the DB-first hierarchy (see changeLanguage()):
+  // - Authenticated: DB is updated first, cookie only synced on success.
+  // - Guest: cookie is updated directly.
+  // The local `language` state is updated optimistically for instant UI feedback,
+  // then reverted if the persistence call fails so the UI never lies about what
+  // was actually saved.
   const handleLanguageChange = async (newLanguage: Language) => {
+    const previousLanguage = language;
     setLanguage(newLanguage);
-    await saveLanguagePreference(newLanguage);
-    // Refresh current page to apply new language via next-intl
-    router.refresh();
+
+    try {
+      await changeLanguage(newLanguage);
+      // Refresh server components (Navbar, layout messages) with new language
+      // router.refresh() is preferred over window.location.href for better UX
+      router.refresh();
+    } catch (error) {
+      console.error('[AccountDropdown] failed to change language:', error);
+      setLanguage(previousLanguage);
+    }
   };
 
   const languageOptions = [

@@ -10,6 +10,8 @@ export const routing = defineRouting({
   locales: [...locales],
   defaultLocale,
   localePrefix: 'never',
+  // Use our custom cookie name instead of next-intl's default (NEXT_INTL_LOCALE)
+  localeDetection: false, // Disable auto-detection, we handle it in middleware
 });
 
 function parseAcceptLanguage(acceptLanguage: string): string[] {

@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { cache } from 'react';
+import { cookies } from 'next/headers';
 
 import { api, ApiFetchError } from '@/lib/api';
 import type { List, NewListGate, User } from '@/lib/types';
@@ -13,20 +14,11 @@ type MeUser = User & {
 };
 
 export const getNewListGate = cache(async (): Promise<NewListGate> => {
-  const user = await api.auth.get<MeUser>('/api/v1/me', {
-    cache: 'no-store',
-  });
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get('tidy_token')?.value ?? null;
 
-  if (!user) {
-    return {
-      emailConfirmed: true,
-      limitReached: false,
-    };
-  }
-
-  const emailConfirmed = user.emailConfirmed === true || !!user.confirmedAt;
-
-  if (emailConfirmed) {
+  // If not authenticated, return early with default values
+  if (!authToken) {
     return {
       emailConfirmed: true,
       limitReached: false,
@@ -34,9 +26,31 @@ export const getNewListGate = cache(async (): Promise<NewListGate> => {
   }
 
   try {
+    const user = await api.auth.get<MeUser>('/api/v1/me', {
+      authorization: authToken,
+      cache: 'no-store',
+    });
+
+    if (!user) {
+      return {
+        emailConfirmed: true,
+        limitReached: false,
+      };
+    }
+
+    const emailConfirmed = user.emailConfirmed === true || !!user.confirmedAt;
+
+    if (emailConfirmed) {
+      return {
+        emailConfirmed: true,
+        limitReached: false,
+      };
+    }
+
     const lists = await api.auth.get<List[]>(
       `/api/v1/me/lists?limit=${UNCONFIRMED_LIST_LIMIT}`,
       {
+        authorization: authToken,
         cache: 'no-store',
       },
     );

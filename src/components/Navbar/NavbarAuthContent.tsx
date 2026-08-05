@@ -8,7 +8,6 @@ import { api, ApiFetchError } from '@/lib/api';
 import { localizePath } from '@/lib/locale-path';
 import { User } from '@/lib/types';
 import { resolveUserLanguage } from '@/lib/resolve-user-language';
-import { LANGUAGE_COOKIE_NAME } from '@/lib/language-mapper';
 
 import NavbarAccountMenu from './NavbarAccountMenu';
 
@@ -17,7 +16,6 @@ export default async function NavbarAuthContent() {
   const locale = await getLocale();
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
-  const cookieLanguage = cookieStore.get(LANGUAGE_COOKIE_NAME)?.value ?? null;
 
   if (!authToken) {
     // User is not authenticated: resolve language from cookie or browser default
@@ -46,8 +44,24 @@ export default async function NavbarAuthContent() {
     });
 
     if (user) {
-      // User is authenticated: resolve language from DB preference or cookie
-      const initialLanguage = await resolveUserLanguage({ userLanguageFromDb: user.language ?? null });
+      // User is authenticated: use database language preference directly
+      // (middleware already synced it to cookie, but display the DB value which is source-of-truth)
+      const userLanguage = (user.language === 'en' || user.language === 'fr') 
+        ? user.language 
+        : 'en';
+
+      // NOTE: Multi-Device Reconciliation
+      // When user fetches their profile on page load, the middleware has already synced
+      // the DB language to the cookie (see middleware.ts lines 91-94).
+      // The middleware runs on every request and handles all cookie updates.
+      // No need to modify cookies here - this is a Server Component, not a Server Action.
+      // 
+      // Middleware logic ensures:
+      // - Authenticated users: DB language (user.language) synced to cookie on every request
+      // - Guest users: Accept-Language header synced to cookie
+      // - Multi-device sync: If user changes language on Device A, Device B's next request
+      //   will fetch the updated user.language from DB and update the cookie.
+
       return (
         <>
           <Button
@@ -58,7 +72,7 @@ export default async function NavbarAuthContent() {
             href="?modal=new-list"
             scroll={false}
           />
-          <NavbarAccountMenu user={user} initialLanguage={initialLanguage} />
+          <NavbarAccountMenu user={user} initialLanguage={userLanguage} />
         </>
       );
     }

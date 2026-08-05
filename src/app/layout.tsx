@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import Navbar from '@/components/Navbar/Navbar';
 import Footer from '@/components/Footer/Footer';
 import GlobalModals from '@/components/GlobalModals';
+import { LanguageInitializer } from '@/components/LanguageInitializer';
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
 import { getNewListGate } from '@/lib/new-list-gate';
 
 import { IBM_Plex_Sans, Space_Grotesk } from 'next/font/google';
@@ -35,8 +37,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getLocale();
-  const messages = await getMessages();
+  // Read locale from our custom cookie (set by middleware/saveLanguagePreference)
+  // This decouples us from next-intl's automatic locale detection
+  const cookieStore = await cookies();
+  const localeFromCookie = cookieStore.get('tidy_language')?.value ?? 'en';
+  const locale = (localeFromCookie === 'en' || localeFromCookie === 'fr') ? localeFromCookie : 'en';
+
+  // Load messages for the detected locale
+  // Using getMessages() with the locale we determined
+  const messages = await getMessages({ locale });
   const newListGate = await getNewListGate();
 
   return (
@@ -52,6 +61,8 @@ export default async function RootLayout({
           <GlobalModals newListGate={newListGate} />
           <div id="application-overlays"></div>
         </NextIntlClientProvider>
+        {/* Ensure language cookie exists in browser */}
+        <LanguageInitializer locale={locale} />
       </body>
     </html>
   );

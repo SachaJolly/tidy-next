@@ -1,41 +1,41 @@
+'use server';
+
 import { cookies } from 'next/headers';
 import {
   LANGUAGE_COOKIE_NAME,
+  LANGUAGE_COOKIE_MAX_AGE,
   type Language,
 } from './language-mapper';
 
 /**
- * Resolve user's language preference from multiple sources (in order of priority):
+ * Resolve user's language preference.
+ *
+ * Priority order:
  * 1. User's database preference (if authenticated)
- * 2. Cookie (persists across sessions, even when logged out)
- * 3. Browser's Accept-Language header
- * 4. Default 'en'
+ * 2. NEXT_LOCALE cookie (set by middleware)
+ * 3. Default to English
+ *
+ * Note: The middleware guarantees NEXT_LOCALE is always set, so we don't need
+ * to resolve Accept-Language here. Cookie management is handled by middleware.
  */
 export async function resolveUserLanguage(options: {
-  userLanguageFromDb?: string | null; // User's language in database (if authenticated)
-  acceptLanguage?: string | null; // Browser's Accept-Language header
+  userLanguageFromDb?: string | null;
+  acceptLanguage?: string | null;
 }): Promise<Language> {
-  const { userLanguageFromDb, acceptLanguage } = options;
+  const { userLanguageFromDb } = options;
+  const cookieStore = await cookies();
 
   // Priority 1: User's database preference (if authenticated)
   if (userLanguageFromDb === 'en' || userLanguageFromDb === 'fr') {
     return userLanguageFromDb;
   }
 
-  // Priority 2: Cookie preference (persists when logged out)
-  const cookieStore = await cookies();
+  // Priority 2: NEXT_LOCALE cookie (always set by middleware)
   const cookieLanguage = cookieStore.get(LANGUAGE_COOKIE_NAME)?.value;
   if (cookieLanguage === 'en' || cookieLanguage === 'fr') {
     return cookieLanguage;
   }
 
-  // Priority 3: Browser's Accept-Language header (first preference)
-  if (acceptLanguage) {
-    const preferred = acceptLanguage.split(',')[0]?.trim().split('-')[0];
-    if (preferred === 'fr') return 'fr';
-    if (preferred === 'en') return 'en';
-  }
-
-  // Priority 4: Default to English
+  // Default to English (shouldn't reach here due to middleware guarantee)
   return 'en';
 }

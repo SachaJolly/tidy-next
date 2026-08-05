@@ -1,7 +1,7 @@
 {
   "createListTitle": "Create a list",
   "createListDescription": "Add a title and an optional description, then save to publish the new list.",
-  "createList": "Create list",
+  "createList": "Create",
   "saving": "Saving...",
   "cancel": "Cancel",
   "discard": "Discard changes",

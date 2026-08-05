@@ -78,7 +78,7 @@ const ItemStats = async ({ stats }: ItemStatsProps) => {
 };
 
 export const Item = async ({ item }: ItemProps) => {
-  const t = await getTranslations('Item');
+  const t = await getTranslations('item');
   // Cast content to a type-safe shape
   const content = item.content as ItemContent;
 

@@ -43,8 +43,11 @@ export default function SigninPage() {
         }
 
         navigationStarted = true;
+        // BUG FIX 1: Use the returned user language instead of stale useLocale()
+        // This ensures redirect uses the correct language from the user's DB profile
+        const userLanguage = result.userLanguage ?? locale;
         router.refresh();
-        router.push(localizePath(result.redirectTo ?? '/dashboard', locale));
+        router.push(localizePath(result.redirectTo ?? '/dashboard', userLanguage));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred.');
       } finally {

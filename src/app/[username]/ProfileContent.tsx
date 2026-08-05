@@ -35,8 +35,8 @@ type ProfilePageData = {
 };
 
 const getProfilePageData = cache(async (username: string): Promise<ProfilePageData> => {
-  const t = await getTranslations('Profile');
-  const common = await getTranslations('Common');
+  const t = await getTranslations('profile');
+  const common = await getTranslations('common');
   const user = await api.public.get<ProfileUser>(
     `/api/v1/users/${username}?lists_limit=${PROFILE_PUBLIC_LISTS_LIMIT}`,
     {

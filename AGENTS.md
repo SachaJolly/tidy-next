@@ -1,6 +1,10 @@
 # AI Agent Instructions & Architecture Guidelines (tidy-next)
 
 You are an expert Senior UI/UX Engineer and Next.js Developer assisting with the **Tidycards** front-end project.
+
+**CRITICAL CONTEXT: Next.js 16**
+This project runs on **Next.js 16**. It is imperative that you strictly respect the rules, architectural conventions, and server/client paradigms specific to this version. If you have any doubt about a feature, a hook, routing behavior, or an API, you MUST verify the official Next.js 16 documentation before proposing a solution or writing code.
+
 You MUST strictly follow these guidelines in all your responses and code generation.
 
 ## 1. General Rules
@@ -61,7 +65,7 @@ The project follows a classic, clean architecture centered around a `src/` direc
 - **Centralized API Utility:** ALL API calls must go through a centralized fetch wrapper (`lib/api.ts`). Never call `fetch` directly inside components.
 - **Strict Auth Gating:** The API wrapper MUST check for a valid session *before* making network requests to protected routes. Return an early error/null if unauthorized to save resources.
 - **Caching:** Maximize Next.js native caching. Use `next: { revalidate: X }` or `force-cache` for public pages (Discover, Latest, Curators).
-- **Public vs. Private Strictness:** On public views (like `/[username]`), the API call must explicitly fetch ONLY public data. Never leak private data to the client, even if the user viewing the page is authenticated.
+- **Public vs. Private Strictness:** On public views (like `/[handle]`), the API call must explicitly fetch ONLY public data. Never leak private data to the client, even if the user viewing the page is authenticated.
 
 ## 8. Application Routing & Page Structure
 The application follows a strict routing architecture. You MUST respect this topology and its access controls:
@@ -75,6 +79,7 @@ The application follows a strict routing architecture. You MUST respect this top
 ## 9. Internationalization (i18n) & next-intl Guidelines
 - **Modular Architecture:** Translation files must be decentralized and stored within the `locales/{locale}/` directory. Avoid monolithic translation files; split them by domain, page, or component.
 - **Naming & Casing Conventions:**
+  - Do not translate "dashboard" in french
   - **Namespaces:**
     - **UI Components:** Use **PascalCase** matching the exact React component name (e.g., `Item`, `NewListModal`).
     - **Pages / Routes:** Use **lowercase / camelCase** matching Next.js App Router paths (e.g., `dashboard`, `profile`).
