@@ -4,6 +4,7 @@ import Footer from '@/components/Footer/Footer';
 import GlobalModals from '@/components/GlobalModals';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import { getNewListGate } from '@/lib/new-list-gate';
 
 import { IBM_Plex_Sans, Space_Grotesk } from 'next/font/google';
 
@@ -36,6 +37,7 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
   const messages = await getMessages();
+  const newListGate = await getNewListGate();
 
   return (
     <html lang={locale}>
@@ -47,7 +49,7 @@ export default async function RootLayout({
             {children}
             <Footer />
           </div>
-          <GlobalModals />
+          <GlobalModals newListGate={newListGate} />
           <div id="application-overlays"></div>
         </NextIntlClientProvider>
       </body>

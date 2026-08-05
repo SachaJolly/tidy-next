@@ -1,4 +1,6 @@
 {
   "title": "Create a list",
-  "description": "Add a title and an optional description, then save to publish the new list."
+  "description": "Add a title and an optional description, then save to publish the new list.",
+  "warningTitle": "Confirm your email",
+  "warningDescription": "You have reached the limit for unconfirmed accounts. Confirm your email to create more lists."
 }

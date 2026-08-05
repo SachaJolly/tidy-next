@@ -3,9 +3,10 @@
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
+import Icon from '@/components/Icon/Icon';
 import { localizePath } from '@/lib/locale-path';
 import { useQueryModal } from '@/hooks/use-query-modal';
-import type { List } from '@/lib/types';
+import type { List, NewListGate } from '@/lib/types';
 
 import ListModal from './ListModal';
 import ListForm from './ListForm';
@@ -16,7 +17,16 @@ import ListForm from './ListForm';
  * The shell stays reusable, while the action wiring and redirect logic remain
  * specific to the list-create flow.
  */
-export default function NewListModal({ forceOpen = false }: { forceOpen?: boolean } = {}) {
+export default function NewListModal({
+  forceOpen = false,
+  newListGate = {
+    emailConfirmed: true,
+    limitReached: false,
+  },
+}: {
+  forceOpen?: boolean;
+  newListGate?: NewListGate;
+}) {
   const t = useTranslations('NewList');
   const router = useRouter();
   const locale = useLocale();
@@ -47,9 +57,34 @@ export default function NewListModal({ forceOpen = false }: { forceOpen?: boolea
     return null;
   }
 
+  const title = newListGate.limitReached && !newListGate.emailConfirmed ? t('warningTitle') : t('title');
+
   return (
-    <ListModal title={t('title')} onClose={closeModal}>
-      <ListForm onCancel={closeModal} onSuccess={handleSuccess} />
+    <ListModal title={title} onClose={closeModal}>
+      {newListGate.limitReached && !newListGate.emailConfirmed ? (
+        <div
+          className="rounded-lg border p-4"
+          style={{
+            borderColor: 'var(--border-error)',
+            backgroundColor: 'var(--surface-highlight)',
+          }}
+        >
+          <div className="flex items-start gap-3" style={{ color: 'var(--text-body)' }}>
+            <Icon
+              name="warning"
+              size={20}
+              className="mt-0.5 shrink-0"
+              style={{ color: 'var(--border-error)' }}
+            />
+            <div className="space-y-1">
+              <p className="font-medium">{t('warningTitle')}</p>
+              <p className="text-sm leading-6">{t('warningDescription')}</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <ListForm onCancel={closeModal} onSuccess={handleSuccess} />
+      )}
     </ListModal>
   );
 }

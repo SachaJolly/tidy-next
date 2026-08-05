@@ -1,5 +1,8 @@
 import NewListModal from '../NewListModal';
+import { getNewListGate } from '@/lib/new-list-gate';
 
-export default function NewListPage() {
-  return <NewListModal forceOpen />;
+export default async function NewListPage() {
+  const newListGate = await getNewListGate();
+
+  return <NewListModal forceOpen newListGate={newListGate} />;
 }

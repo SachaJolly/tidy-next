@@ -10,7 +10,14 @@ export interface User {
   username: string;
   bio: string | null;
   createdAt: string;
+  confirmedAt?: string | null;
+  emailConfirmed?: boolean;
 }
+
+export type NewListGate = {
+  emailConfirmed: boolean;
+  limitReached: boolean;
+};
 
 export interface Item {
   id: string;
