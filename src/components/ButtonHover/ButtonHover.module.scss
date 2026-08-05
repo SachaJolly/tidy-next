@@ -5,7 +5,6 @@
   border-radius: var(--radius-sm);
   background: var(--surface-tooltip);
   color: var(--text-on-tooltip);
-  overflow: hidden;
 }
 
 .trigger {
@@ -21,6 +20,19 @@
   align-items: center;
   justify-content: center;
   padding: .125rem;
+
+  /* Keyboard focus ring — visible only for keyboard navigation,
+     not on mouse click (:focus-visible vs :focus). */
+  &:focus,
+  &:focus-within,
+  &:focus-visible,
+  &[aria-expanded="true"] {
+    border-radius: var(--radius-sm);
+    outline-color: var(--surface-interactive);
+    outline-offset: 0.125rem;
+    outline-width: var(--stroke-thin);
+    outline-style: dashed;
+  }
 }
 
 .label {

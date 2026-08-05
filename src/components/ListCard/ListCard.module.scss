@@ -13,6 +13,8 @@
   &.hover,
   &:focus,
   &.focus,
+  &:focus-within,
+  &:focus-visible,
   &:active,
   &.active {
     .cover img {
@@ -23,6 +25,24 @@
       opacity: 1;
     }
   }
+
+  /* Keep actions visible while the dropdown is open,
+     even if the pointer has left the card. */
+  &:has(.actions [aria-expanded="true"]) .actions {
+    opacity: 1;
+  }
+}
+
+/* When focus lands inside .actions (e.g. dropdown trigger),
+   apply the hover background on .content so the row feels active.
+   :has() is used because CSS has no parent selector — we ask the
+   container "do you contain a focused .actions child?" */
+.container:has(.actions:hover) .content,
+.container:has(.actions:focus) .content,
+.container:has(.actions:focus-within) .content {
+  background-color: var(--surface-highlight);
+  color: inherit;
+  text-decoration: none;
 }
 
 .content {

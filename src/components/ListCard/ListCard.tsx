@@ -30,20 +30,10 @@ export default function ListCard({
 
   return (
     <div className={listClasses} {...props}>
-      <div className={styles.actions}>
-        <Dropdown>
-          <ButtonHover aria-label={listPage('settings')} />
-          <ListOptionsDropdown
-            listId={list.id}
-            isAuthor={isAuthor}
-            initialVisibility={list.visibility}
-            listTitle={list.title}
-            listDescription={list.description}
-            authorName={list.author.name}
-            updatedAt={list.updatedAt}
-          />
-        </Dropdown>
-      </div>
+      {/*
+       * <a> comes first in DOM so natural tab order is: link → ButtonHover trigger.
+       * .actions is position:absolute so DOM order has no visual effect.
+       */}
       <a href={`/lists/${list.id}`} className={styles['content']}>
         <div className={styles['cover']} style={coverColor}>
           {list.thumbnail && (
@@ -112,6 +102,20 @@ export default function ListCard({
           </MetaGroup>
         </div>
       </a>
+      <div className={styles.actions}>
+        <Dropdown>
+          <ButtonHover aria-label={listPage('settings')} />
+          <ListOptionsDropdown
+            listId={list.id}
+            isAuthor={isAuthor}
+            initialVisibility={list.visibility}
+            listTitle={list.title}
+            listDescription={list.description}
+            authorName={list.author.name}
+            updatedAt={list.updatedAt}
+          />
+        </Dropdown>
+      </div>
     </div>
   );
 }
