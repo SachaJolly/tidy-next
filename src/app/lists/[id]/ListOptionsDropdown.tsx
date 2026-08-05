@@ -29,7 +29,7 @@ interface ListOptionsDropdownProps {
 
 const VISIBILITY_OPTIONS: Array<{
   value: ListVisibility;
-  icon: 'visibility_on' | 'visibility_off' | 'private';
+  icon: 'public' | 'visibility_off' | 'private';
   labelKey: 'visibility.public.label' | 'visibility.unindexed.label' | 'visibility.private.label';
   captionKey:
     | 'visibility.public.caption'
@@ -38,7 +38,7 @@ const VISIBILITY_OPTIONS: Array<{
 }> = [
   {
     value: 'PUBLIC',
-    icon: 'visibility_on',
+    icon: 'public',
     labelKey: 'visibility.public.label',
     captionKey: 'visibility.public.caption',
   },

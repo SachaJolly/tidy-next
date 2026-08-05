@@ -52,10 +52,24 @@ export default function ListForm({
   const tCommon = useTranslations('common');
   const resolvedSubmitLabel = submitLabel ?? t('createList');
   const resolvedCancelLabel = cancelLabel ?? t('cancel');
+
+  // Normalize API visibility values (PUBLIC, UNINDEXED, PRIVATE) to form values (published, unindexed, restricted)
+  const normalizeVisibility = (value: string): 'published' | 'unindexed' | 'restricted' => {
+    const mapping: Record<string, 'published' | 'unindexed' | 'restricted'> = {
+      'PUBLIC': 'published',
+      'published': 'published',
+      'UNINDEXED': 'unindexed',
+      'unindexed': 'unindexed',
+      'PRIVATE': 'restricted',
+      'restricted': 'restricted',
+    };
+    return mapping[value] || 'restricted';
+  };
+
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription);
   const [visibility, setVisibility] = useState<'published' | 'unindexed' | 'restricted'>(
-    (initialVisibility as 'published' | 'unindexed' | 'restricted') || 'restricted'
+    normalizeVisibility(initialVisibility)
   );
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
