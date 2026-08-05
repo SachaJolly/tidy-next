@@ -7,7 +7,6 @@ import { Modal, ModalHeader, ModalClose } from '@/components/Modal/Modal';
 import ListForm from '@/app/lists/ListForm';
 import { updateListAction } from '@/app/actions/lists';
 import { useQueryModal } from '@/hooks/use-query-modal';
-import { api, ApiFetchError } from '@/lib/api';
 import type { List } from '@/lib/types';
 
 /**
@@ -76,24 +75,19 @@ function EditListModalContent({
         setIsLoading(true);
         setError(null);
         // Fetch list data from API to populate the form
-        const fetchedList = await api.get<List>(`/api/v1/lists/${listId}`);
-        if (fetchedList) {
+        const response = await fetch(`/api/v1/lists/${listId}`);
+        if (response.ok) {
+          const fetchedList = await response.json() as List;
           setList(fetchedList);
-        } else {
+        } else if (response.status === 404) {
           setError(t('error.notFound'));
-        }
-      } catch (err) {
-        if (err instanceof ApiFetchError) {
-          if (err.status === 404) {
-            setError(t('error.notFound'));
-          } else if (err.status === 403) {
-            setError(t('error.forbidden'));
-          } else {
-            setError(t('error.loadFailed'));
-          }
+        } else if (response.status === 403) {
+          setError(t('error.forbidden'));
         } else {
           setError(t('error.loadFailed'));
         }
+      } catch (err) {
+        setError(t('error.loadFailed'));
       } finally {
         setIsLoading(false);
       }
