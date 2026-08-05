@@ -85,7 +85,7 @@ export default function ListOptionsDropdown({
   );
 
   const handleEdit = () => {
-    router.push(`?modal=edit-list`);
+    router.push(`?modal=edit-list&listId=${listId}`);
   };
 
   const handleVisibilityChange = (value: string) => {

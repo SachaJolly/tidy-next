@@ -1,33 +1,31 @@
 'use client';
 
-import React, { useCallback, useMemo } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Modal, ModalHeader, ModalClose } from '@/components/Modal/Modal';
 import ListForm from '@/app/lists/ListForm';
 import { updateListAction } from '@/app/actions/lists';
 import { useQueryModal } from '@/hooks/use-query-modal';
+import { api, ApiFetchError } from '@/lib/api';
 import type { List } from '@/lib/types';
 
 /**
- * Modal component for editing an existing list via query param (?modal=edit-list).
+ * Modal component for editing an existing list via query param (?modal=edit-list&listId=xxx).
  * 
- * This modal is displayed globally via GlobalModals and is mounted on the [id]/page.tsx route.
- * It retrieves the list ID from the URL params and accesses list data via context or cache.
- * No direct data prop passing—the modal is purely query-param driven per AGENTS.md architecture.
+ * The listId is passed via search param (?listId=xxx) to support opening from any page.
+ * The modal lifecycle is driven by the query params, not component state or props.
+ * Per AGENTS.md #5: All modal visibility is strictly URL-driven.
  */
 export default function EditListModal() {
   const t = useTranslations('EditList');
   const router = useRouter();
-  const params = useParams();
+  const searchParams = useSearchParams();
   const queryModal = useQueryModal();
   const isOpen = queryModal.isOpen('edit-list');
 
-  // Extract listId from URL params
-  const listId = useMemo(() => {
-    if (typeof params.id === 'string') return params.id;
-    return Array.isArray(params.id) ? params.id[0] : null;
-  }, [params]);
+  // Get listId from search params (?listId=xxx)
+  const listId = useMemo(() => searchParams?.get('listId') ?? null, [searchParams]);
 
   const closeModal = useCallback(() => {
     queryModal.closeModal();
@@ -57,7 +55,7 @@ export default function EditListModal() {
   );
 }
 
-// Separate client component for fetching list data
+// Separate client component for fetching and managing list data
 function EditListModalContent({
   listId,
   onCancel,
@@ -68,16 +66,57 @@ function EditListModalContent({
   onSuccess: () => void;
 }) {
   const t = useTranslations('EditList');
-  // TODO: Fetch list data here via API or context
-  // For now, using placeholder—implement proper data fetching
+  const [list, setList] = useState<List | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchList = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        // Fetch list data from API to populate the form
+        const fetchedList = await api.get<List>(`/api/v1/lists/${listId}`);
+        if (fetchedList) {
+          setList(fetchedList);
+        } else {
+          setError(t('error.notFound'));
+        }
+      } catch (err) {
+        if (err instanceof ApiFetchError) {
+          if (err.status === 404) {
+            setError(t('error.notFound'));
+          } else if (err.status === 403) {
+            setError(t('error.forbidden'));
+          } else {
+            setError(t('error.loadFailed'));
+          }
+        } else {
+          setError(t('error.loadFailed'));
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchList();
+  }, [listId, t]);
+
+  if (isLoading) {
+    return <div className="p-4">{t('loading')}</div>;
+  }
+
+  if (error || !list) {
+    return <div className="p-4 text-red-500">{error || t('error.loadFailed')}</div>;
+  }
 
   return (
     <ListForm
       action={(values) => updateListAction(listId, values)}
       submitLabel={t('submit')}
-      initialTitle=""
-      initialDescription=""
-      initialVisibility="PUBLIC"
+      initialTitle={list.title}
+      initialDescription={list.description ?? ''}
+      initialVisibility={list.visibility}
       onCancel={onCancel}
       onSuccess={onSuccess}
     />
