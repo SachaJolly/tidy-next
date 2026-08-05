@@ -10,6 +10,12 @@ export interface DropdownMenuProps {
   children: React.ReactNode;
   /** Horizontal alignment relative to the trigger. @default 'start' */
   align?: 'start' | 'end' | 'center';
+  /**
+   * Gap in pixels between the trigger edge and the panel.
+   * Applies to both the "open below" and "flip above" positions.
+   * @default 4
+   */
+  offset?: number;
   className?: string;
   /**
    * Renders the panel in-place (no portal, no fixed positioning).
@@ -22,6 +28,7 @@ export interface DropdownMenuProps {
 export function DropdownMenu({
   children,
   align = 'start',
+  offset = 4,
   className,
   inline = false,
 }: DropdownMenuProps) {
@@ -44,34 +51,35 @@ export function DropdownMenu({
   const calculatePosition = useCallback(() => {
     if (!triggerRef.current || !menuRef.current) return;
 
-    const PADDING = 6; // px gap between trigger bottom edge and panel top edge
+    // Minimum margin kept between the panel and the viewport edges.
+    // Kept independent from `offset` so viewport clamping stays stable
+    // regardless of what the consumer passes as trigger-gap.
+    const VIEWPORT_PADDING = 6;
+
     const triggerRect = triggerRef.current.getBoundingClientRect();
     const { width: cw, height: ch } = menuRef.current.getBoundingClientRect();
 
-    let top = triggerRect.bottom + PADDING;
+    let top = triggerRect.bottom + offset;
     let left = align === 'end' ? triggerRect.right - cw : triggerRect.left;
 
     // Flip above the trigger when there is not enough room below the viewport fold.
-    // Re-evaluated on every call so the panel flips back down if the user scrolls
-    // the trigger back into view with space below it.
-    if (top + ch > window.innerHeight - PADDING) {
-      top = triggerRect.top - ch - PADDING;
+    if (top + ch > window.innerHeight - VIEWPORT_PADDING) {
+      top = triggerRect.top - ch - offset;
     }
     // Clamp to right viewport edge
-    if (left + cw > window.innerWidth - PADDING) {
+    if (left + cw > window.innerWidth - VIEWPORT_PADDING) {
       left = triggerRect.right - cw;
     }
     // Clamp to left viewport edge
-    left = Math.max(PADDING, left);
+    left = Math.max(VIEWPORT_PADDING, left);
 
     setContentStyle({
       position: 'fixed',
       top,
       left,
-      //minWidth: triggerRect.width,
       visibility: 'visible',
     });
-  }, [align, triggerRef]);
+  }, [align, offset, triggerRef]);
   // align and triggerRef are stable (prop string + ref object), so this callback
   // is effectively created once and never causes extra renders.
 

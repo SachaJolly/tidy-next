@@ -33,6 +33,7 @@
   --text-disabled: light-dark(var(--color-grey-300), var(--color-grey-400));
   --text-inverse: light-dark(var(--color-white), var(--color-grey-900));
   --text-on-interactive: light-dark(var(--color-white), var(--color-white));
+  --text-on-tooltip: light-dark(var(--color-white), var(--color-white));
 
   /* Text types */
   --text-type-featured: light-dark(var(--color-purple-500), var(--color-purple-300));

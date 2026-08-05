@@ -4,12 +4,14 @@ type SkeletonBlockProps = {
   width?: string;
   height?: string;
   radius?: string;
+  margin?: string;
 };
 
 function SkeletonBlock({
   width = '100%',
   height = '1rem',
   radius = '0.75rem',
+  margin = '0',
 }: SkeletonBlockProps) {
   return (
     <div
@@ -19,6 +21,7 @@ function SkeletonBlock({
         width,
         height,
         borderRadius: radius,
+        margin,
         backgroundColor: 'var(--surface-highlight)',
       }}
     />
@@ -34,14 +37,16 @@ export default function ListCardSkeleton() {
         display: 'flex',
         flexDirection: 'column',
         gap: '0.75rem',
-        padding: '1rem',
+        padding: '.5rem .5rem .75rem',
         borderRadius: '1rem',
         backgroundColor: 'var(--surface-modal)',
       }}
     >
-      <SkeletonBlock width="16rem" height="8rem" radius="0.85rem" />
-      <SkeletonBlock width="70%" height="1rem" />
-      <SkeletonBlock width="55%" height="1rem" />
+      <SkeletonBlock width="16rem" height="8rem" radius="0.25rem" />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '.25rem', }} >
+        <SkeletonBlock width="70%" height="1.25rem" margin=".125rem 0" />
+        <SkeletonBlock width="4rem" height=".75rem" margin=".125rem 0" />
+      </div>
     </div>
   );
 }

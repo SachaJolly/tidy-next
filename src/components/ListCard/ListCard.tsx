@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import Button from '@/components/Button/Button';
 import Icon from '@/components/Icon/Icon';
 import { Dropdown } from '@/components/Dropdown';
+import { ButtonHover } from '@/components/ButtonHover';
 import Meta from '@/components/Meta/Meta';
 import MetaGroup from '@/components/MetaGroup/MetaGroup';
 import ListOptionsDropdown from '@/app/lists/[id]/ListOptionsDropdown';
@@ -32,7 +32,7 @@ export default function ListCard({
     <div className={listClasses} {...props}>
       <div className={styles.actions}>
         <Dropdown>
-          <Button icon="settings" aria-label={listPage('settings')} size="small" tinted={true} />
+          <ButtonHover aria-label={listPage('settings')} />
           <ListOptionsDropdown
             listId={list.id}
             isAuthor={isAuthor}

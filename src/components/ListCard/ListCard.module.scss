@@ -18,6 +18,10 @@
     .cover img {
       transform: scale(1.1, 1.1);
     }
+
+    .actions {
+      opacity: 1;
+    }
   }
 }
 
@@ -31,7 +35,7 @@
   padding: 0.5rem;
   border-radius: var(--radius-interactive);
   color: inherit;
-  transition: background-color 0.3s ease;
+  transition: background-color .3s ease;
   text-decoration: none;
 
   &:hover,
@@ -114,6 +118,8 @@
   top: 0.25rem;
   right: 0.25rem;
   z-index: 2;
+  opacity: 0;
+  transition: opacity .2s ease;
 }
 
 @media (min-width: 855px) {
