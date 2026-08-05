@@ -3,10 +3,10 @@
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { Modal, ModalContent, ModalHeader, ModalClose } from './Modal';
-import ListForm from '@/components/Lists/ListForm';
+import { Modal, ModalContent, ModalHeader, ModalClose } from '@/components/Modal/Modal';
+import ListForm from './ListForm';
 import type { List } from '@/lib/types';
-import styles from './Modal.module.scss';
+import styles from '@/components/Modal/Modal.module.scss';
 import { localizePath } from '@/lib/locale-path';
 import { useQueryModal } from '@/hooks/use-query-modal';
 

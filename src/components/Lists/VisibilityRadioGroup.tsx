@@ -25,7 +25,7 @@ const VISIBILITY_OPTIONS: Array<{
     values: ['PUBLIC', 'published'],
     labelKey: 'visibility.public.label',
     captionKey: 'visibility.public.caption',
-    icon: 'visibility_on',
+    icon: 'public',
   },
   {
     values: ['UNINDEXED', 'unindexed'],
@@ -62,17 +62,13 @@ export default function VisibilityRadioGroup({
       {showLabel && <DropdownLabel>{tCommon('action.setVisibility')}</DropdownLabel>}
       <DropdownRadioGroup value={value} onValueChange={onValueChange}>
         {VISIBILITY_OPTIONS.map(option => (
-          <DropdownRadioItem key={option.icon} value={option.values[0]}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                <Icon name={option.icon} size={16} />
-                <span>{tCommon(option.labelKey)}</span>
-              </div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                {tCommon(option.captionKey)}
-              </span>
-            </div>
-          </DropdownRadioItem>
+          <DropdownRadioItem
+            key={option.icon}
+            value={option.values[0]}
+            icon={option.icon}
+            label={tCommon(option.labelKey)}
+            caption={tCommon(option.captionKey)}
+          />
         ))}
       </DropdownRadioGroup>
     </>
