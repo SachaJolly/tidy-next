@@ -1,4 +1,5 @@
 import { defineRouting } from 'next-intl/routing';
+import { LANGUAGE_COOKIE_NAME, toLocale, type Language } from '@/lib/language-mapper';
 
 export const locales = ['en', 'fr'] as const;
 export type Locale = (typeof locales)[number];
@@ -43,16 +44,19 @@ export function resolveLocaleFromRequest(options: {
 }): Locale {
   const { pathnameLocale, cookieLocale, acceptLanguage } = options;
 
+  // Priority 1: Pathname locale (explicit in URL)
   const fromPathname = pathnameLocale ? matchLocale(pathnameLocale) : null;
   if (fromPathname) {
     return fromPathname;
   }
 
+  // Priority 2: Cookie locale (user's saved preference, persists when logged out)
   const fromCookie = cookieLocale ? matchLocale(cookieLocale) : null;
   if (fromCookie) {
     return fromCookie;
   }
 
+  // Priority 3: Browser's Accept-Language header
   const preferredLocales = acceptLanguage ? parseAcceptLanguage(acceptLanguage) : [];
   for (const preferredLocale of preferredLocales) {
     const matchedLocale = matchLocale(preferredLocale);
@@ -61,5 +65,6 @@ export function resolveLocaleFromRequest(options: {
     }
   }
 
+  // Priority 4: Default locale
   return defaultLocale;
 }
