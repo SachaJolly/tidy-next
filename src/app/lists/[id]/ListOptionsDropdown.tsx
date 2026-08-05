@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState, useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import {
   DropdownItem,
   DropdownLabel,
@@ -65,6 +65,8 @@ export default function ListOptionsDropdown({
   inline = false,
 }: ListOptionsDropdownProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const locale = useLocale();
   const date = useTranslations('date');
   const common = useTranslations('common');
@@ -85,7 +87,11 @@ export default function ListOptionsDropdown({
   );
 
   const handleEdit = () => {
-    router.push(`?modal=edit-list&listId=${listId}`);
+    // Build URL with current pathname and add/update query params
+    const params = new URLSearchParams(searchParams);
+    params.set('modal', 'edit-list');
+    params.set('listId', listId);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleVisibilityChange = (value: string) => {
