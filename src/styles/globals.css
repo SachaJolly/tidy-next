@@ -151,7 +151,10 @@ a {
 }
 
 a:hover,
-a.hover {
+a.hover,
+a:focus-within,
+a:focus-visible,
+a[aria-expanded="true"] {
   color: var(--text-interactive-hover);
 }
 
