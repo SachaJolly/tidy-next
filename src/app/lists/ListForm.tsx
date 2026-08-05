@@ -5,7 +5,8 @@ import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import Input from '@/components/Input/Input';
 import Textarea from '@/components/Textarea/Textarea';
-import {Dropdown, DropdownRadioGroup, DropdownRadioItem, DropdownLabel, DropdownMenu} from '@/components/Dropdown';
+import {Dropdown, DropdownMenu} from '@/components/Dropdown';
+import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
 import Icon from '@/components/Icon/Icon';
 import type { IconName } from '@/components/Icon/icons';
 import { createListAction } from '@/app/actions/lists';
@@ -53,7 +54,9 @@ export default function ListForm({
   const resolvedCancelLabel = cancelLabel ?? t('cancel');
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription);
-  const [visibility, setVisibility] = useState(initialVisibility);
+  const [visibility, setVisibility] = useState<'published' | 'unindexed' | 'restricted'>(
+    (initialVisibility as 'published' | 'unindexed' | 'restricted') || 'restricted'
+  );
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -99,7 +102,7 @@ export default function ListForm({
 
   // Visibility dropdown options
   const visibilityOptions: VisibilityOption[] = [
-    { value: 'published', label: tCommon('visibility.public.label'), caption: tCommon('visibility.public.caption'), icon: 'public' },
+    { value: 'published', label: tCommon('visibility.public.label'), caption: tCommon('visibility.public.caption'), icon: 'visibility_on' },
     { value: 'unindexed', label: tCommon('visibility.unindexed.label'), caption: tCommon('visibility.unindexed.caption'), icon: 'visibility_off' },
     { value: 'restricted', label: tCommon('visibility.private.label'), caption: tCommon('visibility.private.caption'), icon: 'private' },
   ];
@@ -137,7 +140,6 @@ export default function ListForm({
           </p>
         )}
       </ModalContent>
-cc
       <ModalFooter>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
           <Dropdown>
@@ -146,22 +148,10 @@ cc
               <span>{currentVisibility?.label}</span>
             </Button>
             <DropdownMenu>
-              <DropdownRadioGroup value={visibility} onValueChange={setVisibility}>
-                <DropdownLabel>{tCommon('action.setVisibility')}</DropdownLabel>
-                {visibilityOptions.map(option => (
-                  <DropdownRadioItem key={option.value} value={option.value}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                        <Icon name={option.icon} size={16} />
-                        {option.label}
-                      </div>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    {option.caption}
-                  </span>
-                    </div>
-                  </DropdownRadioItem>
-                ))}
-              </DropdownRadioGroup>
+              <VisibilityRadioGroup
+                value={visibility}
+                onValueChange={(val) => setVisibility(val as 'published' | 'unindexed' | 'restricted')}
+              />
             </DropdownMenu>
           </Dropdown>
 
