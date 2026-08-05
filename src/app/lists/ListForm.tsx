@@ -7,31 +7,51 @@ import Input from '@/components/Input/Input';
 import Textarea from '@/components/Textarea/Textarea';
 import { Dropdown, DropdownRadioGroup, DropdownRadioItem, DropdownLabel } from '@/components/Dropdown';
 import Icon from '@/components/Icon/Icon';
-import { updateListAction, type ListMutationResult } from '@/app/actions/lists';
+import type { IconName } from '@/components/Icon/icons';
+import { createListAction } from '@/app/actions/lists';
 import type { List } from '@/lib/types';
 import { useTranslations } from 'next-intl';
 
-type EditListFormProps = {
-  listId: string;
-  initialTitle: string;
-  initialDescription: string | null;
+type ListFormProps = {
+  action?: (values: { title: string; description: string; visibility?: string }) => Promise<{ list?: List; error?: string }>;
+  submitLabel?: string;
+  cancelLabel?: string;
+  initialTitle?: string;
+  initialDescription?: string;
   initialVisibility?: string;
   onCancel: () => void;
   onSuccess?: (list: List) => void;
 };
 
-export default function EditListForm({
-  listId,
-  initialTitle,
-  initialDescription,
+type VisibilityOption = {
+  value: string;
+  label: string;
+  caption: string;
+  icon: IconName;
+};
+
+/**
+ * Shared list form body.
+ *
+ * The `action` prop lets future edit modals reuse the same UI while swapping
+ * the server mutation underneath.
+ */
+export default function ListForm({
+  action = createListAction,
+  submitLabel,
+  cancelLabel,
+  initialTitle = '',
+  initialDescription = '',
   initialVisibility = 'restricted',
   onCancel,
   onSuccess,
-}: EditListFormProps) {
+}: ListFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
+  const resolvedSubmitLabel = submitLabel ?? t('createList');
+  const resolvedCancelLabel = cancelLabel ?? t('cancel');
   const [title, setTitle] = useState(initialTitle);
-  const [description, setDescription] = useState(initialDescription ?? '');
+  const [description, setDescription] = useState(initialDescription);
   const [visibility, setVisibility] = useState(initialVisibility);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,7 +72,7 @@ export default function EditListForm({
       setIsSubmitting(true);
 
       try {
-        const result = await updateListAction(listId, {
+        const result = await action({
           title: titleValue,
           description: descriptionValue,
           visibility,
@@ -68,18 +88,19 @@ export default function EditListForm({
 
         onSuccess?.(result.list);
       } catch (submissionError) {
-        setError(submissionError instanceof Error ? submissionError.message : t('updateFailed'));
+        setError(submissionError instanceof Error ? submissionError.message : t('creationFailed'));
       } finally {
         setIsSubmitting(false);
       }
     },
-    [description, listId, onSuccess, title, visibility, t],
+    [action, description, onSuccess, title, visibility, t],
   );
 
-  const visibilityOptions = [
-    { value: 'published', label: tCommon('visibility.public.label'), caption: tCommon('visibility.public.caption'), icon: 'globe' },
-    { value: 'unindexed', label: tCommon('visibility.unindexed.label'), caption: tCommon('visibility.unindexed.caption'), icon: 'eye-off' },
-    { value: 'restricted', label: tCommon('visibility.private.label'), caption: tCommon('visibility.private.caption'), icon: 'lock' },
+  // Visibility dropdown options
+  const visibilityOptions: VisibilityOption[] = [
+    { value: 'published', label: tCommon('visibility.public.label'), caption: tCommon('visibility.public.caption'), icon: 'public' },
+    { value: 'unindexed', label: tCommon('visibility.unindexed.label'), caption: tCommon('visibility.unindexed.caption'), icon: 'visibility_off' },
+    { value: 'restricted', label: tCommon('visibility.private.label'), caption: tCommon('visibility.private.caption'), icon: 'private' },
   ];
 
   const currentVisibility = visibilityOptions.find(opt => opt.value === visibility);
@@ -115,6 +136,7 @@ export default function EditListForm({
       )}
 
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
+        {/* Visibility dropdown in modal footer */}
         <Dropdown>
           <button
             type="button"
@@ -134,7 +156,7 @@ export default function EditListForm({
             }}
             disabled={isSubmitting}
           >
-            {currentVisibility && <Icon name={currentVisibility.icon as any} size={16} />}
+            {currentVisibility && <Icon name={currentVisibility.icon} size={16} />}
             {currentVisibility?.label}
           </button>
 
@@ -144,7 +166,7 @@ export default function EditListForm({
               <DropdownRadioItem key={option.value} value={option.value}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                    <Icon name={option.icon as any} size={16} />
+                    <Icon name={option.icon} size={16} />
                     {option.label}
                   </div>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
@@ -157,12 +179,8 @@ export default function EditListForm({
         </Dropdown>
 
         <ButtonGroup>
-          <Button type="button" transparent={true} onClick={onCancel} disabled={isSubmitting}>
-            {t('cancel')}
-          </Button>
-          <Button type="submit" variant="interactive" disabled={isSubmitting}>
-            {isSubmitting ? t('saving') : t('save')}
-          </Button>
+          <Button label={resolvedCancelLabel} variant="default" onClick={onCancel} disabled={isSubmitting} />
+          <Button label={resolvedSubmitLabel} variant="interactive" type="submit" disabled={isSubmitting} />
         </ButtonGroup>
       </div>
     </form>

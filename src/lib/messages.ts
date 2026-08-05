@@ -11,6 +11,8 @@
  *   locales/en/footer.json           - Footer strings
  *   locales/en/date.json            - Date formatting strings
  *   locales/en/listPage.json         - Page/domain namespace (lowercase)
+ *   locales/en/NewList.json          - Modal namespace (PascalCase)
+ *   locales/en/EditListModal.json    - Modal namespace (PascalCase)
  *   locales/en/AccountDropdown.json  - Component namespace (PascalCase)
  *   locales/en/ListCard.json         - Component namespace (PascalCase)
  *   ...and more
@@ -19,7 +21,7 @@
  *   - Lowercase files → lowercase namespace keys: common, auth, navbar, footer, listPage, etc.
  *     (date is also lowercase because it behaves like a global domain helper)
  *     (for App Router pages/views and global domains)
- *   - PascalCase files → PascalCase namespace keys: AccountDropdown, ListCard, etc.
+ *   - PascalCase files → PascalCase namespace keys: NewList, EditListModal, ListCard, etc.
  *     (for reusable components in src/components/)
  *
  * The merged result:
@@ -28,6 +30,8 @@
  *     "auth": {...},
  *     "navbar": {...},
  *     "listPage": {...},
+ *     "NewList": {...},
+ *     "EditListModal": {...},
  *     "AccountDropdown": {...},
  *     "ListCard": {...},
  *     ...etc
@@ -81,7 +85,7 @@ import HeroFr from '../../locales/fr/hero.json';
  *
  * Naming convention:
  *   - Lowercase files → lowercase namespace keys: common, auth, navbar, footer, listPage, etc.
- *   - PascalCase files → PascalCase namespace keys: AccountDropdown, ListCard, etc.
+ *   - PascalCase files → PascalCase namespace keys: NewList, ListCard, EditListModal, etc.
  *     (for reusable components in src/components/)
  */
 const messagesEn = {

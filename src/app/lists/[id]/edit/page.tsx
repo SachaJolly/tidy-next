@@ -3,8 +3,8 @@
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Modal, ModalContent, ModalHeader, ModalClose } from '@/components/Modal/Modal';
-import EditListForm from './EditListForm';
-import type { List } from '@/lib/types';
+import ListForm from '../../ListForm';
+import { updateListAction } from '@/app/actions/lists';
 
 interface EditListPageProps {
   listId: string;
@@ -21,13 +21,10 @@ export default function EditListPage({
 }: EditListPageProps) {
   const router = useRouter();
 
-  const handleSuccess = useCallback(
-    (list: List) => {
-      router.back();
-      router.refresh();
-    },
-    [router],
-  );
+  const handleSuccess = useCallback(() => {
+    router.back();
+    router.refresh();
+  }, [router]);
 
   const handleCancel = useCallback(() => {
     router.back();
@@ -36,15 +33,15 @@ export default function EditListPage({
   return (
     <Modal size="default" onClose={handleCancel}>
       <ModalHeader>
-        <h2>Edit List</h2>
+        <h2>Edit list</h2>
         <ModalClose />
       </ModalHeader>
-
       <ModalContent>
-        <EditListForm
-          listId={listId}
+        <ListForm
+          action={(values) => updateListAction(listId, values)}
+          submitLabel="Save changes"
           initialTitle={initialTitle}
-          initialDescription={initialDescription}
+          initialDescription={initialDescription ?? ''}
           initialVisibility={initialVisibility}
           onCancel={handleCancel}
           onSuccess={handleSuccess}

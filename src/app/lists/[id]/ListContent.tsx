@@ -149,8 +149,6 @@ export async function ListHeaderSection({ id }: { id: string }) {
               listId={list.id}
               isAuthor={isAuthor}
               initialVisibility={list.visibility}
-              listTitle={list.title}
-              listDescription={list.description}
               authorName={author.name}
               updatedAt={list.updatedAt}
             />

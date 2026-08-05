@@ -23,8 +23,6 @@ interface ListOptionsDropdownProps {
   listId: string;
   isAuthor: boolean;
   initialVisibility: ListVisibility;
-  listTitle: string;
-  listDescription: string | null;
   authorName: string;
   updatedAt: string;
   inline?: boolean;
@@ -63,15 +61,12 @@ export default function ListOptionsDropdown({
   listId,
   isAuthor,
   initialVisibility,
-  listTitle,
-  listDescription,
   authorName,
   updatedAt,
   inline = false,
 }: ListOptionsDropdownProps) {
   const router = useRouter();
   const locale = useLocale();
-  const t = useTranslations('ListOptionsDropdown');
   const date = useTranslations('date');
   const common = useTranslations('common');
   const [isPending, startTransition] = useTransition();
@@ -89,11 +84,6 @@ export default function ListOptionsDropdown({
       }),
     [date, locale, updatedAt],
   );
-
-  const handleCopyLink = async () => {
-    const url = `${window.location.origin}/lists/${listId}`;
-    await navigator.clipboard.writeText(url);
-  };
 
   const handleEdit = () => {
     router.push(localizePath(`/lists/${listId}/edit`, locale));
@@ -165,7 +155,7 @@ export default function ListOptionsDropdown({
       <DropdownItem
         icon="copy"
         label={common('action.copyLink')}
-        onSelect={() => void handleCopyLink()}
+        onSelect={() => void navigator.clipboard.writeText(`${window.location.origin}/lists/${listId}`)}
       />
       <DropdownSeparator />
       <DropdownText>

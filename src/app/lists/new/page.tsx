@@ -2,23 +2,16 @@
 
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
 import { Modal, ModalContent, ModalHeader, ModalClose } from '@/components/Modal/Modal';
-import ListForm from './ListForm';
-import type { List } from '@/lib/types';
-import { localizePath } from '@/lib/locale-path';
+import ListForm from '../ListForm';
 
 export default function NewListPage() {
   const router = useRouter();
-  const locale = useLocale();
 
-  const handleSuccess = useCallback(
-    (list: List) => {
-      router.replace(localizePath(`/lists/${list.id}`, locale), { scroll: false });
-      router.refresh();
-    },
-    [locale, router],
-  );
+  const handleSuccess = useCallback(() => {
+    router.back();
+    router.refresh();
+  }, [router]);
 
   const handleCancel = useCallback(() => {
     router.back();
@@ -27,10 +20,9 @@ export default function NewListPage() {
   return (
     <Modal size="default" onClose={handleCancel}>
       <ModalHeader>
-        <h2>Create List</h2>
+        <h2>Create a new list</h2>
         <ModalClose />
       </ModalHeader>
-
       <ModalContent>
         <ListForm onCancel={handleCancel} onSuccess={handleSuccess} />
       </ModalContent>

@@ -48,7 +48,8 @@ export default async function NavbarAuthContent() {
             label={t('createList')}
             variant="interactive"
             tinted={true}
-            href={localizePath('/lists/new', locale)}
+            href="?modal=new-list"
+            scroll={false}
           />
           <NavbarAccountMenu user={user} />
         </>
