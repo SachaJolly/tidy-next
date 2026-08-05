@@ -7,11 +7,8 @@
   "items": "{count, plural, =0 {Empty} =1 {1 item} other {# items}}",
   "publicLists": "{count, plural, =0 {No public lists} =1 {1 public list} other {# public lists}}",
   "language": {
-    "english": "English",
-    "german": "German - Deutsch",
-    "french": "French - Français",
-    "russian": "Russian - Русский",
-    "spanish": "Spanish - Español"
+    "en": "English",
+    "fr": "Français"
   },
   "theme": {
     "system": "System",

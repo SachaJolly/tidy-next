@@ -7,11 +7,8 @@
   "items": "{count, plural, =0 {Vide} =1 {1 item} other {# items}}",
   "publicLists": "{count, plural, =0 {Aucune liste publique} =1 {1 liste publique} other {# listes publiques}}",
   "language": {
-    "english": "Anglais - English",
-    "german": "Allemand - Deutsch",
-    "french": "Français",
-    "russian": "Russe - Русский",
-    "spanish": "Espagnol - Español"
+    "en": "English",
+    "fr": "Français"
   },
   "theme": {
     "system": "Système",
