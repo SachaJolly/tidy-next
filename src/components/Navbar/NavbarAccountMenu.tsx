@@ -11,12 +11,14 @@ import { AccountDropdown } from './AccountDropdown';
 import { logoutAction } from '@/app/actions/auth';
 import { User } from '@/lib/types';
 import { stripLocalePrefix } from '@/lib/locale-path';
+import { type Language } from '@/lib/language-mapper';
 
 interface NavbarAccountMenuProps {
   user: User | null;
+  initialLanguage: Language;
 }
 
-export default function NavbarAccountMenu({ user }: NavbarAccountMenuProps) {
+export default function NavbarAccountMenu({ user, initialLanguage }: NavbarAccountMenuProps) {
   const pathname = usePathname();
   const locale = useLocale();
   const normalizedPathname = stripLocalePrefix(pathname, locale);
@@ -34,7 +36,7 @@ export default function NavbarAccountMenu({ user }: NavbarAccountMenuProps) {
 
       <Dropdown>
         <NavLink icon="more" aria-label="Open account menu" />
-        <AccountDropdown user={user} onLogout={logoutAction} />
+        <AccountDropdown user={user} initialLanguage={initialLanguage} onLogout={logoutAction} />
       </Dropdown>
     </div>
   );

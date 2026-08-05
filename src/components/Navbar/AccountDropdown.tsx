@@ -19,6 +19,8 @@ import { useLocale } from 'next-intl';
 import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
 import packageJson from '@/../package.json';
+import { type Language } from '@/lib/language-mapper';
+import { saveLanguagePreference } from '@/lib/save-language';
 
 // Mock accounts — replace with real data from auth/API when available.
 const MOCK_ACCOUNTS = [
@@ -26,12 +28,13 @@ const MOCK_ACCOUNTS = [
   { value: 'alexandra', label: 'Alexandra', caption: 'alex.sacha.jolly@gmail.com' },
 ];
 
-type Language = 'english' | 'german' | 'french' | 'russian' | 'spanish';
 type Theme = 'system' | 'dark' | 'light';
 
 interface AccountDropdownProps {
   /** Null when the user is not authenticated. */
   user: User | null;
+  /** User's preferred language (from DB if authenticated, or cookie/browser default). */
+  initialLanguage: Language;
   onLogout: () => void | Promise<void>;
   /**
    * Renders the panel inline (no portal, no fixed positioning).
@@ -41,22 +44,27 @@ interface AccountDropdownProps {
 }
 
 /** Renders only the <DropdownMenu> panel — mount inside <Dropdown> in the parent. */
-export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps) {
+export function AccountDropdown({ user, initialLanguage, onLogout, inline }: AccountDropdownProps) {
   const t = useTranslations('AccountDropdown');
   const date = useTranslations('date');
   const common = useTranslations('common');
   const locale = useLocale();
   const releaseDate = process.env.NEXT_PUBLIC_RELEASE_DATE;
-  const [language, setLanguage] = useState<Language>('english');
+  const [language, setLanguage] = useState<Language>(initialLanguage);
   const [theme, setTheme] = useState<Theme>('system');
   const [activeAccount, setActiveAccount] = useState(MOCK_ACCOUNTS[1]?.value ?? '');
 
+  // Handle language change: save to cookie (and DB if authenticated)
+  const handleLanguageChange = async (newLanguage: Language) => {
+    setLanguage(newLanguage);
+    await saveLanguagePreference(newLanguage);
+    // Note: Actual locale switch (URL/i18n routing) is handled by the parent
+    // or via middleware after cookie is set
+  };
+
   const languageOptions = [
     { value: 'english', label: common('language.english') },
-    { value: 'german', label: common('language.german') },
     { value: 'french', label: common('language.french') },
-    { value: 'russian', label: common('language.russian') },
-    { value: 'spanish', label: common('language.spanish') },
   ] as const;
 
   const themeOptions = [
@@ -129,7 +137,7 @@ export function AccountDropdown({ user, onLogout, inline }: AccountDropdownProps
         <DropdownSubContent>
           <DropdownRadioGroup
             value={language}
-            onValueChange={(v) => setLanguage(v as Language)}
+            onValueChange={(v) => void handleLanguageChange(v as Language)}
             label={t('language')}
             closeOnSelect
           >
