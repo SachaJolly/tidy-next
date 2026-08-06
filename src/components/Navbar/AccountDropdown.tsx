@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import {
   DropdownMenu,
   DropdownItem,
@@ -50,7 +50,6 @@ export function AccountDropdown({ user, initialLanguage, onLogout, inline }: Acc
   const date = useTranslations('date');
   const common = useTranslations('common');
   const locale = useLocale();
-  const pathname = usePathname();
   const router = useRouter();
   const releaseDate = process.env.NEXT_PUBLIC_RELEASE_DATE;
   const [language, setLanguage] = useState<Language>(initialLanguage);
@@ -112,7 +111,7 @@ export function AccountDropdown({ user, initialLanguage, onLogout, inline }: Acc
       {/* Account section — content differs based on auth state */}
       {user && (
         <>
-          <DropdownItem icon="settings" href={localizePath(`/${user.username}/settings`, locale)}>
+          <DropdownItem icon="settings" href={localizePath('/settings/profile', locale)}>
             {t('account')}
           </DropdownItem>
           <DropdownSub id="switch-account">

@@ -17,6 +17,7 @@ export interface ProfileCardData {
   name: string;
   handle: string;
   bio: string | null;
+  avatar?: string | null;
   listsCount: number;
   recentLists: List[];
 }
@@ -30,7 +31,7 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile }: ProfileCardProps) => {
   const common = useTranslations('common');
   const t = useTranslations('ProfileCard');
-  const { name, handle, bio, listsCount, recentLists } = profile;
+  const { name, handle, bio, avatar, listsCount, recentLists } = profile;
   const displayName = name || handle;
   const initialsSource = displayName || handle || '?';
 
@@ -39,7 +40,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
       <div className={styles['curator-meta-container']}>
         <div className={styles['curator-meta-content']}>
           <div className={styles['curator-meta-profile']}>
-            <Avatar size="56" initials={initialsSource[0]} />
+            <Avatar size="56" initials={initialsSource[0]} src={avatar ?? undefined} alt={displayName} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
               <h4 className={styles['title']}>{displayName}</h4>
               <MetaGroup>

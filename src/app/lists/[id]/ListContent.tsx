@@ -100,7 +100,12 @@ export async function ListHeaderSection({ id }: { id: string }) {
         <h1 className={styles.title}>{list.title}</h1>
         <MetaGroup>
           <Meta size="base">
-            <Avatar initials={author.name.charAt(0)} size="24" alt={author.name} />
+            <Avatar
+              initials={author.name.charAt(0)}
+              src={author.avatar ?? undefined}
+              size="24"
+              alt={author.name}
+            />
             <span>
               {common('curatedBy')}{' '}
               <Link className={styles.metaLink} href={localizePath(`/${author.username}`, locale)}>

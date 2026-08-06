@@ -9,6 +9,17 @@ export interface User {
   name: string;
   username: string;
   bio: string | null;
+  avatar?: string | null;
+  cover?: string | null;
+  website?: string | null;
+  twitter?: string | null;
+  github?: string | null;
+  linkedin?: string | null;
+  status?: 'ACTIVE' | 'INACTIVE' | 'BANNED';
+  role?: 'ADMIN' | 'USER';
+  theme?: 'LIGHT' | 'DARK';
+  emailNotifications?: boolean;
+  pushNotifications?: boolean;
   language?: string | null;
   createdAt: string;
   confirmedAt?: string | null;

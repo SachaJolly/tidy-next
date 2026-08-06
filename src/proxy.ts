@@ -34,6 +34,7 @@ export async function proxy(request: NextRequest) {
   const acceptLanguage = request.headers.get('accept-language')?.toLowerCase() ?? '';
 
   const token = request.cookies.get('tidy_token')?.value;
+  let isAuthenticated = !!token;
   let userLanguageFromDb: string | null = null;
 
   // If authenticated, fetch user language from DB (highest priority)
@@ -45,6 +46,10 @@ export async function proxy(request: NextRequest) {
       });
       userLanguageFromDb = user?.language ?? null;
     } catch (error) {
+      if (error instanceof ApiFetchError && error.status === 401) {
+        isAuthenticated = false;
+      }
+
       // If API fails, fall back to cookie/header detection
       if (!(error instanceof ApiFetchError && error.status === 401)) {
         console.error('[proxy] failed to fetch user language:', error);
@@ -86,7 +91,7 @@ export async function proxy(request: NextRequest) {
   // The auth guard runs first so protected pages never render for anonymous
   // users. We still persist the detected locale so the next request renders in
   // the user's language without exposing locale prefixes in the URL.
-  if (isProtectedRoute(pathnameWithoutLocale) && !token) {
+  if (isProtectedRoute(pathnameWithoutLocale) && !isAuthenticated) {
    const signinUrl = request.nextUrl.clone();
    signinUrl.pathname = '/signin';
    signinUrl.searchParams.set('callbackUrl', canonicalPath);
@@ -115,7 +120,7 @@ export async function proxy(request: NextRequest) {
   // We do NOT call next-intl's middleware here because this app does not use
   // locale-prefixed routes (no /[locale]/... segment). Rewriting to /en/... or
   // /fr/... would route into unknown paths and cause widespread 404s.
-  let response = NextResponse.next({ request: { headers: request.headers } });
+  const response = NextResponse.next({ request: { headers: request.headers } });
 
   // Always set the cookie to ensure it's in sync with:
   // 1. User's DB language (if authenticated and changed on another device)

@@ -12,11 +12,12 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({ src, alt, initials, size = '32', className = '' }) => {
   const classes = [styles.avatar, styles[`is-${size}`], className].filter(Boolean);
+  const hasImage = Boolean(src && alt);
 
   return (
     <div className={classes.join(' ')} style={{ width: `${size}px`, height: `${size}px` }}>
-      {src && alt && <Image src={src} alt={alt} fill className="object-cover" />}
-      {initials && <span className={styles.initials}>{initials}</span>}
+      {hasImage && <Image src={src!} alt={alt!} fill className="object-cover" />}
+      {!hasImage && initials && <span className={styles.initials}>{initials}</span>}
     </div>
   );
 };

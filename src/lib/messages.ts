@@ -46,6 +46,7 @@ import discoverEn from '../../locales/en/discover.json';
 import latestEn from '../../locales/en/latest.json';
 import curatorsEn from '../../locales/en/curators.json';
 import profileEn from '../../locales/en/profile.json';
+import settingsEn from '../../locales/en/settings.json';
 import listPageEn from '../../locales/en/listPage.json';
 import formsEn from '../../locales/en/forms.json';
 import dateEn from '../../locales/en/date.json';
@@ -69,6 +70,7 @@ import discoverFr from '../../locales/fr/discover.json';
 import latestFr from '../../locales/fr/latest.json';
 import curatorsFr from '../../locales/fr/curators.json';
 import profileFr from '../../locales/fr/profile.json';
+import settingsFr from '../../locales/fr/settings.json';
 import listPageFr from '../../locales/fr/listPage.json';
 import formsFr from '../../locales/fr/forms.json';
 import dateFr from '../../locales/fr/date.json';
@@ -102,6 +104,7 @@ const messagesEn = {
   latest: latestEn,
   curators: curatorsEn,
   profile: profileEn,
+  settings: settingsEn,
   item: itemEn,
   forms: formsEn,
   date: dateEn,
@@ -127,6 +130,7 @@ const messagesFr = {
   latest: latestFr,
   curators: curatorsFr,
   profile: profileFr,
+  settings: settingsFr,
   item: itemFr,
   forms: formsFr,
   date: dateFr,

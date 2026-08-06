@@ -30,7 +30,14 @@ export default function NavbarAccountMenu({ user, initialLanguage }: NavbarAccou
           href={`/${user.username}`}
           label={user.name}
           active={normalizedPathname === `/${user.username}`}
-          suffix={<Avatar initials={user.name.charAt(0)} size="32" alt={user.name} />}
+          suffix={
+            <Avatar
+              initials={user.name.charAt(0)}
+              src={user.avatar ?? undefined}
+              size="32"
+              alt={user.name}
+            />
+          }
         />
       )}
 

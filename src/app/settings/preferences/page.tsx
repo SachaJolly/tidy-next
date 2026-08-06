@@ -1,0 +1,53 @@
+import React from 'react';
+import { cookies } from 'next/headers';
+import { getTranslations } from 'next-intl/server';
+
+import { api } from '@/lib/api';
+import { LANGUAGE_COOKIE_NAME, type Language } from '@/lib/language-mapper';
+import { THEME_COOKIE_NAME, normalizeThemePreference } from '@/lib/theme-mapper';
+import type { User } from '@/lib/types';
+
+import PreferencesSettingsForm from './PreferencesSettingsForm';
+
+export default async function PreferencesSettingsPage() {
+  const t = await getTranslations('settings');
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get('tidy_token')?.value ?? null;
+  let me: User | null = null;
+
+  try {
+    if (authToken) {
+      me = await api.auth.get<User>('/api/v1/me', {
+        authorization: authToken,
+        cache: 'no-store',
+      });
+    }
+  } catch {
+    me = null;
+  }
+
+  const languageFromCookie = cookieStore.get(LANGUAGE_COOKIE_NAME)?.value;
+  const initialLanguage: Language =
+    me?.language === 'en' || me?.language === 'fr'
+      ? me.language
+      : languageFromCookie === 'en' || languageFromCookie === 'fr'
+        ? languageFromCookie
+        : 'en';
+
+  const initialTheme = normalizeThemePreference(me?.theme ?? cookieStore.get(THEME_COOKIE_NAME)?.value ?? null);
+  const initialEmailNotifications = me?.emailNotifications ?? true;
+  const initialPushNotifications = me?.pushNotifications ?? true;
+
+  return (
+    <section style={{ maxWidth: '720px' }}>
+      <h2 style={{ margin: 0 }}>{t('preferences.title')}</h2>
+      <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>{t('preferences.description')}</p>
+      <PreferencesSettingsForm
+        initialLanguage={initialLanguage}
+        initialTheme={initialTheme}
+        initialEmailNotifications={initialEmailNotifications}
+        initialPushNotifications={initialPushNotifications}
+      />
+    </section>
+  );
+}
