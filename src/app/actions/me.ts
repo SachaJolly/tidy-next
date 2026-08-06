@@ -135,3 +135,19 @@ export async function updateNotificationsSettings(input: UpdateNotificationsInpu
     { authorization: token, cache: 'no-store' },
   );
 }
+
+export async function deleteAccount(): Promise<void> {
+  const token = await getAuthorizationToken();
+
+  await api.auth.delete('/api/v1/me', {
+    authorization: token,
+    cache: 'no-store',
+  });
+
+  // Clear all session cookies so the user is fully signed out after deletion.
+  const cookieStore = await cookies();
+  cookieStore.delete('tidy_token');
+  cookieStore.delete('tidy_language');
+  cookieStore.delete('tidy_theme');
+  cookieStore.delete('tidy_timezone');
+}

@@ -445,6 +445,11 @@ const authClient = {
       method: 'PATCH',
       body: JSON.stringify(body),
     }),
+  delete: async <T>(
+    path: string,
+    options: Omit<ApiRequestOptions, 'method' | 'body' | 'authenticated'> = {},
+  ): Promise<T | null> =>
+    request<T>(path, { ...options, authenticated: true, method: 'DELETE' }),
 };
 
 export const api = {

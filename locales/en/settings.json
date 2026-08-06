@@ -87,6 +87,15 @@
     "yes": "Yes",
     "no": "No",
     "deleteAccount": "Delete account",
+    "deleteTitle": "Delete account",
+    "deleteDescription": "Permanently delete your account and all associated data. This action cannot be undone.",
+    "deleteButton": "Delete my account",
+    "deleteConfirmTitle": "Are you sure?",
+    "deleteConfirmBody": "This will permanently delete your account, all your lists, and all your data. This action cannot be undone.",
+    "deleteConfirm": "Yes, delete my account",
+    "deleteCancel": "Cancel",
+    "deleteDeleting": "Deleting…",
+    "deleteFailed": "Account deletion failed. Please try again.",
     "updated": "Account settings updated successfully."
   },
   "security": {

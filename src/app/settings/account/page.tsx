@@ -8,7 +8,9 @@ import type { User } from '@/lib/types';
 import {
   updateAccountSettings,
   updateUsernameSettings,
+  deleteAccount,
 } from '@/app/actions/me';
+import DeleteAccountSection from './DeleteAccountSection';
 import EmailSection from './EmailSection';
 import UsernameSection from './UsernameSection';
 import AccountInfoSection from './AccountInfoSection';
@@ -31,7 +33,7 @@ export default async function AccountSettingsPage() {
   }
 
   return (
-    <section style={{ maxWidth: '720px' }}>
+    <section>
       <h2 style={{ margin: 0 }}>{t('account.title')}</h2>
       <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '1.5rem' }}>{t('account.description')}</p>
 
@@ -44,6 +46,7 @@ export default async function AccountSettingsPage() {
         confirmedAt={me?.confirmedAt ?? ''}
         emailConfirmed={me?.emailConfirmed ?? false}
       />
+      <DeleteAccountSection onDelete={deleteAccount} />
     </section>
   );
 }
