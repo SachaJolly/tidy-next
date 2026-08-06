@@ -43,25 +43,22 @@ export default async function UserPage({ params }: UserPageProps) {
   const isPublicVisibleForUnconfirmed = user.unconfirmedProfilePublicVisible ?? false;
   const isCurrentUser = user.viewerIsOwner === true;
   const isPrivateProfile = user.profilePrivate === true;
+  const isPrivateProfileForVisitor = isPrivateProfile && !isCurrentUser;
   const isAuthor = isCurrentUser;
-
-  if (isPrivateProfile && !isCurrentUser) {
-    notFound();
-  }
 
   if (!isConfirmedUser && !isPublicVisibleForUnconfirmed && !isCurrentUser) {
     notFound();
   }
 
   const publicLists = user.publicLists ?? [];
-  const shouldShowPrivateVisibilityMessage = isPrivateProfile && isCurrentUser;
+  const shouldShowPrivateVisibilityMessage = isPrivateProfile;
   const shouldShowUnconfirmedVisibilityMessage = !isConfirmedUser && !isPublicVisibleForUnconfirmed && isCurrentUser;
 
   const visibilityMessage = shouldShowPrivateVisibilityMessage
     ? {
-        title: t('privateVisibilityTitle'),
-        description: t('privateVisibilityDescription'),
-        action: t('privateVisibilityAction'),
+        title: isCurrentUser ? t('privateVisibilityTitle') : t('privateVisibilityVisitorTitle'),
+        description: isCurrentUser ? t('privateVisibilityDescription') : t('privateVisibilityVisitorDescription'),
+        action: isCurrentUser ? t('privateVisibilityAction') : t('privateVisibilityVisitorAction'),
         isVisible: true,
       }
     : {
@@ -85,11 +82,13 @@ export default async function UserPage({ params }: UserPageProps) {
         description={visibilityMessage.description}
         action={visibilityMessage.action}
       />
-      <ProfileListsSection
-        publicLists={publicLists}
-        isAuthor={isAuthor}
-        title={t('publicLists', { count: publicLists.length })}
-      />
+      {!isPrivateProfileForVisitor && (
+        <ProfileListsSection
+          publicLists={publicLists}
+          isAuthor={isAuthor}
+          title={t('publicLists', { count: publicLists.length })}
+        />
+      )}
     </PageLayout>
   );
 }

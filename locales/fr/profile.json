@@ -5,5 +5,8 @@
   "unconfirmedVisibilityAction": "Confirmez votre e-mail pour rendre votre profil public visible.",
   "privateVisibilityTitle": "Votre profil est privé",
   "privateVisibilityDescription": "Vous êtes le seul à pouvoir consulter votre profil pour le moment.",
-  "privateVisibilityAction": "Modifiez ce réglage dans Paramètres > Profil > Visibilité du profil pour le rendre public."
+  "privateVisibilityAction": "Modifiez ce réglage dans Paramètres > Profil > Visibilité du profil pour le rendre public.",
+  "privateVisibilityVisitorTitle": "Ce profil est privé",
+  "privateVisibilityVisitorDescription": "Cet utilisateur partage uniquement les informations de profil publiquement.",
+  "privateVisibilityVisitorAction": "Les listes sont masquées par le réglage de confidentialité de cet utilisateur."
 }

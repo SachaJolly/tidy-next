@@ -5,5 +5,8 @@
   "unconfirmedVisibilityAction": "Please confirm your email to make your public profile visible.",
   "privateVisibilityTitle": "Your profile is private",
   "privateVisibilityDescription": "Only you can view your profile right now.",
-  "privateVisibilityAction": "Change this in Settings > Profile > Profile visibility to make it public again."
+  "privateVisibilityAction": "Change this in Settings > Profile > Profile visibility to make it public again.",
+  "privateVisibilityVisitorTitle": "This profile is private",
+  "privateVisibilityVisitorDescription": "This user only shares profile information publicly.",
+  "privateVisibilityVisitorAction": "Lists are hidden by this user's privacy setting."
 }
