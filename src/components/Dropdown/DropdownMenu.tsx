@@ -23,6 +23,8 @@ export interface DropdownMenuProps {
    * appear as a normal document element rather than a viewport overlay.
    */
   inline?: boolean;
+  /** When true, the menu width follows the trigger width. */
+  matchTriggerWidth?: boolean;
 }
 
 export function DropdownMenu({
@@ -31,6 +33,7 @@ export function DropdownMenu({
   offset = 4,
   className,
   inline = false,
+  matchTriggerWidth = false,
 }: DropdownMenuProps) {
   const {
     open,
@@ -53,7 +56,8 @@ export function DropdownMenu({
     if (!triggerRef.current || !menuRef.current) return;
     const VIEWPORT_PADDING = 6;
     const triggerRect = triggerRef.current.getBoundingClientRect();
-    const { width: cw, height: ch } = menuRef.current.getBoundingClientRect();
+    const { width: menuWidth, height: ch } = menuRef.current.getBoundingClientRect();
+    const cw = matchTriggerWidth ? triggerRect.width : menuWidth;
     let top = triggerRect.bottom + offset;
     let left = align === 'end' ? triggerRect.right - cw : triggerRect.left;
     if (top + ch > window.innerHeight - VIEWPORT_PADDING) {
@@ -63,8 +67,14 @@ export function DropdownMenu({
       left = triggerRect.right - cw;
     }
     left = Math.max(VIEWPORT_PADDING, left);
-    setContentStyle({ position: 'fixed', top, left, visibility: 'visible' });
-  }, [align, offset, triggerRef]);
+    setContentStyle({
+      position: 'fixed',
+      top,
+      left,
+      width: matchTriggerWidth ? triggerRect.width : undefined,
+      visibility: 'visible',
+    });
+  }, [align, offset, triggerRef, matchTriggerWidth]);
 
   useLayoutEffect(() => {
     if (inline || !open || isMobile) return;

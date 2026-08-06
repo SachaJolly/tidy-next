@@ -102,41 +102,46 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
             </FormField>
           </div>
         </div>
-        <FormField label={t('profile.public.fields.displayName.label')} htmlFor="settings-display-name">
-          <Input
-            id="settings-display-name"
-            name="name"
-            value={formState.name || ''}
-            onChange={handleChange}
-            placeholder={t('profile.public.fields.displayName.placeholder')}
-            disabled={isSaving}
-          />
-        </FormField>
-        <FormField
-          label={t('profile.public.pronouns.label')}
-          htmlFor="settings-pronouns-select"
-          caption={t('profile.public.pronouns.caption')}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <Select
-              value={pronounsSelection}
-              onChange={handlePronounsSelectionChange}
-              options={pronounsOptions}
-              placeholder={t('profile.public.pronouns.placeholder')}
-            />
-            {pronounsSelection === PRONOUNS_CUSTOM_VALUE && (
+        <div style={{ maxWidth: '20rem' }}>
+          <FormField label={t('profile.public.fields.displayName.label')} htmlFor="settings-display-name">
               <Input
-                id="settings-pronouns-custom"
-                name="pronounsCustom"
-                value={customPronouns}
-                onChange={handleCustomPronounsChange}
-                placeholder={t('profile.public.pronouns.customPlaceholder')}
+                id="settings-display-name"
+                name="name"
+                value={formState.name || ''}
+                onChange={handleChange}
+                placeholder={t('profile.public.fields.displayName.placeholder')}
                 disabled={isSaving}
-                maxLength={60}
               />
-            )}
-          </div>
-        </FormField>
+          </FormField>
+        </div>
+        <div style={{ maxWidth: '20rem' }}>
+          <FormField
+            label={t('profile.public.pronouns.label')}
+            htmlFor="settings-pronouns-select"
+            caption={t('profile.public.pronouns.caption')}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <Select
+                id="settings-pronouns-select"
+                value={pronounsSelection}
+                onChange={handlePronounsSelectionChange}
+                options={pronounsOptions}
+                placeholder={t('profile.public.pronouns.placeholder')}
+              />
+              {pronounsSelection === PRONOUNS_CUSTOM_VALUE && (
+                <Input
+                  id="settings-pronouns-custom"
+                  name="pronounsCustom"
+                  value={customPronouns}
+                  onChange={handleCustomPronounsChange}
+                  placeholder={t('profile.public.pronouns.customPlaceholder')}
+                  disabled={isSaving}
+                  maxLength={60}
+                />
+              )}
+            </div>
+          </FormField>
+        </div>
         <FormField label={t('profile.public.fields.bio.label')} htmlFor="settings-bio">
           <Textarea
             id="settings-bio"

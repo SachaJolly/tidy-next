@@ -18,6 +18,9 @@ type TriggerChildProps = React.HTMLAttributes<HTMLElement> & {
   onClick?: (e: React.MouseEvent) => void;
 };
 
+const resolveTriggerAnchor = (element: HTMLElement) =>
+  (element.closest('[data-dropdown-trigger]') as HTMLElement | null) ?? element;
+
 export function DropdownTrigger({
   children,
   asChild,
@@ -32,7 +35,7 @@ export function DropdownTrigger({
     const child = children as React.ReactElement<TriggerChildProps>;
     return React.cloneElement(child, {
       onClick: (e: React.MouseEvent) => {
-        triggerRef.current = e.currentTarget as HTMLElement;
+        triggerRef.current = resolveTriggerAnchor(e.currentTarget as HTMLElement);
         toggle();
         restOnClick?.(e);
         child.props.onClick?.(e);

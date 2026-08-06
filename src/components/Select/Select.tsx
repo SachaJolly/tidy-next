@@ -24,6 +24,8 @@ interface SelectOptionSection {
 }
 
 interface SelectProps {
+  id?: string;
+  'aria-describedby'?: string;
   options: SelectOptionItem[];
   value: string;
   onChange: (value: string) => void;
@@ -36,6 +38,8 @@ interface SelectProps {
 }
 
 export const Select = ({
+  id,
+  'aria-describedby': ariaDescribedBy,
   options,
   value,
   onChange,
@@ -171,9 +175,11 @@ export const Select = ({
   );
 
   return (
-    <div className={[styles.select, className].filter(Boolean).join(' ')}>
+    <div data-dropdown-trigger className={[styles.select, className].filter(Boolean).join(' ')}>
       <Dropdown open={isOpen} onOpenChange={setIsOpen} preventFocusOnOpen={true}>
         <Input
+          id={id}
+          aria-describedby={ariaDescribedBy}
           type="text"
           placeholder={placeholder}
           value={searchValue}
@@ -205,8 +211,8 @@ export const Select = ({
           suffix={suffix}
           trailing={dropdownIndicator}
         />
-        <DropdownMenu className="w-full">
-          <div style={{ width: "100%" }}>
+        <DropdownMenu matchTriggerWidth={true}>
+          <div>
             {isOpen && filteredFlatOptions.length > 0 ? (
               indexedSections.map((section, sectionIndex) => (
                 <React.Fragment key={section.label ?? `section-${sectionIndex}`}>
