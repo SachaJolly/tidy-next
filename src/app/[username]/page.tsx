@@ -58,13 +58,17 @@ export default async function UserPage({ params }: UserPageProps) {
     ? {
         title: isCurrentUser ? t('privateVisibilityTitle') : t('privateVisibilityVisitorTitle'),
         description: isCurrentUser ? t('privateVisibilityDescription') : t('privateVisibilityVisitorDescription'),
-        action: isCurrentUser ? t('privateVisibilityAction') : t('privateVisibilityVisitorAction'),
+        actions: isCurrentUser
+          ? [{ label: t('privateVisibilityAction'), href: '/settings/profile' }]
+          : undefined,
+        variant: 'information' as const,
         isVisible: true,
       }
     : {
         title: t('unconfirmedVisibilityTitle'),
         description: t('unconfirmedVisibilityDescription'),
-        action: t('unconfirmedVisibilityAction'),
+        actions: [{ label: t('unconfirmedVisibilityAction'), href: '/settings/account' }],
+        variant: 'warning' as const,
         isVisible: shouldShowUnconfirmedVisibilityMessage,
       };
 
@@ -80,7 +84,8 @@ export default async function UserPage({ params }: UserPageProps) {
         isVisible={visibilityMessage.isVisible}
         title={visibilityMessage.title}
         description={visibilityMessage.description}
-        action={visibilityMessage.action}
+        actions={visibilityMessage.actions}
+        variant={visibilityMessage.variant}
       />
       {!isPrivateProfileForVisitor && (
         <ProfileListsSection
