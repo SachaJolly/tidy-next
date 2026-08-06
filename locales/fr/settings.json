@@ -87,7 +87,7 @@
     "deleteTitle": "Supprimer le compte",
     "deleteDescription": "Supprimez définitivement votre compte et toutes les données associées. Cette action est irréversible.",
     "deleteButton": "Supprimer mon compte",
-    "deleteConfirmTitle": "Êtes-vous sûr ?",
+    "deleteConfirmTitle": "Supprimer définitivement votre compte ?",
     "deleteConfirmBody": "Cela supprimera définitivement votre compte, toutes vos listes et toutes vos données. Cette action est irréversible.",
     "deleteConfirm": "Oui, supprimer mon compte",
     "deleteCancel": "Annuler",

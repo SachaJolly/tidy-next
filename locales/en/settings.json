@@ -87,7 +87,7 @@
     "deleteTitle": "Delete account",
     "deleteDescription": "Permanently delete your account and all associated data. This action cannot be undone.",
     "deleteButton": "Delete my account",
-    "deleteConfirmTitle": "Are you sure?",
+    "deleteConfirmTitle": "Permanently delete your account?",
     "deleteConfirmBody": "This will permanently delete your account, all your lists, and all your data. This action cannot be undone.",
     "deleteConfirm": "Yes, delete my account",
     "deleteCancel": "Cancel",
