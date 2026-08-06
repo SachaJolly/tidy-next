@@ -4,7 +4,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { updateListItemAction } from '@/app/actions/items';
+import { updateListItemAction } from '@/actions/items';
 import { ModalContent, ModalHeader } from '@/components/Modal/Modal';
 import { useQueryModal } from '@/hooks/use-query-modal';
 import type { Item } from '@/lib/types';

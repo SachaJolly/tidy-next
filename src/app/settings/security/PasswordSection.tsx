@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { type UpdatePasswordInput } from '@/app/actions/me';
+import { type UpdatePasswordInput } from '@/actions/me';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import FormField from '@/components/FormField/FormField';

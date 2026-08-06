@@ -12,7 +12,7 @@ import Input from '@/components/Input/Input';
 import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
 import { ModalHeader, ModalFooter } from '@/components/Modal/Modal';
 import Textarea from '@/components/Textarea/Textarea';
-import { createListAction } from '@/app/actions/lists';
+import { createListAction } from '@/actions/lists';
 import type { List } from '@/lib/types';
 import {ModalFormFields} from "@/components/Modal/ModalFormFields";
 

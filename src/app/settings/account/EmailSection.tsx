@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { type UpdateAccountInput } from '@/app/actions/me';
+import { type UpdateAccountInput } from '@/actions/me';
 import { useSettingsForm } from '@/hooks/useSettingsForm';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';

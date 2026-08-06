@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { createListItemAction } from '@/app/actions/items';
+import { createListItemAction } from '@/actions/items';
 import { useQueryModal } from '@/hooks/use-query-modal';
 
 import ItemForm from './ItemForm';

@@ -3,9 +3,9 @@ import { cookies } from 'next/headers';
 import { getTranslations } from 'next-intl/server';
 
 import { api } from '@/lib/api';
-import { changeLanguage } from '@/app/actions/language';
-import { changeTheme } from '@/app/actions/theme';
-import { changeTimezone } from '@/app/actions/timezone';
+import { changeLanguage } from '@/actions/language';
+import { changeTheme } from '@/actions/theme';
+import { changeTimezone } from '@/actions/timezone';
 import { LANGUAGE_COOKIE_NAME, type LanguagePreference } from '@/lib/language-mapper';
 import { THEME_COOKIE_NAME, normalizeThemePreference } from '@/lib/theme-mapper';
 import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';

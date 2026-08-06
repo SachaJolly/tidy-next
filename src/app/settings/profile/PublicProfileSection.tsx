@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 
-import { type UpdatePublicProfileInput } from '@/app/actions/me';
+import { type UpdatePublicProfileInput } from '@/actions/me';
 import { useSettingsForm } from '@/hooks/useSettingsForm';
 import Avatar from '@/components/Avatar/Avatar';
 import Button from '@/components/Button/Button';

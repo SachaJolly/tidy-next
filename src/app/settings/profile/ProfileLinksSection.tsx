@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 
-import { type UpdateProfileLinksInput } from '@/app/actions/me';
+import { type UpdateProfileLinksInput } from '@/actions/me';
 import { useSettingsForm } from '@/hooks/useSettingsForm';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';

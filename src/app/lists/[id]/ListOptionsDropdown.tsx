@@ -11,7 +11,7 @@ import {
 } from '@/components/Dropdown';
 import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
 import type { List } from '@/lib/types';
-import { updateListVisibilityAction } from '@/app/actions/lists';
+import { updateListVisibilityAction } from '@/actions/lists';
 import { formatDate } from '@/lib/date';
 import { useQueryModal } from '@/hooks/use-query-modal';
 

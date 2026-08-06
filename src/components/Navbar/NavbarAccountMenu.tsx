@@ -8,7 +8,7 @@ import NavLink from '@/components/NavLink/NavLink';
 import Avatar from '@/components/Avatar/Avatar';
 import { Dropdown } from '@/components/Dropdown';
 import { AccountDropdown } from './AccountDropdown';
-import { logoutAction } from '@/app/actions/auth';
+import { logoutAction } from '@/actions/auth';
 import { User } from '@/lib/types';
 import { stripLocalePrefix } from '@/lib/locale-path';
 import { type LanguagePreference } from '@/lib/language-mapper';

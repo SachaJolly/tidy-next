@@ -22,8 +22,8 @@ import packageJson from '@/../package.json';
 import { type LanguagePreference, LANGUAGE_OPTIONS } from '@/lib/language-mapper';
 import { type ThemePreference, THEME_OPTIONS } from '@/lib/theme-mapper';
 import { formatTimezoneLabel } from '@/lib/timezone-mapper';
-import { changeLanguage } from '@/app/actions/language';
-import { changeTheme } from '@/app/actions/theme';
+import { changeLanguage } from '@/actions/language';
+import { changeTheme } from '@/actions/theme';
 import { useUserPreference } from '@/hooks/useUserPreference';
 
 // Mock accounts — replace with real data from auth/API when available.

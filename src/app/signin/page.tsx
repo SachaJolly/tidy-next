@@ -6,7 +6,7 @@ import AuthLayout from '@/layouts/AuthLayout/AuthLayout';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import Link from 'next/link';
-import { signinAction } from '@/app/actions/auth';
+import { signinAction } from '@/actions/auth';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizePath } from '@/lib/locale-path';
 

@@ -9,7 +9,7 @@ import {
   updatePublicProfileSettings,
   updateProfileLinksSettings,
   updateProfileVisibilitySettings,
-} from '@/app/actions/me';
+} from '@/actions/me';
 import PublicProfileSection from './PublicProfileSection';
 import ProfileLinksSection from './ProfileLinksSection';
 import ProfileVisibilitySection from './ProfileVisibilitySection';

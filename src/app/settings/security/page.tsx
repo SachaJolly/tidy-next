@@ -1,7 +1,7 @@
 import React from 'react';
 import { getTranslations } from 'next-intl/server';
 
-import { updatePasswordSettings } from '@/app/actions/me';
+import { updatePasswordSettings } from '@/actions/me';
 import AuthMethodsSection from './AuthMethodsSection';
 import PasswordSection from './PasswordSection';
 

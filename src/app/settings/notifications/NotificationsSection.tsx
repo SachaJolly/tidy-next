@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 
-import { type UpdateNotificationsInput } from '@/app/actions/me';
+import { type UpdateNotificationsInput } from '@/actions/me';
 import { useSettingsForm } from '@/hooks/useSettingsForm';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';

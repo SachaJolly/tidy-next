@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { getTranslations } from 'next-intl/server';
 
 import { api } from '@/lib/api';
-import { updateNotificationsSettings } from '@/app/actions/me';
+import { updateNotificationsSettings } from '@/actions/me';
 import type { User } from '@/lib/types';
 
 import NotificationsSection from './NotificationsSection';

@@ -7,7 +7,7 @@ import { useQueryModal } from '@/hooks/use-query-modal';
 import type { List } from '@/lib/types';
 import { ModalContent, ModalHeader } from '@/components/Modal/Modal';
 
-import { updateListAction } from '@/app/actions/lists';
+import { updateListAction } from '@/actions/lists';
 import ListForm from '@/app/lists/ListForm';
 import ListModal from '@/app/lists/ListModal';
 

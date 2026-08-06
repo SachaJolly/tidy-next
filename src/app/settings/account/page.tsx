@@ -10,7 +10,7 @@ import {
   updateUsernameSettings,
   deleteAccount,
   resendConfirmationEmail,
-} from '@/app/actions/me';
+} from '@/actions/me';
 import DeleteAccountSection from './DeleteAccountSection';
 import EmailSection from './EmailSection';
 import UsernameSection from './UsernameSection';

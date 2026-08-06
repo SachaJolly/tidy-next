@@ -7,7 +7,7 @@ import ConfirmEmailBanner from '@/components/Banner/ConfirmEmailBanner';
 import { LanguageInitializer } from '@/components/LanguageInitializer';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { resendConfirmationEmail } from '@/app/actions/me';
+import { resendConfirmationEmail } from '@/actions/me';
 import { getNewListGate } from '@/lib/new-list-gate';
 import { api } from '@/lib/api';
 import type { User } from '@/lib/types';
