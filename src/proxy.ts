@@ -4,6 +4,7 @@ import { isProtectedRoute } from './lib/auth-routes';
 import { resolveLocaleFromRequest, routing } from './i18n-routing';
 import { LANGUAGE_COOKIE_NAME, LANGUAGE_COOKIE_MAX_AGE } from './lib/language-mapper';
 import { THEME_COOKIE_NAME, THEME_COOKIE_MAX_AGE, parseThemePreference } from './lib/theme-mapper';
+import { TIMEZONE_COOKIE_NAME, TIMEZONE_COOKIE_MAX_AGE, parseTimezone } from './lib/timezone-mapper';
 import { api, ApiFetchError } from './lib/api';
 import type { User } from './lib/types';
 
@@ -38,6 +39,7 @@ export async function proxy(request: NextRequest) {
   let isAuthenticated = !!token;
   let userLanguageFromDb: string | null = null;
   let userThemeFromDb: string | null = null;
+  let userTimezoneFromDb: string | null = null;
 
   // If authenticated, fetch user language from DB (highest priority)
   if (token) {
@@ -48,6 +50,7 @@ export async function proxy(request: NextRequest) {
       });
       userLanguageFromDb = user?.language ?? null;
       userThemeFromDb = user?.theme ?? null;
+      userTimezoneFromDb = user?.timezone ?? null;
     } catch (error) {
       if (error instanceof ApiFetchError && error.status === 401) {
         isAuthenticated = false;
@@ -75,6 +78,13 @@ export async function proxy(request: NextRequest) {
     parseThemePreference(userThemeFromDb) ??
     parseThemePreference(request.cookies.get(THEME_COOKIE_NAME)?.value) ??
     'system';
+
+  // DB-first: null means "not set" (auto), no fallback to a default value —
+  // the absence of a timezone cookie signals "use browser/Auto" downstream.
+  const detectedTimezone =
+    parseTimezone(userTimezoneFromDb) ??
+    parseTimezone(request.cookies.get(TIMEZONE_COOKIE_NAME)?.value) ??
+    null;
   
   const pathnameWithoutLocale = routing.locales.includes(maybeLocale as (typeof routing.locales)[number])
    ? `/${pathSegments.slice(1).join('/')}`
@@ -99,6 +109,14 @@ export async function proxy(request: NextRequest) {
      sameSite: 'lax',
      path: '/',
    });
+   if (detectedTimezone) {
+     response.cookies.set(TIMEZONE_COOKIE_NAME, detectedTimezone, {
+       maxAge: TIMEZONE_COOKIE_MAX_AGE,
+       httpOnly: false,
+       sameSite: 'lax',
+       path: '/',
+     });
+   }
    return response;
   }
 
@@ -117,6 +135,14 @@ export async function proxy(request: NextRequest) {
      sameSite: 'lax',
      path: '/',
    });
+   if (detectedTimezone) {
+     response.cookies.set(TIMEZONE_COOKIE_NAME, detectedTimezone, {
+       maxAge: TIMEZONE_COOKIE_MAX_AGE,
+       httpOnly: false,
+       sameSite: 'lax',
+       path: '/',
+     });
+   }
    return response;
   }
 
@@ -136,6 +162,7 @@ export async function proxy(request: NextRequest) {
   // browser persists it for future requests too.
   request.cookies.set(LANGUAGE_COOKIE_NAME, detectedLocale);
   request.cookies.set(THEME_COOKIE_NAME, detectedTheme);
+  if (detectedTimezone) request.cookies.set(TIMEZONE_COOKIE_NAME, detectedTimezone);
 
   // Build a pass-through response while forwarding the updated request headers.
   // We do NOT call next-intl's middleware here because this app does not use
@@ -153,6 +180,14 @@ export async function proxy(request: NextRequest) {
     sameSite: 'lax',
     path: '/',
   });
+  if (detectedTimezone) {
+    response.cookies.set(TIMEZONE_COOKIE_NAME, detectedTimezone, {
+      maxAge: TIMEZONE_COOKIE_MAX_AGE,
+      httpOnly: false,
+      sameSite: 'lax',
+      path: '/',
+    });
+  }
 
   return response;
 }

@@ -17,7 +17,8 @@ export interface User {
   linkedin?: string | null;
   status?: 'ACTIVE' | 'INACTIVE' | 'BANNED';
   role?: 'ADMIN' | 'USER';
-  theme?: 'LIGHT' | 'DARK';
+  theme?: 'LIGHT' | 'DARK' | 'SYSTEM';
+  timezone?: string | null;
   emailNotifications?: boolean;
   pushNotifications?: boolean;
   language?: string | null;

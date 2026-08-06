@@ -18,9 +18,10 @@ interface NavbarAccountMenuProps {
   user: User | null;
   initialLanguage: Language;
   initialTheme: ThemePreference;
+  initialTimezone: string | null;
 }
 
-export default function NavbarAccountMenu({ user, initialLanguage, initialTheme }: NavbarAccountMenuProps) {
+export default function NavbarAccountMenu({ user, initialLanguage, initialTheme, initialTimezone }: NavbarAccountMenuProps) {
   const pathname = usePathname();
   const locale = useLocale();
   const normalizedPathname = stripLocalePrefix(pathname, locale);
@@ -45,7 +46,7 @@ export default function NavbarAccountMenu({ user, initialLanguage, initialTheme 
 
       <Dropdown>
         <NavLink icon="more" aria-label="Open account menu" />
-        <AccountDropdown user={user} initialLanguage={initialLanguage} initialTheme={initialTheme} onLogout={logoutAction} />
+        <AccountDropdown user={user} initialLanguage={initialLanguage} initialTheme={initialTheme} initialTimezone={initialTimezone} onLogout={logoutAction} />
       </Dropdown>
     </div>
   );

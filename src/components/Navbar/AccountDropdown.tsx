@@ -22,6 +22,7 @@ import { formatDate } from '@/lib/date';
 import packageJson from '@/../package.json';
 import { type Language } from '@/lib/language-mapper';
 import { type ThemePreference } from '@/lib/theme-mapper';
+import { formatTimezoneLabel } from '@/lib/timezone-mapper';
 import { changeLanguage } from '@/app/actions/language';
 import { changeTheme } from '@/app/actions/theme';
 import { useUserPreference } from '@/hooks/useUserPreference';
@@ -39,6 +40,11 @@ interface AccountDropdownProps {
   initialLanguage: Language;
   /** User's preferred theme (from DB if authenticated, or cookie default). */
   initialTheme: ThemePreference;
+  /**
+   * User's preferred timezone as an IANA string (e.g. "Europe/Paris").
+   * Null means "Auto" — not explicitly set, the settings page shows Auto.
+   */
+  initialTimezone: string | null;
   onLogout: () => void | Promise<void>;
   /**
    * Renders the panel inline (no portal, no fixed positioning).
@@ -48,7 +54,7 @@ interface AccountDropdownProps {
 }
 
 /** Renders only the <DropdownMenu> panel — mount inside <Dropdown> in the parent. */
-export function AccountDropdown({ user, initialLanguage, initialTheme, onLogout, inline }: AccountDropdownProps) {
+export function AccountDropdown({ user, initialLanguage, initialTheme, initialTimezone, onLogout, inline }: AccountDropdownProps) {
   const t = useTranslations('AccountDropdown');
   const date = useTranslations('date');
   const common = useTranslations('common');
@@ -175,6 +181,14 @@ export function AccountDropdown({ user, initialLanguage, initialTheme, onLogout,
           </DropdownRadioGroup>
         </DropdownSubContent>
       </DropdownSub>
+
+      {/* Timezone — no inline submenu; too many options. Links directly to settings/preferences. */}
+      <DropdownItem
+        icon="public"
+        href={localizePath('/settings/preferences', locale)}
+      >
+        {t('timezone')}: {formatTimezoneLabel(initialTimezone)}
+      </DropdownItem>
 
       <DropdownItem icon="info">{t('cookiePreferences')}</DropdownItem>
 

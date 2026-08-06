@@ -9,6 +9,7 @@ import { localizePath } from '@/lib/locale-path';
 import { User } from '@/lib/types';
 import { resolveUserLanguage } from '@/lib/resolve-user-language';
 import { THEME_COOKIE_NAME, normalizeThemePreference, type ThemePreference } from '@/lib/theme-mapper';
+import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 
 import NavbarAccountMenu from './NavbarAccountMenu';
 
@@ -18,11 +19,13 @@ export default async function NavbarAuthContent() {
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
   const cookieTheme = normalizeThemePreference(cookieStore.get(THEME_COOKIE_NAME)?.value ?? null);
+  const cookieTimezone = parseTimezone(cookieStore.get(TIMEZONE_COOKIE_NAME)?.value);
 
   if (!authToken) {
     // User is not authenticated: resolve language from cookie or browser default
     const initialLanguage = await resolveUserLanguage({ userLanguageFromDb: null, acceptLanguage: null });
     const initialTheme: ThemePreference = cookieTheme;
+    const initialTimezone = cookieTimezone;
     return (
       <>
         <ButtonGroup>
@@ -35,7 +38,7 @@ export default async function NavbarAuthContent() {
             href={localizePath('/signup', locale)}
           />
         </ButtonGroup>
-        <NavbarAccountMenu user={null} initialLanguage={initialLanguage} initialTheme={initialTheme} />
+        <NavbarAccountMenu user={null} initialLanguage={initialLanguage} initialTheme={initialTheme} initialTimezone={initialTimezone} />
       </>
     );
   }
@@ -66,6 +69,7 @@ export default async function NavbarAuthContent() {
       //   will fetch the updated user.language from DB and update the cookie.
 
       const userTheme = normalizeThemePreference(user.theme ?? cookieTheme);
+      const userTimezone = parseTimezone(user.timezone) ?? cookieTimezone;
 
       return (
         <>
@@ -77,7 +81,7 @@ export default async function NavbarAuthContent() {
             href="?modal=new-list"
             scroll={false}
           />
-          <NavbarAccountMenu user={user} initialLanguage={userLanguage} initialTheme={userTheme} />
+          <NavbarAccountMenu user={user} initialLanguage={userLanguage} initialTheme={userTheme} initialTimezone={userTimezone} />
         </>
       );
     }
@@ -90,6 +94,7 @@ export default async function NavbarAuthContent() {
   // If we reach here, user is not authenticated (token invalid/missing)
   const initialLanguage = await resolveUserLanguage({ userLanguageFromDb: null });
   const initialTheme: ThemePreference = cookieTheme;
+  const initialTimezone = cookieTimezone;
   return (
     <>
       <ButtonGroup>
@@ -102,7 +107,7 @@ export default async function NavbarAuthContent() {
           href={localizePath('/signup', locale)}
         />
       </ButtonGroup>
-      <NavbarAccountMenu user={null} initialLanguage={initialLanguage} initialTheme={initialTheme} />
+      <NavbarAccountMenu user={null} initialLanguage={initialLanguage} initialTheme={initialTheme} initialTimezone={initialTimezone} />
     </>
   );
 }
