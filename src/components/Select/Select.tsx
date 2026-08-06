@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Dropdown, DropdownItem, DropdownMenu } from '@/components/Dropdown';
+import { Dropdown, DropdownItem, DropdownLabel, DropdownMenu } from '@/components/Dropdown';
 import Input from '@/components/Input/Input';
 import Icon from '@/components/Icon/Icon';
 import styles from './Select.module.scss';
@@ -11,8 +11,20 @@ interface SelectOption {
   label: string;
 }
 
-interface SelectProps {
+interface SelectOptionGroup {
+  label: string;
   options: SelectOption[];
+}
+
+type SelectOptionItem = SelectOption | SelectOptionGroup;
+
+interface SelectOptionSection {
+  label?: string;
+  options: SelectOption[];
+}
+
+interface SelectProps {
+  options: SelectOptionItem[];
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -39,9 +51,28 @@ export const Select = ({
   const itemRefs = React.useRef<(HTMLButtonElement | HTMLAnchorElement)[]>([]);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
+  const isOptionGroup = React.useCallback((item: SelectOptionItem): item is SelectOptionGroup => {
+    return 'options' in item;
+  }, []);
+
+  const sections = React.useMemo<SelectOptionSection[]>(
+    () =>
+      options.map((item) =>
+        isOptionGroup(item)
+          ? { label: item.label, options: item.options }
+          : { options: [item] }
+      ),
+    [isOptionGroup, options]
+  );
+
+  const flatOptions = React.useMemo(
+    () => sections.flatMap((section) => section.options),
+    [sections]
+  );
+
   const selectedOption = React.useMemo(
-    () => options.find((option) => option.value === value),
-    [options, value]
+    () => flatOptions.find((option) => option.value === value),
+    [flatOptions, value]
   );
 
   React.useEffect(() => {
@@ -50,14 +81,33 @@ export const Select = ({
     }
   }, [isOpen, selectedOption]);
 
-  const filteredOptions = React.useMemo(() => {
+  const filteredSections = React.useMemo<SelectOptionSection[]>(() => {
     if (!searchValue || (selectedOption && searchValue === selectedOption.label)) {
-      return options;
+      return sections;
     }
-    return options.filter((option) =>
-      option.label.toLowerCase().includes(searchValue.toLowerCase())
-    );
-  }, [options, searchValue, selectedOption]);
+
+    return sections
+      .map((section) => ({
+        ...section,
+        options: section.options.filter((option) =>
+          option.label.toLowerCase().includes(searchValue.toLowerCase())
+        ),
+      }))
+      .filter((section) => section.options.length > 0);
+  }, [searchValue, sections, selectedOption]);
+
+  const indexedSections = React.useMemo(() => {
+    let optionIndex = 0;
+    return filteredSections.map((section) => ({
+      label: section.label,
+      options: section.options.map((option) => ({ ...option, optionIndex: optionIndex++ })),
+    }));
+  }, [filteredSections]);
+
+  const filteredFlatOptions = React.useMemo(
+    () => indexedSections.flatMap((section) => section.options),
+    [indexedSections]
+  );
 
   React.useEffect(() => {
     if (isOpen) {
@@ -92,15 +142,15 @@ export const Select = ({
 
     switch (e.key) {
       case 'ArrowDown':
-        setHighlightedIndex((prev) => Math.min(prev + 1, filteredOptions.length - 1));
+        setHighlightedIndex((prev) => Math.min(prev + 1, filteredFlatOptions.length - 1));
         break;
       case 'ArrowUp':
         setHighlightedIndex((prev) => Math.max(prev - 1, 0));
         break;
       case 'Enter':
         e.preventDefault();
-        if (filteredOptions[highlightedIndex]) {
-          handleSelect(filteredOptions[highlightedIndex].value);
+        if (filteredFlatOptions[highlightedIndex]) {
+          handleSelect(filteredFlatOptions[highlightedIndex].value);
         }
         break;
       case 'Escape':
@@ -130,7 +180,7 @@ export const Select = ({
   );
 
   return (
-    <div ref={containerRef} className={`${styles.select} ${className ?? ''}`}>
+    <div ref={containerRef} className={[styles.select, className].filter(Boolean).join(' ')}>
       <Dropdown open={isOpen} onOpenChange={setIsOpen} preventFocusOnOpen={true}>
         <Input
           type="text"
@@ -151,19 +201,24 @@ export const Select = ({
         />
         <DropdownMenu className="w-full">
           <div className="max-h-60 overflow-auto">
-            {isOpen && filteredOptions.length > 0 ? (
-              filteredOptions.map((option, index) => (
-                <DropdownItem
-                  key={option.value}
-                  ref={(el) => {
-                    if (el) itemRefs.current[index] = el;
-                  }}
-                  isHighlighted={index === highlightedIndex}
-                  onSelect={() => handleSelect(option.value)}
-                  onMouseDown={(e) => e.preventDefault()}
-                >
-                  {option.label}
-                </DropdownItem>
+            {isOpen && filteredFlatOptions.length > 0 ? (
+              indexedSections.map((section, sectionIndex) => (
+                <React.Fragment key={section.label ?? `section-${sectionIndex}`}>
+                  {section.label && <DropdownLabel>{section.label}</DropdownLabel>}
+                  {section.options.map((option) => (
+                    <DropdownItem
+                      key={option.value}
+                      ref={(el) => {
+                        if (el) itemRefs.current[option.optionIndex] = el;
+                      }}
+                      isHighlighted={option.optionIndex === highlightedIndex}
+                      onSelect={() => handleSelect(option.value)}
+                      onMouseDown={(e) => e.preventDefault()}
+                    >
+                      {option.label}
+                    </DropdownItem>
+                  ))}
+                </React.Fragment>
               ))
             ) : (
               <div className="px-2 py-1.5 text-sm text-gray-500">

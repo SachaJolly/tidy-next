@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Select } from './Select';
 
 const meta: Meta<typeof Select> = {
@@ -22,8 +23,49 @@ const options = [
 ];
 
 export const Default: Story = {
-  args: {
-    options,
-    placeholder: 'Select a timezone',
+  render: () => {
+    const [value, setValue] = useState('utc');
+    return (
+      <Select
+        options={options}
+        value={value}
+        onChange={setValue}
+        placeholder="Select a timezone"
+      />
+    );
+  },
+};
+
+const groupedOptions = [
+  {
+    label: 'Europe',
+    options: [
+      { value: 'europe/london', label: 'London' },
+      { value: 'europe/paris', label: 'Paris' },
+      { value: 'europe/berlin', label: 'Berlin' },
+    ],
+  },
+  {
+    label: 'America',
+    options: [
+      { value: 'america/new_york', label: 'New York' },
+      { value: 'america/los_angeles', label: 'Los Angeles' },
+      { value: 'america/chicago', label: 'Chicago' },
+    ],
+  },
+  { value: 'utc', label: 'UTC' },
+];
+
+export const WithOptGroups: Story = {
+  render: () => {
+    const [value, setValue] = useState('europe/london');
+    return (
+      <Select
+        options={groupedOptions}
+        value={value}
+        onChange={setValue}
+        placeholder="Select a city"
+      />
+    );
   },
 };
