@@ -7,6 +7,7 @@ import { LanguageInitializer } from '@/components/LanguageInitializer';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { getNewListGate } from '@/lib/new-list-gate';
+import { normalizeThemePreference, resolveColorSchemeFromTheme, THEME_COOKIE_NAME } from '@/lib/theme-mapper';
 
 import { IBM_Plex_Sans, Space_Grotesk } from 'next/font/google';
 
@@ -42,6 +43,8 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const localeFromCookie = cookieStore.get('tidy_language')?.value ?? 'en';
   const locale = (localeFromCookie === 'en' || localeFromCookie === 'fr') ? localeFromCookie : 'en';
+  const themePreference = normalizeThemePreference(cookieStore.get(THEME_COOKIE_NAME)?.value ?? null);
+  const colorScheme = resolveColorSchemeFromTheme(themePreference);
 
   // Load messages for the detected locale
   // Using getMessages() with the locale we determined
@@ -49,7 +52,11 @@ export default async function RootLayout({
   const newListGate = await getNewListGate();
 
   return (
-    <html lang={locale}>
+    <html
+      lang={locale}
+      data-theme={themePreference}
+      style={colorScheme ? { colorScheme } : undefined}
+    >
       <head></head>
       <body className={`${ibmPlexSans.variable} ${spaceGrotesk.variable}`}>
         <NextIntlClientProvider locale={locale} messages={messages}>

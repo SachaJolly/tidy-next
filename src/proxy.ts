@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import { isProtectedRoute } from './lib/auth-routes';
 import { resolveLocaleFromRequest, routing } from './i18n-routing';
 import { LANGUAGE_COOKIE_NAME, LANGUAGE_COOKIE_MAX_AGE } from './lib/language-mapper';
+import { THEME_COOKIE_NAME, THEME_COOKIE_MAX_AGE, parseThemePreference } from './lib/theme-mapper';
 import { api, ApiFetchError } from './lib/api';
 import type { User } from './lib/types';
 
@@ -36,6 +37,7 @@ export async function proxy(request: NextRequest) {
   const token = request.cookies.get('tidy_token')?.value;
   let isAuthenticated = !!token;
   let userLanguageFromDb: string | null = null;
+  let userThemeFromDb: string | null = null;
 
   // If authenticated, fetch user language from DB (highest priority)
   if (token) {
@@ -45,6 +47,7 @@ export async function proxy(request: NextRequest) {
         cache: 'no-store',
       });
       userLanguageFromDb = user?.language ?? null;
+      userThemeFromDb = user?.theme ?? null;
     } catch (error) {
       if (error instanceof ApiFetchError && error.status === 401) {
         isAuthenticated = false;
@@ -67,6 +70,11 @@ export async function proxy(request: NextRequest) {
    cookieLocale,
    acceptLanguage,
   });
+
+  const detectedTheme =
+    parseThemePreference(userThemeFromDb) ??
+    parseThemePreference(request.cookies.get(THEME_COOKIE_NAME)?.value) ??
+    'system';
   
   const pathnameWithoutLocale = routing.locales.includes(maybeLocale as (typeof routing.locales)[number])
    ? `/${pathSegments.slice(1).join('/')}`
@@ -85,6 +93,12 @@ export async function proxy(request: NextRequest) {
   if (hasLocalePrefix) {
    const response = NextResponse.redirect(new URL(canonicalPath, request.url));
    response.cookies.set(LANGUAGE_COOKIE_NAME, detectedLocale, cookieOptions);
+   response.cookies.set(THEME_COOKIE_NAME, detectedTheme, {
+     maxAge: THEME_COOKIE_MAX_AGE,
+     httpOnly: false,
+     sameSite: 'lax',
+     path: '/',
+   });
    return response;
   }
 
@@ -97,6 +111,12 @@ export async function proxy(request: NextRequest) {
    signinUrl.searchParams.set('callbackUrl', canonicalPath);
    const response = NextResponse.redirect(signinUrl);
    response.cookies.set(LANGUAGE_COOKIE_NAME, detectedLocale, cookieOptions);
+   response.cookies.set(THEME_COOKIE_NAME, detectedTheme, {
+     maxAge: THEME_COOKIE_MAX_AGE,
+     httpOnly: false,
+     sameSite: 'lax',
+     path: '/',
+   });
    return response;
   }
 
@@ -115,6 +135,7 @@ export async function proxy(request: NextRequest) {
   // rendered for THIS request, while the `response.cookies.set()` below still ensures the
   // browser persists it for future requests too.
   request.cookies.set(LANGUAGE_COOKIE_NAME, detectedLocale);
+  request.cookies.set(THEME_COOKIE_NAME, detectedTheme);
 
   // Build a pass-through response while forwarding the updated request headers.
   // We do NOT call next-intl's middleware here because this app does not use
@@ -126,6 +147,12 @@ export async function proxy(request: NextRequest) {
   // 1. User's DB language (if authenticated and changed on another device)
   // 2. Browser's Accept-Language header (if not authenticated)
   response.cookies.set(LANGUAGE_COOKIE_NAME, detectedLocale, cookieOptions);
+  response.cookies.set(THEME_COOKIE_NAME, detectedTheme, {
+    maxAge: THEME_COOKIE_MAX_AGE,
+    httpOnly: false,
+    sameSite: 'lax',
+    path: '/',
+  });
 
   return response;
 }
