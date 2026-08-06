@@ -70,7 +70,7 @@ export const LinkNoFavicon: Story = {
 };
 
 /**
- * Link with caption
+ * Link with body text
  */
 export const LinkCaption: Story = {
   args: {

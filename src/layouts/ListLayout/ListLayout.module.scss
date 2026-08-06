@@ -77,3 +77,23 @@
   gap: .5rem;
   align-items: center;
 }
+
+.itemsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 .5rem;
+}
+
+.itemsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.emptyState {
+  padding: .75rem 1rem;
+  border-radius: var(--radius-interactive);
+  border: var(--stroke-thin) dashed var(--border-default);
+  color: var(--text-muted);
+}

@@ -17,10 +17,6 @@ type EditItemModalProps = {
   items: Item[];
 };
 
-type ItemMetadata = {
-  url?: string;
-};
-
 export default function EditItemModal({ listId, items }: EditItemModalProps) {
   const t = useTranslations('EditItemModal');
   const router = useRouter();
@@ -57,17 +53,20 @@ export default function EditItemModal({ listId, items }: EditItemModalProps) {
     );
   }
 
-  const metadata = item.metadata as ItemMetadata;
-
   return (
     <ListModal onClose={closeModal}>
       <ItemForm
         title={t('title')}
         submitLabel={t('save')}
         action={(values) => updateListItemAction(listId, item.id, values)}
-        initialTitle={item.title}
-        initialCaption={item.caption ?? ''}
-        initialUrl={metadata.url ?? ''}
+        initialBody={item.body}
+        initialExtractedUrl={item.url}
+        initialDisplayMode={item.display_mode}
+        showPreview={true}
+        listId={listId}
+        initialMetadata={item.metadata}
+        initialStats={item.stats}
+        initialItemId={item.id}
         onCancel={closeModal}
         onSuccess={handleSuccess}
       />

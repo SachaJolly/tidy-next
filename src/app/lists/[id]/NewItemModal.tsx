@@ -37,7 +37,7 @@ export default function NewItemModal({ listId }: NewItemModalProps) {
     <ListModal onClose={closeModal}>
       <ItemForm
         title={t('title')}
-        submitLabel={t('save')}
+        submitLabel={t('add')}
         action={(values) => createListItemAction(listId, values)}
         onCancel={closeModal}
         onSuccess={handleSuccess}

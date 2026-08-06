@@ -95,7 +95,9 @@ const getListPageData = cache(async (id: string) => {
     nextNotFound();
   }
 
-  return { list, currentUser, locale, timezone, t, common, date };
+  const isAuthor = currentUser?.id === list.author?.id;
+
+  return { list, currentUser, locale, timezone, t, common, date, isAuthor };
 });
 
 // ============================================================================
@@ -103,9 +105,8 @@ const getListPageData = cache(async (id: string) => {
 // ============================================================================
 
 async function ListHeaderContainer({ id }: { id: string }) {
-  const { list, currentUser, locale, timezone } = await getListPageData(id);
+  const { list, locale, timezone, isAuthor } = await getListPageData(id);
   const author = list.author!;
-  const isAuthor = currentUser?.id === author.id;
 
   return (
     <ListHeader
@@ -119,9 +120,8 @@ async function ListHeaderContainer({ id }: { id: string }) {
 }
 
 async function ListItems({ id }: { id: string }) {
-  const { list, currentUser, common } = await getListPageData(id);
+  const { list, common, isAuthor } = await getListPageData(id);
   const items = list.items || [];
-  const isAuthor = currentUser?.id === list.author?.id;
 
   return (
     <section className={styles.itemsSection}>
@@ -141,8 +141,7 @@ async function ListItems({ id }: { id: string }) {
 }
 
 async function ListModals({ id }: { id: string }) {
-  const { list, currentUser } = await getListPageData(id);
-  const isAuthor = currentUser?.id === list.author?.id;
+  const { list, isAuthor } = await getListPageData(id);
 
   if (!isAuthor) {
     return null;

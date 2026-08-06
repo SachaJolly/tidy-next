@@ -19,8 +19,17 @@
     "titleRequired": "Please enter an item title.",
     "urlLabel": "URL",
     "urlPlaceholder": "https://example.com",
-    "captionLabel": "Caption",
-    "captionPlaceholder": "Optional context for this item",
+    "bodyLabel": "Markdown content",
+    "previewLabel": "Preview",
+    "bodyPlaceholder": "Paste a URL first to create a bookmark, then add your notes...",
+    "extractedUrlLabel": "Detected URL",
+    "displayModeLabel": "Display mode",
+    "displayModes": {
+      "link": "Link",
+      "bookmark": "Bookmark",
+      "embed": "Embed"
+    },
+    "bodyOrUrlRequired": "Please enter text or paste a URL at the beginning.",
     "saveFailed": "Item save failed.",
     "didNotReturnItem": "Item save did not return the updated item."
   }

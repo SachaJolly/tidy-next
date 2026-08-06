@@ -19,8 +19,17 @@
     "titleRequired": "Veuillez saisir un titre pour l'item.",
     "urlLabel": "URL",
     "urlPlaceholder": "https://example.com",
-    "captionLabel": "Légende",
-    "captionPlaceholder": "Contexte optionnel pour cet item",
+    "bodyLabel": "Contenu Markdown",
+    "previewLabel": "Aperçu",
+    "bodyPlaceholder": "Collez une URL en premier pour créer un bookmark, puis ajoutez votre texte…",
+    "extractedUrlLabel": "URL détectée",
+    "displayModeLabel": "Mode d’affichage",
+    "displayModes": {
+      "link": "Lien",
+      "bookmark": "Bookmark",
+      "embed": "Intégration"
+    },
+    "bodyOrUrlRequired": "Veuillez saisir du texte ou coller une URL au début du champ.",
     "saveFailed": "L'enregistrement de l'item a échoué.",
     "didNotReturnItem": "L'enregistrement de l'item n'a pas renvoyé l'item mis à jour."
   }

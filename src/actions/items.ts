@@ -6,8 +6,8 @@ import { api, ApiFetchError } from '@/lib/api';
 import type { Item } from '@/lib/types';
 
 type ItemMutationInput = {
-  title: string;
-  caption?: string;
+  body: string;
+  display_mode: 'text' | 'link' | 'bookmark' | 'embed';
   url?: string;
 };
 
@@ -18,20 +18,16 @@ export type ItemMutationResult = {
 
 export async function createListItemAction(
   listId: string,
-  { title, caption, url }: ItemMutationInput,
+  { body, display_mode, url }: ItemMutationInput,
 ): Promise<ItemMutationResult> {
   try {
     const item = await api.auth.post<Item>(
       `/api/v1/lists/${listId}/items`,
       {
         item: {
-          title,
-          caption: caption || undefined,
-          item_type: 'URL',
-          display_mode: 'LINK',
-          metadata: {
-            url: url || undefined,
-          },
+          body,
+          display_mode,
+          url: url || undefined,
         },
       },
       { cache: 'no-store' },
@@ -59,18 +55,16 @@ export async function createListItemAction(
 export async function updateListItemAction(
   listId: string,
   itemId: string,
-  { title, caption, url }: ItemMutationInput,
+  { body, display_mode, url }: ItemMutationInput,
 ): Promise<ItemMutationResult> {
   try {
     const item = await api.auth.patch<Item>(
       `/api/v1/lists/${listId}/items/${itemId}`,
       {
         item: {
-          title,
-          caption: caption || undefined,
-          metadata: {
-            url: url || undefined,
-          },
+          body,
+          display_mode,
+          url: url || undefined,
         },
       },
       { cache: 'no-store' },
