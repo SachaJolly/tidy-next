@@ -123,15 +123,10 @@ export const Select = ({
     };
   }, []);
 
-  const composedSuffix = hideDropdownIcon ? (
-    suffix
-  ) : (
-    <>
-      {suffix && <span className={styles.suffixValue}>{suffix}</span>}
-      <span className={styles.dropdownIndicator} aria-hidden>
-        <Icon name="dropdown" size={16} />
-      </span>
-    </>
+  const dropdownIndicator = hideDropdownIcon ? undefined : (
+    <span className={styles.dropdownIndicator} aria-hidden>
+      <Icon name="dropdown" size={16} />
+    </span>
   );
 
   return (
@@ -151,7 +146,8 @@ export const Select = ({
           }}
           onKeyDown={handleKeyDown}
           prefix={prefix}
-          suffix={composedSuffix}
+          suffix={suffix}
+          trailing={dropdownIndicator}
         />
         <DropdownMenu className="w-full">
           <div className="max-h-60 overflow-auto">

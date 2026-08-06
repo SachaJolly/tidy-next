@@ -7,26 +7,46 @@ type InputProps = Omit<React.ComponentPropsWithoutRef<'input'>, 'prefix'> & {
   id?: string;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
+  trailing?: React.ReactNode;
+  /** The visual variant of the input, used for validation states. */
+  variant?: 'success' | 'danger';
+  /** A message displayed below the input, typically for validation feedback. */
+  feedback?: string;
 };
 
-const Input: React.FC<InputProps> = ({ id, prefix, suffix, className, autoFocus, ...props }) => {
-  const classes = [styles.container, className].filter(Boolean).join(' ');
+const Input: React.FC<InputProps> = ({
+  id,
+  prefix,
+  suffix,
+  trailing,
+  className,
+  autoFocus,
+  variant,
+  feedback,
+  ...props
+}) => {
+  const containerClasses = [styles.container, className].filter(Boolean).join(' ');
+  const inputWrapperClasses = [
+    styles.inputWrapper,
+    prefix && styles.hasPrefix,
+    suffix && styles.hasSuffix,
+    trailing && styles.hasTrailing,
+    variant && styles[variant],
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const feedbackClasses = [
+    styles.feedback,
+    variant && styles[`feedback-${variant}`],
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <div className={classes}>
-      {prefix || suffix ? (
-        <div className={[styles.inputWrapper, prefix && styles.hasPrefix, suffix && styles.hasSuffix].filter(Boolean).join(' ')}>
-          {prefix && <span className={styles.affix}>{prefix}</span>}
-          <input
-            id={id}
-            className={styles.input}
-            autoFocus={autoFocus}
-            data-autofocus={autoFocus ? 'true' : undefined}
-            {...props}
-          />
-          {suffix && <span className={styles.affix}>{suffix}</span>}
-        </div>
-      ) : (
+    <div className={containerClasses}>
+      <div className={inputWrapperClasses}>
+        {prefix && <span className={[styles.affix, styles.prefixAffix].join(' ')}>{prefix}</span>}
         <input
           id={id}
           className={styles.input}
@@ -34,7 +54,10 @@ const Input: React.FC<InputProps> = ({ id, prefix, suffix, className, autoFocus,
           data-autofocus={autoFocus ? 'true' : undefined}
           {...props}
         />
-      )}
+        {suffix && <span className={[styles.affix, styles.suffixAffix].join(' ')}>{suffix}</span>}
+        {trailing && <span className={styles.trailing}>{trailing}</span>}
+      </div>
+      {feedback && <div className={feedbackClasses}>{feedback}</div>}
     </div>
   );
 };
