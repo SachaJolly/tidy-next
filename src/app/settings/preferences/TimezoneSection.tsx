@@ -1,30 +1,49 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 
+import { useSettingsForm } from '@/hooks/useSettingsForm';
 import Button from '@/components/Button/Button';
 import { TIMEZONE_AUTO } from '@/lib/timezone-mapper';
 import Card from '@/components/Card/Card';
+import { Select } from '@/components/Select';
+import Icon from '@/components/Icon/Icon';
 
-type Feedback = { type: 'success' | 'error'; text: string } | null;
-
-// Build grouped IANA timezone list once at module level (client bundle).
-// Intl.supportedValuesOf is available in all modern browsers and Node 18+.
-function buildTimezoneOptions(): { group: string; value: string; label: string }[] {
-  const zones: string[] = typeof Intl !== 'undefined' && 'supportedValuesOf' in Intl
-    ? (Intl as { supportedValuesOf: (key: string) => string[] }).supportedValuesOf('timeZone')
-    : [];
+function buildTimezoneOptions(): { value: string; label: string }[] {
+  const zones: string[] =
+    typeof Intl !== 'undefined' && 'supportedValuesOf' in Intl
+      ? (Intl as { supportedValuesOf: (key: string) => string[] }).supportedValuesOf('timeZone')
+      : [];
 
   return zones.map((tz) => ({
-    group: tz.includes('/') ? tz.split('/')[0] : 'Other',
     value: tz,
     label: tz.replace(/_/g, ' '),
   }));
 }
 
 const TIMEZONE_OPTIONS = buildTimezoneOptions();
+
+function buildTimezoneGroups(options: { value: string; label: string }[]) {
+  const grouped = new Map<string, { value: string; label: string }[]>();
+
+  options.forEach((option) => {
+    const [region] = option.value.split('/');
+    const groupLabel = (region ?? 'Other').replace(/_/g, ' ');
+    const existing = grouped.get(groupLabel) ?? [];
+    existing.push(option);
+    grouped.set(groupLabel, existing);
+  });
+
+  return Array.from(grouped.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([label, groupOptions]) => ({
+      label,
+      options: groupOptions.sort((a, b) => a.label.localeCompare(b.label)),
+    }));
+}
+
+const TIMEZONE_GROUPS = buildTimezoneGroups(TIMEZONE_OPTIONS);
 
 interface TimezoneSectionProps {
   initialTimezone: string | null;
@@ -34,65 +53,35 @@ interface TimezoneSectionProps {
 export default function TimezoneSection({ initialTimezone, onSave }: TimezoneSectionProps) {
   const t = useTranslations('settings');
   const common = useTranslations('common');
-  const router = useRouter();
-  const [timezone, setTimezone] = useState<string | null>(initialTimezone);
-  const [isSaving, setIsSaving] = useState(false);
-  const [feedback, setFeedback] = useState<Feedback>(null);
 
-  useEffect(() => { setTimezone(initialTimezone); }, [initialTimezone]);
+  const { value: timezone, setValue: setTimezone, isSaving, feedback, handleSubmit, isDirty } = useSettingsForm({
+    initialValue: initialTimezone,
+    onSave,
+    successMessage: t('preferences.timezoneUpdated'),
+  });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSaving(true);
-    setFeedback(null);
-
-    try {
-      await onSave(timezone);
-      setFeedback({ type: 'success', text: t('preferences.timezoneUpdated') });
-      router.refresh();
-    } catch (error) {
-      setFeedback({ type: 'error', text: error instanceof Error ? error.message : t('saveFailed') });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  // Group options by IANA region for the optgroup structure
-  const groupedOptions = Array.from(
-    TIMEZONE_OPTIONS.reduce<Map<string, typeof TIMEZONE_OPTIONS>>((map, opt) => {
-      const group = map.get(opt.group) ?? [];
-      group.push(opt);
-      map.set(opt.group, group);
-      return map;
-    }, new Map()),
-  );
+  const selectOptions = [
+    { value: TIMEZONE_AUTO, label: t('preferences.timezoneAuto') },
+    ...TIMEZONE_GROUPS,
+  ];
 
   return (
     <Card title={t('preferences.timezoneTitle')} description={t('preferences.timezoneDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <select
-          name="timezone"
+        <Select
+          options={selectOptions}
           value={timezone ?? TIMEZONE_AUTO}
-          onChange={(e) => setTimezone(e.target.value === TIMEZONE_AUTO ? null : e.target.value)}
-          disabled={isSaving}
-          style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-default)', background: 'var(--surface-default)', color: 'var(--text-body)', minWidth: '280px' }}
-        >
-          <option value={TIMEZONE_AUTO}>{t('preferences.timezoneAuto')}</option>
-          <optgroup label="────────────────" disabled />
-          {groupedOptions.map(([group, options]) => (
-            <optgroup key={group} label={group}>
-              {options.map((opt) => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-              ))}
-            </optgroup>
-          ))}
-        </select>
+          onChange={(value) => setTimezone(value === TIMEZONE_AUTO ? null : value)}
+          placeholder={t('preferences.timezoneAuto')}
+          className="min-w-[280px]"
+          prefix={<Icon name="public" size={16} />}
+        />
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="default" disabled={isSaving}>
+          <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
             {common('save')}
           </Button>
           {feedback && (
-            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>
+            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
               {feedback.text}
             </p>
           )}
