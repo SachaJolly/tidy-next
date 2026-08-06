@@ -11,6 +11,10 @@
   "profile": {
     "title": "Profil",
     "description": "Mettez à jour vos informations publiques affichées sur votre profil.",
+    "publicTitle": "Profil public",
+    "publicDescription": "Votre nom, bio et avatar tels que vus par les autres utilisateurs.",
+    "linksTitle": "Liens",
+    "linksDescription": "Votre site web et vos réseaux sociaux affichés sur votre profil public.",
     "avatarLabel": "URL de l'avatar",
     "avatarPlaceholder": "https://example.com/avatar.jpg",
     "coverLabel": "URL de couverture",

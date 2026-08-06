@@ -43,7 +43,7 @@ export default async function PreferencesSettingsPage() {
   return (
     <section style={{ maxWidth: '720px' }}>
       <h2 style={{ margin: 0 }}>{t('preferences.title')}</h2>
-      <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>{t('preferences.description')}</p>
+      <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('preferences.description')}</p>
       <PreferencesSettingsForm
         initialLanguage={initialLanguage}
         initialTheme={initialTheme}

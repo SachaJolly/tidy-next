@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { updateProfileSettings } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
+import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -78,83 +79,87 @@ export default function ProfileSettingsForm({ initialValues }: ProfileSettingsFo
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <Input
-        id="settings-avatar-url"
-        label={t('profile.avatarLabel')}
-        value={avatar}
-        onChange={(event) => setAvatar(event.target.value)}
-        placeholder={t('profile.avatarPlaceholder')}
-        disabled={isSaving}
-      />
-      <Input
-        id="settings-display-name"
-        label={t('profile.displayNameLabel')}
-        value={name}
-        onChange={(event) => setName(event.target.value)}
-        placeholder={t('profile.displayNamePlaceholder')}
-        disabled={isSaving}
-      />
-      <Input
-        id="settings-bio"
-        label={t('profile.bioLabel')}
-        value={bio}
-        onChange={(event) => setBio(event.target.value)}
-        placeholder={t('profile.bioPlaceholder')}
-        disabled={isSaving}
-      />
-      <Input
-        id="settings-cover"
-        label={t('profile.coverLabel')}
-        value={cover}
-        onChange={(event) => setCover(event.target.value)}
-        placeholder={t('profile.coverPlaceholder')}
-        disabled={isSaving}
-      />
-      <Input
-        id="settings-website"
-        label={t('profile.websiteLabel')}
-        value={website}
-        onChange={(event) => setWebsite(event.target.value)}
-        placeholder={t('profile.websitePlaceholder')}
-        disabled={isSaving}
-      />
-      <Input
-        id="settings-twitter"
-        label={t('profile.twitterLabel')}
-        value={twitter}
-        onChange={(event) => setTwitter(event.target.value)}
-        placeholder={t('profile.twitterPlaceholder')}
-        disabled={isSaving}
-      />
-      <Input
-        id="settings-github"
-        label={t('profile.githubLabel')}
-        value={github}
-        onChange={(event) => setGithub(event.target.value)}
-        placeholder={t('profile.githubPlaceholder')}
-        disabled={isSaving}
-      />
-      <Input
-        id="settings-linkedin"
-        label={t('profile.linkedinLabel')}
-        value={linkedin}
-        onChange={(event) => setLinkedin(event.target.value)}
-        placeholder={t('profile.linkedinPlaceholder')}
-        disabled={isSaving}
-      />
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+      <SettingsCard title={t('profile.publicTitle')} description={t('profile.publicDescription')}>
+        <Input
+          id="settings-avatar-url"
+          label={t('profile.avatarLabel')}
+          value={avatar}
+          onChange={(event) => setAvatar(event.target.value)}
+          placeholder={t('profile.avatarPlaceholder')}
+          disabled={isSaving}
+        />
+        <Input
+          id="settings-display-name"
+          label={t('profile.displayNameLabel')}
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          placeholder={t('profile.displayNamePlaceholder')}
+          disabled={isSaving}
+        />
+        <Input
+          id="settings-bio"
+          label={t('profile.bioLabel')}
+          value={bio}
+          onChange={(event) => setBio(event.target.value)}
+          placeholder={t('profile.bioPlaceholder')}
+          disabled={isSaving}
+        />
+        <Input
+          id="settings-cover"
+          label={t('profile.coverLabel')}
+          value={cover}
+          onChange={(event) => setCover(event.target.value)}
+          placeholder={t('profile.coverPlaceholder')}
+          disabled={isSaving}
+        />
+      </SettingsCard>
 
-      <div style={{ marginTop: '0.25rem' }}>
+      <SettingsCard title={t('profile.linksTitle')} description={t('profile.linksDescription')}>
+        <Input
+          id="settings-website"
+          label={t('profile.websiteLabel')}
+          value={website}
+          onChange={(event) => setWebsite(event.target.value)}
+          placeholder={t('profile.websitePlaceholder')}
+          disabled={isSaving}
+        />
+        <Input
+          id="settings-twitter"
+          label={t('profile.twitterLabel')}
+          value={twitter}
+          onChange={(event) => setTwitter(event.target.value)}
+          placeholder={t('profile.twitterPlaceholder')}
+          disabled={isSaving}
+        />
+        <Input
+          id="settings-github"
+          label={t('profile.githubLabel')}
+          value={github}
+          onChange={(event) => setGithub(event.target.value)}
+          placeholder={t('profile.githubPlaceholder')}
+          disabled={isSaving}
+        />
+        <Input
+          id="settings-linkedin"
+          label={t('profile.linkedinLabel')}
+          value={linkedin}
+          onChange={(event) => setLinkedin(event.target.value)}
+          placeholder={t('profile.linkedinPlaceholder')}
+          disabled={isSaving}
+        />
+      </SettingsCard>
+
+      <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <Button type="submit" variant="interactive" disabled={isSaving}>
           {t('profile.save')}
         </Button>
+        {feedback && (
+          <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>
+            {feedback.text}
+          </p>
+        )}
       </div>
-
-      {feedback && (
-        <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>
-          {feedback.text}
-        </p>
-      )}
     </form>
   );
 }

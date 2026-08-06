@@ -27,7 +27,7 @@ export default async function ProfileSettingsPage() {
   return (
     <section style={{ maxWidth: '720px' }}>
       <h2 style={{ margin: 0 }}>{t('profile.title')}</h2>
-      <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>{t('profile.description')}</p>
+      <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('profile.description')}</p>
       <ProfileSettingsForm
         initialValues={{
           name: me?.name ?? '',
