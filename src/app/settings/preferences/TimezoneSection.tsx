@@ -10,11 +10,33 @@ import Card from '@/components/Card/Card';
 import { Select } from '@/components/Select';
 import Icon from '@/components/Icon/Icon';
 
+const FALLBACK_TIMEZONES = [
+  'UTC',
+  'Europe/London',
+  'Europe/Paris',
+  'Europe/Berlin',
+  'Europe/Madrid',
+  'America/New_York',
+  'America/Chicago',
+  'America/Denver',
+  'America/Los_Angeles',
+  'America/Sao_Paulo',
+  'Asia/Tokyo',
+  'Asia/Seoul',
+  'Asia/Singapore',
+  'Asia/Kolkata',
+  'Australia/Sydney',
+  'Australia/Melbourne',
+  'Africa/Johannesburg',
+  'Africa/Cairo',
+];
+
 function buildTimezoneOptions(): { value: string; label: string }[] {
-  const zones: string[] =
+  const supportedZones: string[] =
     typeof Intl !== 'undefined' && 'supportedValuesOf' in Intl
       ? (Intl as { supportedValuesOf: (key: string) => string[] }).supportedValuesOf('timeZone')
       : [];
+  const zones = supportedZones.length > 0 ? supportedZones : FALLBACK_TIMEZONES;
 
   return zones.map((tz) => ({
     value: tz,
