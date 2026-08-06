@@ -1,0 +1,7 @@
+{
+  "title": "Modifier l'item",
+  "save": "Mettre à jour",
+  "error": {
+    "notFound": "Cet item est introuvable."
+  }
+}

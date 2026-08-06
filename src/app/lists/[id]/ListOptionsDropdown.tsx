@@ -5,7 +5,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import {
   DropdownItem,
-  DropdownLabel,
   DropdownMenu,
   DropdownSeparator,
   DropdownText,
@@ -20,7 +19,7 @@ type ListVisibility = List['visibility'];
 
 interface ListOptionsDropdownProps {
   listId: string;
-  isAuthor: boolean;
+  canManage: boolean;
   initialVisibility: ListVisibility;
   authorName: string;
   updatedAt: string;
@@ -29,7 +28,7 @@ interface ListOptionsDropdownProps {
 
 export default function ListOptionsDropdown({
   listId,
-  isAuthor,
+  canManage,
   initialVisibility,
   authorName,
   updatedAt,
@@ -61,7 +60,7 @@ export default function ListOptionsDropdown({
   };
 
   const handleVisibilityChange = (value: string) => {
-    if (!isAuthor || isPending) return;
+    if (!canManage || isPending) return;
 
     const nextVisibility = value as ListVisibility;
     if (nextVisibility === visibility) return;
@@ -85,7 +84,7 @@ export default function ListOptionsDropdown({
 
   return (
     <DropdownMenu align="end" inline={inline}>
-      {isAuthor ? (
+      {canManage ? (
         <>
           <DropdownItem icon="edit" label={common('action.edit')} onSelect={handleEdit} />
           <DropdownItem icon="delete" destructive label={common('action.archive')} />

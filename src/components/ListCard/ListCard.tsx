@@ -14,13 +14,13 @@ import { List } from '@/lib/types';
 interface ListCardProps {
   list: List;
   bigger?: boolean;
-  isAuthor?: boolean;
+  canManage?: boolean;
 }
 
 export default function ListCard({
   list,
   bigger = false,
-  isAuthor = false,
+  canManage = false,
   ...props
 }: ListCardProps & React.ComponentPropsWithoutRef<'div'>) {
   const t = useTranslations('ListCard');
@@ -107,7 +107,7 @@ export default function ListCard({
           <ButtonHover aria-label={listPage('settings')} />
           <ListOptionsDropdown
             listId={list.id}
-            isAuthor={isAuthor}
+            canManage={canManage}
             initialVisibility={list.visibility}
             authorName={list.author.name}
             updatedAt={list.updatedAt}

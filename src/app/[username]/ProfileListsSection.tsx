@@ -7,11 +7,11 @@ import { List } from '@/lib/types';
 
 type ProfileListsSectionProps = {
   publicLists: List[];
-  isAuthor: boolean;
+  canManage?: boolean;
   title: string;
 };
 
-export default function ProfileListsSection({ publicLists, isAuthor, title }: ProfileListsSectionProps) {
+export default function ProfileListsSection({ publicLists, canManage = false, title }: ProfileListsSectionProps) {
   if (publicLists.length === 0) {
     return null;
   }
@@ -21,7 +21,7 @@ export default function ProfileListsSection({ publicLists, isAuthor, title }: Pr
       <SectionHeader title={title} />
       <CollectionList>
         {publicLists.map((list) => (
-          <ListCard list={list} key={list.id} isAuthor={isAuthor} />
+          <ListCard list={list} key={list.id} canManage={canManage} />
         ))}
       </CollectionList>
     </Section>

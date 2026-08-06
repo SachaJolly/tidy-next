@@ -18,6 +18,8 @@ import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
 import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 import ListOptionsDropdown from './ListOptionsDropdown';
+import EditItemModal from './EditItemModal';
+import NewItemModal from './NewItemModal';
 import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/LoadingSkeletons';
 
 type ListPageData = {
@@ -94,8 +96,8 @@ const getListPageData = cache(async (id: string): Promise<ListPageData> => {
 export async function ListHeaderSection({ id }: { id: string }) {
   const { list, currentUser, locale, timezone, t, common, date } = await getListPageData(id);
   const author = list.author!;
-  const canCreateItem = !!currentUser;
   const isAuthor = currentUser?.id === author.id;
+  const canCreateItem = isAuthor;
 
   return (
     <header className={styles['list-header']}>
@@ -140,7 +142,14 @@ export async function ListHeaderSection({ id }: { id: string }) {
       <div className={styles['list-header-actions']}>
         <div className={styles['list-header-buttons']}>
           {canCreateItem && (
-            <Button icon="add" label={t('addItem')} variant="interactive" size="small" />
+            <Button
+              href={`/lists/${id}?modal=new-item&modalId=${id}`}
+              icon="add"
+              label={t('addItem')}
+              variant="interactive"
+              size="small"
+              scroll={false}
+            />
           )}
           <div className={styles['list-header-like']}>
             <Button icon="like" label={t('like')} size="small" tinted={true} />
@@ -156,7 +165,7 @@ export async function ListHeaderSection({ id }: { id: string }) {
             <Button icon="settings" aria-label={t('settings')} size="small" tinted={true} />
             <ListOptionsDropdown
               listId={list.id}
-              isAuthor={isAuthor}
+              canManage={isAuthor}
               initialVisibility={list.visibility}
               authorName={author.name}
               updatedAt={list.updatedAt}
@@ -169,15 +178,16 @@ export async function ListHeaderSection({ id }: { id: string }) {
 }
 
 export async function ListItemsSection({ id }: { id: string }) {
-  const { list, common } = await getListPageData(id);
+  const { list, currentUser, common } = await getListPageData(id);
   const items = list.items || [];
+  const isAuthor = currentUser?.id === list.author?.id;
 
   return (
     <section className={styles.itemsSection}>
       {items.length > 0 ? (
         <div className={styles.itemsGrid}>
           {items.map((item: ItemType) => (
-            <Item item={item} key={item.id} />
+            <Item item={item} key={item.id} listId={id} canManage={isAuthor} />
           ))}
         </div>
       ) : (
@@ -186,6 +196,22 @@ export async function ListItemsSection({ id }: { id: string }) {
         </div>
       )}
     </section>
+  );
+}
+
+export async function ListModalsSection({ id }: { id: string }) {
+  const { list, currentUser } = await getListPageData(id);
+  const isAuthor = currentUser?.id === list.author?.id;
+
+  if (!isAuthor) {
+    return null;
+  }
+
+  return (
+    <>
+      <NewItemModal listId={id} />
+      <EditItemModal listId={id} items={list.items || []} />
+    </>
   );
 }
 

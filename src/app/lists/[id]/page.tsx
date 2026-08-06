@@ -2,7 +2,7 @@ import React, { Suspense, use } from 'react';
 import { api, ApiFetchError } from '@/lib/api';
 import type { List } from '@/lib/types';
 import ListLayout from '@/layouts/ListLayout';
-import { ListHeaderSection, ListItemsSection } from './ListContent';
+import { ListHeaderSection, ListItemsSection, ListModalsSection } from './ListContent';
 import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/LoadingSkeletons';
 
 interface PageProps {
@@ -36,6 +36,9 @@ export default function ListPage({ params }: PageProps) {
       </Suspense>
       <Suspense fallback={<ListItemsSkeleton />}>
         <ListItemsSection id={id} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ListModalsSection id={id} />
       </Suspense>
     </ListLayout>
   );

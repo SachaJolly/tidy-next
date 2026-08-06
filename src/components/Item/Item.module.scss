@@ -4,6 +4,26 @@
   flex-direction: column;
   gap: 0.5rem;
   padding: 0;
+
+  &:hover,
+  &:focus-within {
+    .actions {
+      opacity: 1;
+    }
+  }
+
+  &:has(.actions [aria-expanded='true']) .actions {
+    opacity: 1;
+  }
+
+  .actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
 }
 
 .content {

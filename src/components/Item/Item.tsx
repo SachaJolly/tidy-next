@@ -1,6 +1,11 @@
-import Image from 'next/image';
-import { getTranslations } from 'next-intl/server';
+'use client';
 
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+
+import { ButtonHover } from '@/components/ButtonHover';
+import { Dropdown } from '@/components/Dropdown';
+import ItemOptionsDropdown from '@/app/lists/[id]/ItemOptionsDropdown';
 import Meta from '@/components/Meta/Meta';
 import MetaGroup from '@/components/MetaGroup/MetaGroup';
 import { Item as ItemType } from '@/lib/types';
@@ -17,6 +22,8 @@ interface ItemStatsProps {
 
 interface ItemProps {
   item: ItemType;
+  listId: string;
+  canManage?: boolean;
 }
 
 // Type-safe content shape for items
@@ -59,8 +66,8 @@ function ResponsiveContentImage({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-const ItemStats = async ({ stats }: ItemStatsProps) => {
-  const t = await getTranslations('item');
+const ItemStats = ({ stats }: ItemStatsProps) => {
+  const t = useTranslations('item');
 
   return (
     <MetaGroup>
@@ -77,15 +84,25 @@ const ItemStats = async ({ stats }: ItemStatsProps) => {
   );
 };
 
-export const Item = async ({ item }: ItemProps) => {
-  const t = await getTranslations('item');
+export const Item = ({ item, listId, canManage = false }: ItemProps) => {
+  const t = useTranslations('item');
+  const listPage = useTranslations('listPage');
   // Cast content to a type-safe shape
   const content = item.content as ItemContent;
+  const actions = canManage ? (
+    <div className={styles.actions}>
+      <Dropdown>
+        <ButtonHover aria-label={listPage('settings')} />
+        <ItemOptionsDropdown listId={listId} itemId={item.id} canManage={canManage} />
+      </Dropdown>
+    </div>
+  ) : null;
 
   // LINK display mode
   if (item.displayMode === 'LINK') {
     return (
       <div className={styles['container']}>
+        {actions}
         <a
           className={`${styles['content']} ${styles['is-link']}`}
           href={content.url}
@@ -115,6 +132,7 @@ export const Item = async ({ item }: ItemProps) => {
   if (item.displayMode === 'BOOKMARK') {
     return (
       <div className={styles['container']}>
+        {actions}
         <a
           className={`${styles['content']} ${styles['is-bookmark']}`}
           href={content.url}
@@ -179,6 +197,7 @@ export const Item = async ({ item }: ItemProps) => {
   // EMBED display mode
   return (
     <div className={styles['container']}>
+      {actions}
       <div className={styles['content']}>
         {content.favicon && (
           <Image

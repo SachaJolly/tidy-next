@@ -90,7 +90,7 @@ export default async function UserPage({ params }: UserPageProps) {
       {!isPrivateProfileForVisitor && (
         <ProfileListsSection
           publicLists={publicLists}
-          isAuthor={isAuthor}
+          canManage={isAuthor}
           title={t('publicLists', { count: publicLists.length })}
         />
       )}

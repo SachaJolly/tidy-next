@@ -12,5 +12,16 @@
   "descriptionPlaceholder": "Tell people what this list is about",
   "titleRequired": "Please enter a list title.",
   "creationFailed": "List creation failed.",
-  "didNotReturnList": "List creation did not return a new list."
+  "didNotReturnList": "List creation did not return a new list.",
+  "item": {
+    "titleLabel": "Title",
+    "titlePlaceholder": "A useful resource",
+    "titleRequired": "Please enter an item title.",
+    "urlLabel": "URL",
+    "urlPlaceholder": "https://example.com",
+    "captionLabel": "Caption",
+    "captionPlaceholder": "Optional context for this item",
+    "saveFailed": "Item save failed.",
+    "didNotReturnItem": "Item save did not return the updated item."
+  }
 }

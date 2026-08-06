@@ -43,7 +43,7 @@ export default async function DashboardContent() {
                 <ListCard
                   list={list}
                   key={list.id}
-                  isAuthor={true}
+                  canManage={true}
                 />
               ))
             ) : (

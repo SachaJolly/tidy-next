@@ -12,5 +12,16 @@
   "descriptionPlaceholder": "Dites aux gens de quoi parle cette liste",
   "titleRequired": "Veuillez saisir un titre pour la liste.",
   "creationFailed": "La création de la liste a échoué.",
-  "didNotReturnList": "La création de la liste n'a pas renvoyé de nouvelle liste."
+  "didNotReturnList": "La création de la liste n'a pas renvoyé de nouvelle liste.",
+  "item": {
+    "titleLabel": "Titre",
+    "titlePlaceholder": "Une ressource utile",
+    "titleRequired": "Veuillez saisir un titre pour l'item.",
+    "urlLabel": "URL",
+    "urlPlaceholder": "https://example.com",
+    "captionLabel": "Légende",
+    "captionPlaceholder": "Contexte optionnel pour cet item",
+    "saveFailed": "L'enregistrement de l'item a échoué.",
+    "didNotReturnItem": "L'enregistrement de l'item n'a pas renvoyé l'item mis à jour."
+  }
 }

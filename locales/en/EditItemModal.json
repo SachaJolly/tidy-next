@@ -1,0 +1,7 @@
+{
+  "title": "Edit item",
+  "save": "Update",
+  "error": {
+    "notFound": "This item could not be found."
+  }
+}
