@@ -29,7 +29,6 @@ export default function ItemOptionsDropdown({
             icon="edit"
             label={common('action.edit')}
             href={`/lists/${listId}?modal=edit-item&modalId=${itemId}`}
-            scroll={false}
           />
           <DropdownItem icon="delete" destructive label={t('archive')} />
           <DropdownSeparator />

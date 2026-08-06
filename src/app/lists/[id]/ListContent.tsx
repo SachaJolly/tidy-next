@@ -93,12 +93,31 @@ const getListPageData = cache(async (id: string): Promise<ListPageData> => {
   return { list, currentUser, locale, timezone, t, common, date };
 });
 
-export async function ListHeaderSection({ id }: { id: string }) {
-  const { list, currentUser, locale, timezone, t, common, date } = await getListPageData(id);
-  const author = list.author!;
-  const isAuthor = currentUser?.id === author.id;
-  const canCreateItem = isAuthor;
+// ============================================================================
+// Dumb Section Components (Presentational Only)
+// ============================================================================
 
+interface ListHeaderSectionProps {
+  list: List;
+  author: User;
+  locale: string;
+  timezone: string | null;
+  isAuthor: boolean;
+  t: Awaited<ReturnType<typeof getTranslations>>;
+  common: Awaited<ReturnType<typeof getTranslations>>;
+  date: Awaited<ReturnType<typeof getTranslations>>;
+}
+
+function ListHeaderSection({
+  list,
+  author,
+  locale,
+  timezone,
+  isAuthor,
+  t,
+  common,
+  date,
+}: ListHeaderSectionProps) {
   return (
     <header className={styles['list-header']}>
       <div className={styles['list-header-title']}>
@@ -124,7 +143,7 @@ export async function ListHeaderSection({ id }: { id: string }) {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric',
-                timeZone: timezone,
+                timeZone: timezone ?? undefined,
               }),
             })}
           </Meta>
@@ -141,9 +160,9 @@ export async function ListHeaderSection({ id }: { id: string }) {
 
       <div className={styles['list-header-actions']}>
         <div className={styles['list-header-buttons']}>
-          {canCreateItem && (
+          {isAuthor && (
             <Button
-              href={`/lists/${id}?modal=new-item&modalId=${id}`}
+              href={`/lists/${list.id}?modal=new-item&modalId=${list.id}`}
               icon="add"
               label={t('addItem')}
               variant="interactive"
@@ -177,17 +196,20 @@ export async function ListHeaderSection({ id }: { id: string }) {
   );
 }
 
-export async function ListItemsSection({ id }: { id: string }) {
-  const { list, currentUser, common } = await getListPageData(id);
-  const items = list.items || [];
-  const isAuthor = currentUser?.id === list.author?.id;
+interface ListItemsSectionProps {
+  items: ItemType[];
+  listId: string;
+  isAuthor: boolean;
+  common: Awaited<ReturnType<typeof getTranslations>>;
+}
 
+function ListItemsSection({ items, listId, isAuthor, common }: ListItemsSectionProps) {
   return (
     <section className={styles.itemsSection}>
       {items.length > 0 ? (
         <div className={styles.itemsGrid}>
           {items.map((item: ItemType) => (
-            <Item item={item} key={item.id} listId={id} canManage={isAuthor} />
+            <Item item={item} key={item.id} listId={listId} canManage={isAuthor} />
           ))}
         </div>
       ) : (
@@ -199,20 +221,23 @@ export async function ListItemsSection({ id }: { id: string }) {
   );
 }
 
-export async function ListModalsSection({ id }: { id: string }) {
-  const { list, currentUser } = await getListPageData(id);
-  const isAuthor = currentUser?.id === list.author?.id;
+interface ListModalsSectionProps {
+  listId: string;
+  items: ItemType[];
+  isAuthor: boolean;
+}
 
+function ListModalsSection({ listId, items, isAuthor }: ListModalsSectionProps) {
   if (!isAuthor) {
     return null;
   }
 
   return (
     <>
-      <NewItemModal listId={id} />
-      <EditItemModal listId={id} items={list.items || []} />
+      <NewItemModal listId={listId} />
+      <EditItemModal listId={listId} items={items} />
     </>
   );
 }
 
-export { getListPageData, ListHeaderSkeleton, ListItemsSkeleton };
+export { getListPageData, ListHeaderSkeleton, ListItemsSkeleton, ListHeaderSection, ListItemsSection, ListModalsSection };

@@ -2,8 +2,14 @@ import React, { Suspense, use } from 'react';
 import { api, ApiFetchError } from '@/lib/api';
 import type { List } from '@/lib/types';
 import ListLayout from '@/layouts/ListLayout';
-import { ListHeaderSection, ListItemsSection, ListModalsSection } from './ListContent';
-import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/LoadingSkeletons';
+import {
+  ListHeaderSection,
+  ListItemsSection,
+  ListModalsSection,
+  getListPageData,
+  ListHeaderSkeleton,
+  ListItemsSkeleton,
+} from './ListContent';
 
 interface PageProps {
   params: Promise<{
@@ -26,20 +32,44 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
+async function ListPageContent({ id }: { id: string }) {
+  // Fetch all data once at the page level
+  const { list, currentUser, locale, timezone, t, common, date } = await getListPageData(id);
+
+  const author = list.author!;
+  const items = list.items || [];
+  const isAuthor = currentUser?.id === author.id;
+
+  return (
+    <>
+      <Suspense fallback={<ListHeaderSkeleton />}>
+        <ListHeaderSection
+          list={list}
+          author={author}
+          locale={locale}
+          timezone={timezone}
+          isAuthor={isAuthor}
+          t={t}
+          common={common}
+          date={date}
+        />
+      </Suspense>
+      <Suspense fallback={<ListItemsSkeleton />}>
+        <ListItemsSection items={items} listId={id} isAuthor={isAuthor} common={common} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ListModalsSection listId={id} items={items} isAuthor={isAuthor} />
+      </Suspense>
+    </>
+  );
+}
+
 export default function ListPage({ params }: PageProps) {
   const { id } = use(params);
 
   return (
     <ListLayout>
-      <Suspense fallback={<ListHeaderSkeleton />}>
-        <ListHeaderSection id={id} />
-      </Suspense>
-      <Suspense fallback={<ListItemsSkeleton />}>
-        <ListItemsSection id={id} />
-      </Suspense>
-      <Suspense fallback={null}>
-        <ListModalsSection id={id} />
-      </Suspense>
+      <ListPageContent id={id} />
     </ListLayout>
   );
 }
