@@ -19,6 +19,7 @@ const baseLinkItem: ItemType = {
   title: 'Introducing TypeScript 5.0',
   caption: 'A major release with new features and improvements',
   displayMode: 'LINK',
+  position: 0,
   itemType: 'URL',
   stats: { views: 1234, likes: 89, comments: 12 },
   content: {
@@ -27,13 +28,15 @@ const baseLinkItem: ItemType = {
   },
   createdAt: '2024-01-15T10:00:00Z',
   updatedAt: '2024-01-15T10:00:00Z',
+  deleted_at: null,
 };
 
 const baseBookmarkItem: ItemType = {
   id: '2',
   title: 'Next.js 14 Released',
-  caption: 'The latest version brings amazing performance improvements',
+  caption: null,
   displayMode: 'BOOKMARK',
+  position: 0,
   itemType: 'URL',
   stats: { views: 5678, likes: 234, comments: 45 },
   content: {
@@ -49,78 +52,15 @@ const baseBookmarkItem: ItemType = {
   },
   createdAt: '2024-01-10T10:00:00Z',
   updatedAt: '2024-01-10T10:00:00Z',
+  deleted_at: null,
 };
 
 /**
  * Link display mode - Simple link with title and favicon
  */
-export const LinkMode: Story = {
+export const Link: Story = {
   args: {
     item: baseLinkItem,
-    listId: 'list-123',
-    canManage: false,
-  },
-};
-
-/**
- * Link display mode with manage permissions
- */
-export const LinkModeWithActions: Story = {
-  args: {
-    item: baseLinkItem,
-    listId: 'list-123',
-    canManage: true,
-  },
-};
-
-/**
- * Bookmark display mode - Rich preview with image, description, and metadata
- */
-export const BookmarkMode: Story = {
-  args: {
-    item: baseBookmarkItem,
-    listId: 'list-123',
-    canManage: false,
-  },
-};
-
-/**
- * Bookmark display mode with manage permissions
- */
-export const BookmarkModeWithActions: Story = {
-  args: {
-    item: baseBookmarkItem,
-    listId: 'list-123',
-    canManage: true,
-  },
-};
-
-/**
- * Link mode without caption
- */
-export const LinkModeNoCaption: Story = {
-  args: {
-    item: {
-      ...baseLinkItem,
-      caption: null,
-    },
-    listId: 'list-123',
-    canManage: false,
-  },
-};
-
-/**
- * Bookmark mode without description
- */
-export const BookmarkModeNoDescription: Story = {
-  args: {
-    item: {
-      ...baseBookmarkItem,
-      content: {
-        ...baseBookmarkItem.content,
-        description: undefined,
-      },
-    },
     listId: 'list-123',
     canManage: false,
   },
@@ -129,7 +69,7 @@ export const BookmarkModeNoDescription: Story = {
 /**
  * Link mode without favicon
  */
-export const LinkModeNoFavicon: Story = {
+export const LinkNoFavicon: Story = {
   args: {
     item: {
       ...baseLinkItem,
@@ -137,6 +77,31 @@ export const LinkModeNoFavicon: Story = {
         url: baseLinkItem.content.url,
       },
     },
+    listId: 'list-123',
+    canManage: false,
+  },
+};
+
+/**
+ * Link with caption
+ */
+export const LinkCaption: Story = {
+  args: {
+    item: {
+      ...baseLinkItem,
+      caption: 'The latest version brings amazing performance improvements',
+    },
+    listId: 'list-123',
+    canManage: false,
+  },
+};
+
+/**
+ * Bookmark display mode - Rich preview with image, description, and metadata
+ */
+export const Bookmark: Story = {
+  args: {
+    item: baseBookmarkItem,
     listId: 'list-123',
     canManage: false,
   },
