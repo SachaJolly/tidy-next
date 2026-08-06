@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import { type UpdateProfileLinksInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
-import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
+import Card from '@/components/Card/Card';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -50,7 +50,7 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
   };
 
   return (
-    <SettingsCard title={t('profile.linksTitle')} description={t('profile.linksDescription')}>
+    <Card title={t('profile.linksTitle')} description={t('profile.linksDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Input
           id="settings-website"
@@ -95,6 +95,6 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
           )}
         </div>
       </form>
-    </SettingsCard>
+    </Card>
   );
 }

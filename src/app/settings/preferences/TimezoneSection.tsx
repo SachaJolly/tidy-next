@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import Button from '@/components/Button/Button';
 import { TIMEZONE_AUTO } from '@/lib/timezone-mapper';
-import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
+import Card from '@/components/Card/Card';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -67,7 +67,7 @@ export default function TimezoneSection({ initialTimezone, onSave }: TimezoneSec
   );
 
   return (
-    <SettingsCard title={t('preferences.timezoneTitle')} description={t('preferences.timezoneDescription')}>
+    <Card title={t('preferences.timezoneTitle')} description={t('preferences.timezoneDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <select
           name="timezone"
@@ -97,6 +97,6 @@ export default function TimezoneSection({ initialTimezone, onSave }: TimezoneSec
           )}
         </div>
       </form>
-    </SettingsCard>
+    </Card>
   );
 }

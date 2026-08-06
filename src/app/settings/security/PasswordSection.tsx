@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { type UpdatePasswordInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
-import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
+import Card from '@/components/Card/Card';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -41,7 +41,7 @@ export default function PasswordSection({ onSave }: PasswordSectionProps) {
   };
 
   return (
-    <SettingsCard title={t('security.passwordTitle')} description={t('security.passwordDescription')}>
+    <Card title={t('security.passwordTitle')} description={t('security.passwordDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Input
           id="security-current-password"
@@ -78,6 +78,6 @@ export default function PasswordSection({ onSave }: PasswordSectionProps) {
           )}
         </div>
       </form>
-    </SettingsCard>
+    </Card>
   );
 }

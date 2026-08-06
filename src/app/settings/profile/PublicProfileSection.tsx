@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import { type UpdatePublicProfileInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
-import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
+import Card from '@/components/Card/Card';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -50,7 +50,7 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
   };
 
   return (
-    <SettingsCard title={t('profile.publicTitle')} description={t('profile.publicDescription')}>
+    <Card title={t('profile.publicTitle')} description={t('profile.publicDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Input
           id="settings-avatar-url"
@@ -95,6 +95,6 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
           )}
         </div>
       </form>
-    </SettingsCard>
+    </Card>
   );
 }

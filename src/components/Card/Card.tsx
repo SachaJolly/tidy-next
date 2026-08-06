@@ -1,17 +1,17 @@
 import React from 'react';
-import styles from './SettingsCard.module.scss';
+import styles from './Card.module.scss';
 
-interface SettingsCardProps {
+interface CardProps {
   title: string;
   description?: string;
   children: React.ReactNode;
 }
 
 /**
- * Structural wrapper for a settings section.
- * Each card groups a single cohesive concern (e.g. Email, Username, Password).
+ * Structural wrapper that groups a single cohesive concern under a titled,
+ * bordered card (e.g. a settings section, a dashboard panel).
  */
-export default function SettingsCard({ title, description, children }: SettingsCardProps) {
+export default function Card({ title, description, children }: CardProps) {
   return (
     <div className={styles.card}>
       <div className={styles.header}>

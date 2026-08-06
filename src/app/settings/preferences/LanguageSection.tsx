@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import Button from '@/components/Button/Button';
 import { type LanguagePreference } from '@/lib/language-mapper';
-import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
+import Card from '@/components/Card/Card';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -47,7 +47,7 @@ export default function LanguageSection({ initialLanguage, onSave }: LanguageSec
   };
 
   return (
-    <SettingsCard title={t('preferences.languageTitle')} description={t('preferences.languageDescription')}>
+    <Card title={t('preferences.languageTitle')} description={t('preferences.languageDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <fieldset style={{ border: 0, margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {options.map((option) => (
@@ -75,6 +75,6 @@ export default function LanguageSection({ initialLanguage, onSave }: LanguageSec
           )}
         </div>
       </form>
-    </SettingsCard>
+    </Card>
   );
 }

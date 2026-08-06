@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
-import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
+import Card from '@/components/Card/Card';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -40,7 +40,7 @@ export default function UsernameSection({ initialUsername, onSave }: UsernameSec
   };
 
   return (
-    <SettingsCard title={t('account.usernameTitle')} description={t('account.usernameDescription')}>
+    <Card title={t('account.usernameTitle')} description={t('account.usernameDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Input
           id="settings-username"
@@ -61,6 +61,6 @@ export default function UsernameSection({ initialUsername, onSave }: UsernameSec
           </p>
         )}
       </form>
-    </SettingsCard>
+    </Card>
   );
 }

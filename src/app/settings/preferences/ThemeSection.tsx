@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import Button from '@/components/Button/Button';
 import { type ThemePreference } from '@/lib/theme-mapper';
-import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
+import Card from '@/components/Card/Card';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -48,7 +48,7 @@ export default function ThemeSection({ initialTheme, onSave }: ThemeSectionProps
   };
 
   return (
-    <SettingsCard title={t('preferences.themeTitle')} description={t('preferences.themeDescription')}>
+    <Card title={t('preferences.themeTitle')} description={t('preferences.themeDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <fieldset style={{ border: 0, margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {options.map((option) => (
@@ -76,6 +76,6 @@ export default function ThemeSection({ initialTheme, onSave }: ThemeSectionProps
           )}
         </div>
       </form>
-    </SettingsCard>
+    </Card>
   );
 }

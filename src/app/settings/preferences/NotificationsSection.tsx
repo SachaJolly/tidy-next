@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import { type UpdateNotificationsInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
-import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
+import Card from '@/components/Card/Card';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -50,7 +50,7 @@ export default function NotificationsSection({
   };
 
   return (
-    <SettingsCard title={t('preferences.notificationsTitle')} description={t('preferences.notificationsDescription')}>
+    <Card title={t('preferences.notificationsTitle')} description={t('preferences.notificationsDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <fieldset style={{ border: 0, margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -83,6 +83,6 @@ export default function NotificationsSection({
           )}
         </div>
       </form>
-    </SettingsCard>
+    </Card>
   );
 }

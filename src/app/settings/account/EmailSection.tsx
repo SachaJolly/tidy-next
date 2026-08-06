@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import { type UpdateAccountInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
-import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
+import Card from '@/components/Card/Card';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -41,7 +41,7 @@ export default function EmailSection({ initialEmail, onSave }: EmailSectionProps
   };
 
   return (
-    <SettingsCard title={t('account.emailTitle')} description={t('account.emailDescription')}>
+    <Card title={t('account.emailTitle')} description={t('account.emailDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Input
           id="settings-email"
@@ -62,6 +62,6 @@ export default function EmailSection({ initialEmail, onSave }: EmailSectionProps
           </p>
         )}
       </form>
-    </SettingsCard>
+    </Card>
   );
 }
