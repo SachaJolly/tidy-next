@@ -79,14 +79,13 @@ export default async function RootLayout({
       <head></head>
       <body className={`${ibmPlexSans.variable} ${spaceGrotesk.variable}`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <div id="application-banners"></div>
+          <div id="application-banners">
+            {shouldShowConfirmEmailBanner && (
+              <ConfirmEmailBanner onResend={resendConfirmationEmail} />
+            )}
+          </div>
           <div className={styles['application-ui']}>
             <Navbar />
-            {shouldShowConfirmEmailBanner && (
-              <div style={{ padding: '0.75rem 1rem 0' }}>
-                <ConfirmEmailBanner onResend={resendConfirmationEmail} />
-              </div>
-            )}
             {children}
             <Footer />
           </div>
