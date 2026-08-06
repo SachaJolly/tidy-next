@@ -1,42 +1,5 @@
 .group {
   display: flex;
-  align-items: stretch;
-  border: var(--stroke-thin) solid var(--border-default);
-  border-radius: var(--radius-interactive);
-  overflow: hidden;
-
-  /* The input/textarea inside loses its own border and radius */
-  :global(input),
-  :global(textarea) {
-    flex: 1 1 auto;
-    min-width: 0;
-    border: none;
-    border-radius: 0;
-    outline: none;
-
-    &:focus {
-      border: none;
-      outline: none;
-    }
-  }
-
-  /* The button attaches flush to the right */
-  :global(button),
-  :global(a) {
-    flex: 0 0 auto;
-    border-radius: 0;
-    border: none;
-    border-left: var(--stroke-thin) solid var(--border-default);
-
-    &:focus-visible {
-      outline-offset: -2px;
-    }
-  }
-
-  /* Focus ring on the group when inner input is focused */
-  &:focus-within {
-    border-color: var(--border-active);
-    outline: var(--stroke-thin) dashed var(--surface-interactive);
-    outline-offset: 0.125rem;
-  }
+  align-items: center;
+  gap: 0.5rem;
 }
