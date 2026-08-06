@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 
 import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
+import { useQueryModal } from '@/hooks/use-query-modal';
 
 import MetaGroup from '@/components/MetaGroup/MetaGroup';
 import Meta from '@/components/Meta/Meta';
@@ -35,6 +36,11 @@ export default function ListHeader({
   const t = useTranslations('listPage');
   const common = useTranslations('common');
   const date = useTranslations('date');
+  const queryModal = useQueryModal();
+
+  const handleAddItem = () => {
+    queryModal.openModal('new-item', list.id);
+  };
 
   return (
     <header className={styles.header}>
@@ -80,12 +86,11 @@ export default function ListHeader({
         <div className={styles.buttons}>
           {isAuthor && (
             <Button
-              href={`/lists/${list.id}?modal=new-item&modalId=${list.id}`}
+              onClick={handleAddItem}
               icon="add"
               label={t('addItem')}
               variant="interactive"
               size="small"
-              scroll={false}
             />
           )}
           <div className={styles.likeSection}>
