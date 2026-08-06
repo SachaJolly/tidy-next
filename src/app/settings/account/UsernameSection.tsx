@@ -19,6 +19,7 @@ interface UsernameSectionProps {
 
 export default function UsernameSection({ initialUsername, onSave }: UsernameSectionProps) {
   const t = useTranslations('settings');
+  const common = useTranslations('common');
   const router = useRouter();
   const [username, setUsername] = useState(initialUsername);
   const [isSaving, setIsSaving] = useState(false);
@@ -54,7 +55,7 @@ export default function UsernameSection({ initialUsername, onSave }: UsernameSec
               disabled={isSaving}
             />
             <Button type="submit" variant="interactive" disabled={isSaving}>
-              {t('account.saveUsername')}
+              {common('save')}
             </Button>
           </InputGroup>
         </FormField>

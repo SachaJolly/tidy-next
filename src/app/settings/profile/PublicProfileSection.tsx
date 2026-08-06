@@ -21,6 +21,7 @@ interface PublicProfileSectionProps {
 
 export default function PublicProfileSection({ initialValues, onSave }: PublicProfileSectionProps) {
   const t = useTranslations('settings');
+  const common = useTranslations('common');
   const router = useRouter();
   const [name, setName] = useState(initialValues.name);
   const [bio, setBio] = useState(initialValues.bio);
@@ -55,7 +56,7 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
   return (
     <Card title={t('profile.publicTitle')} description={t('profile.publicDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Avatar src={avatar || undefined} alt={name || undefined} initials={name ? name[0] : '?'} size="96" />
           <div style={{ flex: 1 }}>
             <FormField label={t('profile.avatarLabel')} htmlFor="settings-avatar-url">
@@ -106,7 +107,7 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
         </FormField>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button type="submit" variant="interactive" disabled={isSaving}>
-            {t('profile.save')}
+            {common('save')}
           </Button>
           {feedback && (
             <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>

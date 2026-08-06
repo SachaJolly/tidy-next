@@ -20,6 +20,7 @@ interface EmailSectionProps {
 
 export default function EmailSection({ initialEmail, onSave }: EmailSectionProps) {
   const t = useTranslations('settings');
+  const common = useTranslations('common');
   const router = useRouter();
   const [email, setEmail] = useState(initialEmail);
   const [isSaving, setIsSaving] = useState(false);
@@ -55,7 +56,7 @@ export default function EmailSection({ initialEmail, onSave }: EmailSectionProps
               disabled={isSaving}
             />
             <Button type="submit" variant="interactive" disabled={isSaving}>
-              {t('account.saveEmail')}
+              {common('save')}
             </Button>
           </InputGroup>
         </FormField>

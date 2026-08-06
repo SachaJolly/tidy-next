@@ -65,8 +65,8 @@ export default function LanguageSection({ initialLanguage, onSave }: LanguageSec
           ))}
         </fieldset>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="interactive" disabled={isSaving}>
-            {t('preferences.saveLanguage')}
+          <Button type="submit" variant="default" disabled={isSaving}>
+            {common('save')}
           </Button>
           {feedback && (
             <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>

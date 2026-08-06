@@ -17,6 +17,7 @@ interface PasswordSectionProps {
 
 export default function PasswordSection({ onSave }: PasswordSectionProps) {
   const t = useTranslations('settings');
+  const common = useTranslations('common');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -73,7 +74,7 @@ export default function PasswordSection({ onSave }: PasswordSectionProps) {
         </FormField>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button type="submit" variant="interactive" disabled={isSaving}>
-            {t('security.updatePassword')}
+            {common('save')}
           </Button>
           {feedback && (
             <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>

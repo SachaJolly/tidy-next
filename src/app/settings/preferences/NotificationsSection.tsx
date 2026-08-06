@@ -22,6 +22,7 @@ export default function NotificationsSection({
   onSave,
 }: NotificationsSectionProps) {
   const t = useTranslations('settings');
+  const common = useTranslations('common');
   const router = useRouter();
   const [emailNotifications, setEmailNotifications] = useState(initialEmailNotifications);
   const [pushNotifications, setPushNotifications] = useState(initialPushNotifications);
@@ -73,8 +74,8 @@ export default function NotificationsSection({
           </label>
         </fieldset>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="interactive" disabled={isSaving}>
-            {t('preferences.saveNotifications')}
+          <Button type="submit" variant="default" disabled={isSaving}>
+            {common('save')}
           </Button>
           {feedback && (
             <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>

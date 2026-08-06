@@ -19,6 +19,7 @@ interface ProfileLinksSectionProps {
 
 export default function ProfileLinksSection({ initialValues, onSave }: ProfileLinksSectionProps) {
   const t = useTranslations('settings');
+  const common = useTranslations('common');
   const router = useRouter();
   const [website, setWebsite] = useState(initialValues.website);
   const [twitter, setTwitter] = useState(initialValues.twitter);
@@ -90,8 +91,8 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
           />
         </FormField>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="interactive" disabled={isSaving}>
-            {t('profile.saveLinks')}
+          <Button type="submit" variant="default" disabled={isSaving}>
+            {common('save')}
           </Button>
           {feedback && (
             <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>

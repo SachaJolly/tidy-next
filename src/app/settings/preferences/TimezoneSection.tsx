@@ -33,6 +33,7 @@ interface TimezoneSectionProps {
 
 export default function TimezoneSection({ initialTimezone, onSave }: TimezoneSectionProps) {
   const t = useTranslations('settings');
+  const common = useTranslations('common');
   const router = useRouter();
   const [timezone, setTimezone] = useState<string | null>(initialTimezone);
   const [isSaving, setIsSaving] = useState(false);
@@ -87,8 +88,8 @@ export default function TimezoneSection({ initialTimezone, onSave }: TimezoneSec
           ))}
         </select>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="interactive" disabled={isSaving}>
-            {t('preferences.saveTimezone')}
+          <Button type="submit" variant="default" disabled={isSaving}>
+            {common('save')}
           </Button>
           {feedback && (
             <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>
