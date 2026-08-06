@@ -2,8 +2,8 @@ import React from 'react';
 
 import styles from './Input.module.scss';
 
-// We accept all standard input element props
-type InputProps = React.ComponentPropsWithoutRef<'input'> & {
+// Omit the native HTML `prefix` attribute to avoid type conflict with our ReactNode prop.
+type InputProps = Omit<React.ComponentPropsWithoutRef<'input'>, 'prefix'> & {
   id?: string;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;

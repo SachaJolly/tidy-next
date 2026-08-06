@@ -8,6 +8,7 @@ import { type UpdateProfileLinksInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import FormField from '@/components/FormField/FormField';
+import Icon from '@/components/Icon/Icon';
 import Input from '@/components/Input/Input';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
@@ -61,6 +62,7 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
             onChange={(e) => setWebsite(e.target.value)}
             placeholder={t('profile.websitePlaceholder')}
             disabled={isSaving}
+            prefix={<Icon name="link" size={16} />}
           />
         </FormField>
         <FormField label={t('profile.twitterLabel')} htmlFor="settings-twitter">

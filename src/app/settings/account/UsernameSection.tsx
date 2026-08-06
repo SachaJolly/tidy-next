@@ -53,6 +53,7 @@ export default function UsernameSection({ initialUsername, onSave }: UsernameSec
               onChange={(e) => setUsername(e.target.value)}
               placeholder={t('profile.usernamePlaceholder')}
               disabled={isSaving}
+              prefix="@"
             />
             <Button type="submit" variant="interactive" disabled={isSaving}>
               {common('save')}
