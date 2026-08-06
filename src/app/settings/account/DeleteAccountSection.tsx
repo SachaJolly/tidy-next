@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useQueryModal } from '@/hooks/use-query-modal';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
-import { Modal, ModalHeader, ModalContent, ModalFooter, ModalClose } from '@/components/Modal/Modal';
+import DeleteAccountModal from './DeleteAccountModal';
 
 const MODAL_NAME = 'delete-account';
 
@@ -56,38 +56,12 @@ export default function DeleteAccountSection({ onDelete }: DeleteAccountSectionP
       </Card>
 
       {isOpen(MODAL_NAME) && (
-        <Modal size="small" onClose={handleClose}>
-          <ModalHeader title={t('account.deleteConfirmTitle')} />
-          <ModalClose />
-          <ModalContent>
-            <p style={{ margin: 0, color: 'var(--text-body)', lineHeight: 1.6 }}>
-              {t('account.deleteConfirmBody')}
-            </p>
-            {error && (
-              <p style={{ margin: '1rem 0 0', color: 'var(--color-red-500)', fontSize: '0.9rem' }}>
-                {error}
-              </p>
-            )}
-          </ModalContent>
-          <ModalFooter justify="space-between">
-            <Button
-              type="button"
-              variant="default"
-              onClick={handleClose}
-              disabled={isDeleting}
-            >
-              {t('account.deleteCancel')}
-            </Button>
-            <Button
-              type="button"
-              variant="danger"
-              onClick={handleConfirm}
-              disabled={isDeleting}
-            >
-              {isDeleting ? t('account.deleteDeleting') : t('account.deleteConfirm')}
-            </Button>
-          </ModalFooter>
-        </Modal>
+        <DeleteAccountModal
+          isDeleting={isDeleting}
+          error={error}
+          onConfirm={handleConfirm}
+          onClose={handleClose}
+        />
       )}
     </>
   );
