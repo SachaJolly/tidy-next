@@ -47,27 +47,19 @@
 .header {
   padding: 2rem 2rem 1rem;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .headerIcon {
   display: flex;
-  flex-shrink: 0;
   align-items: center;
-  margin-top: 0.1em; // optical alignment with the title baseline
+  width: fit-content;
 
   svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
   }
-}
-
-.headerText {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
 }
 
 .content {
