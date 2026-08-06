@@ -3,13 +3,19 @@ import { cookies } from 'next/headers';
 import { getTranslations } from 'next-intl/server';
 
 import { api } from '@/lib/api';
+import { changeLanguage } from '@/app/actions/language';
+import { changeTheme } from '@/app/actions/theme';
+import { changeTimezone } from '@/app/actions/timezone';
+import { updateNotificationsSettings } from '@/app/actions/me';
 import { LANGUAGE_COOKIE_NAME, type LanguagePreference } from '@/lib/language-mapper';
 import { THEME_COOKIE_NAME, normalizeThemePreference } from '@/lib/theme-mapper';
 import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 import type { User } from '@/lib/types';
 
-import { updatePreferencesSettings } from '@/app/actions/me';
-import PreferencesSettingsForm from './PreferencesSettingsForm';
+import LanguageSection from './LanguageSection';
+import NotificationsSection from './NotificationsSection';
+import ThemeSection from './ThemeSection';
+import TimezoneSection from './TimezoneSection';
 
 export default async function PreferencesSettingsPage() {
   const t = await getTranslations('settings');
@@ -45,14 +51,15 @@ export default async function PreferencesSettingsPage() {
     <section style={{ maxWidth: '720px' }}>
       <h2 style={{ margin: 0 }}>{t('preferences.title')}</h2>
       <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('preferences.description')}</p>
-      <PreferencesSettingsForm
-        onSave={updatePreferencesSettings}
-        initialLanguage={initialLanguage}
-        initialTheme={initialTheme}
-        initialTimezone={initialTimezone}
+      <ThemeSection initialTheme={initialTheme} onSave={changeTheme} />
+      <LanguageSection initialLanguage={initialLanguage} onSave={changeLanguage} />
+      <TimezoneSection initialTimezone={initialTimezone} onSave={changeTimezone} />
+      <NotificationsSection
         initialEmailNotifications={initialEmailNotifications}
         initialPushNotifications={initialPushNotifications}
+        onSave={updateNotificationsSettings}
       />
     </section>
   );
 }
+

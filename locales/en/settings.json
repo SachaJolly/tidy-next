@@ -34,7 +34,9 @@
     "linkedinLabel": "LinkedIn",
     "linkedinPlaceholder": "your-linkedin",
     "save": "Save profile",
-    "updated": "Profile updated successfully."
+    "saveLinks": "Save links",
+    "updated": "Profile updated successfully.",
+    "linksUpdated": "Links updated successfully."
   },
   "preferences": {
     "title": "Preferences",
@@ -51,7 +53,15 @@
     "emailNotificationsLabel": "Email notifications",
     "pushNotificationsLabel": "Push notifications",
     "save": "Save preferences",
-    "updated": "Preferences saved successfully."
+    "saveTheme": "Save theme",
+    "saveLanguage": "Save language",
+    "saveTimezone": "Save timezone",
+    "saveNotifications": "Save notifications",
+    "updated": "Preferences saved successfully.",
+    "themeUpdated": "Theme updated successfully.",
+    "languageUpdated": "Language updated successfully.",
+    "timezoneUpdated": "Timezone updated successfully.",
+    "notificationsUpdated": "Notifications updated successfully."
   },
   "account": {
     "title": "Account",

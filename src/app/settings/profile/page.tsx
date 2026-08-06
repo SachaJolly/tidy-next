@@ -5,8 +5,9 @@ import { getTranslations } from 'next-intl/server';
 import { api } from '@/lib/api';
 import type { User } from '@/lib/types';
 
-import { updateProfileSettings } from '@/app/actions/me';
-import ProfileSettingsForm from './ProfileSettingsForm';
+import { updatePublicProfileSettings, updateProfileLinksSettings } from '@/app/actions/me';
+import PublicProfileSection from './PublicProfileSection';
+import ProfileLinksSection from './ProfileLinksSection';
 
 export default async function ProfileSettingsPage() {
   const t = await getTranslations('settings');
@@ -29,13 +30,18 @@ export default async function ProfileSettingsPage() {
     <section style={{ maxWidth: '720px' }}>
       <h2 style={{ margin: 0 }}>{t('profile.title')}</h2>
       <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('profile.description')}</p>
-      <ProfileSettingsForm
-        onSave={updateProfileSettings}
+      <PublicProfileSection
+        onSave={updatePublicProfileSettings}
         initialValues={{
           name: me?.name ?? '',
           bio: me?.bio ?? '',
           avatar: me?.avatar ?? '',
           cover: me?.cover ?? '',
+        }}
+      />
+      <ProfileLinksSection
+        onSave={updateProfileLinksSettings}
+        initialValues={{
           website: me?.website ?? '',
           twitter: me?.twitter ?? '',
           github: me?.github ?? '',
@@ -45,3 +51,4 @@ export default async function ProfileSettingsPage() {
     </section>
   );
 }
+

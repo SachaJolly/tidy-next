@@ -2,20 +2,18 @@
 
 import { cookies } from 'next/headers';
 
-import { saveLanguagePreference } from '@/app/actions/language';
-import { saveThemePreference } from '@/app/actions/theme';
-import { saveTimezonePreference } from '@/app/actions/timezone';
 import { api } from '@/lib/api';
-import { type LanguagePreference } from '@/lib/language-mapper';
-import { type ThemePreference } from '@/lib/theme-mapper';
 
 type NullableString = string | null;
 
-export interface UpdateProfileInput {
+export interface UpdatePublicProfileInput {
   name: string;
   bio: string;
   avatar: string;
   cover: string;
+}
+
+export interface UpdateProfileLinksInput {
   website: string;
   twitter: string;
   github: string;
@@ -32,10 +30,7 @@ export interface UpdatePasswordInput {
   passwordConfirmation: string;
 }
 
-export interface UpdatePreferencesInput {
-  language: LanguagePreference;
-  theme: ThemePreference;
-  timezone: string | null;
+export interface UpdateNotificationsInput {
   emailNotifications: boolean;
   pushNotifications: boolean;
 }
@@ -56,7 +51,7 @@ async function getAuthorizationToken(): Promise<string> {
   return token;
 }
 
-export async function updateProfileSettings(input: UpdateProfileInput): Promise<void> {
+export async function updatePublicProfileSettings(input: UpdatePublicProfileInput): Promise<void> {
   const token = await getAuthorizationToken();
 
   await api.auth.patch(
@@ -67,6 +62,19 @@ export async function updateProfileSettings(input: UpdateProfileInput): Promise<
         bio: normalizeOptional(input.bio),
         avatar: normalizeOptional(input.avatar),
         cover: normalizeOptional(input.cover),
+      },
+    },
+    { authorization: token, cache: 'no-store' },
+  );
+}
+
+export async function updateProfileLinksSettings(input: UpdateProfileLinksInput): Promise<void> {
+  const token = await getAuthorizationToken();
+
+  await api.auth.patch(
+    '/api/v1/me',
+    {
+      user: {
         website: normalizeOptional(input.website),
         twitter: normalizeOptional(input.twitter),
         github: normalizeOptional(input.github),
@@ -113,26 +121,17 @@ export async function updatePasswordSettings(input: UpdatePasswordInput): Promis
   );
 }
 
-export async function updatePreferencesSettings(input: UpdatePreferencesInput): Promise<void> {
+export async function updateNotificationsSettings(input: UpdateNotificationsInput): Promise<void> {
   const token = await getAuthorizationToken();
 
   await api.auth.patch(
     '/api/v1/me',
     {
       user: {
-        language: input.language,
-        theme: input.theme.toUpperCase(),
-        timezone: input.timezone ?? null,
         email_notifications: input.emailNotifications,
         push_notifications: input.pushNotifications,
       },
     },
     { authorization: token, cache: 'no-store' },
   );
-
-  await Promise.all([
-    saveLanguagePreference(input.language),
-    saveThemePreference(input.theme),
-    saveTimezonePreference(input.timezone),
-  ]);
 }
