@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ListCardSkeleton from '@/components/ListCard/ListCardSkeleton';
+import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeaderSkeleton';
 import ListLayout from '@/layouts/ListLayout';
 import PageLayout from '@/layouts/PageLayout';
 
@@ -111,27 +112,9 @@ export function ProfileListsSkeleton() {
       >
         {Array.from({ length: 4 }).map((_, index) => (
           <ListCardSkeleton key={index} />
-        ))}
+       ))}
       </div>
     </section>
-  );
-}
-
-export function ListHeaderSkeleton() {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        <SkeletonBlock width="16rem" height="2.5rem" />
-        <SkeletonBlock width="22rem" height="1rem" />
-        <SkeletonBlock width="18rem" height="1rem" />
-      </div>
-
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '0.75rem', flexWrap: 'wrap' }}>
-        <SkeletonBlock width="7rem" height="2.25rem" />
-        <SkeletonBlock width="7rem" height="2.25rem" />
-        <SkeletonBlock width="7rem" height="2.25rem" />
-      </div>
-    </div>
   );
 }
 
@@ -164,3 +147,5 @@ export function ListPageSkeleton() {
     </ListLayout>
   );
 }
+
+export { ListHeaderSkeleton };

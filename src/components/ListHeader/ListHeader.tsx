@@ -14,8 +14,8 @@ import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import { Dropdown } from '@/components/Dropdown';
 import ListOptionsDropdown from '@/app/lists/[id]/ListOptionsDropdown';
 
-import styles from '@/layouts/ListLayout/ListLayout.module.scss';
 import type { List, User } from '@/lib/types';
+import styles from './ListHeader.module.scss';
 
 interface ListHeaderProps {
   list: List;
@@ -37,9 +37,9 @@ export default function ListHeader({
   const date = useTranslations('date');
 
   return (
-    <header className={styles['list-header']}>
-      <div className={styles['list-header-title']}>
-        <h1 className={styles.title}>{list.title}</h1>
+    <header className={styles.header}>
+      <div className={styles.title}>
+        <h1>{list.title}</h1>
         <MetaGroup>
           <Meta size="base">
             <Avatar
@@ -50,7 +50,7 @@ export default function ListHeader({
             />
             <span>
               {common('curatedBy')}{' '}
-              <Link className={styles.metaLink} href={localizePath(`/${author.username}`, locale)}>
+              <Link href={localizePath(`/${author.username}`, locale)}>
                 {author.name}
               </Link>
             </span>
@@ -70,14 +70,14 @@ export default function ListHeader({
       </div>
 
       {list.description && (
-        <p className={styles.description}>
-          <span className={styles.statusBadge}>{list.visibility}</span>
+        <p>
+          <span>{list.visibility}</span>
           {list.description}
         </p>
       )}
 
-      <div className={styles['list-header-actions']}>
-        <div className={styles['list-header-buttons']}>
+      <div className={styles.actions}>
+        <div className={styles.buttons}>
           {isAuthor && (
             <Button
               href={`/lists/${list.id}?modal=new-item&modalId=${list.id}`}
@@ -88,7 +88,7 @@ export default function ListHeader({
               scroll={false}
             />
           )}
-          <div className={styles['list-header-like']}>
+          <div className={styles.likeSection}>
             <Button icon="like" label={t('like')} size="small" tinted={true} />
             <span className="text-muted">
               {t('peopleLikedThisList', { count: list.notesCount })}

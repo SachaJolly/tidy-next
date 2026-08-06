@@ -9,8 +9,9 @@ import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 
 import ListLayout from '@/layouts/ListLayout';
 import ListHeader from '@/components/ListHeader/ListHeader';
+import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeaderSkeleton';
 import { Item } from '@/components/Item/Item';
-import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/LoadingSkeletons';
+import { ListItemsSkeleton } from '@/components/LoadingSkeletons';
 
 import styles from '@/layouts/ListLayout/ListLayout.module.scss';
 import EditItemModal from './EditItemModal';

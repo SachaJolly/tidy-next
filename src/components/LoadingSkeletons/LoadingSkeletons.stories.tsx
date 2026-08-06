@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import {
   FeedPageSkeleton,
-  ListHeaderSkeleton,
   ListItemsSkeleton,
   ListPageSkeleton,
   NavbarAuthFallback,
   ProfileHeaderSkeleton,
   ProfileListsSkeleton,
+  ListHeaderSkeleton,
 } from './LoadingSkeletons';
 
 const meta = {
