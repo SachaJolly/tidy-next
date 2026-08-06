@@ -57,7 +57,7 @@
   --text-info: light-dark(var(--color-blue-900), var(--color-blue-200));
   --text-success: light-dark(var(--color-green-900), var(--color-green-200));
   --text-warning: light-dark(var(--color-yellow-900), var(--color-yellow-200));
-  --text-danger: light-dark(var(--color-red-900), var(--color-red-200));
+  --text-danger: light-dark(var(--color-red-700), var(--color-red-300));
   --text-discovery: light-dark(var(--color-purple-900), var(--color-purple-200));
 
   --foreground-interactive: light-dark(var(--color-white), var(--color-grey-900));
