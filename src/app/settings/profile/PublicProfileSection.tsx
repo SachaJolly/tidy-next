@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { type UpdatePublicProfileInput } from '@/app/actions/me';
+import Avatar from '@/components/Avatar/Avatar';
 import Button from '@/components/Button/Button';
-import Input from '@/components/Input/Input';
 import Card from '@/components/Card/Card';
+import Input from '@/components/Input/Input';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -52,14 +53,19 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
   return (
     <Card title={t('profile.publicTitle')} description={t('profile.publicDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <Input
-          id="settings-avatar-url"
-          label={t('profile.avatarLabel')}
-          value={avatar}
-          onChange={(e) => setAvatar(e.target.value)}
-          placeholder={t('profile.avatarPlaceholder')}
-          disabled={isSaving}
-        />
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1rem' }}>
+          <Avatar src={avatar || undefined} alt={name || undefined} initials={name ? name[0] : '?'} size="56" />
+          <div style={{ flex: 1 }}>
+            <Input
+              id="settings-avatar-url"
+              label={t('profile.avatarLabel')}
+              value={avatar}
+              onChange={(e) => setAvatar(e.target.value)}
+              placeholder={t('profile.avatarPlaceholder')}
+              disabled={isSaving}
+            />
+          </div>
+        </div>
         <Input
           id="settings-display-name"
           label={t('profile.displayNameLabel')}
@@ -76,14 +82,23 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
           placeholder={t('profile.bioPlaceholder')}
           disabled={isSaving}
         />
-        <Input
-          id="settings-cover"
-          label={t('profile.coverLabel')}
-          value={cover}
-          onChange={(e) => setCover(e.target.value)}
-          placeholder={t('profile.coverPlaceholder')}
-          disabled={isSaving}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <Input
+            id="settings-cover"
+            label={t('profile.coverLabel')}
+            value={cover}
+            onChange={(e) => setCover(e.target.value)}
+            placeholder={t('profile.coverPlaceholder')}
+            disabled={isSaving}
+          />
+          {cover && (
+            <img
+              src={cover}
+              alt="cover preview"
+              style={{ width: '100%', borderRadius: '0.5rem', maxHeight: '160px', objectFit: 'cover' }}
+            />
+          )}
+        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button type="submit" variant="interactive" disabled={isSaving}>
             {t('profile.save')}
