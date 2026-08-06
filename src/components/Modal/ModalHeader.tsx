@@ -37,8 +37,10 @@ export function ModalHeader({
           <Icon name={icon} />
         </span>
       )}
-      {title && <h3>{title}</h3>}
-      {children}
+      <div className={styles.headerText}>
+        {title && <h3>{title}</h3>}
+        {children}
+      </div>
     </div>
   );
 }
