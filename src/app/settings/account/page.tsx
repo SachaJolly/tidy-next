@@ -45,8 +45,10 @@ export default async function AccountSettingsPage() {
         onResendConfirmation={resendConfirmationEmail}
       />
       <UsernameSection initialUsername={me?.username ?? ''} onSave={updateUsernameSettings} />
-      <DeleteAccountSection onDelete={deleteAccount} />
+      <DeleteAccountSection
+        onDelete={deleteAccount}
+        emailConfirmed={me?.emailConfirmed ?? false}
+      />
     </>
   );
 }
-

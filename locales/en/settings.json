@@ -12,39 +12,77 @@
   "profile": {
     "title": "Profile",
     "description": "Update your public information shown on your profile.",
-    "publicTitle": "Public profile",
-    "publicDescription": "Your name, bio, and avatar as seen by other users.",
-    "linksTitle": "Links",
-    "linksDescription": "Your website and social media handles shown on your public profile.",
-    "avatarLabel": "Avatar URL",
-    "avatarPlaceholder": "https://example.com/avatar.jpg",
-    "coverLabel": "Cover URL",
-    "coverPlaceholder": "https://example.com/cover.jpg",
-    "displayNameLabel": "Display name",
-    "displayNamePlaceholder": "Your display name",
-    "bioLabel": "Bio",
-    "bioPlaceholder": "Tell people about yourself",
-    "usernameLabel": "Username",
-    "usernamePlaceholder": "your-username",
-    "websiteLabel": "Website",
-    "websitePlaceholder": "https://yourwebsite.com",
-    "twitterLabel": "Twitter",
-    "twitterPlaceholder": "@yourhandle",
-    "githubLabel": "GitHub",
-    "githubPlaceholder": "your-github",
-    "linkedinLabel": "LinkedIn",
-    "linkedinPlaceholder": "your-linkedin",
-    "visibilityTitle": "Profile visibility",
-    "visibilityDescription": "Choose whether your public profile can be viewed by other users.",
-    "visibilityLabel": "Visibility",
-    "visibilityPublic": "Public profile",
-    "visibilityPrivate": "Make profile private",
-    "visibilityPrivateCaption": "When enabled, your profile is hidden from community pages like Curators.",
-    "visibilityUpdated": "Profile visibility updated successfully.",
-    "save": "Save profile",
-    "saveLinks": "Save links",
-    "updated": "Profile updated successfully.",
-    "linksUpdated": "Links updated successfully."
+    "fields": {
+      "username": {
+        "placeholder": "your-username"
+      }
+    },
+    "public": {
+      "title": "Public profile",
+      "description": "Your name, bio, and avatar as seen by other users.",
+      "fields": {
+        "avatar": {
+          "label": "Avatar URL",
+          "placeholder": "https://example.com/avatar.jpg"
+        },
+        "cover": {
+          "label": "Cover URL",
+          "placeholder": "https://example.com/cover.jpg"
+        },
+        "displayName": {
+          "label": "Display name",
+          "placeholder": "Your display name"
+        },
+        "bio": {
+          "label": "Bio",
+          "placeholder": "Tell people about yourself"
+        }
+      },
+      "pronouns": {
+        "label": "Pronouns",
+        "caption": "Help people address you correctly.",
+        "placeholder": "Select pronouns",
+        "none": "Prefer not to say",
+        "options": {
+          "sheHer": "she/her",
+          "heHim": "he/him",
+          "theyThem": "they/them"
+        },
+        "customOption": "Custom",
+        "customPlaceholder": "Enter your pronouns"
+      },
+      "updated": "Profile updated successfully."
+    },
+    "links": {
+      "title": "Links",
+      "description": "Your website and social media handles shown on your public profile.",
+      "website": {
+        "label": "Website",
+        "placeholder": "https://yourwebsite.com"
+      },
+      "twitter": {
+        "label": "Twitter",
+        "placeholder": "@yourhandle"
+      },
+      "github": {
+        "label": "GitHub",
+        "placeholder": "your-github"
+      },
+      "linkedin": {
+        "label": "LinkedIn",
+        "placeholder": "your-linkedin"
+      },
+      "updated": "Links updated successfully."
+    },
+    "visibility": {
+      "title": "Profile visibility",
+      "description": "Choose whether your public profile can be viewed by other users.",
+      "private": {
+        "label": "Make profile private",
+        "caption": "When enabled, your profile is hidden from community pages like Curators."
+      },
+      "updated": "Profile visibility updated successfully."
+    }
   },
   "preferences": {
     "title": "Preferences",
@@ -100,6 +138,7 @@
     "deleteCancel": "Cancel",
     "deleteDeleting": "Deleting…",
     "deleteFailed": "Account deletion failed. Please try again.",
+    "deleteRequiresConfirmation": "Confirm your email address before deleting your account.",
     "updated": "Account settings updated successfully."
   },
   "security": {

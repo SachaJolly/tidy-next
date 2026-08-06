@@ -16,7 +16,7 @@
 
   &:hover,
   &[aria-expanded='true'] {
-    background-color: var(--surface-highlight);
+    background-color: var(--background-highlight);
     color: var(--text-heading);
   }
 
@@ -29,7 +29,7 @@
     color: var(--text-interactive);
 
     &:hover {
-      background-color: var(--surface-interactive-highlight);
+      background-color: var(--background-interactive-highlight);
       color: var(--text-interactive);
     }
   }

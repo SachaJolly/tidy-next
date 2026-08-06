@@ -15,7 +15,7 @@
 body {
   display: flex;
   flex-direction: column;
-  background: var(--surface-background);
+  background: var(--background-background);
   font-family: var(--font-interface);
   letter-spacing: 0;
   font-weight: 400;
@@ -31,6 +31,8 @@ body {
   text-align: left;
   display: flex;
   margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }
 
 .display-1,
@@ -104,7 +106,7 @@ h6, .h6 {
 
 select {
   appearance: none;
-  background-color: var(--surface-background);
+  background-color: var(--background-background);
   background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M8%2010.25L4%206.24998L4.93333%205.31665L8%208.38332L11.0667%205.31665L12%206.24998L8%2010.25Z%22%20fill%3D%22%23777777%22%2F%3E%3C%2Fsvg%3E");
   background-size: 1rem;
   background-repeat: no-repeat;
@@ -145,7 +147,7 @@ a {
     background-color 0.3s ease,
     border-color 0.3s ease;
   text-underline-offset: 0.25rem;
-  outline-color: var(--surface-interactive);
+  outline-color: var(--background-interactive);
   outline-offset: 0.125rem;
   outline-width: var(--stroke-thin);
 }
@@ -168,7 +170,7 @@ input:focus,
 input.focus,
 textarea:focus,
 textarea.focus {
-  outline-color: var(--surface-interactive);
+  outline-color: var(--background-interactive);
   outline-offset: 0.125rem;
   outline-width: var(--stroke-thin);
   outline-style: dashed;

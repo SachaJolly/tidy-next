@@ -92,11 +92,9 @@ export default function EmailSection({
             feedback={finalFeedback?.text}
           />
         </FormField>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
-            {common('save')}
-          </Button>
-        </div>
+        <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
+          {common('save')}
+        </Button>
       </form>
     </Card>
   );

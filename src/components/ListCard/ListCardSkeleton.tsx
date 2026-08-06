@@ -22,7 +22,7 @@ function SkeletonBlock({
         height,
         borderRadius: radius,
         margin,
-        backgroundColor: 'var(--surface-highlight)',
+        backgroundColor: 'var(--background-highlight)',
       }}
     />
   );
@@ -39,7 +39,7 @@ export default function ListCardSkeleton() {
         gap: '0.75rem',
         padding: '.5rem .5rem .75rem',
         borderRadius: '1rem',
-        backgroundColor: 'var(--surface-modal)',
+        backgroundColor: 'var(--background-modal)',
       }}
     >
       <SkeletonBlock width="16rem" height="8rem" radius="0.25rem" />

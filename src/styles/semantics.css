@@ -1,32 +1,49 @@
 :root {
   color-scheme: light dark;
 
-  /* Surface */
-  --surface-background: light-dark(var(--color-white), var(--color-grey-900));
-  --surface-highlight: light-dark(var(--color-grey-050), var(--color-grey-700));
-  --surface-highlight-hover: light-dark(var(--color-grey-100), var(--color-grey-800));
-  --surface-modal: light-dark(var(--color-white), var(--color-grey-600));
-  --surface-overlay: light-dark(var(--color-white-op90), var(--color-black-op90));
-  --surface-tooltip: light-dark(var(--color-black-op90), var(--color-white-op90));
-  --surface-interactive: light-dark(var(--color-purple-500), var(--color-purple-200));
-  --surface-interactive-hover: light-dark(var(--color-purple-600), var(--color-purple-300));
-  --surface-interactive-highlight: light-dark(var(--color-purple-op10), var(--color-purple-op10));
-  --surface-interactive-highlight-hover: light-dark(var(--color-purple-op20), var(--color-purple-op20));
-  --surface-selection: light-dark(var(--color-yellow-200), var(--color-yellow-100));
-  --surface-danger: light-dark(var(--color-red-700), var(--color-red-200));
-  --surface-danger-hover: light-dark(var(--color-red-800), var(--color-red-300));
-  --surface-danger-highlight: light-dark(var(--color-red-op10), var(--color-red-op10));
-  --surface-danger-highlight-hover: light-dark(var(--color-red-op20), var(--color-red-op20));
+  --brand-purple: light-dark(var(--color-purple-500), var(--color-purple-200));
 
-  /* Surface collection */
-  /*--surface-collection-grey: light-dark(var(--color-green-200), var(--color-grey-200));
-  --surface-collection-purple: light-dark(var(--color-purple-200), var(--color-purple-200));
-  --surface-collection-blue: light-dark(var(--color-blue-200), var(--color-blue-200));
-  --surface-collection-cyan: light-dark(var(--color-cyan-200), var(--color-cyan-200));
-  --surface-collection-green: light-dark(var(--color-green-200), var(--color-green-200));
-  --surface-collection-yellow: light-dark(var(--color-yellow-200), var(--color-yellow-200));
-  --surface-collection-orange: light-dark(var(--color-orange-200), var(--color-orange-200));
-  --surface-collection-red: light-dark(var(--color-red-200), var(--color-red-200));*/
+  /* Surface */
+  --background-background: light-dark(var(--color-white), var(--color-grey-900));
+  --background-highlight: light-dark(var(--color-grey-050), var(--color-grey-700));
+  --background-highlight-hover: light-dark(var(--color-grey-100), var(--color-grey-800));
+
+  --background-inverse: light-dark(var(--color-grey-900), var(--color-grey-100));
+  --background-inverse-hover: light-dark(var(--color-grey-800), var(--color-grey-200));
+
+  --background-modal: light-dark(var(--color-white), var(--color-grey-600));
+  --background-overlay: light-dark(var(--color-white-op90), var(--color-black-op90));
+  --background-tooltip: light-dark(var(--color-black-op90), var(--color-white-op90));
+  --background-interactive: light-dark(var(--color-purple-500), var(--color-purple-200));
+  --background-interactive-hover: light-dark(var(--color-purple-600), var(--color-purple-300));
+  --background-interactive-highlight: light-dark(var(--color-purple-op10), var(--color-purple-op10));
+  --background-interactive-highlight-hover: light-dark(var(--color-purple-op20), var(--color-purple-op20));
+  --background-selection: light-dark(var(--color-yellow-200), var(--color-yellow-100));
+
+  --background-info: light-dark(var(--color-blue-500), var(--color-blue-200));
+  --background-info-hover: light-dark(var(--color-blue-600), var(--color-blue-300));
+  --background-info-highlight: light-dark(var(--color-blue-100), var(--color-blue-900));
+  --background-info-highlight-hover: light-dark(var(--color-blue-200), var(--color-blue-800));
+
+  --background-success: light-dark(var(--color-green-500), var(--color-green-200));
+  --background-success-hover: light-dark(var(--color-green-600), var(--color-green-300));
+  --background-success-highlight: light-dark(var(--color-green-100), var(--color-green-900));
+  --background-success-highlight-hover: light-dark(var(--color-green-200), var(--color-green-800));
+
+  --background-warning: light-dark(var(--color-yellow-400), var(--color-yellow-200));
+  --background-warning-hover: light-dark(var(--color-yellow-500), var(--color-yellow-300));
+  --background-warning-highlight: light-dark(var(--color-yellow-100), var(--color-yellow-900));
+  --background-warning-highlight-hover: light-dark(var(--color-yellow-200), var(--color-yellow-800));
+
+  --background-danger: light-dark(var(--color-red-600), var(--color-red-200));
+  --background-danger-hover: light-dark(var(--color-red-700), var(--color-red-300));
+  --background-danger-highlight: light-dark(var(--color-red-100), var(--color-red-900));
+  --background-danger-highlight-hover: light-dark(var(--color-red-200), var(--color-red-800));
+
+  --background-discovery: light-dark(var(--color-purple-500), var(--color-purple-200));
+  --background-discovery-hover: light-dark(var(--color-purple-600), var(--color-purple-300));
+  --background-discovery-highlight: light-dark(var(--color-purple-100), var(--color-purple-900));
+  --background-discovery-highlight-hover: light-dark(var(--color-purple-200), var(--color-purple-800));
 
   /* Text */
   --text-interactive: light-dark(var(--color-purple-500), var(--color-purple-200));
@@ -37,15 +54,22 @@
   --text-disabled: light-dark(var(--color-grey-300), var(--color-grey-400));
   --text-inverse: light-dark(var(--color-white), var(--color-grey-900));
 
-  --text-success: light-dark(var(--color-green-700), var(--color-green-300));
-  --text-warning: light-dark(var(--color-yellow-700), var(--color-yellow-300));
-  --text-danger: light-dark(var(--color-red-700), var(--color-red-300));
+  --text-info: light-dark(var(--color-blue-900), var(--color-blue-200));
+  --text-success: light-dark(var(--color-green-900), var(--color-green-200));
+  --text-warning: light-dark(var(--color-yellow-900), var(--color-yellow-200));
+  --text-danger: light-dark(var(--color-red-900), var(--color-red-200));
+  --text-discovery: light-dark(var(--color-purple-900), var(--color-purple-200));
 
-  --text-on-interactive: light-dark(var(--color-white), var(--color-grey-900));
-  --text-on-tooltip: light-dark(var(--color-white), var(--color-grey-900));
-  --text-on-danger: light-dark(var(--color-white), var(--color-grey-900));
+  --foreground-interactive: light-dark(var(--color-white), var(--color-grey-900));
+  --foreground-tooltip: light-dark(var(--color-white), var(--color-grey-900));
 
+  --foreground-inverse: light-dark(var(--color-white), var(--color-grey-900));
 
+  --foreground-info: light-dark(var(--color-white), var(--color-grey-900));
+  --foreground-success: light-dark(var(--color-white), var(--color-grey-900));
+  --foreground-warning: light-dark(var(--color-grey-900), var(--color-white));
+  --foreground-danger: light-dark(var(--color-white), var(--color-grey-900));
+  --foreground-discovery: light-dark(var(--color-white), var(--color-grey-900));
 
   /* Text types */
   --text-type-featured: light-dark(var(--color-purple-500), var(--color-purple-300));

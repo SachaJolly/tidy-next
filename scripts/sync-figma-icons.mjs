@@ -1,7 +1,7 @@
 /**
  * sync-figma-icons.mjs
  *
- * Fetches icon components from a Figma file and updates src/app/components/icon/icons.tsx.
+ * Fetches icon components from a Figma file and updates src/components/icon/icons.tsx.
  *
  * Setup:
  *   1. Add to .env.local:
@@ -45,7 +45,9 @@ const FIGMA_TOKEN = process.env.FIGMA_TOKEN;
 const FILE_KEY = process.env.FIGMA_FILE_KEY;
 const ICONS_PAGE_NAME = process.env.FIGMA_ICONS_PAGE ?? 'Icons';
 const ICONS_FRAME_NAMES = process.env.FIGMA_ICONS_FRAMES
-  ? process.env.FIGMA_ICONS_FRAMES.split(',').map((s) => s.trim()).filter(Boolean)
+  ? process.env.FIGMA_ICONS_FRAMES.split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
   : [];
 
 if (!FIGMA_TOKEN || !FILE_KEY) {
@@ -53,7 +55,7 @@ if (!FIGMA_TOKEN || !FILE_KEY) {
   process.exit(1);
 }
 
-const OUTPUT_PATH = path.join(ROOT, 'src/app/components/icon/icons.tsx');
+const OUTPUT_PATH = path.join(ROOT, 'src/components/icon/icons.tsx');
 
 // ─── Figma API helpers ────────────────────────────────────────────────────────
 
@@ -71,13 +73,14 @@ const normalize = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 
 function slugify(name) {
   // "Icon / Search" → "search", "icon_back" → "back", "Search Icon" → "search"
-  return name
-    .replace(/icon/gi, '')
-    .replace(/[^a-zA-Z0-9]+/g, ' ')
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '_')
-    || name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  return (
+    name
+      .replace(/icon/gi, '')
+      .replace(/[^a-zA-Z0-9]+/g, ' ')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, '_') || name.toLowerCase().replace(/[^a-z0-9]/g, '_')
+  );
 }
 
 function collectIconNodes(node, parentName = '') {
@@ -91,7 +94,11 @@ function collectIconNodes(node, parentName = '') {
     return results;
   }
 
-  if (ICONS_FRAME_NAMES.length && ['FRAME', 'SECTION'].includes(node.type) && !ICONS_FRAME_NAMES.map(normalize).includes(normalize(node.name))) {
+  if (
+    ICONS_FRAME_NAMES.length &&
+    ['FRAME', 'SECTION'].includes(node.type) &&
+    !ICONS_FRAME_NAMES.map(normalize).includes(normalize(node.name))
+  ) {
     return results;
   }
 
@@ -173,7 +180,9 @@ async function main() {
   if (iconNodes.length === 0) {
     console.error(
       `❌  No icon components found on page "${iconPage.name}".` +
-        (ICONS_FRAME_NAMES.length ? ` (looking inside frames: ${ICONS_FRAME_NAMES.join(', ')})` : ''),
+        (ICONS_FRAME_NAMES.length
+          ? ` (looking inside frames: ${ICONS_FRAME_NAMES.join(', ')})`
+          : ''),
     );
     console.error(
       '   Tip: set FIGMA_ICONS_PAGE and FIGMA_ICONS_FRAMES in .env.local to narrow the search.',
@@ -195,7 +204,9 @@ async function main() {
     const batch = unique.slice(i, i + BATCH);
     const ids = batch.map((n) => n.id).join(',');
     console.log(`⬇️   Exporting SVGs (batch ${Math.floor(i / BATCH) + 1})…`);
-    const imgRes = await figmaGet(`/images/${FILE_KEY}?ids=${ids}&format=svg&svg_include_id=false&svg_simplify_stroke=true`);
+    const imgRes = await figmaGet(
+      `/images/${FILE_KEY}?ids=${ids}&format=svg&svg_include_id=false&svg_simplify_stroke=true`,
+    );
 
     for (const node of batch) {
       const url = imgRes.images[node.id];
@@ -258,7 +269,9 @@ export type IconName = keyof typeof icons;
 `;
 
   fs.writeFileSync(OUTPUT_PATH, output, 'utf8');
-  console.log(`✅  ${Object.keys(newEntries).length} icons from Figma, ${Object.keys(merged).length} total → ${path.relative(ROOT, OUTPUT_PATH)}`);
+  console.log(
+    `✅  ${Object.keys(newEntries).length} icons from Figma, ${Object.keys(merged).length} total → ${path.relative(ROOT, OUTPUT_PATH)}`,
+  );
 
   // Update icon.stories.tsx options
   const STORIES_PATH = path.join(ROOT, 'src/app/components/icon/icon.stories.tsx');
@@ -266,10 +279,7 @@ export type IconName = keyof typeof icons;
     const iconNames = Object.keys(merged);
     const optionsStr = iconNames.map((n) => `'${n}'`).join(', ');
     const stories = fs.readFileSync(STORIES_PATH, 'utf8');
-    const updated = stories.replace(
-      /options:\s*\[[^\]]*\]/,
-      `options: [${optionsStr}]`,
-    );
+    const updated = stories.replace(/options:\s*\[[^\]]*\]/, `options: [${optionsStr}]`);
     fs.writeFileSync(STORIES_PATH, updated, 'utf8');
     console.log(`📖  Updated icon.stories.tsx options (${iconNames.length} icons)`);
   }

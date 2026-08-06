@@ -12,39 +12,77 @@
   "profile": {
     "title": "Profil",
     "description": "Mettez à jour vos informations publiques affichées sur votre profil.",
-    "publicTitle": "Profil public",
-    "publicDescription": "Votre nom, bio et avatar tels que vus par les autres utilisateurs.",
-    "linksTitle": "Liens",
-    "linksDescription": "Votre site web et vos réseaux sociaux affichés sur votre profil public.",
-    "avatarLabel": "URL de l'avatar",
-    "avatarPlaceholder": "https://example.com/avatar.jpg",
-    "coverLabel": "URL de couverture",
-    "coverPlaceholder": "https://example.com/cover.jpg",
-    "displayNameLabel": "Nom affiché",
-    "displayNamePlaceholder": "Votre nom affiché",
-    "bioLabel": "Bio",
-    "bioPlaceholder": "Présentez-vous en quelques mots",
-    "usernameLabel": "Nom d'utilisateur",
-    "usernamePlaceholder": "votre-identifiant",
-    "websiteLabel": "Site web",
-    "websitePlaceholder": "https://votresite.com",
-    "twitterLabel": "Twitter",
-    "twitterPlaceholder": "@votrepseudo",
-    "githubLabel": "GitHub",
-    "githubPlaceholder": "votre-github",
-    "linkedinLabel": "LinkedIn",
-    "linkedinPlaceholder": "votre-linkedin",
-    "visibilityTitle": "Visibilité du profil",
-    "visibilityDescription": "Choisissez si votre profil public peut être consulté par les autres utilisateurs.",
-    "visibilityLabel": "Visibilité",
-    "visibilityPublic": "Profil public",
-    "visibilityPrivate": "Rendre le profil privé",
-    "visibilityPrivateCaption": "Lorsqu'il est activé, votre profil est masqué des pages communauté comme Curators.",
-    "visibilityUpdated": "Visibilité du profil mise à jour avec succès.",
-    "save": "Enregistrer le profil",
-    "saveLinks": "Enregistrer les liens",
-    "updated": "Profil mis à jour avec succès.",
-    "linksUpdated": "Liens mis à jour avec succès."
+    "fields": {
+      "username": {
+        "placeholder": "votre-identifiant"
+      }
+    },
+    "public": {
+      "title": "Profil public",
+      "description": "Votre nom, bio et avatar tels que vus par les autres utilisateurs.",
+      "fields": {
+        "avatar": {
+          "label": "URL de l'avatar",
+          "placeholder": "https://example.com/avatar.jpg"
+        },
+        "cover": {
+          "label": "URL de couverture",
+          "placeholder": "https://example.com/cover.jpg"
+        },
+        "displayName": {
+          "label": "Nom affiché",
+          "placeholder": "Votre nom affiché"
+        },
+        "bio": {
+          "label": "Bio",
+          "placeholder": "Présentez-vous en quelques mots"
+        }
+      },
+      "pronouns": {
+        "label": "Pronoms",
+        "caption": "Aidez les autres à s'adresser à vous correctement.",
+        "placeholder": "Sélectionnez vos pronoms",
+        "none": "Préfère ne pas préciser",
+        "options": {
+          "sheHer": "elle",
+          "heHim": "il",
+          "theyThem": "iel"
+        },
+        "customOption": "Personnalisé",
+        "customPlaceholder": "Saisissez vos pronoms"
+      },
+      "updated": "Profil mis à jour avec succès."
+    },
+    "links": {
+      "title": "Liens",
+      "description": "Votre site web et vos réseaux sociaux affichés sur votre profil public.",
+      "website": {
+        "label": "Site web",
+        "placeholder": "https://votresite.com"
+      },
+      "twitter": {
+        "label": "Twitter",
+        "placeholder": "@votrepseudo"
+      },
+      "github": {
+        "label": "GitHub",
+        "placeholder": "votre-github"
+      },
+      "linkedin": {
+        "label": "LinkedIn",
+        "placeholder": "votre-linkedin"
+      },
+      "updated": "Liens mis à jour avec succès."
+    },
+    "visibility": {
+      "title": "Visibilité du profil",
+      "description": "Choisissez si votre profil public peut être consulté par les autres utilisateurs.",
+      "private": {
+        "label": "Rendre le profil privé",
+        "caption": "Lorsqu'il est activé, votre profil est masqué des pages communauté comme Curators."
+      },
+      "updated": "Visibilité du profil mise à jour avec succès."
+    }
   },
   "preferences": {
     "title": "Préférences",
@@ -100,6 +138,7 @@
     "deleteCancel": "Annuler",
     "deleteDeleting": "Suppression…",
     "deleteFailed": "La suppression du compte a échoué. Veuillez réessayer.",
+    "deleteRequiresConfirmation": "Confirmez votre adresse e-mail avant de supprimer votre compte.",
     "updated": "Paramètres du compte mis à jour avec succès."
   },
   "security": {

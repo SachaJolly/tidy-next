@@ -42,6 +42,7 @@ export default async function ProfileSettingsPage() {
         initialValues={{
           name: me?.name ?? '',
           bio: me?.bio ?? '',
+          pronouns: me?.pronouns ?? '',
           avatar: me?.avatar ?? '',
           cover: me?.cover ?? '',
         }}

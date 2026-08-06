@@ -15,27 +15,32 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0;
 }
 
 .title {
   margin: 0;
-  font-weight: 600;
-  color: var(--text-heading);
+  font-weight: 500;
+  color: inherit;
 }
 
-.body {
-  color: var(--text-body);
+.body,
+.body p {
+  color: inherit;
+  font-size: .875rem;
 }
 
 .warning {
-  background: var(--surface-warning);
+  background: var(--background-warning);
+  color: var(--foreground-warning);
 }
 
 .danger {
-  background: var(--surface-danger);
+  background: var(--background-danger);
+  color: var(--foreground-danger);
 }
 
 .announcement {
-  background: var(--surface-interactive-highlight);
+  background: var(--background-inverse);
+  color: var(--foreground-inverse);
 }

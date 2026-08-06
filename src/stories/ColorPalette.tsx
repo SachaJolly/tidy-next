@@ -63,7 +63,7 @@ function TextSwatch({
         alignItems: 'center',
         padding: '4px 12px',
         borderRadius: 8,
-        background: background ?? 'var(--surface-background)',
+        background: background ?? 'var(--background-background)',
         outline: '1px solid rgba(0,0,0,0.1)',
         width: width ?? '100%',
         height: 40,
@@ -138,7 +138,7 @@ function SemanticRow({ token, description, type = 'color', background }: Semanti
               display: 'inline-flex',
               padding: 8,
               borderRadius: 8,
-              background: 'var(--surface-background)',
+              background: 'var(--background-background)',
               outline: '1px solid rgba(0,0,0,0.1)',
             }}
           >
@@ -156,7 +156,7 @@ function SemanticRow({ token, description, type = 'color', background }: Semanti
               display: 'inline-flex',
               padding: 8,
               borderRadius: 8,
-              background: 'var(--surface-background)',
+              background: 'var(--background-background)',
               outline: '1px solid rgba(0,0,0,0.1)',
             }}
           >

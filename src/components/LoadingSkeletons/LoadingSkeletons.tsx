@@ -23,7 +23,7 @@ function SkeletonBlock({
         width,
         height,
         borderRadius: radius,
-        backgroundColor: 'var(--surface-highlight)',
+        backgroundColor: 'var(--background-highlight)',
       }}
     />
   );

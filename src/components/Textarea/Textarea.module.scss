@@ -10,7 +10,7 @@
 }
 
 .textarea {
-  background-color: var(--surface-default);
+  background-color: var(--background-default);
   width: 100%;
   min-height: 7.5rem;
   padding: 0.5rem 0.75rem;
@@ -23,7 +23,7 @@
 
   &:focus {
     border: var(--stroke-thin) solid var(--border-active);
-    outline-color: var(--surface-interactive);
+    outline-color: var(--background-interactive);
     outline-offset: 0.125rem;
     outline-width: var(--stroke-thin);
     outline-style: dashed;

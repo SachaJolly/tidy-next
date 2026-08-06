@@ -21,11 +21,11 @@ export default function ProfileVisibilitySection({ initialProfilePrivate, onSave
   const { value: profilePrivate, setValue: setProfilePrivate, isSaving, feedback, handleSubmit, isDirty } = useSettingsForm({
     initialValue: initialProfilePrivate,
     onSave: async (value) => onSave({ profilePrivate: value }),
-    successMessage: t('profile.visibilityUpdated'),
+    successMessage: t('profile.visibility.updated'),
   });
 
   return (
-    <Card title={t('profile.visibilityTitle')} description={t('profile.visibilityDescription')}>
+    <Card title={t('profile.visibility.title')} description={t('profile.visibility.description')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <fieldset style={{ border: 0, margin: 0, padding: 0 }}>
           <ChoiceInput
@@ -35,8 +35,8 @@ export default function ProfileVisibilitySection({ initialProfilePrivate, onSave
             checked={profilePrivate}
             onChange={(e) => setProfilePrivate(e.target.checked)}
             disabled={isSaving}
-            label={t('profile.visibilityPrivate')}
-            caption={t('profile.visibilityPrivateCaption')}
+            label={t('profile.visibility.private.label')}
+            caption={t('profile.visibility.private.caption')}
           />
         </fieldset>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -44,7 +44,7 @@ export default function ProfileVisibilitySection({ initialProfilePrivate, onSave
             {common('save')}
           </Button>
           {feedback && (
-            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
+            <p className="text-small" style={{ color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
               {feedback.text}
             </p>
           )}

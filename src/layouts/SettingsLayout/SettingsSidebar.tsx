@@ -5,16 +5,17 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
+import Icon from '@/components/Icon/Icon';
 import { localizePath, stripLocalePrefix } from '@/lib/locale-path';
 
 import styles from './SettingsSidebar.module.scss';
 
 const SETTINGS_ROUTES = [
-  { href: '/settings/profile', labelKey: 'sidebar.profile' },
-  { href: '/settings/preferences', labelKey: 'sidebar.preferences' },
-  { href: '/settings/notifications', labelKey: 'sidebar.notifications' },
-  { href: '/settings/account', labelKey: 'sidebar.account' },
-  { href: '/settings/security', labelKey: 'sidebar.security' },
+  { href: '/settings/profile', labelKey: 'sidebar.profile', icon: 'person' },
+  { href: '/settings/preferences', labelKey: 'sidebar.preferences', icon: 'palette' },
+  { href: '/settings/notifications', labelKey: 'sidebar.notifications', icon: 'notification' },
+  { href: '/settings/account', labelKey: 'sidebar.account', icon: 'settings' },
+  { href: '/settings/security', labelKey: 'sidebar.security', icon: 'private' },
 ] as const;
 
 export default function SettingsSidebar() {
@@ -36,7 +37,8 @@ export default function SettingsSidebar() {
             href={localizePath(route.href, locale)}
             className={`${styles.navLink} ${isRouteActive(route.href) ? styles.navLinkActive : ''}`}
           >
-            {t(route.labelKey)}
+            <Icon name={route.icon} size={20} aria-hidden />
+            <span>{t(route.labelKey)}</span>
           </Link>
         ))}
       </nav>

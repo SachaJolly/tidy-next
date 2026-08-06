@@ -17,7 +17,8 @@
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius-interactive);
   color: var(--text-body);
@@ -27,12 +28,12 @@
 }
 
 .navLink:hover {
-  background: var(--surface-highlight-hover);
+  background: var(--background-highlight-hover);
   border-color: var(--border-default-hover);
 }
 
 .navLinkActive {
-  background: var(--surface-interactive-highlight);
+  background: var(--background-interactive-highlight);
   color: var(--text-interactive);
   font-weight: 500;
 }
@@ -51,6 +52,6 @@
   }
 
   .navLink {
-    display: block;
+    display: inline-flex;
   }
 }

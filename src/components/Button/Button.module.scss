@@ -49,8 +49,8 @@
 
   &.default {
     color: var(--text-body);
-    background-color: var(--surface-highlight);
-    border-color: var(--surface-highlight);
+    background-color: var(--background-highlight);
+    border-color: var(--background-highlight);
 
     &:hover,
     &.hover,
@@ -62,8 +62,8 @@
     &:active,
     &.active {
       color: var(--text-body);
-      background-color: var(--surface-highlight-hover);
-      border-color: var(--surface-highlight-hover);
+      background-color: var(--background-highlight-hover);
+      border-color: var(--background-highlight-hover);
     }
 
     .icon,
@@ -85,7 +85,7 @@
       &[aria-expanded='true'],
       &:active,
       &.active {
-        background-color: var(--surface-highlight);
+        background-color: var(--background-highlight);
       }
 
       .icon,
@@ -107,16 +107,16 @@
       &[aria-expanded='true'],
       &:active,
       &.active {
-        background-color: var(--surface-highlight-hover);
-        border-color: var(--surface-highlight-hover);
+        background-color: var(--background-highlight-hover);
+        border-color: var(--background-highlight-hover);
       }
     }
   }
 
   &.interactive {
-    color: var(--text-on-interactive);
-    background-color: var(--surface-interactive);
-    border-color: var(--surface-interactive);
+    color: var(--foreground-interactive);
+    background-color: var(--background-interactive);
+    border-color: var(--background-interactive);
 
     &:hover,
     &.hover,
@@ -127,9 +127,9 @@
     &[aria-expanded='true'],
     &:active,
     &.active {
-      color: var(--text-on-interactive);
-      background-color: var(--surface-interactive-hover);
-      border-color: var(--surface-interactive-hover);
+      color: var(--foreground-interactive);
+      background-color: var(--background-interactive-hover);
+      border-color: var(--background-interactive-hover);
     }
 
     &.tinted {
@@ -147,7 +147,7 @@
       &:active,
       &.active {
         color: var(--text-interactive);
-        background-color: var(--surface-interactive-highlight);
+        background-color: var(--background-interactive-highlight);
       }
     }
 
@@ -166,15 +166,15 @@
       &:active,
       &.active {
         color: var(--text-interactive);
-        background-color: var(--surface-interactive-highlight);
+        background-color: var(--background-interactive-highlight);
       }
     }
   }
 
   &.danger {
-    color: var(--text-on-danger);
-    background-color: var(--surface-danger);
-    border-color: var(--surface-danger);
+    color: var(--foreground-danger);
+    background-color: var(--background-danger);
+    border-color: var(--background-danger);
 
     &:hover,
     &.hover,
@@ -185,14 +185,14 @@
     &[aria-expanded='true'],
     &:active,
     &.active {
-      background-color: var(--surface-danger-hover);
-      border-color: var(--surface-danger-hover);
+      background-color: var(--background-danger-hover);
+      border-color: var(--background-danger-hover);
     }
 
     &.tinted {
       color: var(--text-danger);
       background-color: transparent;
-      border-color: var(--surface-danger-hover);
+      border-color: var(--background-danger-hover);
 
       &:hover,
       &.hover,
@@ -212,8 +212,8 @@
   &:disabled,
   &[disabled] {
     color: var(--text-disabled) !important;
-    background-color: var(--surface-highlight) !important;
-    border-color: var(--surface-highlight) !important;
+    background-color: var(--background-highlight) !important;
+    border-color: var(--background-highlight) !important;
     cursor: not-allowed;
     pointer-events: none;
   }

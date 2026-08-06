@@ -30,7 +30,7 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
   } = useSettingsForm({
     initialValue: initialValues,
     onSave,
-    successMessage: t('profile.linksUpdated'),
+    successMessage: t('profile.links.updated'),
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,46 +38,46 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
   };
 
   return (
-    <Card title={t('profile.linksTitle')} description={t('profile.linksDescription')}>
+    <Card title={t('profile.links.title')} description={t('profile.links.description')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <FormField label={t('profile.websiteLabel')} htmlFor="settings-website">
+        <FormField label={t('profile.links.website.label')} htmlFor="settings-website">
           <Input
             id="settings-website"
             name="website"
             value={formState.website || ''}
             onChange={handleChange}
-            placeholder={t('profile.websitePlaceholder')}
+            placeholder={t('profile.links.website.placeholder')}
             disabled={isSaving}
             prefix={<Icon name="link" size={20} />}
           />
         </FormField>
-        <FormField label={t('profile.twitterLabel')} htmlFor="settings-twitter">
+        <FormField label={t('profile.links.twitter.label')} htmlFor="settings-twitter">
           <Input
             id="settings-twitter"
             name="twitter"
             value={formState.twitter || ''}
             onChange={handleChange}
-            placeholder={t('profile.twitterPlaceholder')}
+            placeholder={t('profile.links.twitter.placeholder')}
             disabled={isSaving}
           />
         </FormField>
-        <FormField label={t('profile.githubLabel')} htmlFor="settings-github">
+        <FormField label={t('profile.links.github.label')} htmlFor="settings-github">
           <Input
             id="settings-github"
             name="github"
             value={formState.github || ''}
             onChange={handleChange}
-            placeholder={t('profile.githubPlaceholder')}
+            placeholder={t('profile.links.github.placeholder')}
             disabled={isSaving}
           />
         </FormField>
-        <FormField label={t('profile.linkedinLabel')} htmlFor="settings-linkedin">
+        <FormField label={t('profile.links.linkedin.label')} htmlFor="settings-linkedin">
           <Input
             id="settings-linkedin"
             name="linkedin"
             value={formState.linkedin || ''}
             onChange={handleChange}
-            placeholder={t('profile.linkedinPlaceholder')}
+            placeholder={t('profile.links.linkedin.placeholder')}
             disabled={isSaving}
           />
         </FormField>
@@ -86,7 +86,7 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
             {common('save')}
           </Button>
           {feedback && (
-            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
+            <p className="text-small" style={{ color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
               {feedback.text}
             </p>
           )}

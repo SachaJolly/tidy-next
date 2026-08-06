@@ -7,14 +7,14 @@
 .inputWrapper {
   display: flex;
   align-items: center;
-  background-color: var(--surface-default);
+  background-color: var(--background-default);
   border-radius: var(--radius-interactive);
   border: var(--stroke-thin) solid var(--border-default);
   overflow: hidden;
 
   &:focus-within {
     border-color: var(--border-active);
-    outline-color: var(--surface-interactive);
+    outline-color: var(--background-interactive);
     outline-offset: 0.125rem;
     outline-width: var(--stroke-thin);
     outline-style: dashed;
@@ -64,7 +64,7 @@
 }
 
 .input {
-  background-color: var(--surface-default);
+  background-color: var(--background-default);
   width: 100%;
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius-interactive);
@@ -75,7 +75,7 @@
 
   &:focus {
     border: var(--stroke-thin) solid var(--border-active);
-    outline-color: var(--surface-interactive);
+    outline-color: var(--background-interactive);
     outline-offset: 0.125rem;
     outline-width: var(--stroke-thin);
     outline-style: dashed;

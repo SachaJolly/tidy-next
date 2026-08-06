@@ -10,7 +10,15 @@ import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import FormField from '@/components/FormField/FormField';
 import Input from '@/components/Input/Input';
+import { Select } from '@/components/Select/Select';
 import Textarea from '@/components/Textarea/Textarea';
+
+const PRONOUNS_CUSTOM_VALUE = '__custom__';
+const PREDEFINED_PRONOUNS = [
+  { value: 'she/her', labelKey: 'profile.public.pronouns.options.sheHer' },
+  { value: 'he/him', labelKey: 'profile.public.pronouns.options.heHim' },
+  { value: 'they/them', labelKey: 'profile.public.pronouns.options.theyThem' },
+] as const;
 
 interface PublicProfileSectionProps {
   initialValues: UpdatePublicProfileInput;
@@ -31,8 +39,16 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
   } = useSettingsForm({
     initialValue: initialValues,
     onSave,
-    successMessage: t('profile.updated'),
+    successMessage: t('profile.public.updated'),
   });
+  const initialPronouns = (initialValues.pronouns ?? '').trim();
+  const isInitialPredefinedPronouns = PREDEFINED_PRONOUNS.some(({ value }) => value === initialPronouns);
+  const [pronounsSelection, setPronounsSelection] = React.useState<string>(
+    isInitialPredefinedPronouns ? initialPronouns : initialPronouns ? PRONOUNS_CUSTOM_VALUE : ''
+  );
+  const [customPronouns, setCustomPronouns] = React.useState<string>(
+    isInitialPredefinedPronouns ? '' : initialPronouns
+  );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,8 +56,31 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handlePronounsSelectionChange = (value: string) => {
+    setPronounsSelection(value);
+
+    if (value === PRONOUNS_CUSTOM_VALUE) {
+      setFormState((prev) => ({ ...prev, pronouns: customPronouns }));
+      return;
+    }
+
+    setFormState((prev) => ({ ...prev, pronouns: value }));
+  };
+
+  const handleCustomPronounsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextValue = e.target.value;
+    setCustomPronouns(nextValue);
+    setFormState((prev) => ({ ...prev, pronouns: nextValue }));
+  };
+
+  const pronounsOptions = [
+    { value: '', label: t('profile.public.pronouns.none') },
+    ...PREDEFINED_PRONOUNS.map(({ value, labelKey }) => ({ value, label: t(labelKey) })),
+    { value: PRONOUNS_CUSTOM_VALUE, label: t('profile.public.pronouns.customOption') },
+  ];
+
   return (
-    <Card title={t('profile.publicTitle')} description={t('profile.publicDescription')}>
+    <Card title={t('profile.public.title')} description={t('profile.public.description')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Avatar
@@ -51,62 +90,89 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
             size="96"
           />
           <div style={{ flex: 1 }}>
-            <FormField label={t('profile.avatarLabel')} htmlFor="settings-avatar-url">
+            <FormField label={t('profile.public.fields.avatar.label')} htmlFor="settings-avatar-url">
               <Input
                 id="settings-avatar-url"
                 name="avatar"
                 value={formState.avatar || ''}
                 onChange={handleChange}
-                placeholder={t('profile.avatarPlaceholder')}
+                placeholder={t('profile.public.fields.avatar.placeholder')}
                 disabled={isSaving}
               />
             </FormField>
           </div>
         </div>
-        <FormField label={t('profile.displayNameLabel')} htmlFor="settings-display-name">
+        <FormField label={t('profile.public.fields.displayName.label')} htmlFor="settings-display-name">
           <Input
             id="settings-display-name"
             name="name"
             value={formState.name || ''}
             onChange={handleChange}
-            placeholder={t('profile.displayNamePlaceholder')}
+            placeholder={t('profile.public.fields.displayName.placeholder')}
             disabled={isSaving}
           />
         </FormField>
-        <FormField label={t('profile.bioLabel')} htmlFor="settings-bio">
+        <FormField
+          label={t('profile.public.pronouns.label')}
+          htmlFor="settings-pronouns-select"
+          caption={t('profile.public.pronouns.caption')}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <Select
+              value={pronounsSelection}
+              onChange={handlePronounsSelectionChange}
+              options={pronounsOptions}
+              placeholder={t('profile.public.pronouns.placeholder')}
+            />
+            {pronounsSelection === PRONOUNS_CUSTOM_VALUE && (
+              <Input
+                id="settings-pronouns-custom"
+                name="pronounsCustom"
+                value={customPronouns}
+                onChange={handleCustomPronounsChange}
+                placeholder={t('profile.public.pronouns.customPlaceholder')}
+                disabled={isSaving}
+                maxLength={60}
+              />
+            )}
+          </div>
+        </FormField>
+        <FormField label={t('profile.public.fields.bio.label')} htmlFor="settings-bio">
           <Textarea
             id="settings-bio"
             name="bio"
             value={formState.bio || ''}
             onChange={handleChange}
-            placeholder={t('profile.bioPlaceholder')}
+            placeholder={t('profile.public.fields.bio.placeholder')}
             disabled={isSaving}
             rows={4}
           />
         </FormField>
-        <FormField label={t('profile.coverLabel')} htmlFor="settings-cover">
-          <Input
-            id="settings-cover"
-            name="cover"
-            value={formState.cover || ''}
-            onChange={handleChange}
-            placeholder={t('profile.coverPlaceholder')}
-            disabled={isSaving}
-          />
-          {formState.cover && (
-            <img
-              src={formState.cover}
-              alt="cover preview"
-              style={{ width: '100%', borderRadius: '0.5rem', maxHeight: '160px', objectFit: 'cover' }}
+        <FormField label={t('profile.public.fields.cover.label')} htmlFor="settings-cover">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
+            <Input
+              id="settings-cover"
+              name="cover"
+              value={formState.cover || ''}
+              onChange={handleChange}
+              placeholder={t('profile.public.fields.cover.placeholder')}
+              disabled={isSaving}
             />
-          )}
+            {formState.cover && (
+              <img
+                src={formState.cover}
+                alt="cover preview"
+                style={{ width: '100%', borderRadius: '0.5rem' }}
+              />
+            )}
+          </div>
         </FormField>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
             {common('save')}
           </Button>
           {feedback && (
-            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
+            <p className="text-small" style={{ color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
               {feedback.text}
             </p>
           )}

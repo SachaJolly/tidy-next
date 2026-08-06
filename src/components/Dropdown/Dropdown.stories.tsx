@@ -345,7 +345,7 @@ export const ModalInteroperability: Story = {
           >
             <div
               style={{
-                background: 'var(--surface-modal)',
+                background: 'var(--background-modal)',
                 borderRadius: 'var(--radius-popover)',
                 padding: '2rem',
                 maxWidth: '360px',
@@ -370,7 +370,7 @@ export const ModalInteroperability: Story = {
                     padding: '0.375rem 0.875rem',
                     borderRadius: 'var(--radius-interactive)',
                     border: '1px solid var(--border-default)',
-                    background: 'var(--surface-highlight)',
+                    background: 'var(--background-highlight)',
                     cursor: 'pointer',
                     fontFamily: 'inherit',
                     fontSize: '0.875rem',

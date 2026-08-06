@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--surface-overlay);
+  background-color: var(--background-overlay);
   width: 100%;
   height: 100%;
   display: flex;
@@ -19,7 +19,7 @@
   flex-direction: column;
   gap: 0;
   align-content: stretch;
-  background: var(--surface-modal);
+  background: var(--background-modal);
   border-radius: var(--radius-popover);
   padding: 0;
   border: none;
@@ -126,6 +126,6 @@
   padding: 0.5rem;
 
   &:hover {
-    background-color: var(--surface-highlight);
+    background-color: var(--background-highlight);
   }
 }

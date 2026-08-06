@@ -9,6 +9,7 @@ export interface User {
   name: string;
   username: string;
   bio: string | null;
+  pronouns?: string | null;
   avatar?: string | null;
   cover?: string | null;
   website?: string | null;

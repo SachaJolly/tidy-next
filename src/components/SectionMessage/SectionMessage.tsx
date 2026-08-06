@@ -41,7 +41,7 @@ export default function SectionMessage({
   return (
     <div className={classes} role="status">
       <span className={styles.icon} aria-hidden>
-        <Icon name={VARIANT_ICON[variant]} size={16} />
+        <Icon name={VARIANT_ICON[variant]} size={20} />
       </span>
       <div className={styles.content}>
         {title && <p className={styles.title}>{title}</p>}

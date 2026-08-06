@@ -2,34 +2,31 @@
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  border: 1px solid var(--border-default);
-  border-left-width: 4px;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-interactive);
   padding: 1rem;
 }
 
 .icon {
   display: inline-flex;
-  flex-shrink: 0;
-  margin-top: 0.1rem;
   color: inherit;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: .5rem;
 }
 
 .title {
   margin: 0;
   font-weight: 500;
-  color: var(--text-heading);
+  color: inherit;
 }
 
 .description {
   margin: 0;
-  color: var(--text-muted);
+  color: inherit;
+  font-size: .875rem;
 }
 
 .actions {
@@ -39,31 +36,31 @@
 }
 
 .link {
-  color: var(--text-interactive);
   text-decoration: underline;
+  font-size: .875rem;
 }
 
 .information {
-  background: var(--surface-highlight);
-  border-left-color: var(--surface-interactive);
+  background: var(--background-info-highlight);
+  color: var(--text-info);
 }
 
 .warning {
-  background: var(--surface-warning-highlight);
-  border-left-color: var(--surface-warning);
+  background: var(--background-warning-highlight);
+  color: var(--text-warning);
 }
 
 .error {
-  background: var(--surface-danger-highlight);
-  border-left-color: var(--surface-danger);
+  background: var(--background-danger-highlight);
+  color: var(--text-danger);
 }
 
 .success {
-  background: var(--surface-interactive-highlight);
-  border-left-color: var(--surface-interactive);
+  background: var(--background-success-highlight);
+  color: var(--text-success);
 }
 
 .discovery {
-  background: var(--surface-highlight);
-  border-left-color: var(--surface-collection-purple);
+  background: var(--background-discovery-highlight);
+  color: var(--text-discovery);
 }

@@ -85,7 +85,7 @@ export function AccountDropdown({ user, initialLanguage, initialTheme, initialTi
       {/* Account section — content differs based on auth state */}
       {user && (
         <>
-          <DropdownItem icon="settings" href={localizePath('/settings/preferences', locale)}>
+          <DropdownItem icon="settings" href={localizePath('/settings', locale)}>
             {t('settings')}
           </DropdownItem>
           <DropdownSub id="switch-account">

@@ -32,18 +32,16 @@ export default function UsernameSection({ initialUsername, onSave }: UsernameSec
             id="settings-username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder={t('profile.usernamePlaceholder')}
+            placeholder={t('profile.fields.username.placeholder')}
             disabled={isSaving}
             prefix="@"
             variant={feedback?.type}
             feedback={feedback?.text}
           />
         </FormField>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
-            {common('save')}
-          </Button>
-        </div>
+        <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
+          {common('save')}
+        </Button>
       </form>
     </Card>
   );

@@ -3,8 +3,8 @@
   flex-direction: row;
   gap: 0;
   border-radius: var(--radius-sm);
-  background: var(--surface-tooltip);
-  color: var(--text-on-tooltip);
+  background: var(--background-tooltip);
+  color: var(--foreground-tooltip);
 }
 
 .trigger {
@@ -28,7 +28,7 @@
   &:focus-visible,
   &[aria-expanded="true"] {
     border-radius: var(--radius-sm);
-    outline-color: var(--surface-interactive);
+    outline-color: var(--background-interactive);
     outline-offset: 0.125rem;
     outline-width: var(--stroke-thin);
     outline-style: dashed;

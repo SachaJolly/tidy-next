@@ -8,14 +8,16 @@ import { useQueryModal } from '@/hooks/use-query-modal';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import DeleteAccountModal from './DeleteAccountModal';
+import Icon from "@/components/Icon/Icon";
 
 const MODAL_NAME = 'delete-account';
 
 interface DeleteAccountSectionProps {
   onDelete: () => Promise<void>;
+  emailConfirmed: boolean;
 }
 
-export default function DeleteAccountSection({ onDelete }: DeleteAccountSectionProps) {
+export default function DeleteAccountSection({ onDelete, emailConfirmed }: DeleteAccountSectionProps) {
   const t = useTranslations('settings');
   const router = useRouter();
   const { isOpen, openModal, closeModal } = useQueryModal();
@@ -23,6 +25,11 @@ export default function DeleteAccountSection({ onDelete }: DeleteAccountSectionP
   const [error, setError] = useState<string | null>(null);
 
   const handleConfirm = async () => {
+    if (!emailConfirmed) {
+      setError(t('account.deleteRequiresConfirmation'));
+      return;
+    }
+
     setIsDeleting(true);
     setError(null);
 
@@ -41,21 +48,33 @@ export default function DeleteAccountSection({ onDelete }: DeleteAccountSectionP
     closeModal();
   };
 
+  const handleOpenDeleteModal = () => {
+    if (!emailConfirmed) return;
+    openModal(MODAL_NAME);
+  };
+
   return (
     <>
       <Card title={t('account.deleteTitle')} description={t('account.deleteDescription')}>
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button
             type="button"
             variant="danger"
-            onClick={() => openModal(MODAL_NAME)}
+            disabled={!emailConfirmed}
+            onClick={handleOpenDeleteModal}
           >
             {t('account.deleteButton')}
           </Button>
+          {!emailConfirmed && (
+            <div className="text-warning" style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+              <Icon name="warning" size={16} />
+              <p className="text-small">{t('account.deleteRequiresConfirmation')}</p>
+            </div>
+          )}
         </div>
       </Card>
 
-      {isOpen(MODAL_NAME) && (
+      {emailConfirmed && isOpen(MODAL_NAME) && (
         <DeleteAccountModal
           isDeleting={isDeleting}
           error={error}

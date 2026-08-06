@@ -8,7 +8,7 @@
   padding: 0.5rem;
   margin: -0.5rem;
 
-  background: var(--surface-background);
+  background: var(--background-background);
 }
 
 .heading {
@@ -50,7 +50,7 @@
   &.focus,
   &:active,
   &.active {
-    background-color: var(--surface-highlight);
+    background-color: var(--background-highlight);
     text-decoration: none;
     color: var(--text-heading);
   }

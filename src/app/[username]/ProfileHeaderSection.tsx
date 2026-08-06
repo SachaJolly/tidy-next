@@ -45,6 +45,7 @@ export default function ProfileHeaderSection({
               <h1 className={styles.title}>{user.name}</h1>
               <MetaGroup>
                 <Meta>@{user.username}</Meta>
+                {user.pronouns && <Meta>{user.pronouns}</Meta>}
               </MetaGroup>
             </div>
             {user.bio && <p className={styles.caption}>{user.bio}</p>}

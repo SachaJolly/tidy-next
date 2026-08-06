@@ -9,6 +9,7 @@ type NullableString = string | null;
 export interface UpdatePublicProfileInput {
   name: string;
   bio: string;
+  pronouns: string;
   avatar: string;
   cover: string;
 }
@@ -64,6 +65,7 @@ export async function updatePublicProfileSettings(input: UpdatePublicProfileInpu
       user: {
         name: input.name.trim(),
         bio: normalizeOptional(input.bio),
+        pronouns: normalizeOptional(input.pronouns),
         avatar: normalizeOptional(input.avatar),
         cover: normalizeOptional(input.cover),
       },

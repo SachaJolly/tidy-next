@@ -9,7 +9,7 @@
   flex: 0 0 auto;
   gap: 1rem;
   padding: 0.5rem 0.75rem;
-  background-color: var(--surface-modal);
+  background-color: var(--background-modal);
   box-shadow: 0 var(--stroke-thin) 0 0 var(--border-default);
 }
 
@@ -37,9 +37,9 @@
   height: 2.5rem;
   max-width: 24rem;
   padding: 0.5rem;
-  background-color: var(--surface-highlight);
+  background-color: var(--background-highlight);
   border-radius: var(--radius-interactive);
-  border: var(--stroke-thin) solid var(--surface-highlight);
+  border: var(--stroke-thin) solid var(--background-highlight);
   line-height: 1.5rem;
   font-size: 1rem;
   color: var(--text-muted);
@@ -49,9 +49,9 @@
   }
 
   &:focus-within {
-    // background-color: var(--surface-modal);
+    // background-color: var(--background-modal);
     border: var(--stroke-thin) solid var(--border-active);
-    outline-color: var(--surface-interactive);
+    outline-color: var(--background-interactive);
     outline-offset: 0.125rem;
     outline-width: var(--stroke-thin);
     outline-style: dashed;
