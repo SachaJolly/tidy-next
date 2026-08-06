@@ -3,8 +3,8 @@
   "signin": "Connexion",
   "joinToday": "Rejoindre",
   "createList": "Créer une liste",
-  "dashboard": "Tableau de bord",
-  "discover": "Découvrir",
+  "dashboard": "Dashboard",
+  "discover": "Explorer",
   "curators": "Curateurs",
-  "latest": "Dernières"
+  "latest": "Récents"
 }

@@ -90,12 +90,9 @@ export default function ListOptionsDropdown({
           <DropdownItem icon="edit" label={common('action.edit')} onSelect={handleEdit} />
           <DropdownItem icon="delete" destructive label={common('action.archive')} />
           <DropdownSeparator />
-
-          <DropdownLabel>{common('action.setVisibility')}</DropdownLabel>
           <VisibilityRadioGroup
             value={visibility}
             onValueChange={handleVisibilityChange}
-            showLabel={false}
           />
           {error ? (
             <DropdownText>
