@@ -49,7 +49,7 @@ export const Select = ({
   const [searchValue, setSearchValue] = React.useState('');
   const [highlightedIndex, setHighlightedIndex] = React.useState(-1);
   const itemRefs = React.useRef<(HTMLButtonElement | HTMLAnchorElement)[]>([]);
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const suppressNextOpenRef = React.useRef(false);
 
   const isOptionGroup = React.useCallback((item: SelectOptionItem): item is SelectOptionGroup => {
     return 'options' in item;
@@ -126,8 +126,12 @@ export const Select = ({
   }, [isOpen, highlightedIndex]);
 
   const handleSelect = (selectedValue: string) => {
+    suppressNextOpenRef.current = true;
     onChange(selectedValue);
     setIsOpen(false);
+    requestAnimationFrame(() => {
+      suppressNextOpenRef.current = false;
+    });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -160,19 +164,6 @@ export const Select = ({
     }
   };
 
-  // Close dropdown when clicking outside the component
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   const dropdownIndicator = hideDropdownIcon ? undefined : (
     <span className={styles.dropdownIndicator} aria-hidden>
       <Icon name="dropdown" size={20} />
@@ -180,7 +171,7 @@ export const Select = ({
   );
 
   return (
-    <div ref={containerRef} className={[styles.select, className].filter(Boolean).join(' ')}>
+    <div className={[styles.select, className].filter(Boolean).join(' ')}>
       <Dropdown open={isOpen} onOpenChange={setIsOpen} preventFocusOnOpen={true}>
         <Input
           type="text"
@@ -191,11 +182,23 @@ export const Select = ({
             setSearchValue(e.target.value);
           }}
           onClick={() => {
-            if (!isOpen) setIsOpen(true);
+            requestAnimationFrame(() => {
+              if (suppressNextOpenRef.current) {
+                suppressNextOpenRef.current = false;
+                return;
+              }
+              setIsOpen(true);
+            });
           }}
           onFocus={(e) => {
-            setIsOpen(true);
             e.target.select();
+            requestAnimationFrame(() => {
+              if (suppressNextOpenRef.current) {
+                suppressNextOpenRef.current = false;
+                return;
+              }
+              setIsOpen(true);
+            });
           }}
           onKeyDown={handleKeyDown}
           prefix={prefix}
@@ -203,7 +206,7 @@ export const Select = ({
           trailing={dropdownIndicator}
         />
         <DropdownMenu className="w-full">
-          <div className="max-h-60 overflow-auto">
+          <div style={{ width: "100%" }}>
             {isOpen && filteredFlatOptions.length > 0 ? (
               indexedSections.map((section, sectionIndex) => (
                 <React.Fragment key={section.label ?? `section-${sectionIndex}`}>
@@ -216,7 +219,9 @@ export const Select = ({
                       }}
                       isHighlighted={option.optionIndex === highlightedIndex}
                       onSelect={() => handleSelect(option.value)}
-                      onMouseDown={(e) => e.preventDefault()}
+                      onMouseDown={() => {
+                        suppressNextOpenRef.current = true;
+                      }}
                     >
                       {option.label}
                     </DropdownItem>
