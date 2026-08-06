@@ -14,7 +14,7 @@ type BaseButtonProps = {
   label?: string; // `label` is now an optional prop for simple text
   children?: React.ReactNode; // `children` is also optional
   size?: 'default' | 'small';
-  variant?: 'default' | 'interactive';
+  variant?: 'default' | 'interactive' | 'danger';
   tinted?: boolean;
   transparent?: boolean;
   className?: string;

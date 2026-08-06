@@ -170,4 +170,41 @@
       }
     }
   }
+
+  &.danger {
+    color: var(--text-danger);
+    background-color: light-dark(var(--color-red-100), var(--color-red-900, hsl(6, 60%, 15%)));
+    border-color: transparent;
+
+    &:hover,
+    &.hover,
+    &:focus,
+    &.focus,
+    &:focus-within,
+    &:focus-visible,
+    &[aria-expanded='true'],
+    &:active,
+    &.active {
+      background-color: light-dark(var(--color-red-200), var(--color-red-800, hsl(6, 60%, 22%)));
+      border-color: transparent;
+    }
+
+    &.tinted {
+      color: var(--text-danger);
+      background-color: transparent;
+      border-color: light-dark(var(--color-red-300), var(--color-red-700));
+
+      &:hover,
+      &.hover,
+      &:focus,
+      &.focus,
+      &:focus-within,
+      &:focus-visible,
+      &[aria-expanded='true'],
+      &:active,
+      &.active {
+        background-color: light-dark(var(--color-red-100), var(--color-red-900, hsl(6, 60%, 15%)));
+      }
+    }
+  }
 }
