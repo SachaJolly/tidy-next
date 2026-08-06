@@ -2,6 +2,7 @@ import React from 'react';
 
 import ListCardSkeleton from '@/components/ListCard/ListCard.skeleton';
 import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeader.skeleton';
+import { ItemSkeleton } from '@/components/Item/Item.skeleton';
 import ListLayout from '@/layouts/ListLayout';
 import PageLayout from '@/layouts/PageLayout';
 
@@ -121,16 +122,15 @@ export function ProfileListsSkeleton() {
 export function ListItemsSkeleton() {
   return (
     <section style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <SkeletonBlock width="7rem" height="1.5rem" />
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(16rem, 1fr))',
+          display: 'flex',
+          flexDirection: 'column',
           gap: '1rem',
         }}
       >
         {Array.from({ length: 4 }).map((_, index) => (
-          <ListCardSkeleton key={index} />
+          <ItemSkeleton key={index} />
         ))}
       </div>
     </section>

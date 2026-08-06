@@ -4,6 +4,7 @@ import ListHeader from './ListHeader';
 import type { List, User } from '@/lib/types';
 
 const meta: Meta<typeof ListHeader> = {
+  title: 'Components/ListHeader',
   component: ListHeader,
   parameters: {
     layout: 'centered',
@@ -22,11 +23,11 @@ const mockAuthor: User = {
   avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jane',
   pronouns: 'she/her',
   bio: 'Product designer and coffee enthusiast',
-  createdAt: '2024-01-15T10:00:00Z',
-  updatedAt: '2024-08-01T14:30:00Z',
+  createdAt: '2024-01-15T10:00:00Z'
 };
 
 const mockList: List = {
+
   id: 'list-1',
   title: 'Best Productivity Apps',
   description: 'A curated collection of tools that boost my daily workflow.',
@@ -41,8 +42,12 @@ const mockList: List = {
   isPopular: false,
   isFeatured: false,
   items: [],
+  collaboratorsCount: 0,
+  displayMode: "",
+  status: "ACTIVE",
   createdAt: '2024-03-10T08:45:00Z',
   updatedAt: '2024-08-06T12:00:00Z',
+  deleted_at: null
 };
 
 export const AsAuthor: Story = {

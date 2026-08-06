@@ -8,7 +8,7 @@ const meta: Meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: [],
 };
 
 export default meta;
@@ -16,12 +16,4 @@ type Story = StoryObj;
 
 export const Default: Story = {
   render: () => <ListHeaderSkeleton />,
-};
-
-export const InContainer: Story = {
-  render: () => (
-    <div style={{ maxWidth: '800px', padding: '2rem', border: '1px solid var(--border)' }}>
-      <ListHeaderSkeleton />
-    </div>
-  ),
 };
