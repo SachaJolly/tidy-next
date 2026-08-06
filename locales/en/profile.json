@@ -1,3 +1,6 @@
 {
-  "publicLists": "{count, plural, =0 {No public lists} =1 {1 public list} other {# public lists}}"
+  "publicLists": "{count, plural, =0 {No public lists} =1 {1 public list} other {# public lists}}",
+  "unconfirmedVisibilityTitle": "Profile visibility limited",
+  "unconfirmedVisibilityDescription": "Your profile is currently hidden from public visitors until you confirm your email address.",
+  "unconfirmedVisibilityAction": "Please confirm your email to make your public profile visible."
 }
