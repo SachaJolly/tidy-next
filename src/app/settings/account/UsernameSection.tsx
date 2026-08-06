@@ -8,6 +8,7 @@ import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import FormField from '@/components/FormField/FormField';
 import Input from '@/components/Input/Input';
+import InputGroup from '@/components/InputGroup/InputGroup';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -44,19 +45,19 @@ export default function UsernameSection({ initialUsername, onSave }: UsernameSec
     <Card title={t('account.usernameTitle')} description={t('account.usernameDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <FormField label={t('account.usernameLabel')} htmlFor="settings-username">
-          <Input
-            id="settings-username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder={t('profile.usernamePlaceholder')}
-            disabled={isSaving}
-          />
+          <InputGroup>
+            <Input
+              id="settings-username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder={t('profile.usernamePlaceholder')}
+              disabled={isSaving}
+            />
+            <Button type="submit" variant="interactive" disabled={isSaving}>
+              {t('account.saveUsername')}
+            </Button>
+          </InputGroup>
         </FormField>
-        <div>
-          <Button type="submit" variant="interactive" disabled={isSaving}>
-            {t('account.saveUsername')}
-          </Button>
-        </div>
         {feedback && (
           <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>
             {feedback.text}
