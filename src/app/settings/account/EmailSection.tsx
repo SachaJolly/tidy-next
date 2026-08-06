@@ -65,15 +65,23 @@ export default function EmailSection({ initialEmail, emailConfirmed, onSave, onR
     : (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
         {t('account.emailNotConfirmedCaption')}
-        <Button
+        <button
           type="button"
-          variant="interactive"
-          size="small"
           onClick={handleResend}
           disabled={isResending}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            color: 'var(--text-interactive)',
+            cursor: isResending ? 'default' : 'pointer',
+            fontSize: 'inherit',
+            textDecoration: 'underline',
+            opacity: isResending ? 0.6 : 1,
+          }}
         >
           {isResending ? t('account.resendConfirmationSending') : t('account.resendConfirmationButton')}
-        </Button>
+        </button>
       </span>
     );
 
