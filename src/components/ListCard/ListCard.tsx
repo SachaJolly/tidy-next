@@ -40,11 +40,11 @@ export default function ListCard({
             <picture>
               <source
                 media="(max-width:617px)"
-                srcSet={`https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/${list.thumbnail}.jpeg`}
+                srcSet={list.thumbnail}
               />
               <img
                 alt={list.title}
-                src={`https://s3-eu-west-1.amazonaws.com/invowsandbox/p/col_thumb/s512x256/${list.thumbnail}.jpeg`}
+                src={list.thumbnail}
               />
             </picture>
           )}
