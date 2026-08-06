@@ -68,6 +68,7 @@ export default function ItemForm({
 
     if (!match) {
       setMarkdownBody(rawText);
+      setExtractedUrl(null);
       return false;
     }
 

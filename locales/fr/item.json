@@ -2,5 +2,6 @@
   "views": "vues",
   "likes": "j'aime",
   "comments": "commentaires",
-  "noDescription": "Aucune description"
+  "noDescription": "Aucune description",
+  "noTitle": "Aucun titre"
 }

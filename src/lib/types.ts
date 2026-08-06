@@ -70,6 +70,9 @@ export interface Item {
     likes: number;
     comments: number;
   };
+  createdAt?: string;
+  updatedAt?: string;
+  author?: User;
 }
 
 // A standard API response structure from our Rails backend
