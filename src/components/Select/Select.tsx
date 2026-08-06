@@ -190,6 +190,9 @@ export const Select = ({
             if (!isOpen) setIsOpen(true);
             setSearchValue(e.target.value);
           }}
+          onClick={() => {
+            if (!isOpen) setIsOpen(true);
+          }}
           onFocus={(e) => {
             setIsOpen(true);
             e.target.select();
