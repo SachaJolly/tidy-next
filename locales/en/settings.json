@@ -5,6 +5,7 @@
     "title": "Sections",
     "profile": "Profile",
     "preferences": "Preferences",
+    "notifications": "Notifications",
     "account": "Account",
     "security": "Password & authentication"
   },
@@ -100,6 +101,10 @@
     "passwordUpdated": "Password updated successfully.",
     "authMethodsTitle": "Authentication methods",
     "authMethodsDescription": "Additional sign-in methods will be available here soon."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "description": "Control how and when you receive notifications."
   },
   "saveFailed": "Failed to save settings. Please try again.",
   "moreComingSoon": "More settings coming soon."
