@@ -151,3 +151,13 @@ export async function deleteAccount(): Promise<void> {
   cookieStore.delete('tidy_theme');
   cookieStore.delete('tidy_timezone');
 }
+
+export async function resendConfirmationEmail(): Promise<void> {
+  const token = await getAuthorizationToken();
+
+  await api.auth.post(
+    '/api/v1/me/resend_confirmation',
+    {},
+    { authorization: token, cache: 'no-store' },
+  );
+}

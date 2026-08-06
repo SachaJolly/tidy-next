@@ -4,7 +4,7 @@ import styles from './FormField.module.scss';
 
 interface FormFieldProps {
   label: string;
-  caption?: string;
+  caption?: React.ReactNode;
   /** htmlFor wires the label to the inner input/textarea */
   htmlFor?: string;
   children: React.ReactNode;

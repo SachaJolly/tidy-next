@@ -9,11 +9,11 @@ import {
   updateAccountSettings,
   updateUsernameSettings,
   deleteAccount,
+  resendConfirmationEmail,
 } from '@/app/actions/me';
 import DeleteAccountSection from './DeleteAccountSection';
 import EmailSection from './EmailSection';
 import UsernameSection from './UsernameSection';
-import AccountInfoSection from './AccountInfoSection';
 
 export default async function AccountSettingsPage() {
   const t = await getTranslations('settings');
@@ -37,15 +37,13 @@ export default async function AccountSettingsPage() {
       <h2 style={{ margin: 0 }}>{t('account.title')}</h2>
       <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '1.5rem' }}>{t('account.description')}</p>
 
-      <EmailSection initialEmail={me?.email ?? ''} onSave={updateAccountSettings} />
-      <UsernameSection initialUsername={me?.username ?? ''} onSave={updateUsernameSettings} />
-      <AccountInfoSection
-        status={me?.status ?? ''}
-        role={me?.role ?? ''}
-        createdAt={me?.createdAt ?? ''}
-        confirmedAt={me?.confirmedAt ?? ''}
+      <EmailSection
+        initialEmail={me?.email ?? ''}
         emailConfirmed={me?.emailConfirmed ?? false}
+        onSave={updateAccountSettings}
+        onResendConfirmation={resendConfirmationEmail}
       />
+      <UsernameSection initialUsername={me?.username ?? ''} onSave={updateUsernameSettings} />
       <DeleteAccountSection onDelete={deleteAccount} />
     </section>
   );
