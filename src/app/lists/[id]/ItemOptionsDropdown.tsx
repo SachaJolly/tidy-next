@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { DropdownItem, DropdownMenu, DropdownSeparator } from '@/components/Dropdown';
+import { useQueryModal } from '@/hooks/use-query-modal';
 
 interface ItemOptionsDropdownProps {
   listId: string;
@@ -20,6 +21,11 @@ export default function ItemOptionsDropdown({
 }: ItemOptionsDropdownProps) {
   const common = useTranslations('common');
   const t = useTranslations('ItemOptionsDropdown');
+  const queryModal = useQueryModal();
+
+  const handleEdit = useCallback(() => {
+    queryModal.openModal('edit-item', itemId);
+  }, [queryModal, itemId]);
 
   return (
     <DropdownMenu align="end" inline={inline}>
@@ -28,7 +34,7 @@ export default function ItemOptionsDropdown({
           <DropdownItem
             icon="edit"
             label={common('action.edit')}
-            href={`/lists/${listId}?modal=edit-item&modalId=${itemId}`}
+            onSelect={handleEdit}
           />
           <DropdownItem icon="delete" destructive label={t('archive')} />
           <DropdownSeparator />
