@@ -42,14 +42,34 @@ export default async function UserPage({ params }: UserPageProps) {
   const isConfirmedUser = user.emailConfirmed !== false;
   const isPublicVisibleForUnconfirmed = user.unconfirmedProfilePublicVisible ?? false;
   const isCurrentUser = user.viewerIsOwner === true;
+  const isPrivateProfile = user.profilePrivate === true;
   const isAuthor = isCurrentUser;
+
+  if (isPrivateProfile && !isCurrentUser) {
+    notFound();
+  }
 
   if (!isConfirmedUser && !isPublicVisibleForUnconfirmed && !isCurrentUser) {
     notFound();
   }
 
   const publicLists = user.publicLists ?? [];
+  const shouldShowPrivateVisibilityMessage = isPrivateProfile && isCurrentUser;
   const shouldShowUnconfirmedVisibilityMessage = !isConfirmedUser && !isPublicVisibleForUnconfirmed && isCurrentUser;
+
+  const visibilityMessage = shouldShowPrivateVisibilityMessage
+    ? {
+        title: t('privateVisibilityTitle'),
+        description: t('privateVisibilityDescription'),
+        action: t('privateVisibilityAction'),
+        isVisible: true,
+      }
+    : {
+        title: t('unconfirmedVisibilityTitle'),
+        description: t('unconfirmedVisibilityDescription'),
+        action: t('unconfirmedVisibilityAction'),
+        isVisible: shouldShowUnconfirmedVisibilityMessage,
+      };
 
   return (
     <PageLayout>
@@ -60,10 +80,10 @@ export default async function UserPage({ params }: UserPageProps) {
         showEditProfileButton={isCurrentUser}
       />
       <ProfileUnconfirmedVisibilitySection
-        isVisible={shouldShowUnconfirmedVisibilityMessage}
-        title={t('unconfirmedVisibilityTitle')}
-        description={t('unconfirmedVisibilityDescription')}
-        action={t('unconfirmedVisibilityAction')}
+        isVisible={visibilityMessage.isVisible}
+        title={visibilityMessage.title}
+        description={visibilityMessage.description}
+        action={visibilityMessage.action}
       />
       <ProfileListsSection
         publicLists={publicLists}

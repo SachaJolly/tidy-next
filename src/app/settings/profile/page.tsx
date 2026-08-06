@@ -5,9 +5,14 @@ import { getTranslations } from 'next-intl/server';
 import { api } from '@/lib/api';
 import type { User } from '@/lib/types';
 
-import { updatePublicProfileSettings, updateProfileLinksSettings } from '@/app/actions/me';
+import {
+  updatePublicProfileSettings,
+  updateProfileLinksSettings,
+  updateProfileVisibilitySettings,
+} from '@/app/actions/me';
 import PublicProfileSection from './PublicProfileSection';
 import ProfileLinksSection from './ProfileLinksSection';
+import ProfileVisibilitySection from './ProfileVisibilitySection';
 
 export default async function ProfileSettingsPage() {
   const t = await getTranslations('settings');
@@ -27,9 +32,11 @@ export default async function ProfileSettingsPage() {
   }
 
   return (
-    <section style={{ maxWidth: '720px' }}>
-      <h2 style={{ margin: 0 }}>{t('profile.title')}</h2>
-      <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('profile.description')}</p>
+    <>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+        <h2>{t('profile.title')}</h2>
+        <p style={{ color: 'var(--text-muted)' }}>{t('profile.description')}</p>
+      </div>
       <PublicProfileSection
         onSave={updatePublicProfileSettings}
         initialValues={{
@@ -48,7 +55,10 @@ export default async function ProfileSettingsPage() {
           linkedin: me?.linkedin ?? '',
         }}
       />
-    </section>
+      <ProfileVisibilitySection
+        onSave={updateProfileVisibilitySettings}
+        initialProfilePrivate={me?.profilePrivate ?? false}
+      />
+    </>
   );
 }
-

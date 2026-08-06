@@ -22,6 +22,7 @@ export interface User {
   emailNotifications?: boolean;
   pushNotifications?: boolean;
   language?: string | null;
+  profilePrivate?: boolean;
   createdAt: string;
   confirmedAt?: string | null;
   emailConfirmed?: boolean;

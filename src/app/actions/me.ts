@@ -20,6 +20,10 @@ export interface UpdateProfileLinksInput {
   linkedin: string;
 }
 
+export interface UpdateProfileVisibilityInput {
+  profilePrivate: boolean;
+}
+
 export interface UpdateAccountInput {
   email: string;
 }
@@ -79,6 +83,20 @@ export async function updateProfileLinksSettings(input: UpdateProfileLinksInput)
         twitter: normalizeOptional(input.twitter),
         github: normalizeOptional(input.github),
         linkedin: normalizeOptional(input.linkedin),
+      },
+    },
+    { authorization: token, cache: 'no-store' },
+  );
+}
+
+export async function updateProfileVisibilitySettings(input: UpdateProfileVisibilityInput): Promise<void> {
+  const token = await getAuthorizationToken();
+
+  await api.auth.patch(
+    '/api/v1/me',
+    {
+      user: {
+        profile_private: input.profilePrivate,
       },
     },
     { authorization: token, cache: 'no-store' },
