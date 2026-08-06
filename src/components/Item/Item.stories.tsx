@@ -7,8 +7,11 @@ const meta = {
   component: Item,
   tags: ['autodocs'],
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
   },
+  args: {
+    canManage: true,
+  }
 } satisfies Meta<typeof Item>;
 
 export default meta;
@@ -17,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 const baseLinkItem: ItemType = {
   id: '1',
   title: 'Introducing TypeScript 5.0',
-  caption: 'A major release with new features and improvements',
+  caption: null,
   displayMode: 'LINK',
   position: 0,
   itemType: 'URL',
@@ -62,7 +65,6 @@ export const Link: Story = {
   args: {
     item: baseLinkItem,
     listId: 'list-123',
-    canManage: false,
   },
 };
 
@@ -78,7 +80,6 @@ export const LinkNoFavicon: Story = {
       },
     },
     listId: 'list-123',
-    canManage: false,
   },
 };
 
@@ -89,10 +90,9 @@ export const LinkCaption: Story = {
   args: {
     item: {
       ...baseLinkItem,
-      caption: 'The latest version brings amazing performance improvements',
+      caption: 'A major release with new features and improvements',
     },
     listId: 'list-123',
-    canManage: false,
   },
 };
 
@@ -103,6 +103,5 @@ export const Bookmark: Story = {
   args: {
     item: baseBookmarkItem,
     listId: 'list-123',
-    canManage: false,
   },
 };
