@@ -7,6 +7,12 @@
   "noItemsYet": "No items in this list yet.",
   "items": "{count, plural, =0 {Empty} =1 {1 item} other {# items}}",
   "publicLists": "{count, plural, =0 {No public lists} =1 {1 public list} other {# public lists}}",
+  "confirmEmailTitle": "Confirm your email",
+  "confirmEmailDescription": "Please check your inbox to unlock all account features.",
+  "confirmEmailResendLink": "Resend email",
+  "confirmEmailResendSending": "Sending…",
+  "confirmEmailResendSent": "Confirmation email sent. Please check your inbox.",
+  "confirmEmailResendFailed": "Unable to resend confirmation email. Please try again.",
   "language": {
     "en": "English",
     "fr": "French – Français"

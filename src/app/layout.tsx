@@ -3,10 +3,14 @@ import { cookies } from 'next/headers';
 import Navbar from '@/components/Navbar/Navbar';
 import Footer from '@/components/Footer/Footer';
 import GlobalModals from '@/components/GlobalModals';
+import ConfirmEmailBanner from '@/components/Banner/ConfirmEmailBanner';
 import { LanguageInitializer } from '@/components/LanguageInitializer';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
+import { resendConfirmationEmail } from '@/app/actions/me';
 import { getNewListGate } from '@/lib/new-list-gate';
+import { api } from '@/lib/api';
+import type { User } from '@/lib/types';
 import { normalizeThemePreference, resolveColorSchemeFromTheme, THEME_COOKIE_NAME } from '@/lib/theme-mapper';
 
 import { IBM_Plex_Sans, Space_Grotesk } from 'next/font/google';
@@ -50,6 +54,21 @@ export default async function RootLayout({
   // Using getMessages() with the locale we determined
   const messages = await getMessages({ locale });
   const newListGate = await getNewListGate();
+  const authToken = cookieStore.get('tidy_token')?.value ?? null;
+  let me: User | null = null;
+
+  if (authToken) {
+    try {
+      me = await api.auth.get<User>('/api/v1/me', {
+        authorization: authToken,
+        cache: 'no-store',
+      });
+    } catch {
+      me = null;
+    }
+  }
+
+  const shouldShowConfirmEmailBanner = !!authToken && me?.emailConfirmed === false;
 
   return (
     <html
@@ -60,8 +79,14 @@ export default async function RootLayout({
       <head></head>
       <body className={`${ibmPlexSans.variable} ${spaceGrotesk.variable}`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
+          <div id="application-banners"></div>
           <div className={styles['application-ui']}>
             <Navbar />
+            {shouldShowConfirmEmailBanner && (
+              <div style={{ padding: '0.75rem 1rem 0' }}>
+                <ConfirmEmailBanner onResend={resendConfirmationEmail} />
+              </div>
+            )}
             {children}
             <Footer />
           </div>

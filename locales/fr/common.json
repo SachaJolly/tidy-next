@@ -7,6 +7,12 @@
   "noItemsYet": "Aucun item dans cette liste pour le moment.",
   "items": "{count, plural, =0 {Vide} =1 {1 item} other {# items}}",
   "publicLists": "{count, plural, =0 {Aucune liste publique} =1 {1 liste publique} other {# listes publiques}}",
+  "confirmEmailTitle": "Confirmez votre e-mail",
+  "confirmEmailDescription": "Vérifiez votre boîte de réception pour débloquer toutes les fonctionnalités du compte.",
+  "confirmEmailResendLink": "Renvoyer l'e-mail",
+  "confirmEmailResendSending": "Envoi…",
+  "confirmEmailResendSent": "E-mail de confirmation envoyé. Vérifiez votre boîte de réception.",
+  "confirmEmailResendFailed": "Impossible de renvoyer l'e-mail de confirmation. Veuillez réessayer.",
   "language": {
     "en": "Anglais – English",
     "fr": "Français"
