@@ -4,8 +4,9 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 
 import Button from '@/components/Button/Button';
-import { Modal, ModalHeader, ModalContent, ModalFooter, ModalClose } from '@/components/Modal/Modal';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
+import Icon from '@/components/Icon/Icon';
+import { Modal, ModalHeader, ModalContent, ModalFooter, ModalClose } from '@/components/Modal/Modal';
 
 interface DeleteAccountModalProps {
   isDeleting: boolean;
@@ -14,14 +15,6 @@ interface DeleteAccountModalProps {
   onClose: () => void;
 }
 
-const DangerIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-    <circle cx="12" cy="12" r="10" />
-    <line x1="12" y1="8" x2="12" y2="12" />
-    <line x1="12" y1="16" x2="12.01" y2="16" />
-  </svg>
-);
-
 export default function DeleteAccountModal({ isDeleting, error, onConfirm, onClose }: DeleteAccountModalProps) {
   const t = useTranslations('settings');
 
@@ -29,7 +22,7 @@ export default function DeleteAccountModal({ isDeleting, error, onConfirm, onClo
     <Modal size="default" onClose={onClose}>
       <ModalHeader
         title={t('account.deleteConfirmTitle')}
-        icon={<DangerIcon />}
+        icon={<Icon name="warning" />}
         iconVariant="danger"
       />
       <ModalClose />
