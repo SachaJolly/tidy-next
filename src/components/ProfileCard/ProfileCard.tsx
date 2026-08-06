@@ -62,7 +62,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
         </div>
         <ButtonGroup>
           <Button label={t('follow')} size="small" variant="interactive" />
-          <Button label={common('seeMore')} size="small" variant="interactive" tinted={true} />
+          <Button label={t('seeProfile')} href={`/${handle}`} size="small" variant="interactive" tinted={true} />
         </ButtonGroup>
       </div>
       {recentLists.length > 0 && recentLists.map((list) => <ListCard key={list.id} list={list} />)}

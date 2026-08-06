@@ -1,4 +1,5 @@
 {
   "lists": "{count, plural, =1 {1 liste} other {# listes}}",
-  "follow": "Suivre"
+  "follow": "Suivre",
+  "seeProfile": "Voir le profil"
 }
