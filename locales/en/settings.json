@@ -5,7 +5,8 @@
     "title": "Sections",
     "profile": "Profile",
     "preferences": "Preferences",
-    "account": "Account"
+    "account": "Account",
+    "security": "Password & authentication"
   },
   "profile": {
     "title": "Profile",
@@ -52,9 +53,6 @@
     "title": "Account",
     "description": "Manage your private credentials and account lifecycle.",
     "emailLabel": "Email",
-    "currentPasswordLabel": "Current password",
-    "newPasswordLabel": "New password",
-    "passwordConfirmationLabel": "Confirm new password",
     "statusLabel": "Status",
     "roleLabel": "Role",
     "createdAtLabel": "Created at",
@@ -62,9 +60,22 @@
     "emailConfirmedLabel": "Email confirmed",
     "yes": "Yes",
     "no": "No",
-    "updatePassword": "Update password",
+    "save": "Save account",
     "deleteAccount": "Delete account",
     "updated": "Account settings updated successfully."
+  },
+  "security": {
+    "title": "Password & authentication",
+    "description": "Manage your password and future authentication methods (OAuth, passkeys, 2FA).",
+    "passwordTitle": "Change password",
+    "passwordDescription": "Choose a strong password you don't use elsewhere.",
+    "currentPasswordLabel": "Current password",
+    "newPasswordLabel": "New password",
+    "passwordConfirmationLabel": "Confirm new password",
+    "updatePassword": "Update password",
+    "passwordUpdated": "Password updated successfully.",
+    "authMethodsTitle": "Authentication methods",
+    "authMethodsDescription": "Additional sign-in methods will be available here soon."
   },
   "saveFailed": "Failed to save settings. Please try again.",
   "moreComingSoon": "More settings coming soon."

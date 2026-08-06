@@ -5,7 +5,8 @@
     "title": "Sections",
     "profile": "Profil",
     "preferences": "Préférences",
-    "account": "Compte"
+    "account": "Compte",
+    "security": "Mot de passe & authentification"
   },
   "profile": {
     "title": "Profil",
@@ -52,9 +53,6 @@
     "title": "Compte",
     "description": "Gérez vos identifiants privés et le cycle de vie de votre compte.",
     "emailLabel": "E-mail",
-    "currentPasswordLabel": "Mot de passe actuel",
-    "newPasswordLabel": "Nouveau mot de passe",
-    "passwordConfirmationLabel": "Confirmer le nouveau mot de passe",
     "statusLabel": "Statut",
     "roleLabel": "Rôle",
     "createdAtLabel": "Créé le",
@@ -62,9 +60,22 @@
     "emailConfirmedLabel": "E-mail confirmé",
     "yes": "Oui",
     "no": "Non",
-    "updatePassword": "Mettre à jour le mot de passe",
+    "save": "Enregistrer le compte",
     "deleteAccount": "Supprimer le compte",
     "updated": "Paramètres du compte mis à jour avec succès."
+  },
+  "security": {
+    "title": "Mot de passe & authentification",
+    "description": "Gérez votre mot de passe et les futures méthodes d'authentification (OAuth, passkeys, 2FA).",
+    "passwordTitle": "Changer le mot de passe",
+    "passwordDescription": "Choisissez un mot de passe fort que vous n'utilisez pas ailleurs.",
+    "currentPasswordLabel": "Mot de passe actuel",
+    "newPasswordLabel": "Nouveau mot de passe",
+    "passwordConfirmationLabel": "Confirmer le nouveau mot de passe",
+    "updatePassword": "Mettre à jour le mot de passe",
+    "passwordUpdated": "Mot de passe mis à jour avec succès.",
+    "authMethodsTitle": "Méthodes d'authentification",
+    "authMethodsDescription": "Des méthodes de connexion supplémentaires seront disponibles ici prochainement."
   },
   "saveFailed": "Échec de l'enregistrement des paramètres. Veuillez réessayer.",
   "moreComingSoon": "Plus de paramètres à venir."

@@ -13,6 +13,7 @@ const SETTINGS_ROUTES = [
   { href: '/settings/profile', labelKey: 'sidebar.profile' },
   { href: '/settings/preferences', labelKey: 'sidebar.preferences' },
   { href: '/settings/account', labelKey: 'sidebar.account' },
+  { href: '/settings/security', labelKey: 'sidebar.security' },
 ] as const;
 
 export default function SettingsSidebar() {

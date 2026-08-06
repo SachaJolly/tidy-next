@@ -27,8 +27,6 @@ export default function AccountSettingsForm({ initialValues }: AccountSettingsFo
   const [isSaving, setIsSaving] = useState(false);
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [email, setEmail] = useState(initialValues.email);
-  const [newPassword, setNewPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
   useEffect(() => {
     setEmail(initialValues.email);
@@ -40,14 +38,7 @@ export default function AccountSettingsForm({ initialValues }: AccountSettingsFo
     setFeedback(null);
 
     try {
-      await updateAccountSettings({
-        email,
-        password: newPassword,
-        passwordConfirmation,
-      });
-
-      setNewPassword('');
-      setPasswordConfirmation('');
+      await updateAccountSettings({ email });
       setFeedback({ type: 'success', text: t('account.updated') });
       router.refresh();
     } catch (error) {
@@ -70,22 +61,6 @@ export default function AccountSettingsForm({ initialValues }: AccountSettingsFo
         onChange={(event) => setEmail(event.target.value)}
         disabled={isSaving}
       />
-      <Input
-        id="settings-new-password"
-        label={t('account.newPasswordLabel')}
-        type="password"
-        value={newPassword}
-        onChange={(event) => setNewPassword(event.target.value)}
-        disabled={isSaving}
-      />
-      <Input
-        id="settings-password-confirmation"
-        label={t('account.passwordConfirmationLabel')}
-        type="password"
-        value={passwordConfirmation}
-        onChange={(event) => setPasswordConfirmation(event.target.value)}
-        disabled={isSaving}
-      />
       <Input id="settings-status" label={t('account.statusLabel')} defaultValue={initialValues.status} disabled />
       <Input id="settings-role" label={t('account.roleLabel')} defaultValue={initialValues.role} disabled />
       <Input id="settings-created-at" label={t('account.createdAtLabel')} defaultValue={initialValues.createdAt} disabled />
@@ -99,7 +74,7 @@ export default function AccountSettingsForm({ initialValues }: AccountSettingsFo
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '0.25rem' }}>
         <Button type="submit" variant="interactive" disabled={isSaving}>
-          {t('account.updatePassword')}
+          {t('account.save')}
         </Button>
       </div>
 

@@ -25,7 +25,11 @@ interface UpdateProfileInput {
 
 interface UpdateAccountInput {
   email: string;
-  password: string;
+}
+
+interface UpdatePasswordInput {
+  currentPassword: string;
+  newPassword: string;
   passwordConfirmation: string;
 }
 
@@ -78,18 +82,25 @@ export async function updateProfileSettings(input: UpdateProfileInput): Promise<
 export async function updateAccountSettings(input: UpdateAccountInput): Promise<void> {
   const token = await getAuthorizationToken();
 
-  const userPayload: Record<string, string> = {
-    email: input.email.trim(),
-  };
+  await api.auth.patch(
+    '/api/v1/me',
+    { user: { email: input.email.trim() } },
+    { authorization: token, cache: 'no-store' },
+  );
+}
 
-  if (input.password.trim().length > 0 || input.passwordConfirmation.trim().length > 0) {
-    userPayload.password = input.password;
-    userPayload.password_confirmation = input.passwordConfirmation;
-  }
+export async function updatePasswordSettings(input: UpdatePasswordInput): Promise<void> {
+  const token = await getAuthorizationToken();
 
   await api.auth.patch(
     '/api/v1/me',
-    { user: userPayload },
+    {
+      user: {
+        current_password: input.currentPassword,
+        password: input.newPassword,
+        password_confirmation: input.passwordConfirmation,
+      },
+    },
     { authorization: token, cache: 'no-store' },
   );
 }
