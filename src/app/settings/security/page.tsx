@@ -9,7 +9,7 @@ export default async function SecuritySettingsPage() {
   return (
     <section style={{ maxWidth: '720px' }}>
       <h2 style={{ margin: 0 }}>{t('security.title')}</h2>
-      <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('security.description')}</p>
+      <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '1.5rem' }}>{t('security.description')}</p>
       <SecuritySettingsForm />
     </section>
   );

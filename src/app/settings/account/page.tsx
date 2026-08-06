@@ -5,7 +5,9 @@ import { getTranslations } from 'next-intl/server';
 import { api } from '@/lib/api';
 import type { User } from '@/lib/types';
 
-import AccountSettingsForm from './AccountSettingsForm';
+import EmailSection from './EmailSection';
+import UsernameSection from './UsernameSection';
+import AccountInfoSection from './AccountInfoSection';
 
 export default async function AccountSettingsPage() {
   const t = await getTranslations('settings');
@@ -27,17 +29,18 @@ export default async function AccountSettingsPage() {
   return (
     <section style={{ maxWidth: '720px' }}>
       <h2 style={{ margin: 0 }}>{t('account.title')}</h2>
-      <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('account.description')}</p>
-      <AccountSettingsForm
-        initialValues={{
-          email: me?.email ?? '',
-          status: me?.status ?? '',
-          role: me?.role ?? '',
-          createdAt: me?.createdAt ?? '',
-          confirmedAt: me?.confirmedAt ?? '',
-          emailConfirmed: me?.emailConfirmed ?? false,
-        }}
+      <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '1.5rem' }}>{t('account.description')}</p>
+
+      <EmailSection initialEmail={me?.email ?? ''} />
+      <UsernameSection initialUsername={me?.username ?? ''} />
+      <AccountInfoSection
+        status={me?.status ?? ''}
+        role={me?.role ?? ''}
+        createdAt={me?.createdAt ?? ''}
+        confirmedAt={me?.confirmedAt ?? ''}
+        emailConfirmed={me?.emailConfirmed ?? false}
       />
     </section>
   );
 }
+

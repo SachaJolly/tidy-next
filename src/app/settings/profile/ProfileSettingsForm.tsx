@@ -13,7 +13,6 @@ type Feedback = { type: 'success' | 'error'; text: string } | null;
 interface ProfileSettingsFormProps {
   initialValues: {
     name: string;
-    username: string;
     bio: string;
     avatar: string;
     cover: string;
@@ -30,7 +29,6 @@ export default function ProfileSettingsForm({ initialValues }: ProfileSettingsFo
   const [isSaving, setIsSaving] = useState(false);
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [name, setName] = useState(initialValues.name);
-  const [username, setUsername] = useState(initialValues.username);
   const [bio, setBio] = useState(initialValues.bio);
   const [avatar, setAvatar] = useState(initialValues.avatar);
   const [cover, setCover] = useState(initialValues.cover);
@@ -41,7 +39,6 @@ export default function ProfileSettingsForm({ initialValues }: ProfileSettingsFo
 
   useEffect(() => {
     setName(initialValues.name);
-    setUsername(initialValues.username);
     setBio(initialValues.bio);
     setAvatar(initialValues.avatar);
     setCover(initialValues.cover);
@@ -59,7 +56,6 @@ export default function ProfileSettingsForm({ initialValues }: ProfileSettingsFo
     try {
       await updateProfileSettings({
         name,
-        username,
         bio,
         avatar,
         cover,
@@ -105,14 +101,6 @@ export default function ProfileSettingsForm({ initialValues }: ProfileSettingsFo
         value={bio}
         onChange={(event) => setBio(event.target.value)}
         placeholder={t('profile.bioPlaceholder')}
-        disabled={isSaving}
-      />
-      <Input
-        id="settings-username"
-        label={t('profile.usernameLabel')}
-        value={username}
-        onChange={(event) => setUsername(event.target.value)}
-        placeholder={t('profile.usernamePlaceholder')}
         disabled={isSaving}
       />
       <Input

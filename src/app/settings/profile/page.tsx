@@ -31,7 +31,6 @@ export default async function ProfileSettingsPage() {
       <ProfileSettingsForm
         initialValues={{
           name: me?.name ?? '',
-          username: me?.username ?? '',
           bio: me?.bio ?? '',
           avatar: me?.avatar ?? '',
           cover: me?.cover ?? '',

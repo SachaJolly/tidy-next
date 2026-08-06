@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { updatePasswordSettings } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
+import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -40,14 +41,8 @@ export default function SecuritySettingsForm() {
 
   return (
     <>
-      {/* Password section */}
-      <section style={{ marginTop: '1.5rem' }}>
-        <h3 style={{ margin: 0 }}>{t('security.passwordTitle')}</h3>
-        <p style={{ marginTop: '0.4rem', color: 'var(--text-muted)' }}>{t('security.passwordDescription')}</p>
-        <form
-          onSubmit={handleSubmit}
-          style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
-        >
+      <SettingsCard title={t('security.passwordTitle')} description={t('security.passwordDescription')}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <Input
             id="security-current-password"
             label={t('security.currentPasswordLabel')}
@@ -72,26 +67,23 @@ export default function SecuritySettingsForm() {
             onChange={(e) => setPasswordConfirmation(e.target.value)}
             disabled={isSaving}
           />
-
-          <div style={{ marginTop: '0.25rem' }}>
+          <div>
             <Button type="submit" variant="interactive" disabled={isSaving}>
               {t('security.updatePassword')}
             </Button>
           </div>
-
           {feedback && (
             <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>
               {feedback.text}
             </p>
           )}
         </form>
-      </section>
+      </SettingsCard>
 
-      {/* Placeholder for future auth methods (OAuth, passkeys, 2FA…) */}
-      <section style={{ marginTop: '2.5rem' }}>
-        <h3 style={{ margin: 0 }}>{t('security.authMethodsTitle')}</h3>
-        <p style={{ marginTop: '0.4rem', color: 'var(--text-muted)' }}>{t('security.authMethodsDescription')}</p>
-      </section>
+      {/* Placeholder — will hold OAuth providers, passkeys, 2FA toggles */}
+      <SettingsCard title={t('security.authMethodsTitle')} description={t('security.authMethodsDescription')}>
+        <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>{t('moreComingSoon')}</p>
+      </SettingsCard>
     </>
   );
 }

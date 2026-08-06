@@ -13,7 +13,6 @@ type NullableString = string | null;
 
 interface UpdateProfileInput {
   name: string;
-  username: string;
   bio: string;
   avatar: string;
   cover: string;
@@ -65,7 +64,6 @@ export async function updateProfileSettings(input: UpdateProfileInput): Promise<
     {
       user: {
         name: input.name.trim(),
-        username: input.username.trim(),
         bio: normalizeOptional(input.bio),
         avatar: normalizeOptional(input.avatar),
         cover: normalizeOptional(input.cover),
@@ -85,6 +83,16 @@ export async function updateAccountSettings(input: UpdateAccountInput): Promise<
   await api.auth.patch(
     '/api/v1/me',
     { user: { email: input.email.trim() } },
+    { authorization: token, cache: 'no-store' },
+  );
+}
+
+export async function updateUsernameSettings(username: string): Promise<void> {
+  const token = await getAuthorizationToken();
+
+  await api.auth.patch(
+    '/api/v1/me',
+    { user: { username: username.trim() } },
     { authorization: token, cache: 'no-store' },
   );
 }
