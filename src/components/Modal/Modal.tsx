@@ -144,17 +144,10 @@ export function Modal({ children, size = 'default', minHeight, onClose }: ModalP
   }, [mounted, onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
-    // The native <dialog> fires click events on itself when the user clicks its
-    // ::backdrop. We distinguish backdrop clicks from content clicks by checking
-    // whether the pointer landed outside the dialog's bounding rectangle.
-    const rect = dialogRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const isOutside =
-      e.clientY < rect.top ||
-      e.clientY > rect.bottom ||
-      e.clientX < rect.left ||
-      e.clientX > rect.right;
-    if (isOutside) dismiss();
+    // For native <dialog>, a backdrop click bubbles with target === dialog.
+    // Clicks on descendants (including portaled dropdown panels mounted under
+    // the dialog) have a different target and must not dismiss the modal.
+    if (e.target === e.currentTarget) dismiss();
   };
 
   if (!mounted) {
