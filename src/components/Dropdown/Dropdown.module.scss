@@ -253,6 +253,10 @@
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0;
+  position: sticky;
+  top: -.5rem;
+  background: var(--background-modal);
+  z-index: 2;
 }
 
 /* ── Separator ──────────────────────────────────────────────────────────── */

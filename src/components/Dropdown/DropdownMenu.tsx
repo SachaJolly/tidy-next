@@ -25,6 +25,8 @@ export interface DropdownMenuProps {
   inline?: boolean;
   /** When true, the menu width follows the trigger width. */
   matchTriggerWidth?: boolean;
+  /** Optional max-height override for the menu panel. */
+  maxHeight?: React.CSSProperties['maxHeight'];
 }
 
 export function DropdownMenu({
@@ -34,6 +36,7 @@ export function DropdownMenu({
   className,
   inline = false,
   matchTriggerWidth = false,
+  maxHeight,
 }: DropdownMenuProps) {
   const {
     open,
@@ -188,6 +191,14 @@ export function DropdownMenu({
   if (typeof document === 'undefined') return null;
 
   const isSubView = currentView !== 'root';
+  const panelStyle: React.CSSProperties | undefined = inline
+    ? { position: 'relative', visibility: 'visible', maxHeight }
+    : !isMobile
+      ? { ...menuStyle, maxHeight }
+      : maxHeight
+        ? { maxHeight }
+        : undefined;
+
   const panel = (
     <div
       ref={menuRef}
@@ -197,9 +208,7 @@ export function DropdownMenu({
       className={[styles.menu, isMobile && !inline && styles.drawer, className]
         .filter(Boolean)
         .join(' ')}
-      style={
-        inline ? { position: 'relative', visibility: 'visible' } : !isMobile ? menuStyle : undefined
-      }
+      style={panelStyle}
       onKeyDown={handleKeyDown}
     >
       {isSubView && (

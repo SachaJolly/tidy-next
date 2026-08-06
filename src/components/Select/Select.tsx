@@ -211,7 +211,7 @@ export const Select = ({
           suffix={suffix}
           trailing={dropdownIndicator}
         />
-        <DropdownMenu matchTriggerWidth={true}>
+        <DropdownMenu matchTriggerWidth={true} maxHeight="16rem">
           <div>
             {isOpen && filteredFlatOptions.length > 0 ? (
               indexedSections.map((section, sectionIndex) => (
