@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 
+import { toDisplayMediaUrl } from '@/lib/media-proxy';
+
 import styles from './ItemLink.module.scss';
 import type {
   ItemLinkDisplayMode,
@@ -10,12 +12,16 @@ import type {
 
 const DEFAULT_NO_DESCRIPTION_LABEL = 'No description available.';
 
-function ResponsiveContentImage({ src, alt }: { src: string; alt: string }) {
+function ResponsiveContentImage({ src, alt, className = styles.coverImage }: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
   return (
     <img
       alt={alt}
-      className={styles.coverImage}
-      src={src}
+      className={className}
+      src={toDisplayMediaUrl(src)}
       loading="lazy"
       referrerPolicy="no-referrer"
     />
@@ -24,7 +30,10 @@ function ResponsiveContentImage({ src, alt }: { src: string; alt: string }) {
 
 function ItemLink({ url, metadata, displayMode = 'link' }: ItemLinkWithDisplayModeProps) {
   const resolvedMode: ItemLinkDisplayMode = displayMode;
+  const isLink = resolvedMode === 'link';
   const isBookmark = resolvedMode === 'bookmark';
+  const isEmbed = resolvedMode === 'embed';
+
   const content =
     resolvedMode === 'bookmark' ? (
       <ItemBookmarkContent metadata={metadata} noDescriptionLabel={DEFAULT_NO_DESCRIPTION_LABEL} />
@@ -36,7 +45,12 @@ function ItemLink({ url, metadata, displayMode = 'link' }: ItemLinkWithDisplayMo
 
   return (
     <a
-      className={[styles.content, isBookmark && styles.bookmark].filter(Boolean).join(' ')}
+      className={[
+        styles.content,
+        isLink && styles.link,
+        isBookmark && styles.bookmark,
+        isEmbed && styles.embed
+      ].filter(Boolean).join(' ')}
       href={url}
       target="_blank"
       rel="noopener noreferrer"
@@ -53,7 +67,7 @@ function ItemLinkContent({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
         <img
           alt=""
           className={styles.favicon}
-          src={metadata.favicon}
+          src={toDisplayMediaUrl(metadata.favicon)}
           loading="lazy"
           referrerPolicy="no-referrer"
         />
@@ -63,13 +77,12 @@ function ItemLinkContent({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
   );
 }
 
-function ItemBookmarkContent({
-  metadata,
-  noDescriptionLabel,
-}: {
+function ItemBookmarkContent({ metadata, noDescriptionLabel }: {
   metadata: ItemLinkProps['metadata'];
   noDescriptionLabel: string;
 }) {
+  const galleryImages = metadata.images?.slice(1, 4) ?? [];
+
   return (
     <>
       <div className={styles.info}>
@@ -103,7 +116,7 @@ function ItemBookmarkContent({
             <img
               alt=""
               className={styles.favicon}
-              src={metadata.favicon}
+              src={toDisplayMediaUrl(metadata.favicon)}
               loading="lazy"
               referrerPolicy="no-referrer"
             />
@@ -113,8 +126,24 @@ function ItemBookmarkContent({
         </div>
       </div>
 
-      <div className={styles.cover}>
-        {metadata.image && <ResponsiveContentImage alt={metadata.title} src={metadata.image} />}
+      <div className={styles.media}>
+        {galleryImages.length > 1 ? (
+          <div className={styles.gallery} data-count={galleryImages.length}>
+            {galleryImages.map((image, index) => (
+              <div className={styles.galleryImage} key={`${image}-${index}`}>
+                <ResponsiveContentImage
+                  alt={metadata.title}
+                  className={styles.galleryImageAsset}
+                  src={image}
+                />
+              </div>
+            ))}
+          </div>
+        ) : metadata.image && (
+          <div className={styles.cover}>
+            <ResponsiveContentImage alt={metadata.title} src={metadata.image} />
+          </div>
+        )}
       </div>
     </>
   );
@@ -123,21 +152,33 @@ function ItemBookmarkContent({
 function ItemEmbedContent({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
   return (
     <>
-      {metadata.favicon && (
-        <img
-          alt=""
-          className={styles.favicon}
-          src={metadata.favicon}
-          loading="lazy"
-          referrerPolicy="no-referrer"
-        />
-      )}
-      <h2 className={styles.title}>{metadata.title}</h2>
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '.5rem' }}>
+        {metadata.favicon && (
+          <img
+            alt=""
+            className={styles.favicon}
+            src={toDisplayMediaUrl(metadata.favicon)}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+          />
+        )}
+        <h2 className={styles.title}>{metadata.title}</h2>
+      </div>
       {metadata.embed ? (
-        <div dangerouslySetInnerHTML={{ __html: metadata.embed }} />
+        <div className={styles.embedContent} dangerouslySetInnerHTML={{ __html: metadata.embed }} />
+      ) : metadata.videoUrl ? (
+        <div className={styles.embedContent}>
+          <video
+            className={styles.embedVideo}
+            controls
+            playsInline
+            preload="metadata"
+            src={toDisplayMediaUrl(metadata.videoUrl)}
+          />
+        </div>
       ) : (
         metadata.image && (
-          <div>
+          <div className={styles.embedContent}>
             <ResponsiveContentImage alt={metadata.title} src={metadata.image} />
           </div>
         )

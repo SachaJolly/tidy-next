@@ -1,4 +1,4 @@
-import itemsData from "@/data/items.json";
+import itemsData from '@/data/items.json';
 
 export type Item = {
   id: string;
@@ -21,6 +21,7 @@ export type Item = {
     siteName?: string;
     favicon?: string;
     image?: string;
+    images?: string[];
     embed?: string;
   };
   ownership: {

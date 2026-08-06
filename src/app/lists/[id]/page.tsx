@@ -121,7 +121,8 @@ async function ListHeaderContainer({ id }: { id: string }) {
 
 async function ListItems({ id }: { id: string }) {
   const { list, common, isAuthor } = await getListPageData(id);
-  const items = list.items || [];
+  // Keep the newest items first so the list reads from top to bottom in reverse chronology.
+  const items = [...(list.items || [])].reverse();
 
   return (
     <section className={styles.itemsSection}>
@@ -150,7 +151,7 @@ async function ListModals({ id }: { id: string }) {
   return (
     <>
       <NewItemModal listId={id} />
-      <EditItemModal listId={id} items={list.items || []} />
+      <EditItemModal listId={id} items={[...(list.items || [])].reverse()} />
     </>
   );
 }

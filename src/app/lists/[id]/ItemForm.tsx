@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import type { OpenGraphMetadata } from '@/actions/fetch-opengraph';
-import { fetchOpenGraphAction } from '@/actions/fetch-opengraph';
+import { fetchLinkMetadataAction } from '@/actions/fetch-link-metadata';
+import type { LinkMetadata } from '@/actions/fetch-link-metadata';
 import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import FormField from '@/components/FormField/FormField';
@@ -23,7 +23,7 @@ const URL_DEBOUNCE_MS = 2000;
 function toInitialLinkMetadata(
   initialUrl: string | null,
   initialMetadata: ItemType['metadata'],
-): OpenGraphMetadata | null {
+): LinkMetadata | null {
   if (!initialUrl) {
     return null;
   }
@@ -36,7 +36,16 @@ function toInitialLinkMetadata(
     image: typeof initialMetadata?.image === 'string' ? initialMetadata.image : undefined,
     favicon: typeof initialMetadata?.favicon === 'string' ? initialMetadata.favicon : undefined,
     siteName: typeof initialMetadata?.siteName === 'string' ? initialMetadata.siteName : undefined,
+    images: Array.isArray(initialMetadata?.images)
+      ? initialMetadata.images.filter((value): value is string => typeof value === 'string')
+      : undefined,
     embed: typeof initialMetadata?.embed === 'string' ? initialMetadata.embed : undefined,
+    videoUrl: typeof initialMetadata?.videoUrl === 'string' ? initialMetadata.videoUrl : undefined,
+    videoUrls: Array.isArray(initialMetadata?.videoUrls)
+      ? initialMetadata.videoUrls.filter((value): value is string => typeof value === 'string')
+      : undefined,
+    videoType:
+      typeof initialMetadata?.videoType === 'string' ? initialMetadata.videoType : undefined,
   };
 }
 
@@ -99,7 +108,7 @@ export default function ItemForm({
       ? initialDisplayMode
       : 'bookmark',
   );
-  const [linkMetadata, setLinkMetadata] = useState<OpenGraphMetadata | null>(
+  const [linkMetadata, setLinkMetadata] = useState<LinkMetadata | null>(
     toInitialLinkMetadata(initialExtractedUrl, initialMetadata),
   );
   const [metadataError, setMetadataError] = useState<string | null>(null);
@@ -128,6 +137,24 @@ export default function ItemForm({
     typeof initialMetadata?.siteName === 'string' ? initialMetadata.siteName : '';
   const initialMetadataEmbed =
     typeof initialMetadata?.embed === 'string' ? initialMetadata.embed : '';
+  const initialMetadataVideoUrl =
+    typeof initialMetadata?.videoUrl === 'string' ? initialMetadata.videoUrl : '';
+  const initialMetadataVideoType =
+    typeof initialMetadata?.videoType === 'string' ? initialMetadata.videoType : '';
+  const initialMetadataImages = useMemo(
+    () =>
+      Array.isArray(initialMetadata?.images)
+        ? initialMetadata.images.filter((value): value is string => typeof value === 'string')
+        : [],
+    [initialMetadata],
+  );
+  const initialMetadataVideoUrls = useMemo(
+    () =>
+      Array.isArray(initialMetadata?.videoUrls)
+        ? initialMetadata.videoUrls.filter((value): value is string => typeof value === 'string')
+        : [],
+    [initialMetadata],
+  );
 
   const resizeTextarea = useCallback((element: HTMLTextAreaElement) => {
     element.style.height = 'auto';
@@ -164,7 +191,11 @@ export default function ItemForm({
             image: initialMetadataImage || undefined,
             favicon: initialMetadataFavicon || undefined,
             siteName: initialMetadataSiteName || undefined,
+            images: initialMetadataImages.length > 0 ? initialMetadataImages : undefined,
             embed: initialMetadataEmbed || undefined,
+            videoUrl: initialMetadataVideoUrl || undefined,
+            videoUrls: initialMetadataVideoUrls.length > 0 ? initialMetadataVideoUrls : undefined,
+            videoType: initialMetadataVideoType || undefined,
           }
         : null,
     );
@@ -189,8 +220,12 @@ export default function ItemForm({
     initialMetadataEmbed,
     initialMetadataFavicon,
     initialMetadataImage,
+    initialMetadataImages,
     initialMetadataSiteName,
     initialMetadataTitle,
+    initialMetadataVideoType,
+    initialMetadataVideoUrl,
+    initialMetadataVideoUrls,
   ]);
 
   useEffect(() => {
@@ -262,7 +297,7 @@ export default function ItemForm({
     setIsFetchingMetadata(true);
     setMetadataError(null);
 
-    void fetchOpenGraphAction(extractedUrl)
+    void fetchLinkMetadataAction(extractedUrl)
       .then((result) => {
         if (isStale) {
           return;

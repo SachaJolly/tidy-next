@@ -146,9 +146,9 @@ export async function getListWithItemsAndAuthor(listId: string) {
     getUserById(list.authorId),
   ]);
 
-  // Trier les items par position
-  const sortedItems = itemsResponse.items.sort(
-    (a, b) => a.ownership.position - b.ownership.position,
+  // Trier les items par position décroissante pour afficher les plus récents en premier.
+  const sortedItems = [...itemsResponse.items].sort(
+    (a, b) => b.ownership.position - a.ownership.position,
   );
 
   return {

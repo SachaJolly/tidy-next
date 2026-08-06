@@ -10,7 +10,11 @@ export type ItemLinkMetadata = {
   siteName?: string;
   host?: string;
   image?: string;
+  images?: string[];
   embed?: string;
+  videoUrl?: string;
+  videoUrls?: string[];
+  videoType?: string;
 };
 
 export type ItemLinkProps = {

@@ -1,10 +1,26 @@
 'use server';
 
+import { extractJsonLdMetadata } from '@/lib/jsonld-metadata';
+import { extractProviderSpecificMetadata } from '@/actions/providers';
+
+/**
+ * OpenGraph/HTML metadata strategy.
+ *
+ * Responsibilities:
+ * - Fetch the target page HTML server-side (avoids browser CORS limitations).
+ * - Extract OG + Twitter card tags, canonical URL, favicon, and fallback title.
+ * - Enrich with JSON-LD when OG is partial.
+ * - Build a normalized image list (`images[]`) for multi-image previews.
+ *
+ * This action is intentionally independent from provider routing:
+ * routing/fallback policy lives in `fetch-link-metadata.ts` (orchestrator).
+ */
 export type OpenGraphMetadata = {
   url: string;
   title?: string;
   description?: string;
   image?: string;
+  images?: string[];
   imageAlt?: string;
   favicon?: string;
   siteName?: string;
@@ -19,7 +35,13 @@ export type OpenGraphMetadata = {
   twitterCard?: string;
   twitterSite?: string;
   twitterCreator?: string;
+  videoUrl?: string;
+  videoUrls?: string[];
+  videoType?: string;
+  jsonLdType?: string;
   embed?: string;
+  provider?: string;
+  metadataSource?: 'opengraph' | 'oembed' | 'combined';
   raw?: Record<string, string>;
 };
 
@@ -55,6 +77,8 @@ async function fetchHtmlResponse(url: string): Promise<Response> {
   const attempts: HeadersInit[] = [BROWSER_HEADERS, FALLBACK_HEADERS];
   let lastResponse: Response | null = null;
 
+  // We try a browser-like request first, then a lighter fallback header set.
+  // This improves compatibility with sites that aggressively filter bots.
   for (const headers of attempts) {
     const response = await fetch(url, {
       method: 'GET',
@@ -133,6 +157,8 @@ function extractMetaContentMap(html: string): Record<string, string> {
     const key = (attrs.property ?? attrs.name)?.toLowerCase();
     const content = attrs.content;
 
+    // Keep the first value seen for each key to preserve page author intent
+    // and avoid noisy overrides from duplicate tags lower in the document.
     if (key && content && !(key in map)) {
       map[key] = content;
     }
@@ -141,6 +167,140 @@ function extractMetaContentMap(html: string): Record<string, string> {
   }
 
   return map;
+}
+
+function extractMetaContentValues(html: string, selectors: string[]): string[] {
+  const values: string[] = [];
+  const seen = new Set<string>();
+  const targetKeys = new Set(selectors.map((selector) => selector.toLowerCase()));
+  const metaTagRegex = /<meta\b[^>]*>/gi;
+
+  let tagMatch = metaTagRegex.exec(html);
+  while (tagMatch) {
+    const attrs = extractHtmlTagAttributes(tagMatch[0]);
+    const key = (attrs.property ?? attrs.name)?.toLowerCase();
+    const content = attrs.content;
+
+    // Skip irrelevant meta tags early for performance on very large pages.
+    if (!key || !content || !targetKeys.has(key)) {
+      tagMatch = metaTagRegex.exec(html);
+      continue;
+    }
+
+    if (!seen.has(content)) {
+      seen.add(content);
+      values.push(content);
+    }
+
+    tagMatch = metaTagRegex.exec(html);
+  }
+
+  return values;
+}
+
+function extractVideoUrls(html: string, baseUrl: URL): string[] {
+  const metaVideoValues = extractMetaContentValues(html, [
+    'og:video',
+    'og:video:url',
+    'og:video:secure_url',
+    'twitter:player:stream',
+  ])
+    .map((value) => resolveMaybeRelativeUrl(value, baseUrl))
+    .filter((value): value is string => Boolean(value));
+
+  return Array.from(new Set(metaVideoValues));
+}
+
+function getPreferredVideoUrl(videoUrls: string[]): string | undefined {
+  if (videoUrls.length === 0) {
+    return undefined;
+  }
+
+  const withScore = videoUrls.map((urlValue) => {
+    let score = 0;
+
+    if (/\.mp4(?:\?|$)/i.test(urlValue)) {
+      score += 10_000;
+    }
+
+    if (/\.m3u8(?:\?|$)/i.test(urlValue)) {
+      score += 5_000;
+    }
+
+    const resolutionMatch = urlValue.match(/\/(\d{2,5})x(\d{2,5})\//);
+    if (resolutionMatch) {
+      const width = Number(resolutionMatch[1]);
+      const height = Number(resolutionMatch[2]);
+      if (Number.isFinite(width) && Number.isFinite(height)) {
+        score += width * height;
+      }
+    }
+
+    return { urlValue, score };
+  });
+
+  withScore.sort((a, b) => b.score - a.score);
+  return withScore[0]?.urlValue;
+}
+
+function inferVideoType(
+  videoUrl: string | undefined,
+  explicitVideoType: string | undefined,
+): string | undefined {
+  if (explicitVideoType?.trim()) {
+    return explicitVideoType.trim();
+  }
+
+  if (!videoUrl) {
+    return undefined;
+  }
+
+  if (/\.m3u8(?:\?|$)/i.test(videoUrl)) {
+    return 'application/x-mpegURL';
+  }
+  if (/\.mp4(?:\?|$)/i.test(videoUrl)) {
+    return 'video/mp4';
+  }
+
+  return undefined;
+}
+
+function getImageAssetKey(urlValue: string): string {
+  try {
+    const parsed = new URL(urlValue);
+    const hostname = parsed.hostname.toLowerCase();
+
+    // X image assets often appear as several size variants for the same media.
+    // We collapse variants so one tweet image doesn't appear as fake duplicates.
+    if (hostname === 'pbs.twimg.com' || hostname.endsWith('.pbs.twimg.com')) {
+      const mediaMatch = parsed.pathname.match(/^\/media\/([^./?:]+)/);
+      if (mediaMatch) {
+        return `pbs:${mediaMatch[1]}`;
+      }
+    }
+
+    return parsed.toString();
+  } catch {
+    return urlValue;
+  }
+}
+
+function dedupeImagesByAsset(urls: string[]): string[] {
+  const deduped: string[] = [];
+  const seen = new Set<string>();
+
+  for (const urlValue of urls) {
+    const key = getImageAssetKey(urlValue);
+    // Deduping by logical asset key avoids duplicates where only size/format changes.
+    if (seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    deduped.push(urlValue);
+  }
+
+  return deduped;
 }
 
 function getFirstMetaContent(map: Record<string, string>, selectors: string[]): string | undefined {
@@ -237,30 +397,61 @@ export async function fetchOpenGraphAction(rawUrl: string): Promise<FetchOpenGra
 
     const html = await response.text();
 
+    // Use the post-redirect URL as canonical base for resolving relative assets.
+    // This prevents broken image/favicon links when the initial URL redirects.
     const finalUrl = response.url ? new URL(response.url) : parsedUrl;
     const metaMap = extractMetaContentMap(html);
-    const title = getFirstMetaContent(metaMap, ['og:title', 'twitter:title']) ?? getTitle(html);
+    const jsonLdMetadata = extractJsonLdMetadata(html, finalUrl);
+    const providerMetadata = extractProviderSpecificMetadata(finalUrl, html);
+    const ogImageValues = extractMetaContentValues(html, ['og:image', 'twitter:image'])
+      .map((value) => resolveMaybeRelativeUrl(value, finalUrl))
+      .filter((value): value is string => Boolean(value));
+    const imageCandidates = [
+      ...(providerMetadata.images ?? []),
+      ...ogImageValues,
+      ...(jsonLdMetadata?.images ?? []),
+    ];
+    // Keep first-seen order, then remove asset-level duplicates (important for X variants).
+    const images = dedupeImagesByAsset(Array.from(new Set(imageCandidates)));
+    const videoUrls = Array.from(
+      new Set([...(providerMetadata.videoUrls ?? []), ...extractVideoUrls(html, finalUrl)]),
+    );
+    const videoUrl = getPreferredVideoUrl(videoUrls);
+    const title =
+      getFirstMetaContent(metaMap, ['og:title', 'twitter:title']) ??
+      jsonLdMetadata?.title ??
+      getTitle(html);
     const description =
       getFirstMetaContent(metaMap, ['og:description', 'twitter:description', 'description']) ??
+      jsonLdMetadata?.description ??
       undefined;
-    const image = resolveMaybeRelativeUrl(
-      getFirstMetaContent(metaMap, ['og:image', 'twitter:image']),
-      finalUrl,
-    );
+    const image =
+      resolveMaybeRelativeUrl(
+        getFirstMetaContent(metaMap, ['og:image', 'twitter:image']),
+        finalUrl,
+      ) ??
+      images[0] ??
+      jsonLdMetadata?.image ??
+      undefined;
     const favicon = extractFaviconUrl(html, finalUrl);
     const canonicalUrl = extractCanonicalUrl(html, finalUrl);
-    const siteName = getFirstMetaContent(metaMap, ['og:site_name']);
+    const siteName = getFirstMetaContent(metaMap, ['og:site_name']) ?? jsonLdMetadata?.siteName;
     const imageAlt = getFirstMetaContent(metaMap, ['og:image:alt', 'twitter:image:alt']);
-    const type = getFirstMetaContent(metaMap, ['og:type']);
+    const type = getFirstMetaContent(metaMap, ['og:type']) ?? jsonLdMetadata?.type;
     const locale = getFirstMetaContent(metaMap, ['og:locale']);
-    const author = getFirstMetaContent(metaMap, ['author', 'article:author']);
-    const publishedTime = getFirstMetaContent(metaMap, ['article:published_time']);
-    const modifiedTime = getFirstMetaContent(metaMap, ['article:modified_time']);
-    const keywords = getFirstMetaContent(metaMap, ['keywords']);
-    const language = getFirstMetaContent(metaMap, ['language']);
+    const author =
+      getFirstMetaContent(metaMap, ['author', 'article:author']) ?? jsonLdMetadata?.author;
+    const publishedTime =
+      getFirstMetaContent(metaMap, ['article:published_time']) ?? jsonLdMetadata?.publishedTime;
+    const modifiedTime =
+      getFirstMetaContent(metaMap, ['article:modified_time']) ?? jsonLdMetadata?.modifiedTime;
+    const keywords = getFirstMetaContent(metaMap, ['keywords']) ?? jsonLdMetadata?.keywords;
+    const language = getFirstMetaContent(metaMap, ['language']) ?? jsonLdMetadata?.language;
     const twitterCard = getFirstMetaContent(metaMap, ['twitter:card']);
     const twitterSite = getFirstMetaContent(metaMap, ['twitter:site']);
     const twitterCreator = getFirstMetaContent(metaMap, ['twitter:creator']);
+    const explicitVideoType = getFirstMetaContent(metaMap, ['og:video:type']);
+    const videoType = providerMetadata.videoType ?? inferVideoType(videoUrl, explicitVideoType);
 
     return {
       metadata: {
@@ -268,6 +459,7 @@ export async function fetchOpenGraphAction(rawUrl: string): Promise<FetchOpenGra
         title,
         description,
         image,
+        images: images.length > 0 ? images : undefined,
         imageAlt,
         favicon,
         siteName,
@@ -282,6 +474,11 @@ export async function fetchOpenGraphAction(rawUrl: string): Promise<FetchOpenGra
         twitterCard,
         twitterSite,
         twitterCreator,
+        videoUrl,
+        videoUrls: videoUrls.length > 0 ? videoUrls : undefined,
+        videoType,
+        jsonLdType: jsonLdMetadata?.type,
+        metadataSource: 'opengraph',
         raw: metaMap,
       },
     };

@@ -11,7 +11,7 @@ import { getResolvedDisplayMode, isEmbedModeAvailable } from '@/lib/item-display
 
 import LinkPreviewSkeleton from './LinkPreviewSkeleton';
 import styles from './LinkPreview.module.scss';
-import SectionMessage from "@/components/SectionMessage/SectionMessage";
+import SectionMessage from '@/components/SectionMessage/SectionMessage';
 
 type LinkPreviewMetadata = OpenGraphMetadata & {
   // Stored for future rich providers (YouTube, Spotify, etc.).
@@ -57,6 +57,7 @@ export default function LinkPreview({
     description: metadata?.description,
     favicon: metadata?.favicon,
     image: metadata?.image,
+    images: metadata?.images,
     siteName: metadata?.siteName,
     host: (() => {
       try {
@@ -67,6 +68,9 @@ export default function LinkPreview({
     })(),
     author: metadata?.author,
     embed: metadata?.embed,
+    videoUrl: metadata?.videoUrl,
+    videoUrls: metadata?.videoUrls,
+    videoType: metadata?.videoType,
   };
 
   return (
