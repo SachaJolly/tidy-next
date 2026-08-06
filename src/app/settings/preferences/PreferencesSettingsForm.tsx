@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { updatePreferencesSettings } from '@/app/actions/me';
+import { type UpdatePreferencesInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import { type LanguagePreference } from '@/lib/language-mapper';
 import { type ThemePreference } from '@/lib/theme-mapper';
@@ -36,6 +36,7 @@ interface PreferencesSettingsFormProps {
   initialTimezone: string | null;
   initialEmailNotifications: boolean;
   initialPushNotifications: boolean;
+  onSave: (input: UpdatePreferencesInput) => Promise<void>;
 }
 
 export default function PreferencesSettingsForm({
@@ -44,6 +45,7 @@ export default function PreferencesSettingsForm({
   initialTimezone,
   initialEmailNotifications,
   initialPushNotifications,
+  onSave,
 }: PreferencesSettingsFormProps) {
   const t = useTranslations('settings');
   const common = useTranslations('common');
@@ -87,7 +89,7 @@ export default function PreferencesSettingsForm({
     setFeedback(null);
 
     try {
-      await updatePreferencesSettings({
+      await onSave({
         language,
         theme,
         timezone,

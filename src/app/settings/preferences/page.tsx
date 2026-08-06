@@ -8,6 +8,7 @@ import { THEME_COOKIE_NAME, normalizeThemePreference } from '@/lib/theme-mapper'
 import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 import type { User } from '@/lib/types';
 
+import { updatePreferencesSettings } from '@/app/actions/me';
 import PreferencesSettingsForm from './PreferencesSettingsForm';
 
 export default async function PreferencesSettingsPage() {
@@ -45,6 +46,7 @@ export default async function PreferencesSettingsPage() {
       <h2 style={{ margin: 0 }}>{t('preferences.title')}</h2>
       <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('preferences.description')}</p>
       <PreferencesSettingsForm
+        onSave={updatePreferencesSettings}
         initialLanguage={initialLanguage}
         initialTheme={initialTheme}
         initialTimezone={initialTimezone}

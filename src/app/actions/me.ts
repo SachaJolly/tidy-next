@@ -11,7 +11,7 @@ import { type ThemePreference } from '@/lib/theme-mapper';
 
 type NullableString = string | null;
 
-interface UpdateProfileInput {
+export interface UpdateProfileInput {
   name: string;
   bio: string;
   avatar: string;
@@ -22,17 +22,17 @@ interface UpdateProfileInput {
   linkedin: string;
 }
 
-interface UpdateAccountInput {
+export interface UpdateAccountInput {
   email: string;
 }
 
-interface UpdatePasswordInput {
+export interface UpdatePasswordInput {
   currentPassword: string;
   newPassword: string;
   passwordConfirmation: string;
 }
 
-interface UpdatePreferencesInput {
+export interface UpdatePreferencesInput {
   language: LanguagePreference;
   theme: ThemePreference;
   timezone: string | null;

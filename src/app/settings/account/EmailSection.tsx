@@ -4,14 +4,19 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { updateAccountSettings } from '@/app/actions/me';
+import { type UpdateAccountInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
-export default function EmailSection({ initialEmail }: { initialEmail: string }) {
+interface EmailSectionProps {
+  initialEmail: string;
+  onSave: (input: UpdateAccountInput) => Promise<void>;
+}
+
+export default function EmailSection({ initialEmail, onSave }: EmailSectionProps) {
   const t = useTranslations('settings');
   const router = useRouter();
   const [email, setEmail] = useState(initialEmail);
@@ -25,7 +30,7 @@ export default function EmailSection({ initialEmail }: { initialEmail: string })
     setIsSaving(true);
     setFeedback(null);
     try {
-      await updateAccountSettings({ email });
+      await onSave({ email });
       setFeedback({ type: 'success', text: t('account.emailUpdated') });
       router.refresh();
     } catch (error) {

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { updateProfileSettings } from '@/app/actions/me';
+import { type UpdateProfileInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
@@ -12,19 +12,11 @@ import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
 interface ProfileSettingsFormProps {
-  initialValues: {
-    name: string;
-    bio: string;
-    avatar: string;
-    cover: string;
-    website: string;
-    twitter: string;
-    github: string;
-    linkedin: string;
-  };
+  initialValues: UpdateProfileInput;
+  onSave: (input: UpdateProfileInput) => Promise<void>;
 }
 
-export default function ProfileSettingsForm({ initialValues }: ProfileSettingsFormProps) {
+export default function ProfileSettingsForm({ initialValues, onSave }: ProfileSettingsFormProps) {
   const t = useTranslations('settings');
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -55,7 +47,7 @@ export default function ProfileSettingsForm({ initialValues }: ProfileSettingsFo
     setFeedback(null);
 
     try {
-      await updateProfileSettings({
+      await onSave({
         name,
         bio,
         avatar,

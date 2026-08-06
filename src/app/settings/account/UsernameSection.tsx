@@ -4,14 +4,18 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { updateUsernameSettings } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
-export default function UsernameSection({ initialUsername }: { initialUsername: string }) {
+interface UsernameSectionProps {
+  initialUsername: string;
+  onSave: (username: string) => Promise<void>;
+}
+
+export default function UsernameSection({ initialUsername, onSave }: UsernameSectionProps) {
   const t = useTranslations('settings');
   const router = useRouter();
   const [username, setUsername] = useState(initialUsername);
@@ -25,7 +29,7 @@ export default function UsernameSection({ initialUsername }: { initialUsername: 
     setIsSaving(true);
     setFeedback(null);
     try {
-      await updateUsernameSettings(username);
+      await onSave(username);
       setFeedback({ type: 'success', text: t('account.usernameUpdated') });
       router.refresh();
     } catch (error) {

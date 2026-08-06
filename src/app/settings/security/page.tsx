@@ -1,6 +1,7 @@
 import React from 'react';
 import { getTranslations } from 'next-intl/server';
 
+import { updatePasswordSettings } from '@/app/actions/me';
 import SecuritySettingsForm from './SecuritySettingsForm';
 
 export default async function SecuritySettingsPage() {
@@ -10,7 +11,7 @@ export default async function SecuritySettingsPage() {
     <section style={{ maxWidth: '720px' }}>
       <h2 style={{ margin: 0 }}>{t('security.title')}</h2>
       <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '1.5rem' }}>{t('security.description')}</p>
-      <SecuritySettingsForm />
+      <SecuritySettingsForm onSave={updatePasswordSettings} />
     </section>
   );
 }

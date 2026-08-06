@@ -3,14 +3,18 @@
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { updatePasswordSettings } from '@/app/actions/me';
+import { type UpdatePasswordInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import SettingsCard from '@/layouts/SettingsLayout/SettingsCard';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
-export default function SecuritySettingsForm() {
+interface SecuritySettingsFormProps {
+  onSave: (input: UpdatePasswordInput) => Promise<void>;
+}
+
+export default function SecuritySettingsForm({ onSave }: SecuritySettingsFormProps) {
   const t = useTranslations('settings');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -24,7 +28,7 @@ export default function SecuritySettingsForm() {
     setFeedback(null);
 
     try {
-      await updatePasswordSettings({ currentPassword, newPassword, passwordConfirmation });
+      await onSave({ currentPassword, newPassword, passwordConfirmation });
       setCurrentPassword('');
       setNewPassword('');
       setPasswordConfirmation('');

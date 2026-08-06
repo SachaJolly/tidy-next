@@ -5,6 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { api } from '@/lib/api';
 import type { User } from '@/lib/types';
 
+import { updateProfileSettings } from '@/app/actions/me';
 import ProfileSettingsForm from './ProfileSettingsForm';
 
 export default async function ProfileSettingsPage() {
@@ -29,6 +30,7 @@ export default async function ProfileSettingsPage() {
       <h2 style={{ margin: 0 }}>{t('profile.title')}</h2>
       <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('profile.description')}</p>
       <ProfileSettingsForm
+        onSave={updateProfileSettings}
         initialValues={{
           name: me?.name ?? '',
           bio: me?.bio ?? '',
