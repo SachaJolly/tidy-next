@@ -616,7 +616,7 @@ export const AccountDropdownPanel: Story = {
         <DropdownTrigger style={{ visibility: 'hidden', position: 'absolute' }}>
           Trigger
         </DropdownTrigger>
-        <AccountDropdown inline user={MOCK_USER} initialLanguage="en" onLogout={() => {}} />
+        <AccountDropdown inline user={MOCK_USER} initialLanguage="en" initialTheme="system" onLogout={() => {}} />
       </Dropdown>
     </div>
   ),

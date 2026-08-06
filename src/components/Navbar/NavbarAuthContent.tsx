@@ -8,6 +8,7 @@ import { api, ApiFetchError } from '@/lib/api';
 import { localizePath } from '@/lib/locale-path';
 import { User } from '@/lib/types';
 import { resolveUserLanguage } from '@/lib/resolve-user-language';
+import { THEME_COOKIE_NAME, normalizeThemePreference, type ThemePreference } from '@/lib/theme-mapper';
 
 import NavbarAccountMenu from './NavbarAccountMenu';
 
@@ -16,10 +17,12 @@ export default async function NavbarAuthContent() {
   const locale = await getLocale();
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
+  const cookieTheme = normalizeThemePreference(cookieStore.get(THEME_COOKIE_NAME)?.value ?? null);
 
   if (!authToken) {
     // User is not authenticated: resolve language from cookie or browser default
     const initialLanguage = await resolveUserLanguage({ userLanguageFromDb: null, acceptLanguage: null });
+    const initialTheme: ThemePreference = cookieTheme;
     return (
       <>
         <ButtonGroup>
@@ -32,7 +35,7 @@ export default async function NavbarAuthContent() {
             href={localizePath('/signup', locale)}
           />
         </ButtonGroup>
-        <NavbarAccountMenu user={null} initialLanguage={initialLanguage} />
+        <NavbarAccountMenu user={null} initialLanguage={initialLanguage} initialTheme={initialTheme} />
       </>
     );
   }
@@ -62,6 +65,8 @@ export default async function NavbarAuthContent() {
       // - Multi-device sync: If user changes language on Device A, Device B's next request
       //   will fetch the updated user.language from DB and update the cookie.
 
+      const userTheme = normalizeThemePreference(user.theme ?? cookieTheme);
+
       return (
         <>
           <Button
@@ -72,7 +77,7 @@ export default async function NavbarAuthContent() {
             href="?modal=new-list"
             scroll={false}
           />
-          <NavbarAccountMenu user={user} initialLanguage={userLanguage} />
+          <NavbarAccountMenu user={user} initialLanguage={userLanguage} initialTheme={userTheme} />
         </>
       );
     }
@@ -84,6 +89,7 @@ export default async function NavbarAuthContent() {
 
   // If we reach here, user is not authenticated (token invalid/missing)
   const initialLanguage = await resolveUserLanguage({ userLanguageFromDb: null });
+  const initialTheme: ThemePreference = cookieTheme;
   return (
     <>
       <ButtonGroup>
@@ -96,7 +102,7 @@ export default async function NavbarAuthContent() {
           href={localizePath('/signup', locale)}
         />
       </ButtonGroup>
-      <NavbarAccountMenu user={null} initialLanguage={initialLanguage} />
+      <NavbarAccountMenu user={null} initialLanguage={initialLanguage} initialTheme={initialTheme} />
     </>
   );
 }

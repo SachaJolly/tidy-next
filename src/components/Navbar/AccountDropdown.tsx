@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+// useRouter is now managed inside useUserPreference — no direct import needed here.
 import {
   DropdownMenu,
   DropdownItem,
@@ -21,7 +21,10 @@ import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
 import packageJson from '@/../package.json';
 import { type Language } from '@/lib/language-mapper';
+import { type ThemePreference } from '@/lib/theme-mapper';
 import { changeLanguage } from '@/app/actions/language';
+import { changeTheme } from '@/app/actions/theme';
+import { useUserPreference } from '@/hooks/useUserPreference';
 
 // Mock accounts — replace with real data from auth/API when available.
 const MOCK_ACCOUNTS = [
@@ -29,13 +32,13 @@ const MOCK_ACCOUNTS = [
   { value: 'alexandra', label: 'Alexandra', caption: 'alex.sacha.jolly@gmail.com' },
 ];
 
-type Theme = 'system' | 'dark' | 'light';
-
 interface AccountDropdownProps {
   /** Null when the user is not authenticated. */
   user: User | null;
   /** User's preferred language (from DB if authenticated, or cookie/browser default). */
   initialLanguage: Language;
+  /** User's preferred theme (from DB if authenticated, or cookie default). */
+  initialTheme: ThemePreference;
   onLogout: () => void | Promise<void>;
   /**
    * Renders the panel inline (no portal, no fixed positioning).
@@ -45,48 +48,25 @@ interface AccountDropdownProps {
 }
 
 /** Renders only the <DropdownMenu> panel — mount inside <Dropdown> in the parent. */
-export function AccountDropdown({ user, initialLanguage, onLogout, inline }: AccountDropdownProps) {
+export function AccountDropdown({ user, initialLanguage, initialTheme, onLogout, inline }: AccountDropdownProps) {
   const t = useTranslations('AccountDropdown');
   const date = useTranslations('date');
   const common = useTranslations('common');
   const locale = useLocale();
-  const router = useRouter();
   const releaseDate = process.env.NEXT_PUBLIC_RELEASE_DATE;
-  const [language, setLanguage] = useState<Language>(initialLanguage);
-  const [theme, setTheme] = useState<Theme>('system');
   const [activeAccount, setActiveAccount] = useState(MOCK_ACCOUNTS[1]?.value ?? '');
 
-  // BUG D FIX: keep local state in sync with the server-resolved language.
-  // `initialLanguage` comes from a parent Server Component (NavbarAuthContent),
-  // which is re-evaluated on every router.refresh()/navigation. Without this
-  // effect, a reconciliation elsewhere (e.g. middleware syncing DB -> cookie
-  // after a change made on another device) would update `initialLanguage` on
-  // the server, but this component's local `useState` would keep showing the
-  // stale value since it only reads its initial value once on mount.
-  useEffect(() => {
-    setLanguage(initialLanguage);
-  }, [initialLanguage]);
+  const { value: language, handleChange: handleLanguageChange } = useUserPreference(
+    initialLanguage,
+    changeLanguage,
+    'language',
+  );
 
-  // Handle language change following the DB-first hierarchy (see changeLanguage()):
-  // - Authenticated: DB is updated first, cookie only synced on success.
-  // - Guest: cookie is updated directly.
-  // The local `language` state is updated optimistically for instant UI feedback,
-  // then reverted if the persistence call fails so the UI never lies about what
-  // was actually saved.
-  const handleLanguageChange = async (newLanguage: Language) => {
-    const previousLanguage = language;
-    setLanguage(newLanguage);
-
-    try {
-      await changeLanguage(newLanguage);
-      // Refresh server components (Navbar, layout messages) with new language
-      // router.refresh() is preferred over window.location.href for better UX
-      router.refresh();
-    } catch (error) {
-      console.error('[AccountDropdown] failed to change language:', error);
-      setLanguage(previousLanguage);
-    }
-  };
+  const { value: theme, handleChange: handleThemeChange } = useUserPreference(
+    initialTheme,
+    changeTheme,
+    'theme',
+  );
 
   const languageOptions = [
     { value: 'en' as const, label: common('language.en') },
@@ -111,8 +91,8 @@ export function AccountDropdown({ user, initialLanguage, onLogout, inline }: Acc
       {/* Account section — content differs based on auth state */}
       {user && (
         <>
-          <DropdownItem icon="settings" href={localizePath('/settings/profile', locale)}>
-            {t('account')}
+          <DropdownItem icon="settings" href={localizePath('/settings', locale)}>
+            {t('settings')}
           </DropdownItem>
           <DropdownSub id="switch-account">
             <DropdownSubTrigger icon="switch_account" title={t('switchAccount')}>
@@ -181,7 +161,7 @@ export function AccountDropdown({ user, initialLanguage, onLogout, inline }: Acc
         <DropdownSubContent>
           <DropdownRadioGroup
             value={theme}
-            onValueChange={(v) => setTheme(v as Theme)}
+            onValueChange={(v) => void handleThemeChange(v as ThemePreference)}
             label={t('theme')}
             closeOnSelect
           >
