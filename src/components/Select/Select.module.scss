@@ -1,0 +1,26 @@
+.select {
+  position: relative;
+}
+
+.suffixContent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.suffixValue {
+  display: inline-flex;
+  align-items: center;
+}
+
+.dropdownTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
