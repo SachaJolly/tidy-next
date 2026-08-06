@@ -26,14 +26,16 @@ export default async function NotificationsSettingsPage() {
   }
 
   return (
-    <section style={{ maxWidth: '720px' }}>
-      <h2 style={{ margin: 0 }}>{t('notifications.title')}</h2>
-      <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('notifications.description')}</p>
+    <>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+        <h2>{t('notifications.title')}</h2>
+        <p style={{ color: 'var(--text-muted)' }}>{t('notifications.description')}</p>
+      </div>
       <NotificationsSection
         initialEmailNotifications={me?.emailNotifications ?? true}
         initialPushNotifications={me?.pushNotifications ?? true}
         onSave={updateNotificationsSettings}
       />
-    </section>
+    </>
   );
 }

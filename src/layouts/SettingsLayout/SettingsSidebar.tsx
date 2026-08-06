@@ -29,7 +29,6 @@ export default function SettingsSidebar() {
 
   return (
     <aside className={styles.sidebar} aria-label={t('sidebar.title')}>
-      <p className={styles.sidebarTitle}>{t('sidebar.title')}</p>
       <nav className={styles.nav}>
         {SETTINGS_ROUTES.map((route) => (
           <Link

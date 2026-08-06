@@ -47,6 +47,12 @@
 .header {
   padding: 2rem 2rem 1rem;
   display: flex;
+  flex-direction: row;
+  gap: .5rem;
+}
+
+.headerText {
+  display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
@@ -54,12 +60,6 @@
 .headerIcon {
   display: flex;
   align-items: center;
-  width: fit-content;
-
-  svg {
-    width: 2rem;
-    height: 2rem;
-  }
 }
 
 .content {

@@ -33,10 +33,11 @@ export default async function AccountSettingsPage() {
   }
 
   return (
-    <section>
-      <h2 style={{ margin: 0 }}>{t('account.title')}</h2>
-      <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '1.5rem' }}>{t('account.description')}</p>
-
+    <>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+        <h2>{t('account.title')}</h2>
+        <p style={{ color: 'var(--text-muted)' }}>{t('account.description')}</p>
+      </div>
       <EmailSection
         initialEmail={me?.email ?? ''}
         emailConfirmed={me?.emailConfirmed ?? false}
@@ -45,7 +46,7 @@ export default async function AccountSettingsPage() {
       />
       <UsernameSection initialUsername={me?.username ?? ''} onSave={updateUsernameSettings} />
       <DeleteAccountSection onDelete={deleteAccount} />
-    </section>
+    </>
   );
 }
 

@@ -96,7 +96,7 @@ export default function TimezoneSection({ initialTimezone, onSave }: TimezoneSec
           onChange={(value) => setTimezone(value === TIMEZONE_AUTO ? null : value)}
           placeholder={t('preferences.timezoneAuto')}
           className="min-w-[280px]"
-          prefix={<Icon name="public" size={16} />}
+          prefix={<Icon name="public" size={20} />}
         />
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>

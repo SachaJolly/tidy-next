@@ -1,18 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 
 import { type UpdatePublicProfileInput } from '@/app/actions/me';
+import { useSettingsForm } from '@/hooks/useSettingsForm';
 import Avatar from '@/components/Avatar/Avatar';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import FormField from '@/components/FormField/FormField';
 import Input from '@/components/Input/Input';
 import Textarea from '@/components/Textarea/Textarea';
-
-type Feedback = { type: 'success' | 'error'; text: string } | null;
 
 interface PublicProfileSectionProps {
   initialValues: UpdatePublicProfileInput;
@@ -22,48 +20,43 @@ interface PublicProfileSectionProps {
 export default function PublicProfileSection({ initialValues, onSave }: PublicProfileSectionProps) {
   const t = useTranslations('settings');
   const common = useTranslations('common');
-  const router = useRouter();
-  const [name, setName] = useState(initialValues.name);
-  const [bio, setBio] = useState(initialValues.bio);
-  const [avatar, setAvatar] = useState(initialValues.avatar);
-  const [cover, setCover] = useState(initialValues.cover);
-  const [isSaving, setIsSaving] = useState(false);
-  const [feedback, setFeedback] = useState<Feedback>(null);
 
-  useEffect(() => {
-    setName(initialValues.name);
-    setBio(initialValues.bio);
-    setAvatar(initialValues.avatar);
-    setCover(initialValues.cover);
-  }, [initialValues]);
+  const {
+    value: formState,
+    setValue: setFormState,
+    isSaving,
+    feedback,
+    handleSubmit,
+    isDirty,
+  } = useSettingsForm({
+    initialValue: initialValues,
+    onSave,
+    successMessage: t('profile.updated'),
+  });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSaving(true);
-    setFeedback(null);
-
-    try {
-      await onSave({ name, bio, avatar, cover });
-      setFeedback({ type: 'success', text: t('profile.updated') });
-      router.refresh();
-    } catch (error) {
-      setFeedback({ type: 'error', text: error instanceof Error ? error.message : t('saveFailed') });
-    } finally {
-      setIsSaving(false);
-    }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
     <Card title={t('profile.publicTitle')} description={t('profile.publicDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Avatar src={avatar || undefined} alt={name || undefined} initials={name ? name[0] : '?'} size="96" />
+          <Avatar
+            src={formState.avatar || undefined}
+            alt={formState.name || undefined}
+            initials={formState.name ? formState.name[0] : '?'}
+            size="96"
+          />
           <div style={{ flex: 1 }}>
             <FormField label={t('profile.avatarLabel')} htmlFor="settings-avatar-url">
               <Input
                 id="settings-avatar-url"
-                value={avatar}
-                onChange={(e) => setAvatar(e.target.value)}
+                name="avatar"
+                value={formState.avatar || ''}
+                onChange={handleChange}
                 placeholder={t('profile.avatarPlaceholder')}
                 disabled={isSaving}
               />
@@ -73,8 +66,9 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
         <FormField label={t('profile.displayNameLabel')} htmlFor="settings-display-name">
           <Input
             id="settings-display-name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name="name"
+            value={formState.name || ''}
+            onChange={handleChange}
             placeholder={t('profile.displayNamePlaceholder')}
             disabled={isSaving}
           />
@@ -82,8 +76,9 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
         <FormField label={t('profile.bioLabel')} htmlFor="settings-bio">
           <Textarea
             id="settings-bio"
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
+            name="bio"
+            value={formState.bio || ''}
+            onChange={handleChange}
             placeholder={t('profile.bioPlaceholder')}
             disabled={isSaving}
             rows={4}
@@ -92,25 +87,26 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
         <FormField label={t('profile.coverLabel')} htmlFor="settings-cover">
           <Input
             id="settings-cover"
-            value={cover}
-            onChange={(e) => setCover(e.target.value)}
+            name="cover"
+            value={formState.cover || ''}
+            onChange={handleChange}
             placeholder={t('profile.coverPlaceholder')}
             disabled={isSaving}
           />
-          {cover && (
+          {formState.cover && (
             <img
-              src={cover}
+              src={formState.cover}
               alt="cover preview"
               style={{ width: '100%', borderRadius: '0.5rem', maxHeight: '160px', objectFit: 'cover' }}
             />
           )}
         </FormField>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="interactive" disabled={isSaving}>
+          <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
             {common('save')}
           </Button>
           {feedback && (
-            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>
+            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
               {feedback.text}
             </p>
           )}

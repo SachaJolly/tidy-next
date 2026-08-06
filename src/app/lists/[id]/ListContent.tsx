@@ -16,6 +16,7 @@ import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import { Dropdown } from '@/components/Dropdown';
 import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
+import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 import ListOptionsDropdown from './ListOptionsDropdown';
 import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/LoadingSkeletons';
 
@@ -23,6 +24,7 @@ type ListPageData = {
   list: List;
   currentUser: User | null;
   locale: string;
+  timezone: string | null;
   t: Awaited<ReturnType<typeof getTranslations>>;
   common: Awaited<ReturnType<typeof getTranslations>>;
   date: Awaited<ReturnType<typeof getTranslations>>;
@@ -35,6 +37,7 @@ const getListPageData = cache(async (id: string): Promise<ListPageData> => {
   const date = await getTranslations('date');
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
+  const timezone = parseTimezone(cookieStore.get(TIMEZONE_COOKIE_NAME)?.value);
 
   let currentUser: User | null = null;
   if (authToken) {
@@ -85,11 +88,11 @@ const getListPageData = cache(async (id: string): Promise<ListPageData> => {
     notFound();
   }
 
-  return { list, currentUser, locale, t, common, date };
+  return { list, currentUser, locale, timezone, t, common, date };
 });
 
 export async function ListHeaderSection({ id }: { id: string }) {
-  const { list, currentUser, locale, t, common, date } = await getListPageData(id);
+  const { list, currentUser, locale, timezone, t, common, date } = await getListPageData(id);
   const author = list.author!;
   const canCreateItem = !!currentUser;
   const isAuthor = currentUser?.id === author.id;
@@ -119,6 +122,7 @@ export async function ListHeaderSection({ id }: { id: string }) {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric',
+                timeZone: timezone,
               }),
             })}
           </Meta>

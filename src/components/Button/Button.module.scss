@@ -172,9 +172,9 @@
   }
 
   &.danger {
-    color: var(--text-danger);
-    background-color: light-dark(var(--color-red-100), var(--color-red-900, hsl(6, 60%, 15%)));
-    border-color: transparent;
+    color: var(--text-on-danger);
+    background-color: var(--surface-danger);
+    border-color: var(--surface-danger);
 
     &:hover,
     &.hover,
@@ -185,14 +185,14 @@
     &[aria-expanded='true'],
     &:active,
     &.active {
-      background-color: light-dark(var(--color-red-200), var(--color-red-800, hsl(6, 60%, 22%)));
-      border-color: transparent;
+      background-color: var(--surface-danger-hover);
+      border-color: var(--surface-danger-hover);
     }
 
     &.tinted {
       color: var(--text-danger);
       background-color: transparent;
-      border-color: light-dark(var(--color-red-300), var(--color-red-700));
+      border-color: var(--surface-danger-hover);
 
       &:hover,
       &.hover,
@@ -206,5 +206,15 @@
         background-color: light-dark(var(--color-red-100), var(--color-red-900, hsl(6, 60%, 15%)));
       }
     }
+  }
+
+  /* Disabled state must override all other states */
+  &:disabled,
+  &[disabled] {
+    color: var(--text-disabled) !important;
+    background-color: var(--surface-highlight) !important;
+    border-color: var(--surface-highlight) !important;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 }

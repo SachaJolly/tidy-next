@@ -48,7 +48,7 @@
   border: none;
   border-radius: var(--radius-interactive);
   box-shadow: var(--shadow-overlay);
-  width: 14rem;
+  width: 16rem;
   max-width: 100%;
   max-height: min(70vh, 32rem);
   overflow-y: auto;
@@ -142,7 +142,8 @@
 
   &:hover,
   &:focus,
-  &:focus-visible {
+  &:focus-visible,
+  &[data-highlighted='true'] {
     background: var(--surface-highlight);
     color: var(--text-body);
     outline: none;
@@ -162,7 +163,8 @@
 
     &:hover,
     &:focus,
-    &:focus-visible {
+    &:focus-visible,
+    &[data-highlighted='true'] {
       background: var(--surface-interactive-highlight);
     }
   }
@@ -177,7 +179,8 @@
 
     &:hover,
     &:focus,
-    &:focus-visible {
+    &:focus-visible,
+    &[data-highlighted='true'] {
       background: var(--surface-danger-highlight);
     }
   }

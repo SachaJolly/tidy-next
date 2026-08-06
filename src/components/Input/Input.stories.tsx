@@ -17,6 +17,8 @@ const meta = {
     },
     placeholder: { control: 'text' },
     disabled: { control: 'boolean' },
+    variant: { control: 'radio', options: ['success', 'danger'] },
+    feedback: { control: 'text' },
   },
   args: {
     id: 'input',
@@ -37,70 +39,30 @@ export const Default: Story = {
   ),
 };
 
-export const Email: Story = {
-  render: (args) => (
-    <FormField label="Email Address" htmlFor="email-input">
-      <Input {...args} id="email-input" type="email" placeholder="you@example.com" />
-    </FormField>
-  ),
-};
-
-export const Password: Story = {
-  render: (args) => (
-    <FormField label="Password" htmlFor="password-input">
-      <Input {...args} id="password-input" type="password" placeholder="••••••••" />
-    </FormField>
-  ),
-};
-
-export const Telephone: Story = {
-  render: (args) => (
-    <FormField label="Phone Number" htmlFor="tel-input">
-      <Input {...args} id="tel-input" type="tel" placeholder="+1 (555) 123-4567" />
-    </FormField>
-  ),
-};
-
-export const Date: Story = {
-  render: (args) => (
-    <FormField label="Birth Date" htmlFor="date-input">
-      <Input {...args} id="date-input" type="date" />
-    </FormField>
-  ),
-};
-
-export const DateTime: Story = {
-  name: 'Date and Time',
-  render: (args) => (
-    <FormField label="Publishing Time" htmlFor="datetime-input">
-      <Input {...args} id="datetime-input" type="datetime-local" />
-    </FormField>
-  ),
-};
-
-export const Number: Story = {
-  render: (args) => (
-    <FormField label="Quantity" htmlFor="number-input">
-      <Input {...args} id="number-input" type="number" placeholder="42" />
-    </FormField>
-  ),
-};
-
-export const Disabled: Story = {
-  render: (args) => (
-    <FormField label="Disabled Input" htmlFor="disabled-input">
-      <Input {...args} id="disabled-input" disabled />
-    </FormField>
-  ),
-};
-
-export const WithoutLabel: Story = {
+export const Success: Story = {
   args: {
-    id: 'no-label-input',
-    type: 'text',
-    placeholder: 'Search...',
-    'aria-label': 'Search input',
+    variant: 'success',
+    feedback: 'This username is available.',
+    defaultValue: 'alexandra',
   },
+  render: (args) => (
+    <FormField label="Username" htmlFor="success-input">
+      <Input {...args} id="success-input" />
+    </FormField>
+  ),
+};
+
+export const Danger: Story = {
+  args: {
+    variant: 'danger',
+    feedback: 'This email is already taken.',
+    defaultValue: 'taken@example.com',
+  },
+  render: (args) => (
+    <FormField label="Email" htmlFor="danger-input">
+      <Input {...args} id="danger-input" type="email" />
+    </FormField>
+  ),
 };
 
 export const WithPrefix: Story = {
@@ -123,6 +85,14 @@ export const WithPrefixAndSuffix: Story = {
   render: (args) => (
     <FormField label="Price" htmlFor="price-input">
       <Input {...args} id="price-input" type="number" placeholder="0.00" prefix="€" suffix="per month" />
+    </FormField>
+  ),
+};
+
+export const Disabled: Story = {
+  render: (args) => (
+    <FormField label="Disabled Input" htmlFor="disabled-input">
+      <Input {...args} id="disabled-input" disabled />
     </FormField>
   ),
 };

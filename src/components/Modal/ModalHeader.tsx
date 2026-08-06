@@ -34,11 +34,13 @@ export function ModalHeader({
     <div id={titleId} className={[styles.header, className].filter(Boolean).join(' ')}>
       {icon && (
         <span className={styles.headerIcon} style={{ color: ICON_COLORS[iconVariant] }}>
-          <Icon name={icon} />
+          <Icon name={icon} size={20} />
         </span>
       )}
-      {title && <h3>{title}</h3>}
-      {children}
+      <div className={styles.headerText}>
+        {title && <h3>{title}</h3>}
+        {children}
+      </div>
     </div>
   );
 }

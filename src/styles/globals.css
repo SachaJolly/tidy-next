@@ -196,6 +196,22 @@ p {
   line-height: 1rem;
 }
 
+.text-success {
+  color: var(--text-success);
+}
+
+.text-warning {
+  color: var(--text-warning);
+}
+
+.text-danger {
+  color: var(--text-danger);
+}
+
+.text-interactive {
+  color: var(--text-interactive);
+}
+
 .text-muted {
   color: var(--text-muted);
 }

@@ -3,6 +3,12 @@ export type ThemePreference = 'system' | 'light' | 'dark';
 export const THEME_COOKIE_NAME = 'tidy_theme';
 export const THEME_COOKIE_MAX_AGE = 365 * 24 * 60 * 60;
 
+/**
+ * A constant array of theme options in the desired display order.
+ * This centralizes the list for consistent use across the application.
+ */
+export const THEME_OPTIONS: ThemePreference[] = ['system', 'light', 'dark'];
+
 export function parseThemePreference(value: string | null | undefined): ThemePreference | null {
   const normalized = value?.toLowerCase();
 

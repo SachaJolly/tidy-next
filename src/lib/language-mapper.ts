@@ -13,3 +13,8 @@ export const SUPPORTED_LANGUAGES: Record<LanguagePreference, string> = {
   fr: 'Français',
 };
 
+/**
+ * A constant array of language options in the desired display order.
+ * This centralizes the list for consistent use across the application.
+ */
+export const LANGUAGE_OPTIONS: LanguagePreference[] = ['en', 'fr'];

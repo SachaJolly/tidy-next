@@ -32,69 +32,46 @@ export function DropdownMenu({
   className,
   inline = false,
 }: DropdownMenuProps) {
-  const { open, close, triggerRef, currentView, subTitle, navigateBack } = useDropdownContext();
+  const {
+    open,
+    close,
+    triggerRef,
+    currentView,
+    subTitle,
+    navigateBack,
+    preventFocusOnOpen,
+  } = useDropdownContext();
   const menuRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  // Start hidden so the element can be measured before the first browser paint.
-  // calculatePosition reveals it after measuring — the whole sequence happens
-  // in one layout pass so no flash is visible.
   const [menuStyle, setContentStyle] = useState<React.CSSProperties>({
     position: 'fixed',
     visibility: 'hidden',
   });
 
-  // ─── Shared position calculator ───────────────────────────────────────────
-  // Extracted as a stable useCallback so it can be called from both the
-  // initial useLayoutEffect (synchronous, no-flash) and the scroll/resize
-  // listeners (via requestAnimationFrame for performance).
   const calculatePosition = useCallback(() => {
     if (!triggerRef.current || !menuRef.current) return;
-
-    // Minimum margin kept between the panel and the viewport edges.
-    // Kept independent from `offset` so viewport clamping stays stable
-    // regardless of what the consumer passes as trigger-gap.
     const VIEWPORT_PADDING = 6;
-
     const triggerRect = triggerRef.current.getBoundingClientRect();
     const { width: cw, height: ch } = menuRef.current.getBoundingClientRect();
-
     let top = triggerRect.bottom + offset;
     let left = align === 'end' ? triggerRect.right - cw : triggerRect.left;
-
-    // Flip above the trigger when there is not enough room below the viewport fold.
     if (top + ch > window.innerHeight - VIEWPORT_PADDING) {
       top = triggerRect.top - ch - offset;
     }
-    // Clamp to right viewport edge
     if (left + cw > window.innerWidth - VIEWPORT_PADDING) {
       left = triggerRect.right - cw;
     }
-    // Clamp to left viewport edge
     left = Math.max(VIEWPORT_PADDING, left);
-
-    setContentStyle({
-      position: 'fixed',
-      top,
-      left,
-      visibility: 'visible',
-    });
+    setContentStyle({ position: 'fixed', top, left, visibility: 'visible' });
   }, [align, offset, triggerRef]);
-  // align and triggerRef are stable (prop string + ref object), so this callback
-  // is effectively created once and never causes extra renders.
 
-  // ─── Initial positioning (synchronous, before paint) ──────────────────────
-  // useLayoutEffect fires synchronously after DOM mutations but before the
-  // browser paints, so the panel goes from visibility:hidden → visible in one
-  // frame — no layout shift or flash for the user.
   useLayoutEffect(() => {
     if (inline || !open || isMobile) return;
     calculatePosition();
 
-    // Auto-focus the first focusable menu item so keyboard users can navigate
-    // immediately with arrow keys or Tab after opening the menu.
-    // We use requestAnimationFrame to let the panel finish rendering and
-    // become visible before focusing, avoiding focus on a hidden element.
+    if (preventFocusOnOpen) return;
+
     const rafId = requestAnimationFrame(() => {
       const firstItem = menuRef.current?.querySelector<HTMLElement>(
         '[role="menuitem"]:not([disabled]), [role="radio"]:not([disabled])',
@@ -102,57 +79,53 @@ export function DropdownMenu({
       firstItem?.focus();
     });
     return () => cancelAnimationFrame(rafId);
-  }, [inline, open, isMobile, calculatePosition, currentView]);
+  }, [inline, open, isMobile, calculatePosition, currentView, preventFocusOnOpen]);
 
-  // ─── Desktop: reposition on scroll/resize ──────────────────────────────────
-  // Keep the panel aligned with the trigger as the viewport changes.
   useEffect(() => {
-    // Only activate on desktop — mobile uses the body scroll lock below.
     if (inline || !open || isMobile) return;
-
-    const updatePosition = () => {
-      calculatePosition();
-    };
-
+    const updatePosition = () => calculatePosition();
     window.addEventListener('scroll', updatePosition, { capture: true, passive: true });
     window.addEventListener('resize', updatePosition);
-
     return () => {
       window.removeEventListener('scroll', updatePosition, { capture: true });
       window.removeEventListener('resize', updatePosition);
     };
   }, [inline, open, isMobile, calculatePosition]);
 
-  // ─── Mobile: body scroll lock ──────────────────────────────────────────────
-  // Prevent the background page from scrolling while the bottom drawer is open.
+  // Add a ResizeObserver to recalculate position when the menu's height changes.
+  // This is crucial for comboboxes where filtering items changes the height.
   useEffect(() => {
-    // Only activate on mobile — desktop MUST stay scrollable.
-    if (inline || !open || !isMobile) return;
+    if (inline || !open || isMobile || !menuRef.current) return;
 
-    // Snapshot existing values so we can restore them exactly on cleanup,
-    // even if the consumer had set their own overflow/touch-action styles.
-    const prevOverflow = document.body.style.overflow;
-    const prevTouchAction = document.body.style.touchAction;
+    const observer = new ResizeObserver(() => {
+      // We use requestAnimationFrame to avoid a "ResizeObserver loop limit exceeded"
+      // error if the position calculation itself causes a resize.
+      requestAnimationFrame(() => {
+        calculatePosition();
+      });
+    });
 
-    document.body.style.overflow = 'hidden';
-
-    // iOS Safari ignores overflow:hidden on <body> for momentum scrolling.
-    // Setting touch-action:none on the body stops the default touch behavior
-    // (panning/zooming) so the rubber-band scroll-through cannot happen.
-    document.body.style.touchAction = 'none';
+    observer.observe(menuRef.current);
 
     return () => {
-      // Restore originals — handles cases where the drawer closes, viewport
-      // resizes from mobile to desktop, or the component unmounts.
+      observer.disconnect();
+    };
+  }, [inline, open, isMobile, calculatePosition]);
+
+  useEffect(() => {
+    if (inline || !open || !isMobile) return;
+    const prevOverflow = document.body.style.overflow;
+    const prevTouchAction = document.body.style.touchAction;
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+    return () => {
       document.body.style.overflow = prevOverflow;
       document.body.style.touchAction = prevTouchAction;
     };
   }, [inline, open, isMobile]);
 
-  // Close on Escape or outside click
   useEffect(() => {
     if (inline || !open) return;
-
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
@@ -160,7 +133,6 @@ export function DropdownMenu({
         (triggerRef.current as HTMLElement | null)?.focus();
       }
     };
-
     const handleClickOutside = (e: PointerEvent) => {
       if (
         !menuRef.current?.contains(e.target as Node) &&
@@ -169,42 +141,33 @@ export function DropdownMenu({
         close();
       }
     };
-
     document.addEventListener('keydown', handleEscape);
     document.addEventListener('pointerdown', handleClickOutside);
-
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.removeEventListener('pointerdown', handleClickOutside);
     };
   }, [inline, open, close, triggerRef]);
 
-  // Arrow-key navigation between focusable menu items + Tab focus trap
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const isArrow = e.key === 'ArrowDown' || e.key === 'ArrowUp';
     const isTab = e.key === 'Tab';
     if (!isArrow && !isTab) return;
-
     const items = Array.from(
       menuRef.current?.querySelectorAll<HTMLElement>(
         '[role="menuitem"]:not([disabled]), [role="radio"]:not([disabled])',
       ) ?? [],
     );
     if (!items.length) return;
-
     const idx = items.indexOf(document.activeElement as HTMLElement);
-
     if (isTab) {
-      // Trap focus inside the panel: loop forward (Tab) and backward (Shift+Tab).
       e.preventDefault();
       const next = e.shiftKey
-        ? (idx - 1 + items.length) % items.length // Shift+Tab → go up, wrap to last
-        : (idx + 1) % items.length; // Tab       → go down, wrap to first
+        ? (idx - 1 + items.length) % items.length
+        : (idx + 1) % items.length;
       items[next]?.focus();
       return;
     }
-
-    // Arrow keys — same looping behaviour
     e.preventDefault();
     const next =
       e.key === 'ArrowDown' ? (idx + 1) % items.length : (idx - 1 + items.length) % items.length;
@@ -212,10 +175,9 @@ export function DropdownMenu({
   };
 
   if (!open && !inline) return null;
-  if (typeof document === 'undefined') return null; // SSR guard
+  if (typeof document === 'undefined') return null;
 
   const isSubView = currentView !== 'root';
-
   const panel = (
     <div
       ref={menuRef}
@@ -230,9 +192,6 @@ export function DropdownMenu({
       }
       onKeyDown={handleKeyDown}
     >
-      {/* Back-navigation header — rendered automatically whenever a sub-menu is active.
-          The title is supplied by DropdownMenuSubTrigger's `title` prop and stored
-          in the view stack. No manual rendering required by the consumer. */}
       {isSubView && (
         <div className={styles.subHeader}>
           <button
@@ -250,20 +209,14 @@ export function DropdownMenu({
     </div>
   );
 
-  // In inline mode, render directly in the document flow (no portal, no overlay).
   if (inline) return panel;
-
   const portalTarget =
     triggerRef.current?.closest('dialog') ?? document.getElementById('application-overlays');
   if (!portalTarget) return null;
 
-  // Dropdowns inside a modal must stay inside the modal's <dialog> top layer,
-  // otherwise they end up behind the dialog backdrop. Outside modals we still
-  // use the shared application-overlays layer so the menu escapes overflow.
   return createPortal(
     isMobile ? (
       <>
-        {/* Dim overlay behind the drawer — sits just below the panel's z-index */}
         <div className={styles.drawerOverlay} onClick={close} aria-hidden="true" />
         {panel}
       </>

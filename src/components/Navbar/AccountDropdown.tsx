@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-// useRouter is now managed inside useUserPreference — no direct import needed here.
 import {
   DropdownMenu,
   DropdownItem,
@@ -20,8 +19,8 @@ import { useLocale } from 'next-intl';
 import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
 import packageJson from '@/../package.json';
-import { type LanguagePreference } from '@/lib/language-mapper';
-import { type ThemePreference } from '@/lib/theme-mapper';
+import { type LanguagePreference, LANGUAGE_OPTIONS } from '@/lib/language-mapper';
+import { type ThemePreference, THEME_OPTIONS } from '@/lib/theme-mapper';
 import { formatTimezoneLabel } from '@/lib/timezone-mapper';
 import { changeLanguage } from '@/app/actions/language';
 import { changeTheme } from '@/app/actions/theme';
@@ -74,19 +73,8 @@ export function AccountDropdown({ user, initialLanguage, initialTheme, initialTi
     'theme',
   );
 
-  const languageOptions = [
-    { value: 'en' as const, label: common('language.en') },
-    { value: 'fr' as const, label: common('language.fr') },
-  ] as const;
-
-  const themeOptions = [
-    { value: 'system', label: common('theme.system') },
-    { value: 'dark', label: common('theme.dark') },
-    { value: 'light', label: common('theme.light') },
-  ] as const;
-
-  const currentLanguage = languageOptions.find((l) => l.value === language)!;
-  const currentTheme = themeOptions.find((t) => t.value === theme)!;
+  const currentLanguageLabel = common(`language.${language}`);
+  const currentThemeLabel = common(`theme.${theme}`);
 
   return (
     <DropdownMenu align="end" inline={inline}>
@@ -97,7 +85,7 @@ export function AccountDropdown({ user, initialLanguage, initialTheme, initialTi
       {/* Account section — content differs based on auth state */}
       {user && (
         <>
-          <DropdownItem icon="settings" href={localizePath('/settings', locale)}>
+          <DropdownItem icon="settings" href={localizePath('/settings/preferences', locale)}>
             {t('settings')}
           </DropdownItem>
           <DropdownSub id="switch-account">
@@ -144,17 +132,17 @@ export function AccountDropdown({ user, initialLanguage, initialTheme, initialTi
       {/* Preferences */}
       <DropdownSub id="language">
         <DropdownSubTrigger icon="language" title={t('language')}>
-          {t('language')}: {currentLanguage.label}
+          {t('language')}: {currentLanguageLabel}
         </DropdownSubTrigger>
         <DropdownSubContent>
           <DropdownRadioGroup
             value={language}
             onValueChange={(v) => void handleLanguageChange(v as LanguagePreference)}
             label={t('language')}
-            closeOnSelect
+            closeOnSelect={false}
           >
-            {languageOptions.map(({ value, label }) => (
-              <DropdownRadioItem key={value} value={value} label={label} />
+            {LANGUAGE_OPTIONS.map((lang) => (
+              <DropdownRadioItem key={lang} value={lang} label={common(`language.${lang}`)} />
             ))}
           </DropdownRadioGroup>
         </DropdownSubContent>
@@ -162,17 +150,17 @@ export function AccountDropdown({ user, initialLanguage, initialTheme, initialTi
 
       <DropdownSub id="theme">
         <DropdownSubTrigger icon="dark_mode" title={t('theme')}>
-          {t('theme')}: {currentTheme.label}
+          {t('theme')}: {currentThemeLabel}
         </DropdownSubTrigger>
         <DropdownSubContent>
           <DropdownRadioGroup
             value={theme}
             onValueChange={(v) => void handleThemeChange(v as ThemePreference)}
             label={t('theme')}
-            closeOnSelect
+            closeOnSelect={false}
           >
-            {themeOptions.map(({ value, label }) => (
-              <DropdownRadioItem key={value} value={value} label={label} />
+            {THEME_OPTIONS.map((themeOption) => (
+              <DropdownRadioItem key={themeOption} value={themeOption} label={common(`theme.${themeOption}`)} />
             ))}
             <DropdownSeparator />
             <DropdownText>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DropdownContext } from './context';
 import { DropdownTrigger } from './DropdownTrigger';
 
@@ -11,20 +11,32 @@ export interface DropdownProps {
    * This avoids wrapper-trigger hydration pitfalls (e.g. button-in-button).
    */
   trigger?: React.ReactNode;
+  /** The controlled open state of the dropdown. */
+  open?: boolean;
+  /** Event handler called when the open state of the dropdown changes. */
+  onOpenChange?: (open: boolean) => void;
+  /** When true, the dropdown will not automatically focus the first item on open. */
+  preventFocusOnOpen?: boolean;
 }
 
 /**
  * Dropdown component with built-in positioning, mobile drawer support, and
- * keyboard navigation. Uncontrolled by default — manages its own open state.
- *
- * - Desktop: Opens as a fixed-position dropdown next to the trigger
- * - Mobile: Opens as a full-height bottom drawer
- * - Keyboard: Escape to close, Arrow keys/Tab to navigate items
- * - Click outside to dismiss
+ * keyboard navigation. Can be controlled or uncontrolled.
  */
-export function Dropdown({ children, trigger }: DropdownProps) {
-  const [open, setOpen] = useState(false);
+export function Dropdown({
+  children,
+  trigger,
+  open: controlledOpen,
+  onOpenChange,
+  preventFocusOnOpen = false,
+}: DropdownProps) {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
   const triggerRef = useRef<HTMLElement | null>(null);
+
+  // Determine if the component is controlled or uncontrolled
+  const isControlled = controlledOpen !== undefined && onOpenChange !== undefined;
+  const open = isControlled ? controlledOpen : uncontrolledOpen;
+  const setOpen = isControlled ? onOpenChange : setUncontrolledOpen;
 
   // Stack-based navigation for nested submenus
   const [viewStack, setViewStack] = useState([{ id: 'root', title: '' }]);
@@ -33,9 +45,14 @@ export function Dropdown({ children, trigger }: DropdownProps) {
 
   const close = useCallback(() => {
     setOpen(false);
-    // Reset view stack when closing so re-opening starts fresh
-    setViewStack([{ id: 'root', title: '' }]);
-  }, []);
+  }, [setOpen]);
+
+  // When the dropdown is closed, always reset the view stack
+  useEffect(() => {
+    if (!open) {
+      setViewStack([{ id: 'root', title: '' }]);
+    }
+  }, [open]);
 
   const navigateTo = useCallback((id: string, title: string) => {
     setViewStack((prev) => [...prev, { id, title }]);
@@ -57,7 +74,17 @@ export function Dropdown({ children, trigger }: DropdownProps) {
 
   return (
     <DropdownContext.Provider
-      value={{ open, setOpen, close, triggerRef, currentView, navigateTo, navigateBack, subTitle }}
+      value={{
+        open,
+        setOpen,
+        close,
+        triggerRef,
+        currentView,
+        navigateTo,
+        navigateBack,
+        subTitle,
+        preventFocusOnOpen,
+      }}
     >
       {triggerNode ? <DropdownTrigger asChild>{triggerNode}</DropdownTrigger> : null}
       {contentChildren}

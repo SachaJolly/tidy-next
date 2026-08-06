@@ -13,6 +13,8 @@ export interface DropdownContextValue {
   navigateTo: (id: string, title: string) => void;
   navigateBack: () => void;
   subTitle: string;
+  /** When true, the dropdown will not automatically focus the first item on open. */
+  preventFocusOnOpen?: boolean;
 }
 
 export const DropdownContext = createContext<DropdownContextValue | null>(null);

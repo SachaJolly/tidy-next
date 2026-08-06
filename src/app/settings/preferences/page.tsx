@@ -44,13 +44,15 @@ export default async function PreferencesSettingsPage() {
   const initialTimezone = parseTimezone(me?.timezone) ?? parseTimezone(cookieStore.get(TIMEZONE_COOKIE_NAME)?.value) ?? null;
 
   return (
-    <section>
-      <h2 style={{ margin: 0 }}>{t('preferences.title')}</h2>
-      <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('preferences.description')}</p>
+    <>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+        <h2>{t('preferences.title')}</h2>
+        <p style={{ color: 'var(--text-muted)' }}>{t('preferences.description')}</p>
+      </div>
       <ThemeSection initialTheme={initialTheme} onSave={changeTheme} />
       <LanguageSection initialLanguage={initialLanguage} onSave={changeLanguage} />
       <TimezoneSection initialTimezone={initialTimezone} onSave={changeTimezone} />
-    </section>
+    </>
   );
 }
 

@@ -1,8 +1,3 @@
-.sidebar {
-  border-bottom: 1px solid var(--border-default);
-  padding-bottom: 0.75rem;
-}
-
 .sidebarTitle {
   margin: 0 0 0.5rem;
   color: var(--text-muted);
@@ -23,12 +18,10 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  padding: 0.55rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   border-radius: var(--radius-interactive);
-  border: 1px solid transparent;
   color: var(--text-body);
   text-decoration: none;
-  font-size: 0.95rem;
   white-space: nowrap;
   transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
 }
@@ -40,7 +33,6 @@
 
 .navLinkActive {
   background: var(--surface-interactive-highlight);
-  border-color: var(--border-interactive);
   color: var(--text-interactive);
   font-weight: 500;
 }
@@ -48,11 +40,7 @@
 @container (min-width: 900px) {
   .sidebar {
     position: sticky;
-    top: 1rem;
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-surface);
-    background: var(--surface-highlight);
-    padding: 0.75rem;
+    top: 6rem;
   }
 
   .nav {

@@ -1,17 +1,15 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 
 import { type UpdateProfileLinksInput } from '@/app/actions/me';
+import { useSettingsForm } from '@/hooks/useSettingsForm';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import FormField from '@/components/FormField/FormField';
 import Icon from '@/components/Icon/Icon';
 import Input from '@/components/Input/Input';
-
-type Feedback = { type: 'success' | 'error'; text: string } | null;
 
 interface ProfileLinksSectionProps {
   initialValues: UpdateProfileLinksInput;
@@ -21,35 +19,22 @@ interface ProfileLinksSectionProps {
 export default function ProfileLinksSection({ initialValues, onSave }: ProfileLinksSectionProps) {
   const t = useTranslations('settings');
   const common = useTranslations('common');
-  const router = useRouter();
-  const [website, setWebsite] = useState(initialValues.website);
-  const [twitter, setTwitter] = useState(initialValues.twitter);
-  const [github, setGithub] = useState(initialValues.github);
-  const [linkedin, setLinkedin] = useState(initialValues.linkedin);
-  const [isSaving, setIsSaving] = useState(false);
-  const [feedback, setFeedback] = useState<Feedback>(null);
 
-  useEffect(() => {
-    setWebsite(initialValues.website);
-    setTwitter(initialValues.twitter);
-    setGithub(initialValues.github);
-    setLinkedin(initialValues.linkedin);
-  }, [initialValues]);
+  const {
+    value: formState,
+    setValue: setFormState,
+    isSaving,
+    feedback,
+    handleSubmit,
+    isDirty,
+  } = useSettingsForm({
+    initialValue: initialValues,
+    onSave,
+    successMessage: t('profile.linksUpdated'),
+  });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSaving(true);
-    setFeedback(null);
-
-    try {
-      await onSave({ website, twitter, github, linkedin });
-      setFeedback({ type: 'success', text: t('profile.linksUpdated') });
-      router.refresh();
-    } catch (error) {
-      setFeedback({ type: 'error', text: error instanceof Error ? error.message : t('saveFailed') });
-    } finally {
-      setIsSaving(false);
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
@@ -58,18 +43,20 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
         <FormField label={t('profile.websiteLabel')} htmlFor="settings-website">
           <Input
             id="settings-website"
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
+            name="website"
+            value={formState.website || ''}
+            onChange={handleChange}
             placeholder={t('profile.websitePlaceholder')}
             disabled={isSaving}
-            prefix={<Icon name="link" size={16} />}
+            prefix={<Icon name="link" size={20} />}
           />
         </FormField>
         <FormField label={t('profile.twitterLabel')} htmlFor="settings-twitter">
           <Input
             id="settings-twitter"
-            value={twitter}
-            onChange={(e) => setTwitter(e.target.value)}
+            name="twitter"
+            value={formState.twitter || ''}
+            onChange={handleChange}
             placeholder={t('profile.twitterPlaceholder')}
             disabled={isSaving}
           />
@@ -77,8 +64,9 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
         <FormField label={t('profile.githubLabel')} htmlFor="settings-github">
           <Input
             id="settings-github"
-            value={github}
-            onChange={(e) => setGithub(e.target.value)}
+            name="github"
+            value={formState.github || ''}
+            onChange={handleChange}
             placeholder={t('profile.githubPlaceholder')}
             disabled={isSaving}
           />
@@ -86,18 +74,19 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
         <FormField label={t('profile.linkedinLabel')} htmlFor="settings-linkedin">
           <Input
             id="settings-linkedin"
-            value={linkedin}
-            onChange={(e) => setLinkedin(e.target.value)}
+            name="linkedin"
+            value={formState.linkedin || ''}
+            onChange={handleChange}
             placeholder={t('profile.linkedinPlaceholder')}
             disabled={isSaving}
           />
         </FormField>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="default" disabled={isSaving}>
+          <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
             {common('save')}
           </Button>
           {feedback && (
-            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>
+            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
               {feedback.text}
             </p>
           )}

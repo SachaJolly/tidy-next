@@ -26,6 +26,7 @@ const meta = {
     size: 'default',
     tinted: false,
     transparent: false,
+    disabled: false,
   },
   argTypes: {
     label: {
@@ -52,6 +53,9 @@ const meta = {
       options: iconOptions,
     },
     hasDropdown: {
+      control: 'boolean',
+    },
+    disabled: {
       control: 'boolean',
     },
   },
@@ -119,5 +123,12 @@ export const WithDropdownIcon: Story = {
     icon: 'search',
     label: 'Dropdown',
     hasDropdown: true,
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    label: 'Disabled',
   },
 };
