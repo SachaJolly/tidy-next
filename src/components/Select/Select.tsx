@@ -123,23 +123,16 @@ export const Select = ({
     };
   }, []);
 
-  const composedSuffix = React.useMemo(() => {
-    if (hideDropdownIcon) return suffix;
-
-    return (
-      <span className={styles.suffixContent}>
-        {suffix && <span className={styles.suffixValue}>{suffix}</span>}
-        <button
-          type="button"
-          className={styles.dropdownTrigger}
-          onClick={() => setIsOpen((prev) => !prev)}
-          aria-label="Toggle dropdown"
-        >
-          <Icon name="dropdown" size={16} />
-        </button>
+  const composedSuffix = hideDropdownIcon ? (
+    suffix
+  ) : (
+    <>
+      {suffix && <span className={styles.suffixValue}>{suffix}</span>}
+      <span className={styles.dropdownIndicator} aria-hidden>
+        <Icon name="dropdown" size={16} />
       </span>
-    );
-  }, [hideDropdownIcon, suffix]);
+    </>
+  );
 
   return (
     <div ref={containerRef} className={`${styles.select} ${className ?? ''}`}>
