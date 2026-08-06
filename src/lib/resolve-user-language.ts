@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import {
   LANGUAGE_COOKIE_NAME,
   LANGUAGE_COOKIE_MAX_AGE,
-  type Language,
+  type LanguagePreference,
 } from './language-mapper';
 
 /**
@@ -21,7 +21,7 @@ import {
 export async function resolveUserLanguage(options: {
   userLanguageFromDb?: string | null;
   acceptLanguage?: string | null;
-}): Promise<Language> {
+}): Promise<LanguagePreference> {
   const { userLanguageFromDb } = options;
   const cookieStore = await cookies();
 

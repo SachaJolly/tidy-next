@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { getTranslations } from 'next-intl/server';
 
 import { api } from '@/lib/api';
-import { LANGUAGE_COOKIE_NAME, type Language } from '@/lib/language-mapper';
+import { LANGUAGE_COOKIE_NAME, type LanguagePreference } from '@/lib/language-mapper';
 import { THEME_COOKIE_NAME, normalizeThemePreference } from '@/lib/theme-mapper';
 import type { User } from '@/lib/types';
 
@@ -27,7 +27,7 @@ export default async function PreferencesSettingsPage() {
   }
 
   const languageFromCookie = cookieStore.get(LANGUAGE_COOKIE_NAME)?.value;
-  const initialLanguage: Language =
+  const initialLanguage: LanguagePreference =
     me?.language === 'en' || me?.language === 'fr'
       ? me.language
       : languageFromCookie === 'en' || languageFromCookie === 'fr'

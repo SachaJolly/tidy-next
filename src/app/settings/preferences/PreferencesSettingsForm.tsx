@@ -6,13 +6,13 @@ import { useTranslations } from 'next-intl';
 
 import { updatePreferencesSettings } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
-import { type Language } from '@/lib/language-mapper';
+import { type LanguagePreference } from '@/lib/language-mapper';
 import { type ThemePreference } from '@/lib/theme-mapper';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
 interface PreferencesSettingsFormProps {
-  initialLanguage: Language;
+  initialLanguage: LanguagePreference;
   initialTheme: ThemePreference;
   initialEmailNotifications: boolean;
   initialPushNotifications: boolean;
@@ -27,7 +27,7 @@ export default function PreferencesSettingsForm({
   const t = useTranslations('settings');
   const common = useTranslations('common');
   const router = useRouter();
-  const [language, setLanguage] = useState<Language>(initialLanguage);
+  const [language, setLanguage] = useState<LanguagePreference>(initialLanguage);
   const [theme, setTheme] = useState<ThemePreference>(initialTheme);
   const [emailNotifications, setEmailNotifications] = useState(initialEmailNotifications);
   const [pushNotifications, setPushNotifications] = useState(initialPushNotifications);

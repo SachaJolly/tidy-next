@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import { saveLanguagePreference } from '@/app/actions/language';
 import { saveThemePreference } from '@/app/actions/theme';
 import { api } from '@/lib/api';
-import { type Language } from '@/lib/language-mapper';
+import { type LanguagePreference } from '@/lib/language-mapper';
 import { type ThemePreference } from '@/lib/theme-mapper';
 
 type NullableString = string | null;
@@ -29,7 +29,7 @@ interface UpdateAccountInput {
 }
 
 interface UpdatePreferencesInput {
-  language: Language;
+  language: LanguagePreference;
   theme: ThemePreference;
   emailNotifications: boolean;
   pushNotifications: boolean;

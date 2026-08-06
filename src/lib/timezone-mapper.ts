@@ -15,7 +15,7 @@ export const TIMEZONE_COOKIE_MAX_AGE = 365 * 24 * 60 * 60; // 1 year
 /** Sentinel value used when no timezone is stored (shows "Auto" in the UI). */
 export const TIMEZONE_AUTO = 'auto' as const;
 
-export type TimezoneValue = string | typeof TIMEZONE_AUTO;
+export type TimezonePreference = string | typeof TIMEZONE_AUTO;
 
 /**
  * Validates that a string looks like a plausible IANA timezone identifier

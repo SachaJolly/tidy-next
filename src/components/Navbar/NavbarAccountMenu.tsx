@@ -11,12 +11,12 @@ import { AccountDropdown } from './AccountDropdown';
 import { logoutAction } from '@/app/actions/auth';
 import { User } from '@/lib/types';
 import { stripLocalePrefix } from '@/lib/locale-path';
-import { type Language } from '@/lib/language-mapper';
+import { type LanguagePreference } from '@/lib/language-mapper';
 import { type ThemePreference } from '@/lib/theme-mapper';
 
 interface NavbarAccountMenuProps {
   user: User | null;
-  initialLanguage: Language;
+  initialLanguage: LanguagePreference;
   initialTheme: ThemePreference;
   initialTimezone: string | null;
 }

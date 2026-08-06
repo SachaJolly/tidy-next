@@ -20,7 +20,7 @@ import { useLocale } from 'next-intl';
 import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
 import packageJson from '@/../package.json';
-import { type Language } from '@/lib/language-mapper';
+import { type LanguagePreference } from '@/lib/language-mapper';
 import { type ThemePreference } from '@/lib/theme-mapper';
 import { formatTimezoneLabel } from '@/lib/timezone-mapper';
 import { changeLanguage } from '@/app/actions/language';
@@ -37,7 +37,7 @@ interface AccountDropdownProps {
   /** Null when the user is not authenticated. */
   user: User | null;
   /** User's preferred language (from DB if authenticated, or cookie/browser default). */
-  initialLanguage: Language;
+  initialLanguage: LanguagePreference;
   /** User's preferred theme (from DB if authenticated, or cookie default). */
   initialTheme: ThemePreference;
   /**
@@ -149,7 +149,7 @@ export function AccountDropdown({ user, initialLanguage, initialTheme, initialTi
         <DropdownSubContent>
           <DropdownRadioGroup
             value={language}
-            onValueChange={(v) => void handleLanguageChange(v as Language)}
+            onValueChange={(v) => void handleLanguageChange(v as LanguagePreference)}
             label={t('language')}
             closeOnSelect
           >
