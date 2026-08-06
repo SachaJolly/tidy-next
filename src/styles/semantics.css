@@ -11,8 +11,12 @@
   --surface-interactive: light-dark(var(--color-purple-500), var(--color-purple-300));
   --surface-interactive-hover: light-dark(var(--color-purple-600), var(--color-purple-400));
   --surface-interactive-highlight: light-dark(var(--color-purple-op10), var(--color-purple-op10));
-  --surface-interactive-highlight-hover: light-dark(var(--color-purple-op10), var(--color-purple-op10));
+  --surface-interactive-highlight-hover: light-dark(var(--color-purple-op20), var(--color-purple-op20));
   --surface-selection: light-dark(var(--color-yellow-200), var(--color-yellow-100));
+  --surface-danger: light-dark(var(--color-red-050), var(--color-red-800));
+  --surface-danger-hover: light-dark(var(--color-red-100), var(--color-red-900));
+  --surface-danger-highlight: light-dark(var(--color-red-op10), var(--color-red-op10));
+  --surface-danger-highlight-hover: light-dark(var(--color-red-op20), var(--color-red-op20));
 
   /* Surface collection */
   /*--surface-collection-grey: light-dark(var(--color-green-200), var(--color-grey-200));
@@ -25,15 +29,16 @@
   --surface-collection-red: light-dark(var(--color-red-200), var(--color-red-200));*/
 
   /* Text */
-  --text-interactive: light-dark(var(--color-purple-500), var(--color-purple-300));
-  --text-interactive-hover: light-dark(var(--color-purple-600), var(--color-purple-400));
+  --text-interactive: light-dark(var(--color-purple-500), var(--color-purple-200));
+  --text-interactive-hover: light-dark(var(--color-purple-600), var(--color-purple-300));
   --text-heading: light-dark(var(--color-grey-800), var(--color-white));
   --text-body: light-dark(var(--color-grey-600), var(--color-white));
   --text-muted: light-dark(var(--color-grey-400), var(--color-grey-300));
   --text-disabled: light-dark(var(--color-grey-300), var(--color-grey-400));
   --text-inverse: light-dark(var(--color-white), var(--color-grey-900));
   --text-on-interactive: light-dark(var(--color-white), var(--color-white));
-  --text-on-tooltip: light-dark(var(--color-white), var(--color-white));
+  --text-on-tooltip: light-dark(var(--color-white), var(--color-grey-900));
+  --text-danger: light-dark(var(--color-red-700), var(--color-red-300));
 
   /* Text types */
   --text-type-featured: light-dark(var(--color-purple-500), var(--color-purple-300));
@@ -45,8 +50,8 @@
   --border-default-hover: light-dark(var(--color-black-op30), var(--color-white-op40));
   --border-inverse: light-dark(var(--color-white-op20), var(--color-black-op20));
   --border-inverse-hover: light-dark(var(--color-white-op40), var(--color-black-op30));
-  --border-interactive: light-dark(var(--color-purple-op20), var(--color-purple-op40));
-  --border-interactive-hover: light-dark(var(--color-purple-op30), var(--color-purple-op50));
+  --border-interactive: light-dark(var(--color-purple-op20), var(--color-purple-op30));
+  --border-interactive-hover: light-dark(var(--color-purple-op30), var(--color-purple-op40));
   --border-active: light-dark(var(--color-purple-500), var(--color-purple-300));
   --border-active-hover: light-dark(var(--color-purple-600), var(--color-purple-400));
   --border-disabled: light-dark(var(--color-black-op10), var(--color-white-op10));
@@ -55,4 +60,12 @@
 
   /* Shadows */
   --shadow-overlay: 0 .25rem .75rem rgba(0, 0, 0, .15);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
 }

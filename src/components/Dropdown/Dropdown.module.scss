@@ -144,6 +144,7 @@
   &:focus,
   &:focus-visible {
     background: var(--surface-highlight);
+    color: var(--text-body);
     outline: none;
   }
 
@@ -168,7 +169,7 @@
 
   /* Destructive action (e.g. Delete) */
   &[data-destructive] {
-    color: var(--color-red-500);
+    color: var(--text-danger);
 
     .itemIcon {
       color: inherit;
@@ -177,7 +178,7 @@
     &:hover,
     &:focus,
     &:focus-visible {
-      background: var(--color-red-050);
+      background: var(--surface-danger-highlight);
     }
   }
 
