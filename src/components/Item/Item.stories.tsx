@@ -19,31 +19,22 @@ type Story = StoryObj<typeof meta>;
 
 const baseLinkItem: ItemType = {
   id: '1',
-  title: 'Introducing TypeScript 5.0',
-  caption: null,
-  displayMode: 'LINK',
-  position: 0,
-  itemType: 'URL',
+  body: 'Introducing TypeScript 5.0',
+  url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html',
+  display_mode: 'link',
   stats: { views: 1234, likes: 89, comments: 12 },
-  content: {
-    url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html',
+  metadata: {
     favicon: 'https://www.typescriptlang.org/favicon-32x32.png',
   },
-  createdAt: '2024-01-15T10:00:00Z',
-  updatedAt: '2024-01-15T10:00:00Z',
-  deleted_at: null,
 };
 
 const baseBookmarkItem: ItemType = {
   id: '2',
-  title: 'Next.js 14 Released',
-  caption: null,
-  displayMode: 'BOOKMARK',
-  position: 0,
-  itemType: 'URL',
+  body: 'Next.js 14 Released',
+  url: 'https://nextjs.org/blog/next-14',
+  display_mode: 'bookmark',
   stats: { views: 5678, likes: 234, comments: 45 },
-  content: {
-    url: 'https://nextjs.org/blog/next-14',
+  metadata: {
     favicon: 'https://nextjs.org/favicon.ico',
     description: 'Discover the latest features in Next.js 14 including improved performance, better developer experience, and more.',
     siteName: 'Next.js',
@@ -53,9 +44,6 @@ const baseBookmarkItem: ItemType = {
     label2: 'Status',
     value2: 'Stable',
   },
-  createdAt: '2024-01-10T10:00:00Z',
-  updatedAt: '2024-01-10T10:00:00Z',
-  deleted_at: null,
 };
 
 /**
@@ -75,9 +63,7 @@ export const LinkNoFavicon: Story = {
   args: {
     item: {
       ...baseLinkItem,
-      content: {
-        url: baseLinkItem.content.url,
-      },
+      metadata: {},
     },
     listId: 'list-123',
   },
@@ -90,7 +76,7 @@ export const LinkCaption: Story = {
   args: {
     item: {
       ...baseLinkItem,
-      caption: 'A major release with new features and improvements',
+      body: 'A major release with new features and improvements',
     },
     listId: 'list-123',
   },

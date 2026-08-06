@@ -34,27 +34,6 @@ export type NewListGate = {
   limitReached: boolean;
 };
 
-export interface Item {
-  id: string;
-  title: string;
-  caption: string | null;
-  // `content` is a flexible object that can hold any key-value pairs
-  content: Record<string, unknown>;
-  position: number;
-  itemType: 'URL' | 'TEXT' | 'IMAGE'; // Example types
-  displayMode: string;
-  createdAt: string;
-  updatedAt: string;
-  deleted_at: string | null;
-
-  // The `stats` object is constructed by the API serializer
-  stats: {
-    views: number;
-    likes: number;
-    comments: number;
-  };
-}
-
 export interface List {
   id: string;
   title: string;
@@ -78,6 +57,19 @@ export interface List {
   // Lists must always expose their author in API responses consumed by the app.
   author: User;
   items?: Item[];
+}
+
+export interface Item {
+  id: string;
+  body: string; // Markdown text
+  url: string | null;
+  display_mode: 'text' | 'link' | 'bookmark' | 'embed';
+  metadata: Record<string, any>; // Formerly `content`
+  stats: {
+    views: number;
+    likes: number;
+    comments: number;
+  };
 }
 
 // A standard API response structure from our Rails backend

@@ -26,8 +26,8 @@ interface ItemProps {
   canManage?: boolean;
 }
 
-// Type-safe content shape for items
-interface ItemContent {
+// Type-safe metadata shape for items
+interface ItemMetadata {
   url?: string;
   favicon?: string;
   title?: string;
@@ -87,8 +87,8 @@ const ItemStats = ({ stats }: ItemStatsProps) => {
 export const Item = ({ item, listId, canManage = false }: ItemProps) => {
   const t = useTranslations('item');
   const listPage = useTranslations('listPage');
-  // Cast content to a type-safe shape
-  const content = item.content as ItemContent;
+  // Cast metadata to a type-safe shape
+  const metadata = item.metadata as ItemMetadata;
   const actions = canManage ? (
     <div className={styles.actions}>
       <Dropdown>
@@ -99,96 +99,94 @@ export const Item = ({ item, listId, canManage = false }: ItemProps) => {
   ) : null;
 
   // LINK display mode
-  if (item.displayMode === 'LINK') {
+  if (item.display_mode === 'link') {
     return (
       <div className={styles['container']}>
         {actions}
         <a
           className={`${styles['content']} ${styles['is-link']}`}
-          href={content.url}
+          href={item.url}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {content.favicon && (
+          {metadata.favicon && (
             <Image
               alt=""
               className={styles['favicon']}
               height={16}
-              src={content.favicon}
+              src={metadata.favicon}
               unoptimized={true}
               width={16}
             />
           )}
-          <h3 className={styles['title']}>{item.title}</h3>
+          <h3 className={styles['title']}>{item.body}</h3>
         </a>
 
-        {item.caption && <p className={styles['caption']}>{item.caption}</p>}
         <ItemStats stats={item.stats} />
       </div>
     );
   }
 
   // BOOKMARK display mode
-  if (item.displayMode === 'BOOKMARK') {
+  if (item.display_mode === 'bookmark') {
     return (
       <div className={styles['container']}>
         {actions}
         <a
           className={`${styles['content']} ${styles['is-bookmark']}`}
-          href={content.url}
+          href={item.url}
           target="_blank"
           rel="noopener noreferrer"
         >
           <div className={styles['info']}>
             <div className={styles['info-meta']}>
-              <h3 className={styles['title']}>{item.title}</h3>
-              {content.description ? (
-                <p className={styles['description']}>{content.description}</p>
+              <h3 className={styles['title']}>{item.body}</h3>
+              {metadata.description ? (
+                <p className={styles['description']}>{metadata.description}</p>
               ) : (
                 <p className={styles['description']}>{t('noDescription')}</p>
               )}
             </div>
-            {((content.label1 && content.value1) || (content.label2 && content.value2)) && (
+            {((metadata.label1 && metadata.value1) || (metadata.label2 && metadata.value2)) && (
               <dl className={styles['data-list']}>
-                {content.label1 && content.value1 && (
+                {metadata.label1 && metadata.value1 && (
                   <div className={styles['data-list-item']}>
-                    <dt>{content.label1}</dt>
-                    <dd>{content.value1}</dd>
+                    <dt>{metadata.label1}</dt>
+                    <dd>{metadata.value1}</dd>
                   </div>
                 )}
-                {content.label2 && content.value2 && (
+                {metadata.label2 && metadata.value2 && (
                   <div className={styles['data-list-item']}>
-                    <dt>{content.label2}</dt>
-                    <dd>{content.value2}</dd>
+                    <dt>{metadata.label2}</dt>
+                    <dd>{metadata.value2}</dd>
                   </div>
                 )}
               </dl>
             )}
 
             <div className={styles['site']}>
-              {content.favicon && (
+              {metadata.favicon && (
                 <Image
                   alt=""
                   className={styles['favicon']}
                   height={16}
-                  src={content.favicon}
+                  src={metadata.favicon}
                   unoptimized={true}
                   width={16}
                 />
               )}
               <MetaGroup>
-                <Meta>{content.siteName || content.host}</Meta>
-                {content.author && <Meta>{content.author}</Meta>}
+                <Meta>{metadata.siteName || metadata.host}</Meta>
+                {metadata.author && <Meta>{metadata.author}</Meta>}
               </MetaGroup>
             </div>
           </div>
 
           <div className={styles['cover']}>
-            {content.image && <ResponsiveContentImage alt={item.title} src={content.image} />}
+            {metadata.image && <ResponsiveContentImage alt={item.body} src={metadata.image} />}
           </div>
         </a>
 
-        {item.caption && <p className={styles['caption']}>{item.caption}</p>}
         <ItemStats stats={item.stats} />
       </div>
     );
@@ -199,30 +197,29 @@ export const Item = ({ item, listId, canManage = false }: ItemProps) => {
     <div className={styles['container']}>
       {actions}
       <div className={styles['content']}>
-        {content.favicon && (
+        {metadata.favicon && (
           <Image
             alt=""
             className={styles['favicon']}
             height={16}
-            src={content.favicon}
+            src={metadata.favicon}
             unoptimized={true}
             width={16}
           />
         )}
-        <h2>{item.title}</h2>
+        <h2>{item.body}</h2>
 
-        {content.embed ? (
-          <div dangerouslySetInnerHTML={{ __html: content.embed }} />
+        {metadata.embed ? (
+          <div dangerouslySetInnerHTML={{ __html: metadata.embed }} />
         ) : (
-          content.image && (
+          metadata.image && (
             <div>
-              <ResponsiveContentImage alt={item.title} src={content.image} />
+              <ResponsiveContentImage alt={item.body} src={metadata.image} />
             </div>
           )
         )}
       </div>
 
-      {item.caption && <p className={styles['caption']}>{item.caption}</p>}
       <ItemStats stats={item.stats} />
     </div>
   );

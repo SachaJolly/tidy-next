@@ -17,7 +17,7 @@ type EditItemModalProps = {
   items: Item[];
 };
 
-type ItemContent = {
+type ItemMetadata = {
   url?: string;
 };
 
@@ -57,7 +57,7 @@ export default function EditItemModal({ listId, items }: EditItemModalProps) {
     );
   }
 
-  const content = item.content as ItemContent;
+  const metadata = item.metadata as ItemMetadata;
 
   return (
     <ListModal onClose={closeModal}>
@@ -67,7 +67,7 @@ export default function EditItemModal({ listId, items }: EditItemModalProps) {
         action={(values) => updateListItemAction(listId, item.id, values)}
         initialTitle={item.title}
         initialCaption={item.caption ?? ''}
-        initialUrl={content.url ?? ''}
+        initialUrl={metadata.url ?? ''}
         onCancel={closeModal}
         onSuccess={handleSuccess}
       />

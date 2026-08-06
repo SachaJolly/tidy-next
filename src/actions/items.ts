@@ -29,7 +29,7 @@ export async function createListItemAction(
           caption: caption || undefined,
           item_type: 'URL',
           display_mode: 'LINK',
-          content: {
+          metadata: {
             url: url || undefined,
           },
         },
@@ -68,7 +68,7 @@ export async function updateListItemAction(
         item: {
           title,
           caption: caption || undefined,
-          content: {
+          metadata: {
             url: url || undefined,
           },
         },
