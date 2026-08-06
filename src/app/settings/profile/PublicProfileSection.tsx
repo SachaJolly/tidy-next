@@ -9,6 +9,7 @@ import Avatar from '@/components/Avatar/Avatar';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import Input from '@/components/Input/Input';
+import Textarea from '@/components/Textarea/Textarea';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -53,8 +54,8 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
   return (
     <Card title={t('profile.publicTitle')} description={t('profile.publicDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1rem' }}>
-          <Avatar src={avatar || undefined} alt={name || undefined} initials={name ? name[0] : '?'} size="56" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <Avatar src={avatar || undefined} alt={name || undefined} initials={name ? name[0] : '?'} size="96" />
           <div style={{ flex: 1 }}>
             <Input
               id="settings-avatar-url"
@@ -74,13 +75,14 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
           placeholder={t('profile.displayNamePlaceholder')}
           disabled={isSaving}
         />
-        <Input
+        <Textarea
           id="settings-bio"
           label={t('profile.bioLabel')}
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           placeholder={t('profile.bioPlaceholder')}
           disabled={isSaving}
+          rows={4}
         />
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <Input
