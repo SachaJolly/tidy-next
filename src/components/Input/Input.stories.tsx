@@ -102,3 +102,27 @@ export const WithoutLabel: Story = {
     'aria-label': 'Search input',
   },
 };
+
+export const WithPrefix: Story = {
+  render: (args) => (
+    <FormField label="Website" htmlFor="website-input">
+      <Input {...args} id="website-input" type="text" placeholder="yoursite.com" prefix="https://" />
+    </FormField>
+  ),
+};
+
+export const WithSuffix: Story = {
+  render: (args) => (
+    <FormField label="Username" htmlFor="username-input">
+      <Input {...args} id="username-input" type="text" placeholder="yourname" suffix="@tidycards.app" />
+    </FormField>
+  ),
+};
+
+export const WithPrefixAndSuffix: Story = {
+  render: (args) => (
+    <FormField label="Price" htmlFor="price-input">
+      <Input {...args} id="price-input" type="number" placeholder="0.00" prefix="€" suffix="per month" />
+    </FormField>
+  ),
+};

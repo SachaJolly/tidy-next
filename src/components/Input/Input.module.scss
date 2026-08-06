@@ -4,6 +4,57 @@
   gap: 0.5rem;
 }
 
+// Wrapper used only when prefix/suffix are present — merges them visually with the input.
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-interactive);
+  border: var(--stroke-thin) solid var(--border-default);
+  overflow: hidden;
+
+  &:focus-within {
+    border-color: var(--border-active);
+    outline-color: var(--surface-interactive);
+    outline-offset: 0.125rem;
+    outline-width: var(--stroke-thin);
+    outline-style: dashed;
+  }
+
+  // When wrapped, the input itself loses its own border and radius.
+  .input {
+    border: none;
+    border-radius: 0;
+    outline: none;
+    flex: 1 1 auto;
+    min-width: 0;
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+}
+
+.affix {
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
+
+  // Separate prefix from input with a subtle divider.
+  &:first-child {
+    border-right: var(--stroke-thin) solid var(--border-default);
+  }
+
+  &:last-child {
+    border-left: var(--stroke-thin) solid var(--border-default);
+  }
+}
+
 .input {
   width: 100%;
   padding: 0.5rem 0.75rem;
