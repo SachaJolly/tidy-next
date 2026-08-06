@@ -7,15 +7,11 @@ import { type UpdateProfileVisibilityInput } from '@/app/actions/me';
 import { useSettingsForm } from '@/hooks/useSettingsForm';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
-import FormField from '@/components/FormField/FormField';
-import { Select } from '@/components/Select';
 
 interface ProfileVisibilitySectionProps {
   initialProfilePrivate: boolean;
   onSave: (input: UpdateProfileVisibilityInput) => Promise<void>;
 }
-
-type VisibilityOption = 'public' | 'private';
 
 export default function ProfileVisibilitySection({ initialProfilePrivate, onSave }: ProfileVisibilitySectionProps) {
   const t = useTranslations('settings');
@@ -27,23 +23,21 @@ export default function ProfileVisibilitySection({ initialProfilePrivate, onSave
     successMessage: t('profile.visibilityUpdated'),
   });
 
-  const visibilityValue: VisibilityOption = profilePrivate ? 'private' : 'public';
-
   return (
     <Card title={t('profile.visibilityTitle')} description={t('profile.visibilityDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <FormField label={t('profile.visibilityLabel')}>
-          <Select
-            options={[
-              { value: 'public', label: t('profile.visibilityPublic') },
-              { value: 'private', label: t('profile.visibilityPrivate') },
-            ]}
-            value={visibilityValue}
-            onChange={(value) => setProfilePrivate(value === 'private')}
-            className="min-w-[220px]"
-            hideDropdownIcon={false}
-          />
-        </FormField>
+        <fieldset style={{ border: 0, margin: 0, padding: 0 }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+            <input
+              type="checkbox"
+              name="profilePrivate"
+              checked={profilePrivate}
+              onChange={(e) => setProfilePrivate(e.target.checked)}
+              disabled={isSaving}
+            />
+            <span>{t('profile.visibilityPrivate')}</span>
+          </label>
+        </fieldset>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
             {common('save')}
