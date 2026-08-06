@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 
 import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
-import Icon from '@/components/Icon/Icon';
 import { Modal, ModalHeader, ModalContent, ModalFooter, ModalClose } from '@/components/Modal/Modal';
 
 interface DeleteAccountModalProps {
@@ -22,7 +21,7 @@ export default function DeleteAccountModal({ isDeleting, error, onConfirm, onClo
     <Modal size="default" onClose={onClose}>
       <ModalHeader
         title={t('account.deleteConfirmTitle')}
-        icon={<Icon name="warning" />}
+        icon="warning"
         iconVariant="danger"
       />
       <ModalClose />

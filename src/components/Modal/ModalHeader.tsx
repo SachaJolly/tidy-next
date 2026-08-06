@@ -2,13 +2,15 @@
 
 import React from 'react';
 
+import Icon from '@/components/Icon/Icon';
+import { type IconName } from '@/components/Icon/icons';
 import styles from './Modal.module.scss';
 import { ModalContext } from './ModalContext';
 
 type IconVariant = 'default' | 'warning' | 'danger';
 
 const ICON_COLORS: Record<IconVariant, string> = {
-  default: 'var(--text-body)',
+  default: 'var(--text-heading)',
   warning: 'var(--text-warning)',
   danger: 'var(--text-danger)',
 };
@@ -21,7 +23,7 @@ export function ModalHeader({
   className,
 }: {
   title?: string;
-  icon?: React.ReactNode;
+  icon?: IconName;
   iconVariant?: IconVariant;
   children?: React.ReactNode;
   className?: string;
@@ -32,7 +34,7 @@ export function ModalHeader({
     <div id={titleId} className={[styles.header, className].filter(Boolean).join(' ')}>
       {icon && (
         <span className={styles.headerIcon} style={{ color: ICON_COLORS[iconVariant] }}>
-          {icon}
+          <Icon name={icon} />
         </span>
       )}
       {title && <h3>{title}</h3>}
