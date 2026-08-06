@@ -4,15 +4,22 @@
   gap: 0.25rem;
 }
 
+.labels {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
 .label {
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 1rem;
+  line-height: 1.25rem;
   color: var(--text-body);
 }
 
 .caption {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  line-height: 1.4;
+  line-height: 1rem;
 }
