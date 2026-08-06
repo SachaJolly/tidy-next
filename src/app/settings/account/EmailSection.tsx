@@ -6,8 +6,9 @@ import { useTranslations } from 'next-intl';
 
 import { type UpdateAccountInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
-import Input from '@/components/Input/Input';
 import Card from '@/components/Card/Card';
+import FormField from '@/components/FormField/FormField';
+import Input from '@/components/Input/Input';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -43,14 +44,15 @@ export default function EmailSection({ initialEmail, onSave }: EmailSectionProps
   return (
     <Card title={t('account.emailTitle')} description={t('account.emailDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <Input
-          id="settings-email"
-          label={t('account.emailLabel')}
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={isSaving}
-        />
+        <FormField label={t('account.emailLabel')} htmlFor="settings-email">
+          <Input
+            id="settings-email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={isSaving}
+          />
+        </FormField>
         <div>
           <Button type="submit" variant="interactive" disabled={isSaving}>
             {t('account.saveEmail')}

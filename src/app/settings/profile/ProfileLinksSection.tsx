@@ -6,8 +6,9 @@ import { useTranslations } from 'next-intl';
 
 import { type UpdateProfileLinksInput } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
-import Input from '@/components/Input/Input';
 import Card from '@/components/Card/Card';
+import FormField from '@/components/FormField/FormField';
+import Input from '@/components/Input/Input';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -52,38 +53,42 @@ export default function ProfileLinksSection({ initialValues, onSave }: ProfileLi
   return (
     <Card title={t('profile.linksTitle')} description={t('profile.linksDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <Input
-          id="settings-website"
-          label={t('profile.websiteLabel')}
-          value={website}
-          onChange={(e) => setWebsite(e.target.value)}
-          placeholder={t('profile.websitePlaceholder')}
-          disabled={isSaving}
-        />
-        <Input
-          id="settings-twitter"
-          label={t('profile.twitterLabel')}
-          value={twitter}
-          onChange={(e) => setTwitter(e.target.value)}
-          placeholder={t('profile.twitterPlaceholder')}
-          disabled={isSaving}
-        />
-        <Input
-          id="settings-github"
-          label={t('profile.githubLabel')}
-          value={github}
-          onChange={(e) => setGithub(e.target.value)}
-          placeholder={t('profile.githubPlaceholder')}
-          disabled={isSaving}
-        />
-        <Input
-          id="settings-linkedin"
-          label={t('profile.linkedinLabel')}
-          value={linkedin}
-          onChange={(e) => setLinkedin(e.target.value)}
-          placeholder={t('profile.linkedinPlaceholder')}
-          disabled={isSaving}
-        />
+        <FormField label={t('profile.websiteLabel')} htmlFor="settings-website">
+          <Input
+            id="settings-website"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            placeholder={t('profile.websitePlaceholder')}
+            disabled={isSaving}
+          />
+        </FormField>
+        <FormField label={t('profile.twitterLabel')} htmlFor="settings-twitter">
+          <Input
+            id="settings-twitter"
+            value={twitter}
+            onChange={(e) => setTwitter(e.target.value)}
+            placeholder={t('profile.twitterPlaceholder')}
+            disabled={isSaving}
+          />
+        </FormField>
+        <FormField label={t('profile.githubLabel')} htmlFor="settings-github">
+          <Input
+            id="settings-github"
+            value={github}
+            onChange={(e) => setGithub(e.target.value)}
+            placeholder={t('profile.githubPlaceholder')}
+            disabled={isSaving}
+          />
+        </FormField>
+        <FormField label={t('profile.linkedinLabel')} htmlFor="settings-linkedin">
+          <Input
+            id="settings-linkedin"
+            value={linkedin}
+            onChange={(e) => setLinkedin(e.target.value)}
+            placeholder={t('profile.linkedinPlaceholder')}
+            disabled={isSaving}
+          />
+        </FormField>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button type="submit" variant="interactive" disabled={isSaving}>
             {t('profile.saveLinks')}

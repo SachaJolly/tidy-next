@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import Button from '@/components/Button/Button';
-import Input from '@/components/Input/Input';
 import Card from '@/components/Card/Card';
+import FormField from '@/components/FormField/FormField';
+import Input from '@/components/Input/Input';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
 
@@ -42,14 +43,15 @@ export default function UsernameSection({ initialUsername, onSave }: UsernameSec
   return (
     <Card title={t('account.usernameTitle')} description={t('account.usernameDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <Input
-          id="settings-username"
-          label={t('account.usernameLabel')}
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder={t('profile.usernamePlaceholder')}
-          disabled={isSaving}
-        />
+        <FormField label={t('account.usernameLabel')} htmlFor="settings-username">
+          <Input
+            id="settings-username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder={t('profile.usernamePlaceholder')}
+            disabled={isSaving}
+          />
+        </FormField>
         <div>
           <Button type="submit" variant="interactive" disabled={isSaving}>
             {t('account.saveUsername')}

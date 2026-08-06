@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import { Dropdown, DropdownMenu } from '@/components/Dropdown';
+import FormField from '@/components/FormField/FormField';
 import type { IconName } from '@/components/Icon/icons';
 import Input from '@/components/Input/Input';
 import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
@@ -149,27 +150,29 @@ export default function ListForm({
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
       <ModalHeader title={title} />
       <ModalFormFields>
-        <Input
-          id="list-title"
-          name="title"
-          label={t('titleLabel')}
-          placeholder={t('titlePlaceholder')}
-          value={formTitle}
-          onChange={(event) => setFormTitle(event.target.value)}
-          autoFocus={true}
-          disabled={isSubmitting}
-          required
-        />
+        <FormField label={t('titleLabel')} htmlFor="list-title">
+          <Input
+            id="list-title"
+            name="title"
+            placeholder={t('titlePlaceholder')}
+            value={formTitle}
+            onChange={(event) => setFormTitle(event.target.value)}
+            autoFocus={true}
+            disabled={isSubmitting}
+            required
+          />
+        </FormField>
 
-        <Textarea
-          id="list-description"
-          name="description"
-          label={t('descriptionLabel')}
-          placeholder={t('descriptionPlaceholder')}
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-          disabled={isSubmitting}
-        />
+        <FormField label={t('descriptionLabel')} htmlFor="list-description">
+          <Textarea
+            id="list-description"
+            name="description"
+            placeholder={t('descriptionPlaceholder')}
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            disabled={isSubmitting}
+          />
+        </FormField>
 
         {error && (
           <p role="alert" style={{ color: 'var(--danger)', margin: 0 }}>

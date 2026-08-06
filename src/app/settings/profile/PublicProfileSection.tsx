@@ -8,6 +8,7 @@ import { type UpdatePublicProfileInput } from '@/app/actions/me';
 import Avatar from '@/components/Avatar/Avatar';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
+import FormField from '@/components/FormField/FormField';
 import Input from '@/components/Input/Input';
 import Textarea from '@/components/Textarea/Textarea';
 
@@ -54,40 +55,42 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
   return (
     <Card title={t('profile.publicTitle')} description={t('profile.publicDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1rem' }}>
           <Avatar src={avatar || undefined} alt={name || undefined} initials={name ? name[0] : '?'} size="96" />
           <div style={{ flex: 1 }}>
-            <Input
-              id="settings-avatar-url"
-              label={t('profile.avatarLabel')}
-              value={avatar}
-              onChange={(e) => setAvatar(e.target.value)}
-              placeholder={t('profile.avatarPlaceholder')}
-              disabled={isSaving}
-            />
+            <FormField label={t('profile.avatarLabel')} htmlFor="settings-avatar-url">
+              <Input
+                id="settings-avatar-url"
+                value={avatar}
+                onChange={(e) => setAvatar(e.target.value)}
+                placeholder={t('profile.avatarPlaceholder')}
+                disabled={isSaving}
+              />
+            </FormField>
           </div>
         </div>
-        <Input
-          id="settings-display-name"
-          label={t('profile.displayNameLabel')}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder={t('profile.displayNamePlaceholder')}
-          disabled={isSaving}
-        />
-        <Textarea
-          id="settings-bio"
-          label={t('profile.bioLabel')}
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          placeholder={t('profile.bioPlaceholder')}
-          disabled={isSaving}
-          rows={4}
-        />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <FormField label={t('profile.displayNameLabel')} htmlFor="settings-display-name">
+          <Input
+            id="settings-display-name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder={t('profile.displayNamePlaceholder')}
+            disabled={isSaving}
+          />
+        </FormField>
+        <FormField label={t('profile.bioLabel')} htmlFor="settings-bio">
+          <Textarea
+            id="settings-bio"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder={t('profile.bioPlaceholder')}
+            disabled={isSaving}
+            rows={4}
+          />
+        </FormField>
+        <FormField label={t('profile.coverLabel')} htmlFor="settings-cover">
           <Input
             id="settings-cover"
-            label={t('profile.coverLabel')}
             value={cover}
             onChange={(e) => setCover(e.target.value)}
             placeholder={t('profile.coverPlaceholder')}
@@ -100,7 +103,7 @@ export default function PublicProfileSection({ initialValues, onSave }: PublicPr
               style={{ width: '100%', borderRadius: '0.5rem', maxHeight: '160px', objectFit: 'cover' }}
             />
           )}
-        </div>
+        </FormField>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Button type="submit" variant="interactive" disabled={isSaving}>
             {t('profile.save')}
