@@ -8,12 +8,31 @@ import { updatePreferencesSettings } from '@/app/actions/me';
 import Button from '@/components/Button/Button';
 import { type LanguagePreference } from '@/lib/language-mapper';
 import { type ThemePreference } from '@/lib/theme-mapper';
+import { TIMEZONE_AUTO } from '@/lib/timezone-mapper';
 
 type Feedback = { type: 'success' | 'error'; text: string } | null;
+
+// Build grouped IANA timezone list once at module level (client bundle).
+// Intl.supportedValuesOf is available in all modern browsers and Node 18+.
+// Groups are derived from the first segment of the IANA path (e.g. "Europe").
+function buildTimezoneOptions(): { group: string; value: string; label: string }[] {
+  const zones: string[] = typeof Intl !== 'undefined' && 'supportedValuesOf' in Intl
+    ? (Intl as { supportedValuesOf: (key: string) => string[] }).supportedValuesOf('timeZone')
+    : [];
+
+  return zones.map((tz) => ({
+    group: tz.includes('/') ? tz.split('/')[0] : 'Other',
+    value: tz,
+    label: tz.replace(/_/g, ' '),
+  }));
+}
+
+const TIMEZONE_OPTIONS = buildTimezoneOptions();
 
 interface PreferencesSettingsFormProps {
   initialLanguage: LanguagePreference;
   initialTheme: ThemePreference;
+  initialTimezone: string | null;
   initialEmailNotifications: boolean;
   initialPushNotifications: boolean;
 }
@@ -21,6 +40,7 @@ interface PreferencesSettingsFormProps {
 export default function PreferencesSettingsForm({
   initialLanguage,
   initialTheme,
+  initialTimezone,
   initialEmailNotifications,
   initialPushNotifications,
 }: PreferencesSettingsFormProps) {
@@ -29,6 +49,7 @@ export default function PreferencesSettingsForm({
   const router = useRouter();
   const [language, setLanguage] = useState<LanguagePreference>(initialLanguage);
   const [theme, setTheme] = useState<ThemePreference>(initialTheme);
+  const [timezone, setTimezone] = useState<string | null>(initialTimezone);
   const [emailNotifications, setEmailNotifications] = useState(initialEmailNotifications);
   const [pushNotifications, setPushNotifications] = useState(initialPushNotifications);
   const [isSaving, setIsSaving] = useState(false);
@@ -37,9 +58,10 @@ export default function PreferencesSettingsForm({
   useEffect(() => {
     setLanguage(initialLanguage);
     setTheme(initialTheme);
+    setTimezone(initialTimezone);
     setEmailNotifications(initialEmailNotifications);
     setPushNotifications(initialPushNotifications);
-  }, [initialLanguage, initialTheme, initialEmailNotifications, initialPushNotifications]);
+  }, [initialLanguage, initialTheme, initialTimezone, initialEmailNotifications, initialPushNotifications]);
 
   const languageOptions = useMemo(
     () => [
@@ -67,6 +89,7 @@ export default function PreferencesSettingsForm({
       await updatePreferencesSettings({
         language,
         theme,
+        timezone,
         emailNotifications,
         pushNotifications,
       });
@@ -144,7 +167,40 @@ export default function PreferencesSettingsForm({
       </section>
 
       <section>
-        <h3 style={{ margin: 0 }}>{t('preferences.notificationsTitle')}</h3>
+        <h3 style={{ margin: 0 }}>{t('preferences.timezoneTitle')}</h3>
+        <p style={{ marginTop: '0.4rem', color: 'var(--text-muted)' }}>{t('preferences.timezoneDescription')}</p>
+        <div style={{ marginTop: '1rem' }}>
+          <select
+            name="timezone"
+            value={timezone ?? TIMEZONE_AUTO}
+            onChange={(e) => setTimezone(e.target.value === TIMEZONE_AUTO ? null : e.target.value)}
+            disabled={isSaving}
+            style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-default)', background: 'var(--surface-default)', color: 'var(--text-body)', minWidth: '280px' }}
+          >
+            {/* "Auto" option — uses browser timezone at display time */}
+            <option value={TIMEZONE_AUTO}>{t('preferences.timezoneAuto')}</option>
+            <optgroup label="────────────────" disabled />
+            {Array.from(
+              TIMEZONE_OPTIONS.reduce<Map<string, typeof TIMEZONE_OPTIONS>>((map, opt) => {
+                const group = map.get(opt.group) ?? [];
+                group.push(opt);
+                map.set(opt.group, group);
+                return map;
+              }, new Map()),
+            ).map(([group, options]) => (
+              <optgroup key={group} label={group}>
+                {options.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+      </section>
+
+      <section>
         <p style={{ marginTop: '0.4rem', color: 'var(--text-muted)' }}>{t('preferences.notificationsDescription')}</p>
         <fieldset
           style={{

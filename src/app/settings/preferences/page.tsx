@@ -5,6 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { api } from '@/lib/api';
 import { LANGUAGE_COOKIE_NAME, type LanguagePreference } from '@/lib/language-mapper';
 import { THEME_COOKIE_NAME, normalizeThemePreference } from '@/lib/theme-mapper';
+import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 import type { User } from '@/lib/types';
 
 import PreferencesSettingsForm from './PreferencesSettingsForm';
@@ -35,6 +36,7 @@ export default async function PreferencesSettingsPage() {
         : 'en';
 
   const initialTheme = normalizeThemePreference(me?.theme ?? cookieStore.get(THEME_COOKIE_NAME)?.value ?? null);
+  const initialTimezone = parseTimezone(me?.timezone) ?? parseTimezone(cookieStore.get(TIMEZONE_COOKIE_NAME)?.value) ?? null;
   const initialEmailNotifications = me?.emailNotifications ?? true;
   const initialPushNotifications = me?.pushNotifications ?? true;
 
@@ -45,6 +47,7 @@ export default async function PreferencesSettingsPage() {
       <PreferencesSettingsForm
         initialLanguage={initialLanguage}
         initialTheme={initialTheme}
+        initialTimezone={initialTimezone}
         initialEmailNotifications={initialEmailNotifications}
         initialPushNotifications={initialPushNotifications}
       />

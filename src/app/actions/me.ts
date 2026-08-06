@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 
 import { saveLanguagePreference } from '@/app/actions/language';
 import { saveThemePreference } from '@/app/actions/theme';
+import { saveTimezonePreference } from '@/app/actions/timezone';
 import { api } from '@/lib/api';
 import { type LanguagePreference } from '@/lib/language-mapper';
 import { type ThemePreference } from '@/lib/theme-mapper';
@@ -31,6 +32,7 @@ interface UpdateAccountInput {
 interface UpdatePreferencesInput {
   language: LanguagePreference;
   theme: ThemePreference;
+  timezone: string | null;
   emailNotifications: boolean;
   pushNotifications: boolean;
 }
@@ -101,6 +103,7 @@ export async function updatePreferencesSettings(input: UpdatePreferencesInput): 
       user: {
         language: input.language,
         theme: input.theme.toUpperCase(),
+        timezone: input.timezone ?? null,
         email_notifications: input.emailNotifications,
         push_notifications: input.pushNotifications,
       },
@@ -108,5 +111,9 @@ export async function updatePreferencesSettings(input: UpdatePreferencesInput): 
     { authorization: token, cache: 'no-store' },
   );
 
-  await Promise.all([saveLanguagePreference(input.language), saveThemePreference(input.theme)]);
+  await Promise.all([
+    saveLanguagePreference(input.language),
+    saveThemePreference(input.theme),
+    saveTimezonePreference(input.timezone),
+  ]);
 }
