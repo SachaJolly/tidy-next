@@ -9,6 +9,7 @@ type ItemMutationInput = {
   body: string;
   display_mode: 'text' | 'link' | 'bookmark' | 'embed';
   url?: string;
+  metadata?: Item['metadata'];
 };
 
 export type ItemMutationResult = {
@@ -18,7 +19,7 @@ export type ItemMutationResult = {
 
 export async function createListItemAction(
   listId: string,
-  { body, display_mode, url }: ItemMutationInput,
+  { body, display_mode, url, metadata }: ItemMutationInput,
 ): Promise<ItemMutationResult> {
   try {
     const item = await api.auth.post<Item>(
@@ -28,6 +29,7 @@ export async function createListItemAction(
           body,
           display_mode,
           url: url || undefined,
+          metadata: metadata || undefined,
         },
       },
       { cache: 'no-store' },
@@ -55,7 +57,7 @@ export async function createListItemAction(
 export async function updateListItemAction(
   listId: string,
   itemId: string,
-  { body, display_mode, url }: ItemMutationInput,
+  { body, display_mode, url, metadata }: ItemMutationInput,
 ): Promise<ItemMutationResult> {
   try {
     const item = await api.auth.patch<Item>(
@@ -65,6 +67,7 @@ export async function updateListItemAction(
           body,
           display_mode,
           url: url || undefined,
+          metadata: metadata || undefined,
         },
       },
       { cache: 'no-store' },

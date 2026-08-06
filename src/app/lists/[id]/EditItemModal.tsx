@@ -62,11 +62,7 @@ export default function EditItemModal({ listId, items }: EditItemModalProps) {
         initialBody={item.body}
         initialExtractedUrl={item.url}
         initialDisplayMode={item.display_mode}
-        showPreview={true}
-        listId={listId}
         initialMetadata={item.metadata}
-        initialStats={item.stats}
-        initialItemId={item.id}
         onCancel={closeModal}
         onSuccess={handleSuccess}
       />

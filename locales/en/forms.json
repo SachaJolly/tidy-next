@@ -21,6 +21,7 @@
     "urlPlaceholder": "https://example.com",
     "bodyLabel": "Markdown content",
     "previewLabel": "Preview",
+    "linkPreviewLabel": "Link block",
     "bodyPlaceholder": "Paste a URL first to create a bookmark, then add your notes...",
     "extractedUrlLabel": "Detected URL",
     "displayModeLabel": "Display mode",
@@ -29,6 +30,12 @@
       "bookmark": "Bookmark",
       "embed": "Embed"
     },
+    "refreshPreview": "Refresh",
+    "removePreview": "Remove preview",
+    "linkPreviewLoading": "Fetching link metadata...",
+    "linkPreviewFallbackTitle": "Link preview",
+    "linkPreviewNoDescription": "No description available.",
+    "linkPreviewFetchFailed": "Could not load link metadata.",
     "bodyOrUrlRequired": "Please enter text or paste a URL at the beginning.",
     "saveFailed": "Item save failed.",
     "didNotReturnItem": "Item save did not return the updated item."

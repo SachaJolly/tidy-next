@@ -21,6 +21,7 @@
     "urlPlaceholder": "https://example.com",
     "bodyLabel": "Contenu Markdown",
     "previewLabel": "Aperçu",
+    "linkPreviewLabel": "Bloc de lien",
     "bodyPlaceholder": "Collez une URL en premier pour créer un bookmark, puis ajoutez votre texte…",
     "extractedUrlLabel": "URL détectée",
     "displayModeLabel": "Mode d’affichage",
@@ -29,6 +30,12 @@
       "bookmark": "Bookmark",
       "embed": "Intégration"
     },
+    "refreshPreview": "Rafraîchir",
+    "removePreview": "Retirer l’aperçu",
+    "linkPreviewLoading": "Récupération des métadonnées du lien…",
+    "linkPreviewFallbackTitle": "Aperçu du lien",
+    "linkPreviewNoDescription": "Aucune description disponible.",
+    "linkPreviewFetchFailed": "Impossible de charger les métadonnées du lien.",
     "bodyOrUrlRequired": "Veuillez saisir du texte ou coller une URL au début du champ.",
     "saveFailed": "L'enregistrement de l'item a échoué.",
     "didNotReturnItem": "L'enregistrement de l'item n'a pas renvoyé l'item mis à jour."

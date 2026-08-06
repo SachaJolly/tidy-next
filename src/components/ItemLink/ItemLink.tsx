@@ -1,66 +1,77 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import Image from 'next/image';
 
 import styles from './ItemLink.module.scss';
 import type {
-  ItemBookmarkProps,
-  ItemLinkMetadata,
+  ItemLinkDisplayMode,
   ItemLinkProps,
+  ItemLinkWithDisplayModeProps,
 } from './ItemLink.types';
 
-const contentImageSizes = [
-  { media: '(max-width: 617px)' },
-  { media: '(min-width: 618px)' },
-] as const;
+const DEFAULT_NO_DESCRIPTION_LABEL = 'No description available.';
 
 function ResponsiveContentImage({ src, alt }: { src: string; alt: string }) {
   return (
-    <picture>
-      {contentImageSizes.map(({ media }) => (
-        <source key={media} media={media} srcSet={src} />
-      ))}
-      <Image
-        alt={alt}
-        className={styles.coverImage}
-        height={512}
-        src={src}
-        unoptimized={true}
-        width={1024}
-      />
-    </picture>
+    <img
+      alt={alt}
+      className={styles.coverImage}
+      src={src}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+    />
   );
 }
 
-export function ItemLink({ url, metadata }: ItemLinkProps) {
-  return (
-    <a className={styles.content} href={url} target="_blank" rel="noopener noreferrer">
-      {metadata.favicon && (
-        <Image
-          alt=""
-          className={styles.favicon}
-          height={16}
-          src={metadata.favicon}
-          unoptimized={true}
-          width={16}
-        />
-      )}
-      <h3 className={styles.title}>{metadata.title}</h3>
-    </a>
-  );
-}
+function ItemLink({ url, metadata, displayMode = 'link' }: ItemLinkWithDisplayModeProps) {
+  const resolvedMode: ItemLinkDisplayMode = displayMode;
+  const isBookmark = resolvedMode === 'bookmark';
+  const content =
+    resolvedMode === 'bookmark' ? (
+      <ItemBookmarkContent metadata={metadata} noDescriptionLabel={DEFAULT_NO_DESCRIPTION_LABEL} />
+    ) : resolvedMode === 'embed' ? (
+      <ItemEmbedContent metadata={metadata} />
+    ) : (
+      <ItemLinkContent metadata={metadata} />
+    );
 
-export function ItemBookmark({
-  url,
-  metadata,
-  noDescriptionLabel,
-}: ItemBookmarkProps) {
   return (
     <a
-      className={[styles.content, styles.bookmark].filter(Boolean).join(' ')}
+      className={[styles.content, isBookmark && styles.bookmark].filter(Boolean).join(' ')}
       href={url}
       target="_blank"
       rel="noopener noreferrer"
     >
+      {content}
+    </a>
+  );
+}
+
+function ItemLinkContent({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
+  return (
+    <>
+      {metadata.favicon && (
+        <img
+          alt=""
+          className={styles.favicon}
+          src={metadata.favicon}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+        />
+      )}
+      <h3 className={styles.title}>{metadata.title}</h3>
+    </>
+  );
+}
+
+function ItemBookmarkContent({
+  metadata,
+  noDescriptionLabel,
+}: {
+  metadata: ItemLinkProps['metadata'];
+  noDescriptionLabel: string;
+}) {
+  return (
+    <>
       <div className={styles.info}>
         <div className={styles.infoMeta}>
           <h3 className={`${styles.title} ${styles.bookmarkTitle}`}>{metadata.title}</h3>
@@ -89,13 +100,12 @@ export function ItemBookmark({
 
         <div className={styles.site}>
           {metadata.favicon && (
-            <Image
+            <img
               alt=""
               className={styles.favicon}
-              height={16}
               src={metadata.favicon}
-              unoptimized={true}
-              width={16}
+              loading="lazy"
+              referrerPolicy="no-referrer"
             />
           )}
           <span>{metadata.siteName || metadata.host}</span>
@@ -106,21 +116,20 @@ export function ItemBookmark({
       <div className={styles.cover}>
         {metadata.image && <ResponsiveContentImage alt={metadata.title} src={metadata.image} />}
       </div>
-    </a>
+    </>
   );
 }
 
-export function ItemEmbed({ url, metadata }: ItemLinkProps) {
+function ItemEmbedContent({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
   return (
-    <a className={styles.content} href={url} target="_blank" rel="noopener noreferrer">
+    <>
       {metadata.favicon && (
-        <Image
+        <img
           alt=""
           className={styles.favicon}
-          height={16}
           src={metadata.favicon}
-          unoptimized={true}
-          width={16}
+          loading="lazy"
+          referrerPolicy="no-referrer"
         />
       )}
       <h2 className={styles.title}>{metadata.title}</h2>
@@ -133,9 +142,14 @@ export function ItemEmbed({ url, metadata }: ItemLinkProps) {
           </div>
         )
       )}
-    </a>
+    </>
   );
 }
 
-export type { ItemBookmarkProps, ItemLinkMetadata, ItemLinkProps } from './ItemLink.types';
+export type {
+  ItemLinkDisplayMode,
+  ItemLinkMetadata,
+  ItemLinkProps,
+  ItemLinkWithDisplayModeProps,
+} from './ItemLink.types';
 export default ItemLink;

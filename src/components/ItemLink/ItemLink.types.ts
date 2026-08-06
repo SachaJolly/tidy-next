@@ -21,3 +21,9 @@ export type ItemLinkProps = {
 export type ItemBookmarkProps = ItemLinkProps & {
   noDescriptionLabel: string;
 };
+
+export type ItemLinkDisplayMode = 'link' | 'bookmark' | 'embed';
+
+export type ItemLinkWithDisplayModeProps = ItemLinkProps & {
+  displayMode: ItemLinkDisplayMode;
+};
