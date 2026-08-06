@@ -63,7 +63,7 @@ export default function EmailSection({ initialEmail, emailConfirmed, onSave, onR
   const emailCaption = emailConfirmed
     ? t('account.emailConfirmedCaption')
     : (
-      <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+      <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexWrap: 'wrap' }}>
         {t('account.emailNotConfirmedCaption')}
         <button
           type="button"
