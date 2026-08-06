@@ -1,0 +1,27 @@
+.choice {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.control {
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.content {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.label {
+  color: var(--text-body);
+}
+
+.caption {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}

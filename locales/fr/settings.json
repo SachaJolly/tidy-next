@@ -39,6 +39,7 @@
     "visibilityLabel": "Visibilité",
     "visibilityPublic": "Profil public",
     "visibilityPrivate": "Profil privé",
+    "visibilityPrivateCaption": "Lorsqu'il est activé, vous êtes le seul à pouvoir voir votre page profil.",
     "visibilityUpdated": "Visibilité du profil mise à jour avec succès.",
     "save": "Enregistrer le profil",
     "saveLinks": "Enregistrer les liens",

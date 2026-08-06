@@ -1,14 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 
 import { type UpdateNotificationsInput } from '@/app/actions/me';
+import { useSettingsForm } from '@/hooks/useSettingsForm';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
-
-type Feedback = { type: 'success' | 'error'; text: string } | null;
+import ChoiceInput from '@/components/ChoiceInput/ChoiceInput';
 
 interface NotificationsSectionProps {
   initialEmailNotifications: boolean;
@@ -23,62 +22,63 @@ export default function NotificationsSection({
 }: NotificationsSectionProps) {
   const t = useTranslations('settings');
   const common = useTranslations('common');
-  const router = useRouter();
-  const [emailNotifications, setEmailNotifications] = useState(initialEmailNotifications);
-  const [pushNotifications, setPushNotifications] = useState(initialPushNotifications);
-  const [isSaving, setIsSaving] = useState(false);
-  const [feedback, setFeedback] = useState<Feedback>(null);
 
-  useEffect(() => {
-    setEmailNotifications(initialEmailNotifications);
-    setPushNotifications(initialPushNotifications);
-  }, [initialEmailNotifications, initialPushNotifications]);
+  // Memoize the initial value to prevent re-creating the object on every render,
+  // which would cause an infinite loop in the useSettingsForm hook.
+  const initialValue = React.useMemo(
+    () => ({
+      emailNotifications: initialEmailNotifications,
+      pushNotifications: initialPushNotifications,
+    }),
+    [initialEmailNotifications, initialPushNotifications]
+  );
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSaving(true);
-    setFeedback(null);
+  const {
+    value: formState,
+    setValue: setFormState,
+    isSaving,
+    feedback,
+    handleSubmit,
+    isDirty,
+  } = useSettingsForm({
+    initialValue,
+    onSave,
+    successMessage: t('preferences.notificationsUpdated'),
+  });
 
-    try {
-      await onSave({ emailNotifications, pushNotifications });
-      setFeedback({ type: 'success', text: t('preferences.notificationsUpdated') });
-      router.refresh();
-    } catch (error) {
-      setFeedback({ type: 'error', text: error instanceof Error ? error.message : t('saveFailed') });
-    } finally {
-      setIsSaving(false);
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormState((prev) => ({ ...prev, [e.target.name]: e.target.checked }));
   };
 
   return (
     <Card title={t('preferences.notificationsTitle')} description={t('preferences.notificationsDescription')}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <fieldset style={{ border: 0, margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            <input
-              type="checkbox"
-              checked={emailNotifications}
-              onChange={(e) => setEmailNotifications(e.target.checked)}
-              disabled={isSaving}
-            />
-            <span>{t('preferences.emailNotificationsLabel')}</span>
-          </label>
-          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            <input
-              type="checkbox"
-              checked={pushNotifications}
-              onChange={(e) => setPushNotifications(e.target.checked)}
-              disabled={isSaving}
-            />
-            <span>{t('preferences.pushNotificationsLabel')}</span>
-          </label>
+          <ChoiceInput
+            id="settings-email-notifications"
+            type="checkbox"
+            name="emailNotifications"
+            label={t('preferences.emailNotificationsLabel')}
+            checked={formState.emailNotifications}
+            onChange={handleChange}
+            disabled={isSaving}
+          />
+          <ChoiceInput
+            id="settings-push-notifications"
+            type="checkbox"
+            name="pushNotifications"
+            label={t('preferences.pushNotificationsLabel')}
+            checked={formState.pushNotifications}
+            onChange={handleChange}
+            disabled={isSaving}
+          />
         </fieldset>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button type="submit" variant="default" disabled={isSaving}>
+          <Button type="submit" variant="interactive" disabled={isSaving || !isDirty}>
             {common('save')}
           </Button>
           {feedback && (
-            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--color-red-500)' }}>
+            <p style={{ margin: 0, color: feedback.type === 'success' ? 'var(--text-interactive)' : 'var(--text-danger)' }}>
               {feedback.text}
             </p>
           )}
