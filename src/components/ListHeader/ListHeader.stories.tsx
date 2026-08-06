@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import ListHeader from './ListHeader';
-import { ListHeaderSkeleton } from './ListHeaderSkeleton';
 import type { List, User } from '@/lib/types';
 
 const meta: Meta<typeof ListHeader> = {
@@ -84,8 +83,4 @@ export const PrivateList: Story = {
     timezone: 'America/New_York',
     isAuthor: true,
   },
-};
-
-export const SkeletonState: Story = {
-  render: () => <ListHeaderSkeleton />,
 };

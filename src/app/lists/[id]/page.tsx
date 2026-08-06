@@ -9,7 +9,7 @@ import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 
 import ListLayout from '@/layouts/ListLayout';
 import ListHeader from '@/components/ListHeader/ListHeader';
-import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeaderSkeleton';
+import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeader.skeleton';
 import { Item } from '@/components/Item/Item';
 import { ListItemsSkeleton } from '@/components/LoadingSkeletons';
 

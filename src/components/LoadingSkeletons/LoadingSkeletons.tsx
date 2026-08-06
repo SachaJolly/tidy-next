@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ListCardSkeleton from '@/components/ListCard/ListCardSkeleton';
-import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeaderSkeleton';
+import ListCardSkeleton from '@/components/ListCard/ListCard.skeleton';
+import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeader.skeleton';
 import ListLayout from '@/layouts/ListLayout';
 import PageLayout from '@/layouts/PageLayout';
 
@@ -147,5 +147,3 @@ export function ListPageSkeleton() {
     </ListLayout>
   );
 }
-
-export { ListHeaderSkeleton };
