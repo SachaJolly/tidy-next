@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { fetchLinkMetadataAction } from '@/actions/fetch-link-metadata';
@@ -28,24 +28,53 @@ function toInitialLinkMetadata(
     return null;
   }
 
+  // Helper guards: we never trust the DB shape blindly since metadata is
+  // stored as Record<string, any>. Each field is validated before use so
+  // a corrupt/legacy value can never silently corrupt the form state.
+  const asString = (v: unknown): string | undefined =>
+    typeof v === 'string' && v.trim().length > 0 ? v : undefined;
+
+  const asStringArray = (v: unknown): string[] | undefined => {
+    if (!Array.isArray(v)) {
+      return undefined;
+    }
+
+    const filtered = v.filter((x): x is string => typeof x === 'string');
+    return filtered.length > 0 ? filtered : undefined;
+  };
+
   return {
     url: initialUrl,
-    title: typeof initialMetadata?.title === 'string' ? initialMetadata.title : undefined,
-    description:
-      typeof initialMetadata?.description === 'string' ? initialMetadata.description : undefined,
-    image: typeof initialMetadata?.image === 'string' ? initialMetadata.image : undefined,
-    favicon: typeof initialMetadata?.favicon === 'string' ? initialMetadata.favicon : undefined,
-    siteName: typeof initialMetadata?.siteName === 'string' ? initialMetadata.siteName : undefined,
-    images: Array.isArray(initialMetadata?.images)
-      ? initialMetadata.images.filter((value): value is string => typeof value === 'string')
-      : undefined,
-    embed: typeof initialMetadata?.embed === 'string' ? initialMetadata.embed : undefined,
-    videoUrl: typeof initialMetadata?.videoUrl === 'string' ? initialMetadata.videoUrl : undefined,
-    videoUrls: Array.isArray(initialMetadata?.videoUrls)
-      ? initialMetadata.videoUrls.filter((value): value is string => typeof value === 'string')
-      : undefined,
-    videoType:
-      typeof initialMetadata?.videoType === 'string' ? initialMetadata.videoType : undefined,
+    // Core card fields
+    title: asString(initialMetadata?.title),
+    description: asString(initialMetadata?.description),
+    image: asString(initialMetadata?.image),
+    images: asStringArray(initialMetadata?.images),
+    imageAlt: asString(initialMetadata?.imageAlt),
+    favicon: asString(initialMetadata?.favicon),
+    siteName: asString(initialMetadata?.siteName),
+    author: asString(initialMetadata?.author),
+    // Embed and video fields
+    embed: asString(initialMetadata?.embed),
+    videoUrl: asString(initialMetadata?.videoUrl),
+    videoUrls: asStringArray(initialMetadata?.videoUrls),
+    videoType: asString(initialMetadata?.videoType),
+    // Provider and source tracking
+    provider: asString(initialMetadata?.provider) as LinkMetadata['provider'],
+    metadataSource: asString(initialMetadata?.metadataSource) as LinkMetadata['metadataSource'],
+    // Canonical and article fields
+    canonicalUrl: asString(initialMetadata?.canonicalUrl),
+    publishedTime: asString(initialMetadata?.publishedTime),
+    modifiedTime: asString(initialMetadata?.modifiedTime),
+    // Auxiliary fields
+    type: asString(initialMetadata?.type),
+    locale: asString(initialMetadata?.locale),
+    language: asString(initialMetadata?.language),
+    keywords: asString(initialMetadata?.keywords),
+    twitterCard: asString(initialMetadata?.twitterCard),
+    twitterSite: asString(initialMetadata?.twitterSite),
+    twitterCreator: asString(initialMetadata?.twitterCreator),
+    jsonLdType: asString(initialMetadata?.jsonLdType),
   };
 }
 
@@ -125,43 +154,24 @@ export default function ItemForm({
     url: string | null;
     displayMode: ItemType['display_mode'];
   } | null>(null);
-  const initialMetadataTitle =
-    typeof initialMetadata?.title === 'string' ? initialMetadata.title : '';
-  const initialMetadataDescription =
-    typeof initialMetadata?.description === 'string' ? initialMetadata.description : '';
-  const initialMetadataImage =
-    typeof initialMetadata?.image === 'string' ? initialMetadata.image : '';
-  const initialMetadataFavicon =
-    typeof initialMetadata?.favicon === 'string' ? initialMetadata.favicon : '';
-  const initialMetadataSiteName =
-    typeof initialMetadata?.siteName === 'string' ? initialMetadata.siteName : '';
-  const initialMetadataEmbed =
-    typeof initialMetadata?.embed === 'string' ? initialMetadata.embed : '';
-  const initialMetadataVideoUrl =
-    typeof initialMetadata?.videoUrl === 'string' ? initialMetadata.videoUrl : '';
-  const initialMetadataVideoType =
-    typeof initialMetadata?.videoType === 'string' ? initialMetadata.videoType : '';
-  const initialMetadataImages = useMemo(
-    () =>
-      Array.isArray(initialMetadata?.images)
-        ? initialMetadata.images.filter((value): value is string => typeof value === 'string')
-        : [],
-    [initialMetadata],
-  );
-  const initialMetadataVideoUrls = useMemo(
-    () =>
-      Array.isArray(initialMetadata?.videoUrls)
-        ? initialMetadata.videoUrls.filter((value): value is string => typeof value === 'string')
-        : [],
-    [initialMetadata],
-  );
+
+  // Stable ref to the latest initialMetadata object. We use a ref (not state)
+  // so the sync useEffect below can read the current metadata at run-time without
+  // adding initialMetadata (a Record<string, any> that changes reference on every
+  // parent render) to its dependency array — which would cause infinite re-renders.
+  const initialMetadataRef = useRef(initialMetadata);
+  initialMetadataRef.current = initialMetadata;
 
   const resizeTextarea = useCallback((element: HTMLTextAreaElement) => {
     element.style.height = 'auto';
     element.style.height = `${element.scrollHeight}px`;
   }, []);
 
-  // Sync initial values when props change (e.g., when editing a different item)
+  // Sync initial values when props change (e.g., when editing a different item).
+  // We guard against unnecessary re-syncs by comparing the three "core identity"
+  // fields (body, url, displayMode) that actually signal a new item being loaded.
+  // initialMetadata is read from the ref so it's always current without needing
+  // to be in the dependency array.
   useEffect(() => {
     const hasSameCoreInitialValues =
       lastSyncedInitialRef.current?.body === initialBody &&
@@ -182,23 +192,9 @@ export default function ItemForm({
         ? initialDisplayMode
         : 'bookmark',
     );
-    setLinkMetadata(
-      initialExtractedUrl
-        ? {
-            url: initialExtractedUrl,
-            title: initialMetadataTitle || undefined,
-            description: initialMetadataDescription || undefined,
-            image: initialMetadataImage || undefined,
-            favicon: initialMetadataFavicon || undefined,
-            siteName: initialMetadataSiteName || undefined,
-            images: initialMetadataImages.length > 0 ? initialMetadataImages : undefined,
-            embed: initialMetadataEmbed || undefined,
-            videoUrl: initialMetadataVideoUrl || undefined,
-            videoUrls: initialMetadataVideoUrls.length > 0 ? initialMetadataVideoUrls : undefined,
-            videoType: initialMetadataVideoType || undefined,
-          }
-        : null,
-    );
+    // toInitialLinkMetadata reads the ref value so all fields (including author,
+    // provider, canonicalUrl, etc.) are restored, not just the original subset.
+    setLinkMetadata(toInitialLinkMetadata(initialExtractedUrl, initialMetadataRef.current));
     setMetadataError(null);
     setIsFetchingMetadata(false);
     setUrlDraft(null);
@@ -212,21 +208,7 @@ export default function ItemForm({
       url: initialExtractedUrl,
       displayMode: initialDisplayMode,
     };
-  }, [
-    initialBody,
-    initialDisplayMode,
-    initialExtractedUrl,
-    initialMetadataDescription,
-    initialMetadataEmbed,
-    initialMetadataFavicon,
-    initialMetadataImage,
-    initialMetadataImages,
-    initialMetadataSiteName,
-    initialMetadataTitle,
-    initialMetadataVideoType,
-    initialMetadataVideoUrl,
-    initialMetadataVideoUrls,
-  ]);
+  }, [initialBody, initialDisplayMode, initialExtractedUrl]);
 
   useEffect(() => {
     if (extractedUrl) {
