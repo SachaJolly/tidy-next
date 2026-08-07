@@ -230,6 +230,12 @@ p {
   font-weight: 500;
 }
 
+.text-truncated {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .m-0 {
   margin: 0!important;
 }

@@ -26,13 +26,7 @@ interface ListHeaderProps {
   isAuthor: boolean;
 }
 
-export default function ListHeader({
-  list,
-  author,
-  locale,
-  timezone,
-  isAuthor,
-}: ListHeaderProps) {
+export default function ListHeader({list, author, locale, timezone, isAuthor }: ListHeaderProps) {
   const t = useTranslations('listPage');
   const common = useTranslations('common');
   const date = useTranslations('date');
@@ -95,7 +89,7 @@ export default function ListHeader({
           )}
           <div className={styles.likeSection}>
             <Button icon="like" label={t('like')} size="small" tinted={true} />
-            <span className="text-muted">
+            <span className="text-small text-muted text-truncated">
               {t('peopleLikedThisList', { count: list.notesCount })}
             </span>
           </div>

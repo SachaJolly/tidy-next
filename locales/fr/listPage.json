@@ -1,9 +1,10 @@
 {
   "items": "{count, plural, =0 {Vide} =1 {1 item} other {# items}}",
-  "addItem": "Ajouter un élément",
-  "like": "Aimer",
+  "addItem": "Ajouter un item",
+  "like": "Like",
+  "liked": "Liké",
   "share": "Partager",
   "addToFavorites": "Ajouter aux favoris",
   "settings": "Paramètres",
-  "peopleLikedThisList": "{count, plural, =0 {Personne n'a encore aimé cette liste} =1 {1 personne a aimé cette liste} other {# personnes ont aimé cette liste}}"
+  "peopleLikedThisList": "{count, plural, =0 {Aucun like pour l’instant} =1 {1 personne a aimé cette liste} other {# personnes ont aimé cette liste}}"
 }
