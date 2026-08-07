@@ -12,7 +12,10 @@ class Api::V1::ItemsController < ApplicationController
   def create
     item = @list.items.build(normalized_item_params)
     item.author = current_user
-    item.position = next_position if item.position.blank?
+    # The DB defaults `position` to 0, so a freshly built item can look "set"
+    # even though it has not yet been placed in the list. Treat 0 as unset and
+    # assign the next descending slot here.
+    item.position = next_position if item.position.to_i <= 0
 
     if item.save
       @list.touch
