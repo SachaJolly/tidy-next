@@ -16,7 +16,7 @@ const Avatar: React.FC<AvatarProps> = ({ src, alt, initials, size = '32', classN
 
   return (
     <div className={classes.join(' ')} style={{ width: `${size}px`, height: `${size}px` }}>
-      {hasImage && <Image src={src!} alt={alt!} fill className="object-cover" />}
+      {hasImage && <Image src={src!} alt={alt!} fill sizes={`${size}px`} className="object-cover" />}
       {!hasImage && initials && <span className={styles.initials}>{initials}</span>}
     </div>
   );
