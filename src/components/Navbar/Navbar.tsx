@@ -6,7 +6,7 @@ import Icon from '@/components/Icon/Icon';
 import NavLink from '@/components/NavLink/NavLink';
 import { api, ApiFetchError } from '@/lib/api';
 import { Logo } from '@/components/Logo/Logo';
-import { NavbarAuthFallback } from '@/components/LoadingSkeletons';
+import { NavbarAuthSkeleton } from './NavbarAuth.skeleton';
 import { User } from '@/lib/types';
 
 import NavbarAuthContent from './NavbarAuthContent';
@@ -44,7 +44,7 @@ export default async function Navbar() {
 
         <NavbarPrimaryLinks hasAuthToken={isAuthenticated} />
 
-        <Suspense fallback={<NavbarAuthFallback />}>
+        <Suspense fallback={<NavbarAuthSkeleton />}>
           <NavbarAuthContent />
         </Suspense>
       </div>

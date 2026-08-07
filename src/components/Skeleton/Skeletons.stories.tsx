@@ -1,17 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import {
-  FeedPageSkeleton,
-  ListItemsSkeleton,
-  ListPageSkeleton,
-  NavbarAuthFallback,
-  ProfileHeaderSkeleton,
-  ProfileListsSkeleton,
-  ListHeaderSkeleton,
-} from './LoadingSkeletons';
+import { ListItemsSkeleton } from '@/components/Item/ListItems.skeleton';
+import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeader.skeleton';
+import { NavbarAuthSkeleton } from '@/components/Navbar/NavbarAuth.skeleton';
+import { ProfileHeaderSkeleton } from '@/components/ProfileCard/ProfileHeader.skeleton';
+import { ProfileListsSkeleton } from '@/components/ProfileCard/ProfileLists.skeleton';
+import { ListPageSkeleton } from '@/layouts/ListLayout/ListPage.skeleton';
+import { FeedPageSkeleton } from '@/layouts/PageLayout/FeedPage.skeleton';
 
 const meta = {
-  title: 'Components/LoadingSkeletons',
+  title: 'Components/Skeletons',
   component: FeedPageSkeleton,
   tags: ['autodocs'],
   parameters: {
@@ -34,8 +32,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const NavbarFallback: Story = {
-  render: () => <NavbarAuthFallback />,
+export const NavbarAuth: Story = {
+  render: () => <NavbarAuthSkeleton />,
 };
 
 export const FeedDefault: Story = {};

@@ -18,7 +18,8 @@ import { localizePath } from '@/lib/locale-path';
 import { formatDate } from '@/lib/date';
 import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 import ListOptionsDropdown from './ListOptionsDropdown';
-import { ListHeaderSkeleton, ListItemsSkeleton } from '@/components/LoadingSkeletons';
+import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeader.skeleton';
+import { ListItemsSkeleton } from '@/components/Item/ListItems.skeleton';
 
 type ListPageData = {
   list: List;

@@ -10,8 +10,8 @@ import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 import ListLayout from '@/layouts/ListLayout';
 import ListHeader from '@/components/ListHeader/ListHeader';
 import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeader.skeleton';
+import { ListItemsSkeleton } from '@/components/Item/ListItems.skeleton';
 import { Item } from '@/components/Item/Item';
-import { ListItemsSkeleton } from '@/components/LoadingSkeletons';
 
 import styles from '@/layouts/ListLayout/ListLayout.module.scss';
 import EditItemModal from './EditItemModal';
@@ -24,7 +24,9 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
   try {
-    const list = await api.get<List>(`/api/v1/lists/${id}`);
+    const cookieStore = await cookies();
+    const authToken = cookieStore.get('tidy_token')?.value ?? null;
+    const list = await getListById(id, authToken);
     return { title: list?.title ?? 'List not found' };
   } catch (error) {
     if (error instanceof ApiFetchError && error.status === 404) {
@@ -37,6 +39,23 @@ export async function generateMetadata({ params }: PageProps) {
 // ============================================================================
 // Data Fetching
 // ============================================================================
+
+const getListById = cache(async (id: string, authToken: string | null) => {
+  try {
+    return authToken
+      ? await api.auth.get<List>(`/api/v1/lists/${id}`, {
+          authorization: authToken,
+          cache: 'no-store',
+        })
+      : await api.get<List>(`/api/v1/lists/${id}`, { cache: 'no-store' });
+  } catch (error) {
+    if (error instanceof ApiFetchError && error.status === 401 && authToken) {
+      return api.get<List>(`/api/v1/lists/${id}`, { cache: 'no-store' });
+    }
+
+    throw error;
+  }
+});
 
 const getListPageData = cache(async (id: string) => {
   const locale = await getLocale();
@@ -63,27 +82,13 @@ const getListPageData = cache(async (id: string) => {
 
   let list: List | null = null;
   try {
-    list = authToken
-      ? await api.auth.get<List>(`/api/v1/lists/${id}`, {
-          authorization: authToken,
-          cache: 'no-store',
-        })
-      : await api.get<List>(`/api/v1/lists/${id}`, { cache: 'no-store' });
+    list = await getListById(id, authToken);
   } catch (error) {
-    if (error instanceof ApiFetchError && error.status === 401 && authToken) {
-      try {
-        list = await api.get<List>(`/api/v1/lists/${id}`, { cache: 'no-store' });
-      } catch (fallbackError) {
-        if (fallbackError instanceof ApiFetchError && fallbackError.status === 404) {
-          nextNotFound();
-        }
-        throw fallbackError;
-      }
-    } else if (error instanceof ApiFetchError && error.status === 404) {
+    if (error instanceof ApiFetchError && error.status === 404) {
       nextNotFound();
-    } else {
-      throw error;
     }
+
+    throw error;
   }
 
   if (!list) {
@@ -106,12 +111,11 @@ const getListPageData = cache(async (id: string) => {
 
 async function ListHeaderContainer({ id }: { id: string }) {
   const { list, locale, timezone, isAuthor } = await getListPageData(id);
-  const author = list.author!;
 
   return (
     <ListHeader
       list={list}
-      author={author}
+      author={list.author}
       locale={locale}
       timezone={timezone}
       isAuthor={isAuthor}
@@ -119,10 +123,21 @@ async function ListHeaderContainer({ id }: { id: string }) {
   );
 }
 
+async function ListTopCover({ id }: { id: string }) {
+  const { list } = await getListPageData(id);
+
+  const coverStyle = {
+    '--list-cover-color': list.color,
+    '--list-cover-height': '256px',
+    '--list-cover-gradient-height': '160px',
+  } as React.CSSProperties;
+
+  return <div className={styles.pageCover} style={coverStyle} aria-hidden="true" />;
+}
+
 async function ListItems({ id }: { id: string }) {
   const { list, common, isAuthor } = await getListPageData(id);
-  // Keep the newest items first so the list reads from top to bottom in reverse chronology.
-  const items = [...(list.items || [])].reverse();
+  const items = list.items || [];
 
   return (
     <section className={styles.itemsSection}>
@@ -143,6 +158,7 @@ async function ListItems({ id }: { id: string }) {
 
 async function ListModals({ id }: { id: string }) {
   const { list, isAuthor } = await getListPageData(id);
+  const items = list.items || [];
 
   if (!isAuthor) {
     return null;
@@ -151,7 +167,7 @@ async function ListModals({ id }: { id: string }) {
   return (
     <>
       <NewItemModal listId={id} />
-      <EditItemModal listId={id} items={[...(list.items || [])].reverse()} />
+      <EditItemModal listId={id} items={items} />
     </>
   );
 }
@@ -164,7 +180,13 @@ export default function ListPage({ params }: PageProps) {
   const { id } = use(params);
 
   return (
-    <ListLayout>
+    <ListLayout
+      cover={
+        <Suspense fallback={null}>
+          <ListTopCover id={id} />
+        </Suspense>
+      }
+    >
       <Suspense fallback={<ListHeaderSkeleton />}>
         <ListHeaderContainer id={id} />
       </Suspense>

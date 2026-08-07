@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import DiscoverContent from './DiscoverContent';
-import { FeedPageSkeleton } from '@/components/LoadingSkeletons';
+import { FeedPageSkeleton } from '@/layouts/PageLayout/FeedPage.skeleton';
 
 export default function DiscoverPage() {
   return (

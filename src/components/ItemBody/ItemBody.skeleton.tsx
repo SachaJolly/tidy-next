@@ -1,19 +1,5 @@
 import React from 'react';
-
-function SkeletonBlock({ width, height }: { width: string; height: string }) {
-  return (
-    <div
-      aria-hidden="true"
-      role="presentation"
-      style={{
-        width,
-        height,
-        borderRadius: '0.5rem',
-        backgroundColor: 'var(--background-highlight)',
-      }}
-    />
-  );
-}
+import Skeleton from '@/components/Skeleton/Skeleton';
 
 export default function ItemBodySkeleton() {
   return (
@@ -30,8 +16,8 @@ export default function ItemBodySkeleton() {
         padding: '0.75rem 1rem',
       }}
     >
-      <SkeletonBlock width="1rem" height="1rem" />
-      <SkeletonBlock width="65%" height="1.125rem" />
+      <Skeleton width="1rem" height="1rem" style={{ borderRadius: '0.5rem' }} />
+      <Skeleton width="65%" height="1.125rem" style={{ borderRadius: '0.5rem' }} />
     </div>
   );
 }
