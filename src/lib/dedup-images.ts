@@ -20,15 +20,22 @@ export function getImageAssetKey(urlValue: string): string {
     const parsed = new URL(urlValue);
     const hostname = parsed.hostname.toLowerCase();
 
-    // X image assets often appear as several size variants for the same media
-    // (e.g. ?name=small vs ?name=large on the same pbs.twimg.com/media/ path).
-    // We collapse variants by media ID so one tweet image doesn't appear as
-    // fake duplicates.
+    // All pbs.twimg.com assets (photos, video thumbnails, GIF thumbnails, etc.)
+    // follow the pattern: same pathname = same image, different query params =
+    // just different size variants (?name=small, ?name=large, ?name=orig, etc.).
+    //
+    // This covers every pbs.twimg.com path shape:
+    //   /media/<id>.jpg                          → tweet photo
+    //   /ext_tw_video_thumb/<tweetId>/pu/img/... → video poster/thumbnail
+    //   /tweet_video_thumb/<hash>.png            → GIF thumbnail
+    //   /profile_images/...                      → avatar (filtered upstream,
+    //                                              but harmless to key here)
+    //
+    // By keying on pathname alone we correctly deduplicate the og:image URL
+    // (no params) against the syndication CDN URL (same path + ?name=large)
+    // so the same asset never appears twice at different quality levels.
     if (hostname === 'pbs.twimg.com' || hostname.endsWith('.pbs.twimg.com')) {
-      const mediaMatch = parsed.pathname.match(/^\/media\/([^./?:]+)/);
-      if (mediaMatch) {
-        return `pbs:${mediaMatch[1]}`;
-      }
+      return `pbs:${parsed.pathname}`;
     }
 
     // YouTube exposes the same video thumbnail under many filenames depending on
