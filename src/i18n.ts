@@ -19,7 +19,7 @@ const localesDir = join(process.cwd(), 'locales');
  *
  * Namespace convention:
  *   - Lowercase for global domains: auth, common, navbar, footer, forms, dashboard, etc.
- *   - PascalCase for component namespaces: AccountDropdown, ListCard, etc.
+ *   - PascalCase for component namespaces: NavbarOptions, ListCard, etc.
  *
  * The filename (without .json) is used directly as the namespace key.
  * No conversion needed — consistency across files and components.

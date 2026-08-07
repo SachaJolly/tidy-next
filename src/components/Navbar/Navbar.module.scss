@@ -20,14 +20,6 @@
   gap: 1.5rem;
 }
 
-.nav-links {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  align-items: center;
-  gap: 0;
-}
-
 .search-container {
   position: relative;
   display: flex;
@@ -80,10 +72,18 @@
   }
 }
 
+.nav-links {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 0;
+}
+
 .nav-account {
   display: flex;
   flex-direction: row;
-  flex: 0 1 auto;
+  flex: 0;
   align-items: center;
   gap: 0.5rem;
 }

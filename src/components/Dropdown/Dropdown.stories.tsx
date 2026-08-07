@@ -18,7 +18,8 @@ import {
 } from '.';
 import Icon from '@/components/Icon/Icon';
 import NavLink from '@/components/NavLink/NavLink';
-import { AccountDropdown } from '@/components/Navbar/AccountDropdown';
+import NavbarOptions from '@/components/Navbar/NavbarOptions';
+import { UserProvider } from '@/providers/UserProvider';
 import type { User } from '@/lib/types';
 
 // ─── Meta ─────────────────────────────────────────────────────────────────────
@@ -593,7 +594,7 @@ export const AccountMenu: Story = {
   },
 };
 
-// ─── AccountDropdown Panel ───────────────────────────────────────────────────
+// ─── NavbarOptions Panel ─────────────────────────────────────────────────────
 
 const MOCK_USER: User = {
   id: '1',
@@ -604,20 +605,14 @@ const MOCK_USER: User = {
   createdAt: '2024-01-01T00:00:00.000Z',
 };
 
-export const AccountDropdownPanel: Story = {
-  name: 'AccountDropdown',
+export const NavbarOptionsPanel: Story = {
+  name: 'NavbarOptions',
   parameters: { layout: 'centered' },
   render: () => (
-    // Wrapper that shows the dropdown in "open" state for story purposes.
-    // The Dropdown manages its own state, but we pre-open it via defaultOpen
-    // by using a trick: show it as initially open via DropdownMenu inline prop.
     <div style={{ position: 'relative', padding: '2rem' }}>
-      <Dropdown>
-        <DropdownTrigger style={{ visibility: 'hidden', position: 'absolute' }}>
-          Trigger
-        </DropdownTrigger>
-        <AccountDropdown inline user={MOCK_USER} initialLanguage="en" initialTheme="system" initialTimezone={null} onLogout={() => {}} />
-      </Dropdown>
+      <UserProvider initialUser={MOCK_USER}>
+        <NavbarOptions inline initialLanguage="en" initialTheme="system" initialTimezone={null} />
+      </UserProvider>
     </div>
   ),
 };

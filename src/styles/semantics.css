@@ -81,7 +81,7 @@
   --border-default-hover: light-dark(var(--color-black-op30), var(--color-white-op40));
   --border-inverse: light-dark(var(--color-white-op20), var(--color-black-op20));
   --border-inverse-hover: light-dark(var(--color-white-op40), var(--color-black-op30));
-  --border-interactive: light-dark(var(--color-purple-op20), var(--color-purple-op30));
+  --border-interactive: light-dark(var(--color-purple-op20), var(--color-purple-op50));
   --border-interactive-hover: light-dark(var(--color-purple-op30), var(--color-purple-op40));
   --border-active: light-dark(var(--color-purple-500), var(--color-purple-300));
   --border-active-hover: light-dark(var(--color-purple-600), var(--color-purple-400));

@@ -1,24 +1,26 @@
 import type { Metadata } from 'next';
+import { IBM_Plex_Sans, Space_Grotesk } from 'next/font/google';
 import { cookies } from 'next/headers';
-import Navbar from '@/components/Navbar/Navbar';
-import Footer from '@/components/Footer/Footer';
-import GlobalModals from '@/components/GlobalModals';
-import ConfirmEmailBanner from '@/components/Banner/ConfirmEmailBanner';
-import { LanguageInitializer } from '@/components/LanguageInitializer';
+
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
+
 import { resendConfirmationEmail } from '@/actions/me';
+import { getUser } from '@/lib/get-user';
 import { getNewListGate } from '@/lib/new-list-gate';
-import { api } from '@/lib/api';
-import type { User } from '@/lib/types';
 import { normalizeThemePreference, resolveColorSchemeFromTheme, THEME_COOKIE_NAME } from '@/lib/theme-mapper';
+import { UserProvider } from '@/providers/UserProvider';
 
-import { IBM_Plex_Sans, Space_Grotesk } from 'next/font/google';
+import ConfirmEmailBanner from '@/components/Banner/ConfirmEmailBanner';
+import Footer from '@/components/Footer/Footer';
+import GlobalModals from '@/components/GlobalModals';
+import { LanguageInitializer } from '@/components/LanguageInitializer';
+import Navbar from '@/components/Navbar/Navbar';
 
+import styles from '@/app/layout.module.scss';
+import '@/styles/globals.css';
 import '@/styles/primitives.css';
 import '@/styles/semantics.css';
-import '@/styles/globals.css';
-import styles from '@/app/layout.module.scss';
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: '--font-interface',
@@ -54,21 +56,8 @@ export default async function RootLayout({
   // Using getMessages() with the locale we determined
   const messages = await getMessages({ locale });
   const newListGate = await getNewListGate();
-  const authToken = cookieStore.get('tidy_token')?.value ?? null;
-  let me: User | null = null;
-
-  if (authToken) {
-    try {
-      me = await api.auth.get<User>('/api/v1/me', {
-        authorization: authToken,
-        cache: 'no-store',
-      });
-    } catch {
-      me = null;
-    }
-  }
-
-  const shouldShowConfirmEmailBanner = !!authToken && me?.emailConfirmed === false;
+  const user = await getUser();
+  const shouldShowConfirmEmailBanner = user?.emailConfirmed === false;
 
   return (
     <html
@@ -79,18 +68,20 @@ export default async function RootLayout({
       <head></head>
       <body className={`${ibmPlexSans.variable} ${spaceGrotesk.variable}`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <div id="application-banners">
-            {shouldShowConfirmEmailBanner && (
-              <ConfirmEmailBanner onResend={resendConfirmationEmail} />
-            )}
-          </div>
-          <div className={styles['application-ui']}>
-            <Navbar />
-            {children}
-            <Footer />
-          </div>
-          <GlobalModals newListGate={newListGate} />
-          <div id="application-overlays"></div>
+          <UserProvider initialUser={user}>
+            <div id="application-banners">
+              {shouldShowConfirmEmailBanner && (
+                <ConfirmEmailBanner onResend={resendConfirmationEmail} />
+              )}
+            </div>
+            <div className={styles['application-ui']}>
+              <Navbar />
+              {children}
+              <Footer />
+            </div>
+            <GlobalModals newListGate={newListGate} />
+            <div id="application-overlays"></div>
+          </UserProvider>
         </NextIntlClientProvider>
         {/* Ensure language cookie exists in browser */}
         <LanguageInitializer locale={locale} />

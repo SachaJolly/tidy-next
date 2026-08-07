@@ -1,29 +1,25 @@
+'use client';
+
 import React, { Suspense } from 'react';
-import { cookies } from 'next/headers';
-import { getTranslations } from 'next-intl/server';
+import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import Icon from '@/components/Icon/Icon';
 import NavLink from '@/components/NavLink/NavLink';
-import { api, ApiFetchError } from '@/lib/api';
+import { Dropdown } from '@/components/Dropdown';
 import { Logo } from '@/components/Logo/Logo';
-import { NavbarAuthSkeleton } from './NavbarAuth.skeleton';
-import { User } from '@/lib/types';
+import { useUser } from '@/providers/UserProvider';
+import { NavbarActionsSkeleton } from './NavbarActions.skeleton';
 
-import NavbarAuthContent from './NavbarAuthContent';
-import NavbarPrimaryLinks from './NavbarPrimaryLinks';
+import NavbarActions from './NavbarActions';
+import NavbarOptions from './NavbarOptions';
 
 import styles from './Navbar.module.scss';
 
-/**
- * The navbar stays on the root layout, so it must render immediately even when
- * a page is still streaming. We keep the shell synchronous and isolate the
- * auth-specific fetch behind Suspense so slow user lookups do not freeze the UI.
- */
-export default async function Navbar() {
-  const t = await getTranslations('navbar');
-  const cookieStore = await cookies();
-  const authToken = cookieStore.get('tidy_token')?.value ?? null;
-  const isAuthenticated = await resolveNavbarSession(authToken);
+export default function Navbar() {
+  const t = useTranslations('navbar');
+  const pathname = usePathname();
+  const { user } = useUser();
 
   return (
     <nav className={styles['container']}>
@@ -42,36 +38,24 @@ export default async function Navbar() {
           />
         </form>
 
-        <NavbarPrimaryLinks hasAuthToken={isAuthenticated} />
+        <div className={styles['nav-links']}>
+          {user && (
+            <NavLink href="/dashboard" label={t('dashboard')} active={pathname === '/dashboard'} />
+          )}
+          <NavLink href="/discover" label={t('discover')} active={pathname === '/discover'} />
+          <NavLink href="/curators" label={t('curators')} active={pathname === '/curators'} />
+          <NavLink href="/latest" label={t('latest')} active={pathname === '/latest'} />
+        </div>
 
-        <Suspense fallback={<NavbarAuthSkeleton />}>
-          <NavbarAuthContent />
+        <Suspense fallback={<NavbarActionsSkeleton />}>
+          <NavbarActions />
         </Suspense>
+
+        <Dropdown>
+          <NavLink icon="more" aria-label="Open account menu" />
+          <NavbarOptions />
+        </Dropdown>
       </div>
     </nav>
   );
-}
-
-async function resolveNavbarSession(authToken: string | null): Promise<boolean> {
-  if (!authToken) {
-    return false;
-  }
-
-  // Presence of a cookie is not enough: expired/invalid tokens were keeping the
-  // dashboard link visible. We validate the session with /me to match real auth
-  // state and hide protected navigation when backend auth fails.
-  try {
-    const user = await api.auth.get<User>('/api/v1/me', {
-      authorization: authToken,
-      cache: 'no-store',
-    });
-
-    return !!user;
-  } catch (error) {
-    if (error instanceof ApiFetchError && error.status === 401) {
-      return false;
-    }
-
-    throw error;
-  }
 }

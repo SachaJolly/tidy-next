@@ -13,7 +13,7 @@
  *   locales/en/listPage.json         - Page/domain namespace (lowercase)
  *   locales/en/NewList.json          - Modal namespace (PascalCase)
  *   locales/en/EditListModal.json    - Modal namespace (PascalCase)
- *   locales/en/AccountDropdown.json  - Component namespace (PascalCase)
+ *   locales/en/NavbarOptions.json    - Component namespace (PascalCase)
  *   locales/en/ListCard.json         - Component namespace (PascalCase)
  *   ...and more
  *
@@ -32,7 +32,7 @@
  *     "listPage": {...},
  *     "NewList": {...},
  *     "EditListModal": {...},
- *     "AccountDropdown": {...},
+ *     "NavbarOptions": {...},
  *     "ListCard": {...},
  *     ...etc
  *   }
@@ -54,7 +54,7 @@ import NewListEn from '../../locales/en/NewList.json';
 import EditListModalEn from '../../locales/en/EditListModal.json';
 
 // Component namespaces (PascalCase files → PascalCase namespace keys)
-import AccountDropdownEn from '../../locales/en/AccountDropdown.json';
+import NavbarOptionsEn from '../../locales/en/NavbarOptions.json';
 import ListCardEn from '../../locales/en/ListCard.json';
 import itemEn from '../../locales/en/item.json';
 import ProfileCardEn from '../../locales/en/ProfileCard.json';
@@ -78,7 +78,7 @@ import NewListFr from '../../locales/fr/NewList.json';
 import EditListModalFr from '../../locales/fr/EditListModal.json';
 
 // Component namespaces (PascalCase files → PascalCase namespace keys)
-import AccountDropdownFr from '../../locales/fr/AccountDropdown.json';
+import NavbarOptionsFr from '../../locales/fr/NavbarOptions.json';
 import ListCardFr from '../../locales/fr/ListCard.json';
 import itemFr from '../../locales/fr/item.json';
 import ProfileCardFr from '../../locales/fr/ProfileCard.json';
@@ -113,7 +113,7 @@ const messagesEn = {
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageEn,
   // Component namespaces (PascalCase for reusable components)
-  AccountDropdown: AccountDropdownEn,
+  NavbarOptions: NavbarOptionsEn,
   ListCard: ListCardEn,
   ProfileCard: ProfileCardEn,
   ListOptionsDropdown: ListOptionsDropdownEn,
@@ -139,7 +139,7 @@ const messagesFr = {
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageFr,
   // Component namespaces (PascalCase for reusable components)
-  AccountDropdown: AccountDropdownFr,
+  NavbarOptions: NavbarOptionsFr,
   ListCard: ListCardFr,
   ProfileCard: ProfileCardFr,
   ListOptionsDropdown: ListOptionsDropdownFr,

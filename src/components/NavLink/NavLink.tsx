@@ -1,14 +1,13 @@
 'use client';
 
 import React from 'react';
-import { useLocale } from 'next-intl';
+import Link from 'next/link';
 import Icon from '@/components/Icon/Icon';
 import type { IconName } from '@/components/Icon/icons';
 import styles from './NavLink.module.scss';
-import { localizePath } from '@/lib/locale-path';
 
 interface NavLinkProps extends Omit<
-  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & React.ButtonHTMLAttributes<HTMLButtonElement>,
   'href' | 'className' | 'prefix'
 > {
   href?: string;
@@ -21,13 +20,11 @@ interface NavLinkProps extends Omit<
   suffix?: React.ReactNode;
 }
 
-const NavLink = React.forwardRef<HTMLAnchorElement, NavLinkProps>(
+const NavLink = React.forwardRef<HTMLAnchorElement & HTMLButtonElement, NavLinkProps>(
   (
-    { href = '#', label, icon, active = false, className, children, prefix, suffix, ...rest },
+    { href, label, icon, active = false, className, children, prefix, suffix, ...rest },
     ref,
   ) => {
-    const locale = useLocale();
-
     const getModuleClasses = (classNames: string | string[] | undefined) => {
       if (!classNames) return [];
       const names = Array.isArray(classNames) ? classNames : [classNames];
@@ -37,16 +34,39 @@ const NavLink = React.forwardRef<HTMLAnchorElement, NavLinkProps>(
     const classes = [styles.link, active && styles.active, ...getModuleClasses(className)].filter(
       Boolean,
     );
-    const resolvedHref = localizePath(href, locale);
 
+    // Si pas de href, on se comporte comme un bouton stylisé
+    if (!href) {
+      return (
+        <button
+          ref={ref as React.Ref<HTMLButtonElement>}
+          type="button"
+          className={classes.join(' ')}
+          {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+        >
+          {prefix}
+          {icon && <Icon name={icon} />}
+          {label && <span>{label}</span>}
+          {children}
+          {suffix}
+        </button>
+      );
+    }
+
+    // Sinon, c'est un lien Next.js classique
     return (
-      <a ref={ref} href={resolvedHref} className={classes.join(' ')} {...rest}>
+      <Link
+        ref={ref as React.Ref<HTMLAnchorElement>}
+        href={href}
+        className={classes.join(' ')}
+        {...(rest as React.LinkHTMLAttributes<HTMLAnchorElement>)}
+      >
         {prefix}
         {icon && <Icon name={icon} />}
         {label && <span>{label}</span>}
         {children}
         {suffix}
-      </a>
+      </Link>
     );
   },
 );

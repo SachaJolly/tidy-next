@@ -2,7 +2,7 @@ import React from 'react';
 
 import Skeleton from '@/components/Skeleton/Skeleton';
 
-export function NavbarAuthSkeleton() {
+export function NavbarActionsSkeleton() {
   return (
     <div
       aria-hidden="true"

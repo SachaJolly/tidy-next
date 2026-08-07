@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { ListItemsSkeleton } from '@/components/Item/ListItems.skeleton';
 import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeader.skeleton';
-import { NavbarAuthSkeleton } from '@/components/Navbar/NavbarAuth.skeleton';
+import { NavbarActionsSkeleton } from '@/components/Navbar/NavbarActions.skeleton';
 import { ProfileHeaderSkeleton } from '@/components/ProfileCard/ProfileHeader.skeleton';
 import { ProfileListsSkeleton } from '@/components/ProfileCard/ProfileLists.skeleton';
 import { ListPageSkeleton } from '@/layouts/ListLayout/ListPage.skeleton';
@@ -32,8 +32,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const NavbarAuth: Story = {
-  render: () => <NavbarAuthSkeleton />,
+export const NavbarActions: Story = {
+  render: () => <NavbarActionsSkeleton />,
 };
 
 export const FeedDefault: Story = {};
