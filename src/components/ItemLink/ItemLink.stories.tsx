@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import ItemLink from './ItemLink';
 
 const meta = {
@@ -16,13 +16,20 @@ type Story = StoryObj<typeof meta>;
 export const Link: Story = {
   args: {
     url: 'https://example.com',
-    variant: 'link',
+    displayMode: 'link',
   },
 };
 
 export const Bookmark: Story = {
   args: {
     url: 'https://example.com',
-    variant: 'bookmark',
+    displayMode: 'bookmark',
+  },
+};
+
+export const Embed: Story = {
+  args: {
+    url: 'https://example.com',
+    displayMode: 'embed',
   },
 };
