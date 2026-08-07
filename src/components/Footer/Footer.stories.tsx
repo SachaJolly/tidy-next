@@ -4,6 +4,7 @@ import { expect } from 'storybook/test';
 import { NextIntlClientProvider } from 'next-intl';
 
 import messages from '@/lib/messages';
+import { RESPONSIVE_DEFAULT_VIEWPORT, RESPONSIVE_VIEWPORTS } from '@/stories/responsive-viewports';
 
 import Footer from './Footer';
 
@@ -21,6 +22,10 @@ const meta = {
   component: Footer,
   parameters: {
     layout: 'fullscreen',
+    viewport: {
+      options: RESPONSIVE_VIEWPORTS,
+      defaultViewport: RESPONSIVE_DEFAULT_VIEWPORT,
+    },
   },
   tags: ['ai-generated', 'autodocs'],
   argTypes: {},

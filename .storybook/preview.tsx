@@ -11,6 +11,7 @@ import { mswHandlers } from './msw-handlers';
 import { theme } from './theme';
 // Import translations from centralized export to avoid duplication
 import messages from '../src/lib/messages';
+import { RESPONSIVE_DEFAULT_VIEWPORT, RESPONSIVE_VIEWPORTS } from '../src/stories/responsive-viewports';
 
 const serviceWorkerUrl = `${import.meta.env.BASE_URL ?? '/'}mockServiceWorker.js`;
 initialize({ onUnhandledRequest: 'bypass', serviceWorker: { url: serviceWorkerUrl } });
@@ -56,6 +57,10 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+    },
+    viewport: {
+      options: RESPONSIVE_VIEWPORTS,
+      defaultViewport: RESPONSIVE_DEFAULT_VIEWPORT,
     },
     msw: { handlers: mswHandlers },
     a11y: {

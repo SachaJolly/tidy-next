@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { NextIntlClientProvider } from 'next-intl';
 
 import messages from '@/lib/messages';
+import { RESPONSIVE_DEFAULT_VIEWPORT, RESPONSIVE_VIEWPORTS } from '@/stories/responsive-viewports';
 
 import Hero from './Hero';
 
@@ -19,6 +20,10 @@ const meta = {
   component: Hero,
   parameters: {
     layout: 'fullscreen',
+    viewport: {
+      options: RESPONSIVE_VIEWPORTS,
+      defaultViewport: RESPONSIVE_DEFAULT_VIEWPORT,
+    },
   },
   tags: ['ai-generated', 'autodocs'],
   argTypes: {
