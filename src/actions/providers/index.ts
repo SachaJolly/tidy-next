@@ -20,7 +20,10 @@ function isThreadsHostname(hostname: string): boolean {
   );
 }
 
-export function extractProviderSpecificMetadata(url: URL, html: string): ProviderSpecificMetadata {
+export async function extractProviderSpecificMetadata(
+  url: URL,
+  html: string,
+): Promise<ProviderSpecificMetadata> {
   const hostname = url.hostname.toLowerCase();
 
   if (isXHostname(hostname)) {

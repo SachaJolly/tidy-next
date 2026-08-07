@@ -365,7 +365,7 @@ export async function fetchOpenGraphAction(rawUrl: string): Promise<FetchOpenGra
     const finalUrl = response.url ? new URL(response.url) : parsedUrl;
     const metaMap = extractMetaContentMap(html);
     const jsonLdMetadata = extractJsonLdMetadata(html, finalUrl);
-    const providerMetadata = extractProviderSpecificMetadata(finalUrl, html);
+    const providerMetadata = await extractProviderSpecificMetadata(finalUrl, html);
     const ogImageValues = extractMetaContentValues(html, ['og:image', 'twitter:image'])
       .map((value) => resolveMaybeRelativeUrl(value, finalUrl))
       .filter((value): value is string => Boolean(value));
