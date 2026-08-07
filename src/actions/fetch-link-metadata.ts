@@ -1,5 +1,6 @@
 'use server';
 
+import { dedupeImagesByAsset } from '@/lib/dedup-images';
 import type { OEmbedMetadata } from '@/actions/fetch-oembed';
 import { fetchOEmbedMetadataAction } from '@/actions/fetch-oembed';
 import { detectOEmbedProvider } from '@/lib/oembed-provider';
@@ -50,11 +51,17 @@ function needsOpenGraphEnrichment(metadata: LinkMetadata): boolean {
 }
 
 function mergeOEmbedWithOpenGraph(oembed: LinkMetadata, og: LinkMetadata): LinkMetadata {
-  // Merge and dedupe image candidates from both sources so bookmark preview can
-  // render a complete gallery when available.
-  const mergedImages = Array.from(
-    new Set([...(oembed.images ?? []), ...(og.images ?? []), oembed.image ?? '', og.image ?? '']),
-  ).filter((value) => value.trim().length > 0);
+  // OG images are listed first so that asset-level deduplication keeps the
+  // higher-quality / more canonical URL when both sources reference the same
+  // logical image (e.g. YouTube: OG maxresdefault.jpg wins over oEmbed hqdefault.jpg).
+  const mergedImages = dedupeImagesByAsset(
+    [
+      ...(og.images ?? []),
+      og.image ?? '',
+      ...(oembed.images ?? []),
+      oembed.image ?? '',
+    ].filter((value) => value.trim().length > 0),
+  );
 
   return {
     ...og,
@@ -62,7 +69,11 @@ function mergeOEmbedWithOpenGraph(oembed: LinkMetadata, og: LinkMetadata): LinkM
     // but fill missing card fields from OpenGraph/JSON-LD.
     title: oembed.title ?? og.title,
     description: oembed.description ?? og.description,
-    image: oembed.image ?? og.image ?? mergedImages[0],
+    // Use mergedImages[0] as the primary image: since OG images are placed first
+    // in the dedup input, this will be the highest-quality available URL
+    // (e.g. YouTube maxresdefault over oEmbed hqdefault). Fall back to explicit
+    // oEmbed or OG image fields only when mergedImages is empty.
+    image: mergedImages[0] ?? oembed.image ?? og.image,
     images: mergedImages.length > 0 ? mergedImages : undefined,
     siteName: oembed.siteName ?? og.siteName,
     author: oembed.author ?? og.author,

@@ -1,5 +1,6 @@
 'use server';
 
+import { dedupeImagesByAsset } from '@/lib/dedup-images';
 import { extractJsonLdMetadata } from '@/lib/jsonld-metadata';
 import { extractProviderSpecificMetadata } from '@/actions/providers';
 
@@ -265,44 +266,6 @@ function inferVideoType(
   return undefined;
 }
 
-function getImageAssetKey(urlValue: string): string {
-  try {
-    const parsed = new URL(urlValue);
-    const hostname = parsed.hostname.toLowerCase();
-
-    // X image assets often appear as several size variants for the same media.
-    // We collapse variants so one tweet image doesn't appear as fake duplicates.
-    if (hostname === 'pbs.twimg.com' || hostname.endsWith('.pbs.twimg.com')) {
-      const mediaMatch = parsed.pathname.match(/^\/media\/([^./?:]+)/);
-      if (mediaMatch) {
-        return `pbs:${mediaMatch[1]}`;
-      }
-    }
-
-    return parsed.toString();
-  } catch {
-    return urlValue;
-  }
-}
-
-function dedupeImagesByAsset(urls: string[]): string[] {
-  const deduped: string[] = [];
-  const seen = new Set<string>();
-
-  for (const urlValue of urls) {
-    const key = getImageAssetKey(urlValue);
-    // Deduping by logical asset key avoids duplicates where only size/format changes.
-    if (seen.has(key)) {
-      continue;
-    }
-
-    seen.add(key);
-    deduped.push(urlValue);
-  }
-
-  return deduped;
-}
-
 function getFirstMetaContent(map: Record<string, string>, selectors: string[]): string | undefined {
   for (const selector of selectors) {
     const content = map[selector.toLowerCase()];
@@ -406,9 +369,14 @@ export async function fetchOpenGraphAction(rawUrl: string): Promise<FetchOpenGra
     const ogImageValues = extractMetaContentValues(html, ['og:image', 'twitter:image'])
       .map((value) => resolveMaybeRelativeUrl(value, finalUrl))
       .filter((value): value is string => Boolean(value));
+    // OG/Twitter meta tags come first — they are always scoped to the specific page
+    // being viewed (one tweet, one video, one article). Provider-specific images
+    // (e.g. scraped preloads) are appended as supplemental candidates only after
+    // the canonical meta-tag images so that asset-level deduplication retains the
+    // most accurate / highest-quality URL for each logical image.
     const imageCandidates = [
-      ...(providerMetadata.images ?? []),
       ...ogImageValues,
+      ...(providerMetadata.images ?? []),
       ...(jsonLdMetadata?.images ?? []),
     ];
     // Keep first-seen order, then remove asset-level duplicates (important for X variants).
