@@ -23,6 +23,7 @@ const Input: React.FC<InputProps> = ({
   autoFocus,
   variant,
   feedback,
+  disabled,
   ...props
 }) => {
   const containerClasses = [styles.container, className].filter(Boolean).join(' ');
@@ -31,15 +32,13 @@ const Input: React.FC<InputProps> = ({
     prefix && styles.hasPrefix,
     suffix && styles.hasSuffix,
     trailing && styles.hasTrailing,
-    variant && styles[variant],
+    variant && !disabled && styles[variant],
+    disabled && styles.disabled,
   ]
     .filter(Boolean)
     .join(' ');
 
-  const feedbackClasses = [
-    styles.feedback,
-    variant && styles[`feedback-${variant}`],
-  ]
+  const feedbackClasses = [styles.feedback, variant && styles[`feedback-${variant}`]]
     .filter(Boolean)
     .join(' ');
 
@@ -50,6 +49,7 @@ const Input: React.FC<InputProps> = ({
         <input
           id={id}
           className={styles.input}
+          disabled={disabled}
           autoFocus={autoFocus}
           data-autofocus={autoFocus ? 'true' : undefined}
           {...props}

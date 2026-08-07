@@ -68,7 +68,13 @@ export const Danger: Story = {
 export const WithPrefix: Story = {
   render: (args) => (
     <FormField label="Website" htmlFor="website-input">
-      <Input {...args} id="website-input" type="text" placeholder="yoursite.com" prefix="https://" />
+      <Input
+        {...args}
+        id="website-input"
+        type="text"
+        placeholder="yoursite.com"
+        prefix="https://"
+      />
     </FormField>
   ),
 };
@@ -76,7 +82,13 @@ export const WithPrefix: Story = {
 export const WithSuffix: Story = {
   render: (args) => (
     <FormField label="Username" htmlFor="username-input">
-      <Input {...args} id="username-input" type="text" placeholder="yourname" suffix="@tidycards.app" />
+      <Input
+        {...args}
+        id="username-input"
+        type="text"
+        placeholder="yourname"
+        suffix="@tidycards.app"
+      />
     </FormField>
   ),
 };
@@ -84,15 +96,25 @@ export const WithSuffix: Story = {
 export const WithPrefixAndSuffix: Story = {
   render: (args) => (
     <FormField label="Price" htmlFor="price-input">
-      <Input {...args} id="price-input" type="number" placeholder="0.00" prefix="€" suffix="per month" />
+      <Input
+        {...args}
+        id="price-input"
+        type="number"
+        placeholder="0.00"
+        prefix="€"
+        suffix="per month"
+      />
     </FormField>
   ),
 };
 
 export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
   render: (args) => (
     <FormField label="Disabled Input" htmlFor="disabled-input">
-      <Input {...args} id="disabled-input" disabled />
+      <Input {...args} id="disabled-input" />
     </FormField>
   ),
 };

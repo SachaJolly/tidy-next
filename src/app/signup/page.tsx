@@ -132,7 +132,7 @@ export default function SignupPage() {
 
         {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem' }}>{error}</p>}
 
-        <Button type="submit" variant="interactive" disabled={isLoading}>
+        <Button type="submit" variant="interactive" disabled={isLoading} loading={isLoading}>
           {isLoading ? t('creatingAccount') : t('createAccount')}
         </Button>
       </form>

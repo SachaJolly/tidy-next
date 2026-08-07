@@ -33,6 +33,33 @@
       outline: none;
     }
   }
+
+  &.disabled {
+    border-color: var(--border-disabled);
+    background-color: var(--background-highlight);
+    cursor: not-allowed;
+
+    &:focus-within {
+      border-color: var(--border-disabled);
+      outline: none;
+    }
+
+    .input {
+      color: var(--text-disabled);
+      background-color: transparent;
+      cursor: not-allowed;
+    }
+
+    .affix,
+    .trailing {
+      color: var(--text-disabled);
+    }
+
+    .prefixAffix,
+    .suffixAffix {
+      border-color: var(--border-disabled);
+    }
+  }
 }
 
 .affix {
@@ -79,6 +106,11 @@
     outline-offset: 0.125rem;
     outline-width: var(--stroke-thin);
     outline-style: dashed;
+  }
+
+  &:disabled {
+    color: var(--text-disabled);
+    cursor: not-allowed;
   }
 }
 

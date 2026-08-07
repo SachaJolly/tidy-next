@@ -27,6 +27,7 @@ const meta = {
     tinted: false,
     transparent: false,
     disabled: false,
+    loading: false,
   },
   argTypes: {
     label: {
@@ -56,6 +57,9 @@ const meta = {
       control: 'boolean',
     },
     disabled: {
+      control: 'boolean',
+    },
+    loading: {
       control: 'boolean',
     },
   },
@@ -130,5 +134,14 @@ export const Disabled: Story = {
   args: {
     disabled: true,
     label: 'Disabled',
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    loading: true,
+    disabled: true,
+    variant: 'interactive',
+    label: 'Loading',
   },
 };
