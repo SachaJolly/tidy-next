@@ -12,7 +12,12 @@ function isXHostname(hostname: string): boolean {
 }
 
 function isThreadsHostname(hostname: string): boolean {
-  return hostname === 'threads.com' || hostname.endsWith('.threads.com');
+  return (
+    hostname === 'threads.com' ||
+    hostname.endsWith('.threads.com') ||
+    hostname === 'cdninstagram.com' ||
+    hostname.endsWith('.cdninstagram.com')
+  );
 }
 
 export function extractProviderSpecificMetadata(url: URL, html: string): ProviderSpecificMetadata {

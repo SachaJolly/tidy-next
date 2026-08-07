@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 0.5rem;
   padding: 1rem;
-  border-radius: var(--radius-interactive);
+  border-radius: var(--radius-surface);
   background: var(--background-highlight);
 }
 
@@ -24,18 +24,11 @@
   font-size: 0.8125rem;
 }
 
-.removePreview {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  font-size: 0.8125rem;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.removePreview:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+.item-preview-not-clickable {
+  pointer-events: none;
+  user-select: none;
+  cursor: default;
+  touch-action: none;
 }
 
 .skeletonLine,

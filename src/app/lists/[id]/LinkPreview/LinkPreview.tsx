@@ -128,10 +128,16 @@ export default function LinkPreview({
         {isLoading ? (
           <LinkPreviewSkeleton displayMode={resolvedDisplayMode} wrapped={false} />
         ) : (
-          <ItemLink url={url} metadata={linkMetadata} displayMode={resolvedDisplayMode} />
+          <div className={styles['item-preview-not-clickable']}>
+            <ItemLink url={url} metadata={linkMetadata} displayMode={resolvedDisplayMode} />
+          </div>
         )}
       </div>
-      {error && <SectionMessage description={error} variant="error" />}
+      {error ? (
+        <SectionMessage description={error} variant="error" />
+      ) : (
+        <SectionMessage description="Pro tip: You can change format by editing this item later." variant="discovery" />
+      )}
     </div>
   );
 }

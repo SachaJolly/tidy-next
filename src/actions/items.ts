@@ -5,11 +5,12 @@ import { revalidatePath } from 'next/cache';
 import { api, ApiFetchError } from '@/lib/api';
 import type { Item } from '@/lib/types';
 
-type ItemMutationInput = {
-  body: string;
+// This type reflects what the ItemForm now sends
+type ItemFormPayload = {
+  body: string; // This is the markdown content from the textarea
+  url: string | null; // This is the extracted URL
   display_mode: 'text' | 'link' | 'bookmark' | 'embed';
-  url?: string;
-  metadata?: Item['metadata'];
+  metadata?: Record<string, any>; // The metadata from the link preview
 };
 
 export type ItemMutationResult = {
@@ -19,7 +20,8 @@ export type ItemMutationResult = {
 
 export async function createListItemAction(
   listId: string,
-  { body, display_mode, url, metadata }: ItemMutationInput,
+  // Use the new ItemFormPayload type
+  { body, url, display_mode, metadata }: ItemFormPayload,
 ): Promise<ItemMutationResult> {
   try {
     const item = await api.auth.post<Item>(
@@ -27,8 +29,8 @@ export async function createListItemAction(
       {
         item: {
           body,
-          display_mode,
           url: url || undefined,
+          display_mode,
           metadata: metadata || undefined,
         },
       },
@@ -39,10 +41,11 @@ export async function createListItemAction(
       return { error: 'Item creation failed.' };
     }
 
-    revalidatePath('/', 'layout');
+    // Invalidate all relevant paths to ensure data freshness
+    revalidatePath(`/lists/${listId}`);
     revalidatePath('/discover');
     revalidatePath('/latest');
-    revalidatePath(`/lists/${listId}`);
+    revalidatePath('/', 'layout');
 
     return { item };
   } catch (error) {
@@ -57,7 +60,8 @@ export async function createListItemAction(
 export async function updateListItemAction(
   listId: string,
   itemId: string,
-  { body, display_mode, url, metadata }: ItemMutationInput,
+  // Use the new ItemFormPayload type
+  { body, url, display_mode, metadata }: ItemFormPayload,
 ): Promise<ItemMutationResult> {
   try {
     const item = await api.auth.patch<Item>(
@@ -65,8 +69,8 @@ export async function updateListItemAction(
       {
         item: {
           body,
-          display_mode,
           url: url || undefined,
+          display_mode,
           metadata: metadata || undefined,
         },
       },
@@ -77,10 +81,11 @@ export async function updateListItemAction(
       return { error: 'Item update failed.' };
     }
 
-    revalidatePath('/', 'layout');
+    // Invalidate all relevant paths to ensure data freshness
+    revalidatePath(`/lists/${listId}`);
     revalidatePath('/discover');
     revalidatePath('/latest');
-    revalidatePath(`/lists/${listId}`);
+    revalidatePath('/', 'layout');
 
     return { item };
   } catch (error) {

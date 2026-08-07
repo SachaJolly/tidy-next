@@ -54,7 +54,7 @@ class Api::V1::ItemsController < ApplicationController
   def item_params
     params
       .require(:item)
-      .permit(:title, :caption, :body, :url, :display_mode, :position, metadata: {})
+      .permit(:body, :url, :display_mode, :position, metadata: {})
   end
 
   def normalized_item_params

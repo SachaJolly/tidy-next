@@ -81,7 +81,7 @@ function ItemBookmarkContent({ metadata, noDescriptionLabel }: {
   metadata: ItemLinkProps['metadata'];
   noDescriptionLabel: string;
 }) {
-  const galleryImages = metadata.images?.slice(1, 4) ?? [];
+  const galleryImages = metadata.images?.slice(0, 8) ?? [];
 
   return (
     <>

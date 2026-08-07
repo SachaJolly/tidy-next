@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import styles from './Navbar.module.scss';
 import NavLink from '@/components/NavLink/NavLink';
@@ -24,7 +24,15 @@ interface NavbarAccountMenuProps {
 export default function NavbarAccountMenu({ user, initialLanguage, initialTheme, initialTimezone }: NavbarAccountMenuProps) {
   const pathname = usePathname();
   const locale = useLocale();
+  const router = useRouter();
   const normalizedPathname = stripLocalePrefix(pathname, locale);
+
+  const handleLogout = async () => {
+    await logoutAction();
+    // After the server action completes and cookies are cleared,
+    // refresh the router to clear the client-side cache and fetch new server components.
+    router.refresh();
+  };
 
   return (
     <div className={styles['nav-account']}>
@@ -46,7 +54,7 @@ export default function NavbarAccountMenu({ user, initialLanguage, initialTheme,
 
       <Dropdown>
         <NavLink icon="more" aria-label="Open account menu" />
-        <AccountDropdown user={user} initialLanguage={initialLanguage} initialTheme={initialTheme} initialTimezone={initialTimezone} onLogout={logoutAction} />
+        <AccountDropdown user={user} initialLanguage={initialLanguage} initialTheme={initialTheme} initialTimezone={initialTimezone} onLogout={handleLogout} />
       </Dropdown>
     </div>
   );
