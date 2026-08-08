@@ -15,6 +15,8 @@ export type ItemLinkMetadata = {
   videoUrl?: string;
   videoUrls?: string[];
   videoType?: string;
+  imageAlt?: string;
+  publishedTime?: string;
 };
 
 export type ItemLinkProps = {

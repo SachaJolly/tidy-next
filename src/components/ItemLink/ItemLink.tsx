@@ -9,8 +9,7 @@ import type {
   ItemLinkWithDisplayModeProps,
 } from './ItemLink.types';
 import {
-  ItemLinkDataList,
-  ItemLinkEmbed,
+  ItemLinkDataList, ItemLinkEmbedVideo,
   ItemLinkFavicon,
   ItemLinkInfoMeta,
   ItemLinkSite,
@@ -25,15 +24,22 @@ function ItemLink({ url, metadata, displayMode = 'link' }: ItemLinkWithDisplayMo
 
   const content =
     resolvedMode === 'bookmark' ? (
-      <ItemBookmarkContent metadata={metadata} />
+      <ItemLinkBookmark metadata={metadata} />
     ) : resolvedMode === 'embed' ? (
       <ItemLinkEmbed metadata={metadata} />
     ) : (
       <ItemLinkContent metadata={metadata} />
     );
 
+  // Build a concise accessible label: screen readers announce the full link content
+  // by default, but the <a> wraps many nested elements — an explicit aria-label
+  // gives a clean one-liner ("Article title — The Verge") instead of all inner text.
+  const siteName = metadata.siteName || metadata.host;
+  const ariaLabel = siteName ? `${metadata.title} — ${siteName}` : metadata.title;
+
   return (
     <a
+      aria-label={ariaLabel}
       className={[
         styles.content,
         isLink && styles.link,
@@ -60,7 +66,7 @@ function ItemLinkContent({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
   );
 }
 
-function ItemBookmarkContent({ metadata }: { metadata: ItemLinkProps['metadata'] }) {
+function ItemLinkBookmark({ metadata }: { metadata: ItemLinkProps['metadata'] }) {
   const galleryImages = metadata.images?.slice(0, 8) ?? [];
 
   return (
@@ -75,30 +81,55 @@ function ItemBookmarkContent({ metadata }: { metadata: ItemLinkProps['metadata']
         <ItemLinkSite metadata={metadata} />
       </div>
 
-      <div className={styles.media}>
-        {galleryImages.length > 1 ? (
-          <div className={styles.gallery} data-count={galleryImages.length}>
-            {galleryImages.map((image, index) => (
-              <div className={styles.galleryImage} key={`${image}-${index}`}>
-                <ResponsiveContentImage
-                  alt={metadata.title}
-                  className={styles.galleryImageAsset}
-                  src={image}
-                />
-              </div>
-            ))}
-          </div>
-        ) : (
-          metadata.image && (
-            <div className={styles.cover}>
-              <ResponsiveContentImage alt={metadata.title} src={metadata.image} />
+      {galleryImages.length > 1 ? (
+        <div className={styles.gallery} data-count={galleryImages.length}>
+          {galleryImages.map((image, index) => (
+            <div className={styles.galleryImage} key={`${image}-${index}`}>
+              <ResponsiveContentImage
+                // Each image in the gallery gets a distinct positional alt so screen readers
+                // don't announce the same title N times for a multi-image tweet/post.
+                alt={`${metadata.title} — image ${index + 1} of ${galleryImages.length}`}
+                className={styles.galleryImageAsset}
+                src={image}
+              />
             </div>
-          )
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        metadata.image && (
+          <div className={styles.cover}>
+            {/* Prefer explicit imageAlt (og:image:alt from the page) over the generic title */}
+            <ResponsiveContentImage alt={metadata.imageAlt || metadata.title} src={metadata.image} />
+          </div>
+        )
+      )}
     </>
   );
 }
+
+function ItemLinkEmbed({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
+  return (
+    <>
+      <ItemLinkInfoMeta title={metadata.title} description={metadata.description} />
+      <ItemLinkDataList metadata={metadata} />
+      {metadata.embed ? (
+        <div className={styles.embedContent} dangerouslySetInnerHTML={{ __html: metadata.embed }} />
+      ) : metadata.videoUrl ? (
+        <div className={styles.embedContent}>
+          <ItemLinkEmbedVideo src={metadata.videoUrl} title={metadata.title} />
+        </div>
+      ) : (
+        metadata.image && (
+          <div className={styles.embedContent}>
+            <ResponsiveContentImage alt={metadata.imageAlt || metadata.title} src={metadata.image} />
+          </div>
+        )
+      )}
+      <ItemLinkSite metadata={metadata} />
+    </>
+  );
+}
+
 
 export type {
   ItemLinkDisplayMode,

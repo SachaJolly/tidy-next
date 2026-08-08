@@ -89,46 +89,44 @@ export function ItemLinkDataList({ metadata }: Pick<ItemLinkProps, 'metadata'>) 
 }
 
 export function ItemLinkSite({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
+  const siteName = metadata.siteName || metadata.host;
+
+  const formattedDate = metadata.publishedTime
+    ? new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: 'numeric' }).format(
+        new Date(metadata.publishedTime)
+      )
+    : null;
+
   return (
     <div className={styles.site}>
       {metadata.favicon && <ItemLinkFavicon src={metadata.favicon} />}
-      <span>{metadata.siteName || metadata.host}</span>
-      {metadata.author && <span>{metadata.author}</span>}
+
+      {/* Each piece of meta is a list item — the CSS ::before separator is purely decorative
+          and won't be read by screen readers, unlike an explicit <span>·</span> */}
+      <ul className={styles.siteList}>
+        {siteName && <li className={styles.siteListItem}>{siteName}</li>}
+        {metadata.author && <li className={styles.siteListItem}>{metadata.author}</li>}
+        {formattedDate && metadata.publishedTime && (
+          <li className={styles.siteListItem}>
+            <time dateTime={metadata.publishedTime}>{formattedDate}</time>
+          </li>
+        )}
+      </ul>
     </div>
   );
 }
 
-export function ItemLinkEmbedVideo({ src }: { src: string }) {
+export function ItemLinkEmbedVideo({ src, title }: { src: string; title?: string }) {
   return (
+    // title mirrors aria-label for both AT and tooltip on hover
     <video
+      aria-label={title}
       className={styles.embedVideo}
       controls
       playsInline
       preload="metadata"
       src={toDisplayMediaUrl(src)}
+      title={title}
     />
-  );
-}
-
-export function ItemLinkEmbed({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
-  return (
-    <>
-      <ItemLinkSite metadata={metadata} />
-      <ItemLinkInfoMeta title={metadata.title} description={metadata.description} />
-      <ItemLinkDataList metadata={metadata} />
-      {metadata.embed ? (
-        <div className={styles.embedContent} dangerouslySetInnerHTML={{ __html: metadata.embed }} />
-      ) : metadata.videoUrl ? (
-        <div className={styles.embedContent}>
-          <ItemLinkEmbedVideo src={metadata.videoUrl} />
-        </div>
-      ) : (
-        metadata.image && (
-          <div className={styles.embedContent}>
-            <ResponsiveContentImage alt={metadata.title} src={metadata.image} />
-          </div>
-        )
-      )}
-    </>
   );
 }
