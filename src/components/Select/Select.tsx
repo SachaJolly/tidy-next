@@ -169,7 +169,7 @@ export const Select = ({
   };
 
   const dropdownIndicator = hideDropdownIcon ? undefined : (
-    <span className={styles.dropdownIndicator} aria-hidden>
+    <span className={styles['dropdown-indicator']} aria-hidden>
       <Icon name="dropdown" size={20} />
     </span>
   );

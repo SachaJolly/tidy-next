@@ -14,17 +14,17 @@ type LinkPreviewSkeletonProps = {
 };
 
 function BookmarkSkeleton() {
-  return <Skeleton className={styles.skeletonBlock} width="100%" height="10rem" />;
+  return <Skeleton className={styles['skeleton-block']} width="100%" height="10rem" />;
 }
 
 function EmbedSkeleton() {
   return (
-    <div className={styles.skeletonEmbed} aria-hidden={true}>
+    <div className={styles['skeleton-embed']} aria-hidden={true}>
       <Skeleton
-        className={[styles.skeletonBlock, styles.skeletonEmbedRatio].join(' ')}
+        className={[styles['skeleton-block'], styles['skeleton-embed-ratio']].join(' ')}
         width="100%"
       />
-      <div className={styles.skeletonEmbedMedia} />
+      <div className={styles['skeleton-embed-media']} />
     </div>
   );
 }

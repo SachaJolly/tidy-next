@@ -13,8 +13,8 @@ export function DropdownSearch({ placeholder = 'Search…' }: DropdownSearchProp
   const { setQuery } = useContext(SearchContext);
 
   return (
-    <div className={styles.searchWrapper}>
-      <span className={styles.searchIcon}>
+    <div className={styles['search-wrapper']}>
+      <span className={styles['search-icon']}>
         <Icon name="search" size={16} />
       </span>
       {/* autoFocus puts the cursor in the search box as soon as the
@@ -23,7 +23,7 @@ export function DropdownSearch({ placeholder = 'Search…' }: DropdownSearchProp
         type="search"
         autoFocus
         placeholder={placeholder}
-        className={styles.searchInput}
+        className={styles['search-input']}
         onChange={(e) => setQuery(e.target.value)}
       />
     </div>

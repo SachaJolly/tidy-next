@@ -8,7 +8,7 @@
   z-index: 250;
 }
 
-.pageCover {
+.page-cover {
   position: absolute;
   top: 0;
   left: 0;
@@ -58,20 +58,20 @@
   }
 }
 
-.itemsSection {
+.items-section {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 0 0.5rem;
 }
 
-.itemsGrid {
+.items-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.5rem;
 }
 
-.emptyState {
+.empty-state {
   padding: 0.75rem 1rem;
   border-radius: var(--radius-interactive);
   border: var(--stroke-thin) dashed var(--border-default);

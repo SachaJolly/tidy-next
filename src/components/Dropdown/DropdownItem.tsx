@@ -63,9 +63,9 @@ export const DropdownItem = React.forwardRef<
   };
 
   const leading =
-    prefix ?? (icon ? <Icon name={icon} size={16} className={styles.itemIcon} /> : null);
+    prefix ?? (icon ? <Icon name={icon} size={16} className={styles['item-icon']} /> : null);
   const isBlank = target === '_blank';
-  const trailing = isBlank ? <Icon name="open" size={16} className={styles.itemTrailing} /> : null;
+  const trailing = isBlank ? <Icon name="open" size={16} className={styles['item-trailing']} /> : null;
   const resolvedRel = rel ?? (isBlank ? 'noopener noreferrer' : undefined);
 
   const sharedProps = {
@@ -83,9 +83,9 @@ export const DropdownItem = React.forwardRef<
     return (
       <a href={href} target={target} rel={resolvedRel} {...sharedProps}>
         {leading}
-        <span className={styles.itemText}>
+        <span className={styles['item-text']}>
           <span>{label ?? children}</span>
-          {caption && <span className={styles.itemCaption}>{caption}</span>}
+          {caption && <span className={styles['item-caption']}>{caption}</span>}
         </span>
         {trailing}
       </a>
@@ -95,9 +95,9 @@ export const DropdownItem = React.forwardRef<
   return (
     <button type="button" disabled={disabled} {...sharedProps}>
       {leading}
-      <span className={styles.itemText}>
+      <span className={styles['item-text']}>
         <span>{label ?? children}</span>
-        {caption && <span className={styles.itemCaption}>{caption}</span>}
+        {caption && <span className={styles['item-caption']}>{caption}</span>}
       </span>
     </button>
   );

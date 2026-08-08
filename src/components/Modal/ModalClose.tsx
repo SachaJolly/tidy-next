@@ -15,7 +15,7 @@ export function ModalClose() {
       type="button"
       aria-label="Close dialog"
       onClick={dismiss}
-      className={styles.closeButton}
+      className={styles['close-button']}
     >
       <Icon name="close" size={24} />
     </button>

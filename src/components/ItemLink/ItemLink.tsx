@@ -74,7 +74,7 @@ function ItemLinkBookmark({ metadata }: { metadata: ItemLinkProps['metadata'] })
       <div className={styles.info}>
         <ItemLinkInfoMeta
           title={metadata.title}
-          titleClassName={`${styles.title} ${styles.bookmarkTitle}`}
+          titleClassName={`${styles.title} ${styles['bookmark-title']}`}
           description={metadata.description}
         />
         <ItemLinkDataList metadata={metadata} />
@@ -84,12 +84,12 @@ function ItemLinkBookmark({ metadata }: { metadata: ItemLinkProps['metadata'] })
       {galleryImages.length > 1 ? (
         <div className={styles.gallery} data-count={galleryImages.length}>
           {galleryImages.map((image, index) => (
-            <div className={styles.galleryImage} key={`${image}-${index}`}>
+            <div className={styles['gallery-image']} key={`${image}-${index}`}>
               <ResponsiveContentImage
                 // Each image in the gallery gets a distinct positional alt so screen readers
                 // don't announce the same title N times for a multi-image tweet/post.
                 alt={`${metadata.title} — image ${index + 1} of ${galleryImages.length}`}
-                className={styles.galleryImageAsset}
+                className={styles['gallery-image-asset']}
                 src={image}
               />
             </div>
@@ -113,14 +113,14 @@ function ItemLinkEmbed({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
       <ItemLinkInfoMeta title={metadata.title} description={metadata.description} />
       <ItemLinkDataList metadata={metadata} />
       {metadata.embed ? (
-        <div className={styles.embedContent} dangerouslySetInnerHTML={{ __html: metadata.embed }} />
+        <div className={styles['embed-content']} dangerouslySetInnerHTML={{ __html: metadata.embed }} />
       ) : metadata.videoUrl ? (
-        <div className={styles.embedContent}>
+        <div className={styles['embed-content']}>
           <ItemLinkEmbedVideo src={metadata.videoUrl} title={metadata.title} />
         </div>
       ) : (
         metadata.image && (
-          <div className={styles.embedContent}>
+          <div className={styles['embed-content']}>
             <ResponsiveContentImage alt={metadata.imageAlt || metadata.title} src={metadata.image} />
           </div>
         )

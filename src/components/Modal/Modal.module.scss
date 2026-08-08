@@ -51,13 +51,13 @@
   gap: .5rem;
 }
 
-.headerText {
+.header-text {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.headerIcon {
+.header-icon {
   display: flex;
   align-items: center;
 }
@@ -75,7 +75,7 @@
   padding: 0 2rem 2rem;
 }
 
-.formFields {
+.form-fields {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -84,7 +84,7 @@
   padding: 0 2rem 2rem;
 }
 
-.header + .formFields {
+.header + .form-fields {
   padding: 0 2rem 2rem;
 }
 
@@ -114,7 +114,7 @@
   color: var(--text-muted);
 }
 
-.closeButton {
+.close-button {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;

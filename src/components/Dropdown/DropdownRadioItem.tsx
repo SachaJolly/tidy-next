@@ -47,7 +47,7 @@ export function DropdownRadioItem({
 
   // Leading slot: custom prefix node takes precedence over named icon.
   const leading =
-    prefix ?? (icon ? <Icon name={icon} size={16} className={styles.itemIcon} /> : null);
+    prefix ?? (icon ? <Icon name={icon} size={16} className={styles['item-icon']} /> : null);
 
   return (
     <button
@@ -59,9 +59,9 @@ export function DropdownRadioItem({
       onClick={handleClick}
     >
       {leading}
-      <span className={styles.itemText}>
+      <span className={styles['item-text']}>
         <span>{label ?? children}</span>
-        {caption && <span className={styles.itemCaption}>{caption}</span>}
+        {caption && <span className={styles['item-caption']}>{caption}</span>}
       </span>
       {checked && (
         <span className={styles.checkmark}>

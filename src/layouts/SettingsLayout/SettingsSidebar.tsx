@@ -34,7 +34,7 @@ export default function SettingsSidebar() {
           <Link
             key={route.href}
             href={localizePath(route.href, locale)}
-            className={`${styles.navLink} ${isRouteActive(route.href) ? styles.navLinkActive : ''}`}
+            className={`${styles['nav-link']} ${isRouteActive(route.href) ? styles['nav-link-active'] : ''}`}
           >
             <Icon name={route.icon} size={20} aria-hidden />
             <span>{t(route.labelKey)}</span>

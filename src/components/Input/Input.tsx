@@ -28,7 +28,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
   const containerClasses = [styles.container, className].filter(Boolean).join(' ');
   const inputWrapperClasses = [
-    styles.inputWrapper,
+    styles['input-wrapper'],
     prefix && styles.hasPrefix,
     suffix && styles.hasSuffix,
     trailing && styles.hasTrailing,
@@ -45,7 +45,7 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className={containerClasses}>
       <div className={inputWrapperClasses}>
-        {prefix && <span className={[styles.affix, styles.prefixAffix].join(' ')}>{prefix}</span>}
+        {prefix && <span className={[styles.affix, styles['prefix-affix']].join(' ')}>{prefix}</span>}
         <input
           id={id}
           className={styles.input}
@@ -54,7 +54,7 @@ const Input: React.FC<InputProps> = ({
           data-autofocus={autoFocus ? 'true' : undefined}
           {...props}
         />
-        {suffix && <span className={[styles.affix, styles.suffixAffix].join(' ')}>{suffix}</span>}
+        {suffix && <span className={[styles.affix, styles['suffix-affix']].join(' ')}>{suffix}</span>}
         {trailing && <span className={styles.trailing}>{trailing}</span>}
       </div>
       {feedback && <div className={feedbackClasses}>{feedback}</div>}

@@ -179,15 +179,15 @@ export async function ListItemsSection({ id }: { id: string }) {
   const items = list.items || [];
 
   return (
-    <section className={styles.itemsSection}>
+    <section className={styles['items-section']}>
       {items.length > 0 ? (
-        <div className={styles.itemsGrid}>
+        <div className={styles['items-grid']}>
           {items.map((item: ItemType) => (
             <Item item={item} key={item.id} />
           ))}
         </div>
       ) : (
-        <div className={styles.emptyState}>
+        <div className={styles['empty-state']}>
           <p>{common('noItemsYet')}</p>
         </div>
       )}

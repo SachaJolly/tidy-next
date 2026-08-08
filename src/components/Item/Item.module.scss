@@ -16,9 +16,9 @@
     opacity: 1;
   }
 
-  &:has(.actions:hover) .itemBody,
-  &:has(.actions:focus-within) .itemBody,
-  &:has(.actions [aria-expanded='true']) .itemBody{
+  &:has(.actions:hover) .item-body,
+  &:has(.actions:focus-within) .item-body,
+  &:has(.actions [aria-expanded='true']) .item-body{
     --bg-item-body: var(--background-highlight);
   }
 
@@ -56,7 +56,7 @@
   color: var(--text-heading);
 }
 
-.bookmarkTitle {
+.bookmark-title {
   font-size: 1.125rem;
   line-height: 1.5rem;
 }

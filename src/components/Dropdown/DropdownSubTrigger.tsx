@@ -32,9 +32,9 @@ export function DropdownSubTrigger({ children, icon, title }: DropdownSubTrigger
       // The title is stored in the view stack and shown in the back-button header.
       onClick={() => navigateTo(subCtx.id, title)}
     >
-      {icon && <Icon name={icon} size={16} className={styles.itemIcon} />}
+      {icon && <Icon name={icon} size={16} className={styles['item-icon']} />}
       <span>{children}</span>
-      <span className={styles.subArrow}>
+      <span className={styles['sub-arrow']}>
         <Icon name="arrow_right" size={16} />
       </span>
     </button>

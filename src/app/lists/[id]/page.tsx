@@ -132,7 +132,7 @@ async function ListTopCover({ id }: { id: string }) {
     '--list-cover-gradient-height': '160px',
   } as React.CSSProperties;
 
-  return <div className={styles.pageCover} style={coverStyle} aria-hidden="true" />;
+  return <div className={styles['page-cover']} style={coverStyle} aria-hidden="true" />;
 }
 
 async function ListItems({ id }: { id: string }) {
@@ -140,15 +140,15 @@ async function ListItems({ id }: { id: string }) {
   const items = list.items || [];
 
   return (
-    <section className={styles.itemsSection}>
+    <section className={styles['items-section']}>
       {items.length > 0 ? (
-        <div className={styles.itemsGrid}>
+        <div className={styles['items-grid']}>
           {items.map((item: ItemType) => (
             <Item item={item} key={item.id} listId={id} canManage={isAuthor} />
           ))}
         </div>
       ) : (
-        <div className={styles.emptyState}>
+        <div className={styles['empty-state']}>
           <p>{common('noItemsYet')}</p>
         </div>
       )}

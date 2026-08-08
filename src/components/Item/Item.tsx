@@ -58,7 +58,7 @@ export const Item = ({ item, listId, canManage = false }: ItemProps) => {
     <div className={styles['container']}>
       {content}
       {item.body && (
-        <div className={styles.itemBody}>
+        <div className={styles['item-body']}>
           <ItemBody body={item.body} small={content && true} />
         </div>
       )}

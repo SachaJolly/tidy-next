@@ -212,16 +212,16 @@ export function DropdownMenu({
       onKeyDown={handleKeyDown}
     >
       {isSubView && (
-        <div className={styles.subHeader}>
+        <div className={styles['sub-header']}>
           <button
             type="button"
-            className={styles.backButton}
+            className={styles['back-button']}
             onClick={navigateBack}
             aria-label="Go back to previous menu"
           >
             <Icon name="back" size={24} />
           </button>
-          <span className={styles.subHeaderTitle}>{subTitle}</span>
+          <span className={styles['sub-header-title']}>{subTitle}</span>
         </div>
       )}
       {children}
@@ -236,7 +236,7 @@ export function DropdownMenu({
   return createPortal(
     isMobile ? (
       <>
-        <div className={styles.drawerOverlay} onClick={close} aria-hidden="true" />
+        <div className={styles['drawer-overlay']} onClick={close} aria-hidden="true" />
         {panel}
       </>
     ) : (

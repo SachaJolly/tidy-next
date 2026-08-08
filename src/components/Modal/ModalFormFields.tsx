@@ -11,7 +11,7 @@ export function ModalFormFields({
 }) {
   return (
     <div
-      className={[styles.formFields, className].filter(Boolean).join(' ')}
+      className={[styles['form-fields'], className].filter(Boolean).join(' ')}
       style={{ flex: '1 1 auto', minHeight: 0 }}
     >
       {children}

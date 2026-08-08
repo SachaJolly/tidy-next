@@ -9,7 +9,7 @@ import type { ItemLinkProps } from './ItemLink.types';
 export function ResponsiveContentImage({
   src,
   alt,
-  className = styles.coverImage,
+  className = styles['cover-image'],
   ...props
 }: {
   src: string;
@@ -56,7 +56,7 @@ export function ItemLinkInfoMeta({
   titleClassName?: string;
 }) {
   return (
-    <div className={styles.infoMeta}>
+    <div className={styles['info-meta']}>
       <h3 className={titleClassName}>{title}</h3>
       {description && <p className={styles.description}>{description}</p>}
     </div>
@@ -71,15 +71,15 @@ export function ItemLinkDataList({ metadata }: Pick<ItemLinkProps, 'metadata'>) 
   }
 
   return (
-    <dl className={styles.dataList}>
+    <dl className={styles['data-list']}>
       {metadata.label1 && metadata.value1 && (
-        <div className={styles.dataListItem}>
+        <div className={styles['data-list-item']}>
           <dt>{metadata.label1}</dt>
           <dd>{metadata.value1}</dd>
         </div>
       )}
       {metadata.label2 && metadata.value2 && (
-        <div className={styles.dataListItem}>
+        <div className={styles['data-list-item']}>
           <dt>{metadata.label2}</dt>
           <dd>{metadata.value2}</dd>
         </div>
@@ -103,11 +103,11 @@ export function ItemLinkSite({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
 
       {/* Each piece of meta is a list item — the CSS ::before separator is purely decorative
           and won't be read by screen readers, unlike an explicit <span>·</span> */}
-      <ul className={styles.siteList}>
-        {siteName && <li className={styles.siteListItem}>{siteName}</li>}
-        {metadata.author && <li className={styles.siteListItem}>{metadata.author}</li>}
+      <ul className={styles['site-list']}>
+        {siteName && <li className={styles['site-list-item']}>{siteName}</li>}
+        {metadata.author && <li className={styles['site-list-item']}>{metadata.author}</li>}
         {formattedDate && metadata.publishedTime && (
-          <li className={styles.siteListItem}>
+          <li className={styles['site-list-item']}>
             <time dateTime={metadata.publishedTime}>{formattedDate}</time>
           </li>
         )}
@@ -121,7 +121,7 @@ export function ItemLinkEmbedVideo({ src, title }: { src: string; title?: string
     // title mirrors aria-label for both AT and tooltip on hover
     <video
       aria-label={title}
-      className={styles.embedVideo}
+      className={styles['embed-video']}
       controls
       playsInline
       preload="metadata"

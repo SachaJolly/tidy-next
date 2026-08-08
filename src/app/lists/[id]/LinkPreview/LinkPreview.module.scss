@@ -31,12 +31,12 @@
   touch-action: none;
 }
 
-.skeletonLine,
-.skeletonLineShort,
-.skeletonCard,
-.skeletonBlock,
-.skeletonBookmarkMedia,
-.skeletonEmbedMedia {
+.skeleton-line,
+.skeleton-line-short,
+.skeleton-card,
+.skeleton-block,
+.skeleton-bookmark-media,
+.skeleton-embed-media {
   border-radius: 0.5rem;
   background: linear-gradient(
     90deg,
@@ -48,22 +48,22 @@
   animation: shimmer 1.4s ease infinite;
 }
 
-.skeletonLine {
+.skeleton-line {
   width: 72%;
   height: 0.75rem;
 }
 
-.skeletonLineShort {
+.skeleton-line-short {
   width: 34%;
   height: 0.75rem;
 }
 
-.skeletonCard {
+.skeleton-card {
   width: 100%;
   height: 4rem;
 }
 
-.skeletonBlock {
+.skeleton-block {
   display: block;
   width: 100%;
   max-width: 100%;
@@ -71,7 +71,7 @@
   height: 0.75rem;
 }
 
-.skeletonBookmark {
+.skeleton-bookmark {
   display: grid;
   grid-template-columns: 1fr 5rem;
   gap: 0.75rem;
@@ -81,18 +81,18 @@
   background: var(--background-background);
 }
 
-.skeletonBookmarkMain {
+.skeleton-bookmark-main {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.skeletonBookmarkMedia {
+.skeleton-bookmark-media {
   width: 5rem;
   height: 5rem;
 }
 
-.skeletonEmbed {
+.skeleton-embed {
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
@@ -102,12 +102,12 @@
   background: var(--background-background);
 }
 
-.skeletonEmbedMedia {
+.skeleton-embed-media {
   width: 100%;
   height: 8rem;
 }
 
-.skeletonEmbedRatio {
+.skeleton-embed-ratio {
   aspect-ratio: 16 / 9;
   min-height: 8rem;
 }

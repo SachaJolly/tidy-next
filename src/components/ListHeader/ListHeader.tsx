@@ -87,7 +87,7 @@ export default function ListHeader({list, author, locale, timezone, isAuthor }: 
               size="small"
             />
           )}
-          <div className={styles.likeSection}>
+          <div className={styles['like-section']}>
             <Button icon="like" label={t('like')} size="small" tinted={true} />
             <span className="text-small text-muted text-truncated">
               {t('peopleLikedThisList', { count: list.notesCount })}
