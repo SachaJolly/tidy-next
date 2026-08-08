@@ -39,6 +39,9 @@ export const Item = ({ item, canManage }: ItemProps) => {
           viewsCount={item.stats?.views ?? 0}
           authorName={item.author?.name}
           updatedAt={item.updatedAt}
+          url={item.url}
+          initialDisplayMode={item.display_mode}
+          metadata={metadata}
         />
       </Dropdown>
     </div>

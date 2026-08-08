@@ -2,7 +2,10 @@
 
 import { revalidatePath } from 'next/cache';
 
+import { fetchLinkMetadataAction } from '@/actions/fetch-link-metadata';
+import type { ItemLinkDisplayMode } from '@/components/ItemLink/ItemLink.types';
 import { api, ApiFetchError } from '@/lib/api';
+import { getResolvedDisplayMode } from '@/lib/item-display-mode';
 import type { Item } from '@/lib/types';
 
 // This type reflects what the ItemForm now sends
@@ -118,6 +121,136 @@ export async function archiveListItemAction(
     revalidatePath('/', 'layout');
 
     return { item: archivedItem ?? undefined };
+  } catch (error) {
+    if (error instanceof ApiFetchError) {
+      return { error: error.message };
+    }
+
+    return { error: 'An unknown error occurred.' };
+  }
+}
+
+/**
+ * Sends the fields the API needs to leave an item's link intact.
+ *
+ * `normalized_item_params` on the Rails side rewrites more than it receives: a payload
+ * without `display_mode` is normalised to "text", and a text item whose payload carries no
+ * `url` key has its URL cleared. The URL itself is not a column  the model storeseither 
+ * it inside `metadata`, so replacing that JSON without putting the URL back would drop it.
+ *
+ * Every partial update below therefore restates the link and its mode, even when neither
+ * changed. Ownership is still enforced server-side by `ensure_list_author!`, so taking the
+ * URL from the caller grants nothing an owner could not already do through the edit form.
+ */
+function itemLinkPayload(url: string, displayMode: ItemLinkDisplayMode) {
+  return { url, display_mode: displayMode };
+}
+
+/**
+ * Revalidates the surfaces an item appears on.
+ *
+ * Deliberately narrower than the mutations above: those call `revalidatePath('/', 'layout')`,
+ * which re-renders every route segment and remounts each embedded iframe on the page. Touching
+ * one card must not reload every video in the list.
+ */
+function revalidateItemSurfaces(listId: string) {
+  revalidatePath(`/lists/${listId}`);
+  revalidatePath('/discover');
+  revalidatePath('/latest');
+}
+
+/**
+ * Re-reads an item's link preview from the source page and stores the result.
+ *
+ * The refresh button inside `ItemForm` only refills React  nothing is written untilstate 
+ * the user saves, which is right for a form they may cancel. The item dropdown on the list
+ * page has no such step, so this action has to fetch *and* persist in one go.
+ */
+export async function refreshItemMetadataAction(
+  listId: string,
+  itemId: string,
+  url: string,
+  displayMode: ItemLinkDisplayMode,
+): Promise<ItemMutationResult> {
+  const trimmedUrl = url.trim();
+  if (!trimmedUrl) {
+    return { error: 'This item has no link to refresh.' };
+  }
+
+  const { metadata, error: metadataError } = await fetchLinkMetadataAction(trimmedUrl);
+  if (metadataError || !metadata) {
+    return { error: metadataError ?? 'Could not load link metadata.' };
+  }
+
+  try {
+    const item = await api.auth.patch<Item>(
+      `/api/v1/lists/${listId}/items/${itemId}`,
+      {
+        item: {
+          // A refresh replaces the stored metadata rather than merging into  keepingit 
+          // old keys would make it impossible to ever drop an image or title the page no
+          // longer serves. The URL is restated because it lives inside this same JSON.
+          ...itemLinkPayload(
+            trimmedUrl,
+            // The page may have lost whatever made it embeddable. Without this the item
+            // would keep claiming a mode its metadata can no longer render.
+            getResolvedDisplayMode(displayMode, metadata),
+          ),
+          metadata: { ...metadata, url: trimmedUrl },
+        },
+      },
+      { cache: 'no-store' },
+    );
+
+    if (!item) {
+      return { error: 'Item preview refresh failed.' };
+    }
+
+    revalidateItemSurfaces(listId);
+
+    return { item };
+  } catch (error) {
+    if (error instanceof ApiFetchError) {
+      return { error: error.message };
+    }
+
+    return { error: 'An unknown error occurred.' };
+  }
+}
+
+/**
+ * Switches how an item renders its link, straight from the list page.
+ *
+ * Mirrors `updateListVisibilityAction`: one narrow write instead of routing the user
+ * through the edit modal for a single field.
+ */
+export async function updateItemDisplayModeAction(
+  listId: string,
+  itemId: string,
+  url: string,
+  displayMode: ItemLinkDisplayMode,
+): Promise<ItemMutationResult> {
+  const trimmedUrl = url.trim();
+  if (!trimmedUrl) {
+    return { error: 'This item has no link to display.' };
+  }
+
+  try {
+    const item = await api.auth.patch<Item>(
+      `/api/v1/lists/${listId}/items/${itemId}`,
+      // `metadata` is left out on purpose: omitting it keeps the stored preview untouched,
+      // where sending a partial copy would overwrite the whole JSON column.
+      { item: itemLinkPayload(trimmedUrl, displayMode) },
+      { cache: 'no-store' },
+    );
+
+    if (!item) {
+      return { error: 'Item display mode update failed.' };
+    }
+
+    revalidateItemSurfaces(listId);
+
+    return { item };
   } catch (error) {
     if (error instanceof ApiFetchError) {
       return { error: error.message };

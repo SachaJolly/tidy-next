@@ -1,5 +1,8 @@
 {
   "archive": "Archiver",
+  "refreshPreview": "Actualiser l’aperçu",
+  "refreshPreviewError": "L’actualisation de l’aperçu a échoué. Veuillez réessayer.",
+  "displayModeError": "La modification du mode d’affichage a échoué. Veuillez réessayer.",
   "confirmTitle": "Archiver cet item ?",
   "confirmDescription": "Êtes-vous sûr de vouloir archiver cet élément ? Vous le trouverez dans les archives de cette liste pour le remettre en place ou le supprimer définitivement.",
   "confirmArchive": "Confirmer l’archivage",

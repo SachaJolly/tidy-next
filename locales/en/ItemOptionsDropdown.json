@@ -1,5 +1,8 @@
 {
   "archive": "Archive",
+  "refreshPreview": "Refresh preview",
+  "refreshPreviewError": "Preview refresh failed. Please try again.",
+  "displayModeError": "Display mode update failed. Please try again.",
   "confirmTitle": "Archive this item?",
   "confirmDescription": "Are you certain you want to archive this item? You’ll find it in the items archive of this list to put it back or delete permanently.",
   "confirmArchive": "Archive item",
