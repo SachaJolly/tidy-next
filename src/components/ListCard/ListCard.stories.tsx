@@ -105,7 +105,7 @@ export const Pinned: Story = {
 
 export const Private: Story = {
   args: {
-    isAuthor: true,
+    canManage: true,
     list: {
       ...mockList,
       itemsCount: 67,

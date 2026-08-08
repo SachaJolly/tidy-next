@@ -69,7 +69,6 @@ export const DropdownItem = React.forwardRef<
   const resolvedRel = rel ?? (isBlank ? 'noopener noreferrer' : undefined);
 
   const sharedProps = {
-    ref,
     role: 'menuitem' as const,
     className: [styles.item, className].filter(Boolean).join(' '),
     'data-destructive': destructive || undefined,
@@ -79,9 +78,18 @@ export const DropdownItem = React.forwardRef<
     onMouseDown,
   };
 
+  // The forwarded ref is a union (`HTMLButtonElement | HTMLAnchorElement`) because this
+  // component renders either element. React's per-element `ref` prop is invariant, so the
+  // union can't be spread into both branches — narrow it at each render site instead.
   if (href) {
     return (
-      <a href={href} target={target} rel={resolvedRel} {...sharedProps}>
+      <a
+        href={href}
+        target={target}
+        rel={resolvedRel}
+        ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+        {...sharedProps}
+      >
         {leading}
         <span className={styles['item-text']}>
           <span>{label ?? children}</span>
@@ -93,7 +101,12 @@ export const DropdownItem = React.forwardRef<
   }
 
   return (
-    <button type="button" disabled={disabled} {...sharedProps}>
+    <button
+      type="button"
+      disabled={disabled}
+      ref={ref as React.ForwardedRef<HTMLButtonElement>}
+      {...sharedProps}
+    >
       {leading}
       <span className={styles['item-text']}>
         <span>{label ?? children}</span>

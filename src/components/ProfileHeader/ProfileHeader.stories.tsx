@@ -24,7 +24,7 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   args: {
     user: mockUser,
-    showEditProfileButton: false,
+    showEdit: false,
   },
   render: (args) => (
     <PageLayout>
@@ -40,7 +40,7 @@ export const Default: Story = {};
 
 export const EditableProfile: Story = {
   args: {
-    showEditProfileButton: true,
+    showEdit: true,
   },
 };
 
