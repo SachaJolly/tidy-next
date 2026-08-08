@@ -11,7 +11,7 @@ import { getResolvedDisplayMode, isEmbedModeAvailable } from '@/lib/item-display
 
 import LinkPreviewSkeleton from './LinkPreviewSkeleton';
 import styles from './LinkPreview.module.scss';
-import SectionMessage from '@/components/SectionMessage/SectionMessage';
+import Notice from '@/components/Notice/Notice';
 
 type LinkPreviewMetadata = OpenGraphMetadata & {
   // Stored for future rich providers (YouTube, Spotify, etc.).
@@ -134,9 +134,9 @@ export default function LinkPreview({
         )}
       </div>
       {error ? (
-        <SectionMessage description={error} variant="error" />
+        <Notice description={error} variant="error" />
       ) : (
-        <SectionMessage description="Pro tip: You can change format by editing this item later." variant="discovery" />
+        <Notice description="Pro tip: You can change format by editing this item later." variant="discovery" />
       )}
     </div>
   );

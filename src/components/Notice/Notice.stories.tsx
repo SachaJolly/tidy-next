@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import SectionMessage from './SectionMessage';
+import Notice from './Notice';
 
 const meta = {
-  title: 'Components/SectionMessage',
-  component: SectionMessage,
+  title: 'Components/Notice',
+  component: Notice,
   parameters: {
     layout: 'centered',
   },
@@ -14,7 +14,7 @@ const meta = {
     description: 'This is a contextual message shown inside a section.',
     variant: 'information',
   },
-} satisfies Meta<typeof SectionMessage>;
+} satisfies Meta<typeof Notice>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

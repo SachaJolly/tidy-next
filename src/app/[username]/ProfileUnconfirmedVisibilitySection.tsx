@@ -1,6 +1,6 @@
 import React from 'react';
 import Section from '@/components/Section/Section';
-import SectionMessage from '@/components/SectionMessage/SectionMessage';
+import Notice from '@/components/Notice/Notice';
 
 type ProfileUnconfirmedVisibilitySectionProps = {
   title?: string;
@@ -23,7 +23,7 @@ export default function ProfileUnconfirmedVisibilitySection({
 
   return (
     <Section>
-      <SectionMessage
+      <Notice
         variant={variant}
         title={title}
         description={description}

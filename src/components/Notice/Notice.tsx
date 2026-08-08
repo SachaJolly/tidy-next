@@ -3,24 +3,24 @@ import Link from 'next/link';
 
 import Icon from '@/components/Icon/Icon';
 import type { IconName } from '@/components/Icon/icons';
-import styles from './SectionMessage.module.scss';
+import styles from './Notice.module.scss';
 
-type SectionMessageVariant = 'information' | 'warning' | 'error' | 'success' | 'discovery';
+type NoticeVariant = 'information' | 'warning' | 'error' | 'success' | 'discovery';
 
-type SectionMessageAction = {
+type NoticeAction = {
   label: string;
   href: string;
 };
 
-interface SectionMessageProps {
-  variant?: SectionMessageVariant;
+interface NoticeProps {
+  variant?: NoticeVariant;
   title?: string;
   description?: string;
-  actions?: SectionMessageAction[];
+  actions?: NoticeAction[];
   className?: string;
 }
 
-const VARIANT_ICON: Record<SectionMessageVariant, IconName> = {
+const VARIANT_ICON: Record<NoticeVariant, IconName> = {
   information: 'info',
   warning: 'warning',
   error: 'error',
@@ -28,13 +28,13 @@ const VARIANT_ICON: Record<SectionMessageVariant, IconName> = {
   discovery: 'search',
 };
 
-export default function SectionMessage({
+export default function Notice({
   variant = 'information',
   title,
   description,
   actions,
   className,
-}: SectionMessageProps) {
+}: NoticeProps) {
   const classes = [styles.message, styles[variant], className].filter(Boolean).join(' ');
   const hasActions = Array.isArray(actions) && actions.length > 0;
 
