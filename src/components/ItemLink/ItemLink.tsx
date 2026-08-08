@@ -34,7 +34,7 @@ function ItemLink({ url, metadata, displayMode = 'link' }: ItemLinkWithDisplayMo
   // Build a concise accessible label: screen readers announce the full link content
   // by default, but the <a> wraps many nested elements — an explicit aria-label
   // gives a clean one-liner ("Article title — The Verge") instead of all inner text.
-  const siteName = metadata.siteName || metadata.host;
+  const siteName = metadata.siteName?.trim() || metadata.host?.trim();
   const ariaLabel = siteName ? `${metadata.title} — ${siteName}` : metadata.title;
 
   return (

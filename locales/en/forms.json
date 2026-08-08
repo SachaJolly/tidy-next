@@ -34,6 +34,7 @@
     "removePreview": "Remove preview",
     "linkPreviewLoading": "Fetching link metadata...",
     "linkPreviewFallbackTitle": "Link preview",
+    "linkPreviewHint": "Pro tip: You can change format by editing this item later.",
     "linkPreviewNoDescription": "No description available.",
     "linkPreviewFetchFailed": "Could not load link metadata.",
     "bodyOrUrlRequired": "Please enter text or paste a URL at the beginning.",

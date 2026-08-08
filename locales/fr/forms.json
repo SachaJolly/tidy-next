@@ -34,6 +34,7 @@
     "removePreview": "Retirer l’aperçu",
     "linkPreviewLoading": "Récupération des métadonnées du lien…",
     "linkPreviewFallbackTitle": "Aperçu du lien",
+    "linkPreviewHint": "Astuce : vous pourrez changer le format en modifiant cet item plus tard.",
     "linkPreviewNoDescription": "Aucune description disponible.",
     "linkPreviewFetchFailed": "Impossible de charger les métadonnées du lien.",
     "bodyOrUrlRequired": "Veuillez saisir du texte ou coller une URL au début du champ.",

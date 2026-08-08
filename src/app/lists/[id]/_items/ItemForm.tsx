@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { fetchLinkMetadataAction } from '@/actions/fetch-link-metadata';
@@ -15,6 +15,7 @@ import { getResolvedDisplayMode } from '@/lib/item-display-mode';
 import type { Item as ItemType } from '@/lib/types';
 
 import LinkPreview from './LinkPreview/LinkPreview';
+import type { LinkPreviewLabels } from './LinkPreview/LinkPreview';
 
 const LEADING_URL_DRAFT_REGEX = /^(https?:\/\/[^\s]*)([\s\S]*)$/;
 const EMPTY_METADATA: ItemType['metadata'] = {};
@@ -483,6 +484,21 @@ export default function ItemForm({
   const previewUrl = extractedUrl ?? urlDraft?.token ?? null;
   const isPreviewLoading = isFetchingMetadata || (!!urlDraft && !extractedUrl);
 
+  // LinkPreview is memoised, so the label bag has to keep a stable identity — an inline
+  // object literal would invalidate the memo on every keystroke and defeat the point.
+  const previewLabels = useMemo<LinkPreviewLabels>(
+    () => ({
+      link: t('item.displayModes.link'),
+      bookmark: t('item.displayModes.bookmark'),
+      embed: t('item.displayModes.embed'),
+      refreshPreview: t('item.refreshPreview'),
+      removePreview: t('item.removePreview'),
+      fallbackTitle: t('item.linkPreviewFallbackTitle'),
+      hint: t('item.linkPreviewHint'),
+    }),
+    [t],
+  );
+
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       <ModalHeader title={title} />
@@ -497,14 +513,7 @@ export default function ItemForm({
             error={extractedUrl ? metadataError : null}
             onRemovePreview={handleRemovePreview}
             onRefreshPreview={handleRefreshPreview}
-            labels={{
-              link: t('item.displayModes.link'),
-              bookmark: t('item.displayModes.bookmark'),
-              embed: t('item.displayModes.embed'),
-              refreshPreview: t('item.refreshPreview'),
-              removePreview: t('item.removePreview'),
-              fallbackTitle: t('item.linkPreviewFallbackTitle'),
-            }}
+            labels={previewLabels}
             disabled={isSubmitting}
           />
         )}
