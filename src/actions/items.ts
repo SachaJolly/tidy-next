@@ -131,16 +131,15 @@ export async function archiveListItemAction(
 }
 
 /**
- * Sends the fields the API needs to leave an item's link intact.
+ * Restates an item's link and display mode on every write.
  *
- * `normalized_item_params` on the Rails side rewrites more than it receives: a payload
- * without `display_mode` is normalised to "text", and a text item whose payload carries no
- * `url` key has its URL cleared. The URL itself is not a column  the model storeseither 
- * it inside `metadata`, so replacing that JSON without putting the URL back would drop it.
+ * The URL is not a column on the API side: the model keeps it inside `metadata`, so any
+ * write that replaces that JSON has to put the link back or lose it. Sending the mode
+ * alongside keeps each request self-describing instead of depending on how the API
+ * completes a partial payload.
  *
- * Every partial update below therefore restates the link and its mode, even when neither
- * changed. Ownership is still enforced server-side by `ensure_list_author!`, so taking the
- * URL from the caller grants nothing an owner could not already do through the edit form.
+ * Ownership is enforced server-side by `ensure_list_author!`, so taking the URL from the
+ * caller grants nothing an owner could not already do through the edit form.
  */
 function itemLinkPayload(url: string, displayMode: ItemLinkDisplayMode) {
   return { url, display_mode: displayMode };
@@ -162,9 +161,9 @@ function revalidateItemSurfaces(listId: string) {
 /**
  * Re-reads an item's link preview from the source page and stores the result.
  *
- * The refresh button inside `ItemForm` only refills React  nothing is written untilstate 
- * the user saves, which is right for a form they may cancel. The item dropdown on the list
- * page has no such step, so this action has to fetch *and* persist in one go.
+ * The refresh button inside `ItemForm` only refills React state, and nothing is written
+ * until the user saves, which is right for a form they may cancel. The item dropdown on
+ * the list page has no such step, so this action has to fetch *and* persist in one go.
  */
 export async function refreshItemMetadataAction(
   listId: string,
@@ -187,7 +186,7 @@ export async function refreshItemMetadataAction(
       `/api/v1/lists/${listId}/items/${itemId}`,
       {
         item: {
-          // A refresh replaces the stored metadata rather than merging into  keepingit 
+          // A refresh replaces the stored metadata rather than merging into it. Keeping
           // old keys would make it impossible to ever drop an image or title the page no
           // longer serves. The URL is restated because it lives inside this same JSON.
           ...itemLinkPayload(
