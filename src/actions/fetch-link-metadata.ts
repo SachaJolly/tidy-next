@@ -3,6 +3,7 @@
 import { dedupeImagesByAsset } from '@/lib/dedup-images';
 import type { OEmbedMetadata } from '@/actions/fetch-oembed';
 import { fetchOEmbedMetadataAction } from '@/actions/fetch-oembed';
+import { extractProviderSpecificMetadata } from '@/actions/providers';
 import { detectOEmbedProvider } from '@/lib/oembed-provider';
 import type { OpenGraphMetadata } from '@/actions/fetch-opengraph';
 import { fetchOpenGraphAction } from '@/actions/fetch-opengraph';
@@ -53,47 +54,26 @@ function needsOpenGraphEnrichment(metadata: LinkMetadata): boolean {
 function mergeOEmbedWithOpenGraph(
   oembed: LinkMetadata,
   og: LinkMetadata,
-  rawUrl: string,
+  options: { preferOGImages?: boolean } = {},
 ): LinkMetadata {
-  let parsedUrl: URL | null = null;
-  try {
-    parsedUrl = new URL(rawUrl);
-  } catch {
-    // keep null — fallback to generic merge below
-  }
+  // When the provider signals preferOGImages, OG images take full priority and
+  // oEmbed thumbnails are excluded from the merged list. This is used for
+  // platforms where the og:image is richer than the oEmbed thumbnail
+  // (e.g. music.youtube.com album artwork vs. video-frame thumbnail).
+  //
+  // Otherwise, OG images still come first in the candidate list so that
+  // asset-level deduplication keeps the highest-quality URL for each image
+  // (e.g. standard YouTube maxresdefault over oEmbed hqdefault).
+  const oembedImageCandidates = options.preferOGImages
+    ? []
+    : [...(oembed.images ?? []), oembed.image ?? ''];
 
-  const isMusicYouTube = parsedUrl?.hostname.toLowerCase() === 'music.youtube.com';
-
-  // On music.youtube.com, the oEmbed thumbnail (i.ytimg.com) is the video
-  // thumbnail which has no relevance for a music track — the og:image artwork
-  // (yt3.googleusercontent.com) is the correct cover. We drop i.ytimg.com
-  // images so only the album/artist artwork is kept.
-  const filterImages = (urls: string[]): string[] => {
-    if (!isMusicYouTube) {
-      return urls;
-    }
-
-    return urls.filter((value) => {
-      try {
-        return new URL(value).hostname !== 'i.ytimg.com';
-      } catch {
-        return true;
-      }
-    });
-  };
-
-  // OG images are listed first so that asset-level deduplication keeps the
-  // higher-quality / more canonical URL when both sources reference the same
-  // logical image (e.g. YouTube: OG maxresdefault.jpg wins over oEmbed hqdefault.jpg).
   const mergedImages = dedupeImagesByAsset(
-    filterImages(
-      [
-        ...(og.images ?? []),
-        og.image ?? '',
-        ...(oembed.images ?? []),
-        oembed.image ?? '',
-      ].filter((value) => value.trim().length > 0),
-    ),
+    [
+      ...(og.images ?? []),
+      og.image ?? '',
+      ...oembedImageCandidates,
+    ].filter((value) => value.trim().length > 0),
   );
 
   return {
@@ -103,9 +83,8 @@ function mergeOEmbedWithOpenGraph(
     title: oembed.title ?? og.title,
     description: oembed.description ?? og.description,
     // Use mergedImages[0] as the primary image: since OG images are placed first
-    // in the dedup input, this will be the highest-quality available URL
-    // (e.g. YouTube maxresdefault over oEmbed hqdefault). Fall back to explicit
-    // oEmbed or OG image fields only when mergedImages is empty.
+    // in the candidate list, this will be the highest-quality available URL.
+    // Fall back to explicit oEmbed or OG image fields only when mergedImages is empty.
     image: mergedImages[0] ?? oembed.image ?? og.image,
     images: mergedImages.length > 0 ? mergedImages : undefined,
     siteName: oembed.siteName ?? og.siteName,
@@ -127,6 +106,11 @@ export async function fetchLinkMetadataAction(rawUrl: string): Promise<FetchLink
   const normalizedUrl = parsedUrl.toString();
   const detectedProvider = detectOEmbedProvider(parsedUrl);
 
+  // Read provider-specific metadata from the URL alone (no HTML fetch needed here).
+  // We pass an empty string for html since URL-only providers (YouTube, Spotify)
+  // derive their metadata entirely from the URL structure.
+  const urlProviderMetadata = await extractProviderSpecificMetadata(parsedUrl, '');
+
   // Strategy A (provider recognized): oEmbed first.
   // This avoids an unnecessary HTML fetch for platforms where oEmbed is richer/faster.
   if (detectedProvider) {
@@ -143,7 +127,14 @@ export async function fetchLinkMetadataAction(rawUrl: string): Promise<FetchLink
       // In that case, enrich with OG/JSON-LD instead of returning an empty-looking preview.
       const ogEnrichmentResult = await fetchOpenGraphAction(normalizedUrl);
       if (ogEnrichmentResult.metadata) {
-        return { metadata: mergeOEmbedWithOpenGraph(oembedMetadata, ogEnrichmentResult.metadata, normalizedUrl) };
+        return {
+          metadata: mergeOEmbedWithOpenGraph(oembedMetadata, ogEnrichmentResult.metadata, {
+            // The provider declares whether OG images should win over oEmbed thumbnails.
+            // fetchOpenGraphAction has already applied excludeImageHostnames so the OG
+            // image list is already clean at this point.
+            preferOGImages: urlProviderMetadata.preferOGImages,
+          }),
+        };
       }
 
       // Degraded path: return sparse oEmbed data instead of hard failing the form.

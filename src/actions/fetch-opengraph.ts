@@ -369,22 +369,18 @@ export async function fetchOpenGraphAction(rawUrl: string): Promise<FetchOpenGra
     const ogImageValues = extractMetaContentValues(html, ['og:image', 'twitter:image'])
       .map((value) => resolveMaybeRelativeUrl(value, finalUrl))
       .filter((value): value is string => Boolean(value))
-      // yt3.googleusercontent.com hosts YouTube channel/artist avatars and banners.
-      // On standard youtube.com video pages, this domain appears as the og:image
-      // even though it has nothing to do with the video — the real thumbnail comes
-      // from i.ytimg.com via the oEmbed response. We filter it out for youtube.com.
-      //
-      // Exception: music.youtube.com — on that platform the artist/album artwork
-      // (served from yt3.googleusercontent.com) IS the intended cover image, so
-      // we keep it there.
+      // Apply provider-declared hostname exclusions generically.
+      // Each provider can declare which CDN hostnames should be ignored from
+      // og:image candidates (e.g. YouTube channel avatars, music.youtube.com
+      // video thumbnails). This keeps fetch-opengraph free of provider names.
       .filter((value) => {
-        const finalHostname = finalUrl.hostname.toLowerCase();
-        if (finalHostname === 'music.youtube.com') {
+        const excluded = providerMetadata.excludeImageHostnames;
+        if (!excluded?.length) {
           return true;
         }
 
         try {
-          return new URL(value).hostname !== 'yt3.googleusercontent.com';
+          return !excluded.includes(new URL(value).hostname);
         } catch {
           return true;
         }

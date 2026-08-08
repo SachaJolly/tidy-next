@@ -1,6 +1,8 @@
 import type { ProviderSpecificMetadata } from './provider-metadata';
+import { extractSpotifyProviderMetadata } from './spotify-provider';
 import { extractThreadsProviderMetadata } from './threads-provider';
 import { extractXProviderMetadata } from './x-provider';
+import { extractYouTubeProviderMetadata } from './youtube-provider';
 
 function isXHostname(hostname: string): boolean {
   return (
@@ -20,6 +22,19 @@ function isThreadsHostname(hostname: string): boolean {
   );
 }
 
+function isYouTubeHostname(hostname: string): boolean {
+  return (
+    hostname === 'youtube.com' ||
+    hostname.endsWith('.youtube.com') ||
+    hostname === 'youtu.be' ||
+    hostname.endsWith('.youtu.be')
+  );
+}
+
+function isSpotifyHostname(hostname: string): boolean {
+  return hostname === 'open.spotify.com' || hostname.endsWith('.open.spotify.com');
+}
+
 export async function extractProviderSpecificMetadata(
   url: URL,
   html: string,
@@ -32,6 +47,14 @@ export async function extractProviderSpecificMetadata(
 
   if (isThreadsHostname(hostname)) {
     return extractThreadsProviderMetadata(html);
+  }
+
+  if (isYouTubeHostname(hostname)) {
+    return extractYouTubeProviderMetadata(url);
+  }
+
+  if (isSpotifyHostname(hostname)) {
+    return extractSpotifyProviderMetadata();
   }
 
   return {};
