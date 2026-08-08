@@ -157,7 +157,7 @@ export async function ListHeaderSection({ id }: { id: string }) {
             <Button icon="settings" aria-label={t('settings')} size="small" tinted={true} />
             <ListOptionsDropdown
               listId={list.id}
-              isAuthor={isAuthor}
+              canManage={isAuthor}
               initialVisibility={list.visibility}
               authorName={author.name}
               updatedAt={list.updatedAt}
@@ -170,7 +170,8 @@ export async function ListHeaderSection({ id }: { id: string }) {
 }
 
 export async function ListItemsSection({ id }: { id: string }) {
-  const { list, common } = await getListPageData(id);
+  const { list, common, currentUser } = await getListPageData(id);
+  const isAuthor = currentUser?.id === list.author?.id;
   const items = list.items || [];
 
   return (
@@ -178,7 +179,7 @@ export async function ListItemsSection({ id }: { id: string }) {
       {items.length > 0 ? (
         <div className={styles['items-grid']}>
           {items.map((item: ItemType) => (
-            <Item item={item} key={item.id} />
+            <Item item={item} key={item.id} listId={id} canManage={isAuthor} />
           ))}
         </div>
       ) : (

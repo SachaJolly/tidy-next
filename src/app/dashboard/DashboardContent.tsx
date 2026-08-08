@@ -33,8 +33,8 @@ export default async function DashboardContent() {
         <Section>
           <SectionHeader title={t('myLists')}>
             <MetaGroup>
-              <Meta>{t('defaultCollection')}</Meta>
-              <Meta>{t('onlyPublicVisible')}</Meta>
+              <Meta label={t('defaultCollection')} />
+              <Meta label={t('onlyPublicVisible')} />
             </MetaGroup>
           </SectionHeader>
           <CollectionList>

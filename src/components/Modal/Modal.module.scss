@@ -28,11 +28,11 @@
   box-shadow: var(--shadow-overlay);
 
   &[data-size='small'] {
-    width: 384px;
+    width: 512px;
   }
 
   &[data-size='default'] {
-    width: 700px;
+    width: 720px;
   }
 
   &[data-size='large'] {
@@ -66,7 +66,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   align-items: stretch;
   padding: 0 2rem 2rem;
 }

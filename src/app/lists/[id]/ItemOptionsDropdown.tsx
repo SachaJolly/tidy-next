@@ -14,7 +14,6 @@ interface ItemOptionsDropdownProps {
   canManage: boolean;
   inline?: boolean;
   authorName?: string;
-  createdAt?: string;
   updatedAt?: string;
 }
 
@@ -25,7 +24,6 @@ export default function ItemOptionsDropdown({
   canManage,
   inline = false,
   authorName,
-  createdAt,
   updatedAt,
 }: ItemOptionsDropdownProps) {
   const common = useTranslations('common');
@@ -33,10 +31,15 @@ export default function ItemOptionsDropdown({
   const date = useTranslations('date');
   const formatDate = useDateFormatter();
   const queryModal = useQueryModal();
+  const deleteQueryModal = useQueryModal({ modalIdKey: 'id' });
 
   const handleEdit = useCallback(() => {
     queryModal.openModal('edit-item', itemId);
   }, [queryModal, itemId]);
+
+  const handleArchive = useCallback(() => {
+    deleteQueryModal.openModal('delete', itemId);
+  }, [deleteQueryModal, itemId]);
 
   const formatItemDate = (dateStr?: string) =>
     dateStr ? formatDate(dateStr, 'short') : '';
@@ -50,7 +53,7 @@ export default function ItemOptionsDropdown({
             label={common('action.edit')}
             onSelect={handleEdit}
           />
-          <DropdownItem icon="delete" destructive label={t('archive')} />
+          <DropdownItem icon="delete" destructive label={t('archive')} onSelect={handleArchive} />
           <DropdownSeparator />
         </>
       ) : null}

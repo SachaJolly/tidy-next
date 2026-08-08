@@ -10,7 +10,7 @@ type ItemFormPayload = {
   body: string; // This is the markdown content from the textarea
   url: string | null; // This is the extracted URL
   display_mode: 'text' | 'link' | 'bookmark' | 'embed';
-  metadata?: Record<string, any>; // The metadata from the link preview
+  metadata?: Record<string, unknown>; // The metadata from the link preview
 };
 
 export type ItemMutationResult = {
@@ -88,6 +88,36 @@ export async function updateListItemAction(
     revalidatePath('/', 'layout');
 
     return { item };
+  } catch (error) {
+    if (error instanceof ApiFetchError) {
+      return { error: error.message };
+    }
+
+    return { error: 'An unknown error occurred.' };
+  }
+}
+
+export async function archiveListItemAction(
+  listId: string,
+  itemId: string,
+): Promise<ItemMutationResult> {
+  try {
+    const archivedItem = await api.auth.patch<Item>(
+      `/api/v1/lists/${listId}/items/${itemId}`,
+      {
+        item: {
+          status: 'ARCHIVED',
+        },
+      },
+      { cache: 'no-store' },
+    );
+
+    revalidatePath(`/lists/${listId}`);
+    revalidatePath('/discover');
+    revalidatePath('/latest');
+    revalidatePath('/', 'layout');
+
+    return { item: archivedItem ?? undefined };
   } catch (error) {
     if (error instanceof ApiFetchError) {
       return { error: error.message };

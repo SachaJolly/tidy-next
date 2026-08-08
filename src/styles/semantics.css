@@ -50,7 +50,7 @@
   --text-interactive-hover: light-dark(var(--color-purple-600), var(--color-purple-300));
   --text-heading: light-dark(var(--color-grey-800), var(--color-white));
   --text-body: light-dark(var(--color-grey-600), var(--color-white));
-  --text-muted: light-dark(var(--color-grey-400), var(--color-grey-300));
+  --text-muted: light-dark(var(--color-grey-500), var(--color-grey-300));
   --text-disabled: light-dark(var(--color-grey-300), var(--color-grey-400));
   --text-inverse: light-dark(var(--color-white), var(--color-grey-900));
 

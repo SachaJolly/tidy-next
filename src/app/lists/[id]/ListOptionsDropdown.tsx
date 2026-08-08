@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useMemo, useState, useTransition } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import React, { useCallback, useMemo, useState, useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import {
   DropdownItem,
@@ -35,7 +35,6 @@ export default function ListOptionsDropdown({
   inline = false,
 }: ListOptionsDropdownProps) {
   const router = useRouter();
-  const locale = useLocale();
   const formatDate = useDateFormatter();
   const date = useTranslations('date');
   const common = useTranslations('common');
@@ -52,6 +51,10 @@ export default function ListOptionsDropdown({
   const handleEdit = () => {
     queryModal.openModal('edit-list', listId);
   };
+
+  const handleArchive = useCallback(() => {
+    queryModal.openModal('delete-list', listId);
+  }, [listId, queryModal]);
 
   const handleVisibilityChange = (value: string) => {
     if (!canManage || isPending) return;
@@ -81,7 +84,12 @@ export default function ListOptionsDropdown({
       {canManage ? (
         <>
           <DropdownItem icon="edit" label={common('action.edit')} onSelect={handleEdit} />
-          <DropdownItem icon="delete" destructive label={common('action.archive')} />
+          <DropdownItem
+            icon="delete"
+            destructive
+            label={common('action.archive')}
+            onSelect={handleArchive}
+          />
           <DropdownSeparator />
           <VisibilityRadioGroup
             value={visibility}

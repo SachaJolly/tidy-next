@@ -7,7 +7,6 @@ import Button from '@/components/Button/Button';
 import Avatar from '@/components/Avatar/Avatar';
 import MetaGroup from '@/components/MetaGroup/MetaGroup';
 import Meta from '@/components/Meta/Meta';
-import Icon from '@/components/Icon/Icon';
 import ListCard from '@/components/ListCard/ListCard';
 import type { List } from '@/lib/types';
 import { useTranslations } from 'next-intl';
@@ -50,14 +49,8 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           </div>
           {bio && <div className={styles['curator-meta-description']}>{bio}</div>}
           <MetaGroup orientation="vertical">
-            <Meta>
-              <Icon name="verified" size={16} />
-              <span>{common('verifiedUser')}</span>
-            </Meta>
-            <Meta>
-              <Icon name="list" size={16} />
-              <span>{t('lists', { count: listsCount })}</span>
-            </Meta>
+            <Meta icon="verified" label={common('verifiedUser')} />
+            <Meta icon="list" label={t('lists', { count: listsCount })} />
           </MetaGroup>
         </div>
         <ButtonGroup>

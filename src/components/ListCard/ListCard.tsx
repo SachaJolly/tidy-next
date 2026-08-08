@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import Icon from '@/components/Icon/Icon';
 import { Dropdown } from '@/components/Dropdown';
 import { ButtonHover } from '@/components/ButtonHover';
 import Meta from '@/components/Meta/Meta';
@@ -53,49 +52,31 @@ export default function ListCard({
           <h4 className={styles['title']}>{list.title}</h4>
           <MetaGroup>
             {list.isPinned && (
-              <Meta type="pinned">
-                <Icon name="pin" size={16}></Icon>
-                <span>{t('pinned')}</span>
-              </Meta>
+              <Meta type="pinned" icon="pin" label={t('pinned')} />
             )}
 
             {list.visibility === 'PRIVATE' && (
-              <Meta type="visibility">
-                <Icon name="private" size={16}></Icon>
-                <span>{t('private')}</span>
-              </Meta>
+              <Meta type="visibility" icon="private" label={t('private')} />
             )}
 
             {list.visibility === 'UNINDEXED' && (
-              <Meta type="visibility">
-                <Icon name="visibility_off" size={16}></Icon>
-                <span>{t('unindexed')}</span>
-              </Meta>
+              <Meta type="visibility" icon="visibility_off" label={t('unindexed')} />
             )}
 
             {list.isTrending ? (
-              <Meta type="trending">
-                <Icon name="hot" size={16}></Icon>
-                <span>{t('trending')}</span>
-              </Meta>
+              <Meta type="trending" icon="hot" label={t('trending')} />
             ) : list.isPopular ? (
-              <Meta type="popular">
-                <Icon name="recommended" size={16}></Icon>
-                <span>{t('popular')}</span>
-              </Meta>
+              <Meta type="popular" icon="recommended" label={t('popular')} />
             ) : (
               list.isFeatured && (
-                <Meta type="featured">
-                  <Icon name="featured" size={16}></Icon>
-                  <span>{t('featured')}</span>
-                </Meta>
+                <Meta type="featured" icon="featured" label={t('featured')} />
               )
             )}
 
             {list.itemsCount > 0 ? (
-              <Meta>{t('item', { count: list.itemsCount })}</Meta>
+              <Meta label={t('item', { count: list.itemsCount })} />
             ) : (
-              <Meta>{t('empty')}</Meta>
+              <Meta label={t('empty')} />
             )}
 
             {list.notesCount > 0 && <Meta>{t('note', { count: list.notesCount })}</Meta>}

@@ -1,5 +1,13 @@
 {
   "archive": "Archive",
+  "confirmTitle": "Archive this item?",
+  "confirmDescription": "Are you certain you want to archive this item? You’ll find it in the items archive of this list to put it back or delete permanently.",
+  "confirmArchive": "Archive item",
+  "confirmArchivePending": "Archiving…",
+  "archiveSuccessTitle": "Item archived",
+  "archiveSuccessDescription": "The item has been archived successfully.",
+  "notFound": "We couldn't find the selected item anymore.",
+  "noPreviewAvailable": "No link preview is available for this item.",
   "viewsCount": "{count, number} views",
   "addedBy": "Added by {author}"
 }

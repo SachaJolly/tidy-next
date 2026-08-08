@@ -104,12 +104,34 @@ export async function updateListVisibilityAction(
     }
 
     revalidatePath('/', 'layout');
-    revalidatePath('/dashboard');
     revalidatePath('/discover');
     revalidatePath('/latest');
     revalidatePath(`/lists/${listId}`);
 
     return { list };
+  } catch (error) {
+    if (error instanceof ApiFetchError) {
+      return { error: error.message };
+    }
+
+    return { error: 'An unknown error occurred.' };
+  }
+}
+
+export async function archiveListAction(listId: string): Promise<ListMutationResult> {
+  try {
+    const archivedList = await api.auth.delete<List>(`/api/v1/lists/${listId}`, {
+      cache: 'no-store',
+    });
+
+    revalidatePath('/dashboard');
+    revalidatePath('/discover');
+    revalidatePath('/latest');
+    revalidatePath('/curators');
+    revalidatePath(`/lists/${listId}`);
+    revalidatePath('/', 'layout');
+
+    return { list: archivedList ?? undefined };
   } catch (error) {
     if (error instanceof ApiFetchError) {
       return { error: error.message };

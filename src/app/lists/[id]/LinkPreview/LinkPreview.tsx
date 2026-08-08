@@ -36,6 +36,8 @@ type LinkPreviewProps = {
     fallbackTitle: string;
   };
   disabled?: boolean;
+  showControls?: boolean;
+  showHint?: boolean;
 };
 
 export default function LinkPreview({
@@ -49,6 +51,8 @@ export default function LinkPreview({
   onRefreshPreview,
   labels,
   disabled = false,
+  showControls = true,
+  showHint = true,
 }: LinkPreviewProps) {
   const resolvedDisplayMode = getResolvedDisplayMode(displayMode, metadata);
   const canUseEmbedMode = isEmbedModeAvailable(metadata);
@@ -75,69 +79,72 @@ export default function LinkPreview({
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <ButtonGroup>
-          <Button
-            type="button"
-            label={labels.link}
-            variant={resolvedDisplayMode === 'link' ? 'interactive' : 'default'}
-            onClick={() => onDisplayModeChange('link')}
-            disabled={disabled}
-          />
-          <Button
-            type="button"
-            label={labels.bookmark}
-            variant={resolvedDisplayMode === 'bookmark' ? 'interactive' : 'default'}
-            onClick={() => onDisplayModeChange('bookmark')}
-            disabled={disabled}
-          />
-          <Button
-            type="button"
-            label={labels.embed}
-            variant={resolvedDisplayMode === 'embed' ? 'interactive' : 'default'}
-            onClick={() => {
-              if (!canUseEmbedMode) {
-                return;
-              }
-              onDisplayModeChange('embed');
-            }}
-            disabled={disabled || !canUseEmbedMode}
-          />
-        </ButtonGroup>
-        <ButtonGroup>
-          <Button
-            type="button"
-            icon="refresh"
-            transparent
-            aria-label={labels.refreshPreview}
-            onClick={onRefreshPreview}
-            disabled={disabled || isLoading}
-          />
-          <Button
-            type="button"
-            icon="delete"
-            transparent
-            aria-label={labels.removePreview}
-            onClick={onRemovePreview}
-            disabled={disabled || isLoading}
-          />
-        </ButtonGroup>
-      </div>
+      {showControls && (
+        <div className={styles.header}>
+          <ButtonGroup>
+            <Button
+              type="button"
+              label={labels.link}
+              variant={resolvedDisplayMode === 'link' ? 'interactive' : 'default'}
+              onClick={() => onDisplayModeChange('link')}
+              disabled={disabled}
+            />
+            <Button
+              type="button"
+              label={labels.bookmark}
+              variant={resolvedDisplayMode === 'bookmark' ? 'interactive' : 'default'}
+              onClick={() => onDisplayModeChange('bookmark')}
+              disabled={disabled}
+            />
+            <Button
+              type="button"
+              label={labels.embed}
+              variant={resolvedDisplayMode === 'embed' ? 'interactive' : 'default'}
+              onClick={() => {
+                if (!canUseEmbedMode) {
+                  return;
+                }
+                onDisplayModeChange('embed');
+              }}
+              disabled={disabled || !canUseEmbedMode}
+            />
+          </ButtonGroup>
+          <ButtonGroup>
+            <Button
+              type="button"
+              icon="refresh"
+              transparent
+              aria-label={labels.refreshPreview}
+              onClick={onRefreshPreview}
+              disabled={disabled || isLoading}
+            />
+            <Button
+              type="button"
+              icon="delete"
+              transparent
+              aria-label={labels.removePreview}
+              onClick={onRemovePreview}
+              disabled={disabled || isLoading}
+            />
+          </ButtonGroup>
+        </div>
+      )}
 
       <div className={styles.content}>
         {isLoading ? (
           <LinkPreviewSkeleton displayMode={resolvedDisplayMode} wrapped={false} />
         ) : (
-          <div className={styles['item-preview-not-clickable']}>
+          <div className="non-interactive">
             <ItemLink url={url} metadata={linkMetadata} displayMode={resolvedDisplayMode} />
           </div>
         )}
       </div>
-      {error ? (
-        <Notice description={error} variant="error" />
-      ) : (
-        <Notice description="Pro tip: You can change format by editing this item later." variant="discovery" />
-      )}
+      {showHint &&
+        (error ? (
+          <Notice description={error} variant="error" />
+        ) : (
+          <Notice description="Pro tip: You can change format by editing this item later." variant="discovery" />
+        ))}
     </div>
   );
 }

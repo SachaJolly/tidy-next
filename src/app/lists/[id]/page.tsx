@@ -14,6 +14,7 @@ import { ListItemsSkeleton } from '@/components/Item/ListItems.skeleton';
 import { Item } from '@/components/Item/Item';
 
 import styles from '@/layouts/ListLayout/ListLayout.module.scss';
+import DeleteItemModal from './DeleteItemModal';
 import EditItemModal from './EditItemModal';
 import NewItemModal from './NewItemModal';
 
@@ -110,7 +111,7 @@ const getListPageData = cache(async (id: string) => {
 // ============================================================================
 
 async function ListHeaderContainer({ id }: { id: string }) {
-  const { list, locale, timezone, isAuthor } = await getListPageData(id);
+  const { list, locale, isAuthor } = await getListPageData(id);
 
   return (
     <ListHeader
@@ -167,6 +168,7 @@ async function ListModals({ id }: { id: string }) {
     <>
       <NewItemModal listId={id} />
       <EditItemModal listId={id} items={items} />
+      <DeleteItemModal listId={id} items={items} />
     </>
   );
 }
@@ -179,13 +181,11 @@ export default function ListPage({ params }: PageProps) {
   const { id } = use(params);
 
   return (
-    <ListLayout
-      cover={
-        <Suspense fallback={null}>
-          <ListTopCover id={id} />
-        </Suspense>
-      }
-    >
+    <ListLayout cover={
+      <Suspense fallback={null}>
+        <ListTopCover id={id} />
+      </Suspense>
+    }>
       <Suspense fallback={<ListHeaderSkeleton />}>
         <ListHeaderContainer id={id} />
       </Suspense>

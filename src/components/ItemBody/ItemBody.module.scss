@@ -27,9 +27,13 @@
   }
 
   &.smaller {
-    padding-top: .125rem;
-    font-size: 0.875rem;
+    margin-top: -1rem;
+    padding-top: 1.25rem;
+    font-size: .875rem;
     line-height: 1.25rem;
-    color: var(--text-muted)
+    color: var(--text-muted);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    z-index: -1;
   }
 }

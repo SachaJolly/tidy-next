@@ -1,5 +1,13 @@
 {
   "archive": "Archiver",
+  "confirmTitle": "Archiver cet item ?",
+  "confirmDescription": "Êtes-vous sûr de vouloir archiver cet élément ? Vous le trouverez dans les archives de cette liste pour le remettre en place ou le supprimer définitivement.",
+  "confirmArchive": "Confirmer l’archivage",
+  "confirmArchivePending": "Archivage…",
+  "archiveSuccessTitle": "Item archivé",
+  "archiveSuccessDescription": "L’item a bien été archivé.",
+  "notFound": "L’item sélectionné est introuvable.",
+  "noPreviewAvailable": "Aucun aperçu de lien n’est disponible pour cet item.",
   "viewsCount": "{count, number} vues",
   "addedBy": "Ajouté par {author}"
 }

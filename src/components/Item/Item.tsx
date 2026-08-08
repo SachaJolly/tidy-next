@@ -34,7 +34,6 @@ export const Item = ({ item, listId, canManage = false }: ItemProps) => {
           viewsCount={item.stats?.views ?? 0}
           canManage={canManage}
           authorName={item.author?.name}
-          createdAt={item.createdAt}
           updatedAt={item.updatedAt}
         />
       </Dropdown>
@@ -59,7 +58,7 @@ export const Item = ({ item, listId, canManage = false }: ItemProps) => {
       {content}
       {item.body && (
         <div className={styles['item-body']}>
-          <ItemBody body={item.body} small={content && true} />
+          <ItemBody body={item.body} small={!!content} />
         </div>
       )}
       {actions}

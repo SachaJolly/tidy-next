@@ -3,11 +3,11 @@ import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import PageLayout from '@/layouts/PageLayout';
-import ProfileHeaderSection from './ProfileHeaderSection';
+import ProfileHeader, { type ProfileUser } from '@/components/ProfileHeader/ProfileHeader';
+import Notice from '@/components/Notice/Notice';
+import Section from '@/components/Section/Section';
 import ProfileListsSection from './ProfileListsSection';
-import ProfileUnconfirmedVisibilitySection from './ProfileUnconfirmedVisibilitySection';
 import { api, ApiFetchError } from '@/lib/api';
-import { List, User } from '@/lib/types';
 
 interface UserPageProps {
   params: Promise<{
@@ -15,21 +15,13 @@ interface UserPageProps {
   }>;
 }
 
-type ProfileUser = User & {
-  public_lists_count: number;
-  publicLists: List[];
-  avatar: string | null;
-  emailConfirmed?: boolean;
-  unconfirmedProfilePublicVisible?: boolean;
-  viewerIsOwner?: boolean;
-};
+type UserPageProfile = ProfileUser & { viewerIsOwner?: boolean };
 
 const PROFILE_PUBLIC_LISTS_LIMIT = 12;
 
 export default async function UserPage({ params }: UserPageProps) {
   const { username } = await params;
   const t = await getTranslations('profile');
-  const common = await getTranslations('common');
   const cookieStore = await cookies();
   const authToken = cookieStore.get('tidy_token')?.value ?? null;
 
@@ -74,19 +66,19 @@ export default async function UserPage({ params }: UserPageProps) {
 
   return (
     <PageLayout>
-      <ProfileHeaderSection
-        user={user}
-        verifiedUserLabel={common('verifiedUser')}
-        publicListsLabel={t('publicLists', { count: user.public_lists_count })}
-        showEditProfileButton={isCurrentUser}
-      />
-      <ProfileUnconfirmedVisibilitySection
-        isVisible={visibilityMessage.isVisible}
-        title={visibilityMessage.title}
-        description={visibilityMessage.description}
-        actions={visibilityMessage.actions}
-        variant={visibilityMessage.variant}
-      />
+      <ProfileHeader user={user} showEdit={isCurrentUser}/>
+
+      {visibilityMessage.isVisible && (
+        <Section>
+          <Notice
+            variant={visibilityMessage.variant}
+            title={visibilityMessage.title}
+            description={visibilityMessage.description}
+            actions={visibilityMessage.actions}
+          />
+        </Section>
+      )}
+
       {!isPrivateProfileForVisitor && (
         <ProfileListsSection
           publicLists={publicLists}
@@ -98,11 +90,11 @@ export default async function UserPage({ params }: UserPageProps) {
   );
 }
 
-async function fetchProfileUser(username: string, authToken: string | null): Promise<ProfileUser | null> {
+async function fetchProfileUser(username: string, authToken: string | null): Promise<UserPageProfile | null> {
   const path = `/api/v1/users/${username}?lists_limit=${PROFILE_PUBLIC_LISTS_LIMIT}`;
 
   try {
-    return await api.public.get<ProfileUser>(
+    return await api.public.get<UserPageProfile>(
       path,
       authToken
         ? {

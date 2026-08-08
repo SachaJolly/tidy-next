@@ -14,3 +14,5 @@ export function ProfileHeaderSkeleton() {
     </div>
   );
 }
+
+export default ProfileHeaderSkeleton;

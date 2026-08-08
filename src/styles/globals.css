@@ -198,6 +198,13 @@ p {
   line-height: 1rem;
 }
 
+.non-interactive {
+  pointer-events: none;
+  user-select: none;
+  cursor: default;
+  touch-action: none;
+}
+
 .text-success {
   color: var(--text-success);
 }

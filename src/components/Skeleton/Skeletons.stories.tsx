@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ListItemsSkeleton } from '@/components/Item/ListItems.skeleton';
 import { ListHeaderSkeleton } from '@/components/ListHeader/ListHeader.skeleton';
 import { NavbarActionsSkeleton } from '@/components/Navbar/NavbarActions.skeleton';
-import { ProfileHeaderSkeleton } from '@/components/ProfileCard/ProfileHeader.skeleton';
+import { ProfileHeaderSkeleton } from '@/components/ProfileHeader/ProfileHeader.skeleton';
 import { ProfileListsSkeleton } from '@/components/ProfileCard/ProfileLists.skeleton';
 import { ListPageSkeleton } from '@/layouts/ListLayout/ListPage.skeleton';
 import { FeedPageSkeleton } from '@/layouts/PageLayout/FeedPage.skeleton';

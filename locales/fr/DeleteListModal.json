@@ -1,0 +1,12 @@
+{
+  "title": "Archiver la liste",
+  "description": "Êtes-vous sûr de vouloir archiver cette liste ? Vous pourrez toujours la retrouver dans vos listes archivées.",
+  "loading": "Chargement de la liste…",
+  "confirmArchive": "Archiver la liste",
+  "confirmArchivePending": "Archivage…",
+  "error": {
+    "notFound": "Cette liste est introuvable.",
+    "forbidden": "Vous n'êtes pas autorisé à archiver cette liste.",
+    "loadFailed": "Le chargement de la liste a échoué. Veuillez réessayer."
+  }
+}

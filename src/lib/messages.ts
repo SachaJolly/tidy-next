@@ -13,6 +13,7 @@
  *   locales/en/listPage.json         - Page/domain namespace (lowercase)
  *   locales/en/NewList.json          - Modal namespace (PascalCase)
  *   locales/en/EditListModal.json    - Modal namespace (PascalCase)
+ *   locales/en/DeleteListModal.json  - Modal namespace (PascalCase)
  *   locales/en/NavbarOptions.json    - Component namespace (PascalCase)
  *   locales/en/ListCard.json         - Component namespace (PascalCase)
  *   ...and more
@@ -52,6 +53,7 @@ import formsEn from '../../locales/en/forms.json';
 import dateEn from '../../locales/en/date.json';
 import NewListEn from '../../locales/en/NewList.json';
 import EditListModalEn from '../../locales/en/EditListModal.json';
+import DeleteListModalEn from '../../locales/en/DeleteListModal.json';
 
 // Component namespaces (PascalCase files → PascalCase namespace keys)
 import NavbarOptionsEn from '../../locales/en/NavbarOptions.json';
@@ -76,6 +78,7 @@ import formsFr from '../../locales/fr/forms.json';
 import dateFr from '../../locales/fr/date.json';
 import NewListFr from '../../locales/fr/NewList.json';
 import EditListModalFr from '../../locales/fr/EditListModal.json';
+import DeleteListModalFr from '../../locales/fr/DeleteListModal.json';
 
 // Component namespaces (PascalCase files → PascalCase namespace keys)
 import NavbarOptionsFr from '../../locales/fr/NavbarOptions.json';
@@ -110,6 +113,7 @@ const messagesEn = {
   date: dateEn,
   NewList: NewListEn,
   EditListModal: EditListModalEn,
+  DeleteListModal: DeleteListModalEn,
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageEn,
   // Component namespaces (PascalCase for reusable components)
@@ -136,6 +140,7 @@ const messagesFr = {
   date: dateFr,
   NewList: NewListFr,
   EditListModal: EditListModalFr,
+  DeleteListModal: DeleteListModalFr,
   // Page/domain namespaces (lowercase for App Router pages/views)
   listPage: listPageFr,
   // Component namespaces (PascalCase for reusable components)

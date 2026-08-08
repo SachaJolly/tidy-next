@@ -1,5 +1,9 @@
+'use client';
+
 import React from 'react';
 
+import Icon from '@/components/Icon/Icon';
+import type { IconName } from '@/components/Icon/icons';
 import { MetaGroupContext } from '@/components/MetaGroup/MetaGroup';
 import styles from './Meta.module.scss';
 
@@ -18,13 +22,15 @@ type MetaSize = 'small' | 'base';
 interface MetaProps {
   type?: MetaType;
   size?: MetaSize;
+  /** Icon name from the central icon registry (`src/assets/icons`). */
+  icon?: IconName;
   className?: string;
   /** Short text label — shorthand for wrapping a single string in children. */
   label?: string;
   children?: React.ReactNode;
 }
 
-const Meta: React.FC<MetaProps> = ({ type, size = 'small', className, label, children }) => {
+const Meta: React.FC<MetaProps> = ({ type, size = 'small', icon, className, label, children }) => {
   const insideMetaGroup = React.useContext(MetaGroupContext);
 
   // Fail fast in development so misuse is caught immediately during testing.
@@ -37,7 +43,12 @@ const Meta: React.FC<MetaProps> = ({ type, size = 'small', className, label, chi
     .filter(Boolean)
     .join(' ');
 
-  return <li className={classes}>{label ?? children}</li>;
+  return (
+    <li className={classes}>
+      {icon && <Icon name={icon} size={16} />}
+      {label ?? children}
+    </li>
+  );
 };
 
 export default Meta;

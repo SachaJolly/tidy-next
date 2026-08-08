@@ -1,0 +1,12 @@
+{
+  "title": "Archive list",
+  "description": "Are you sure you want to archive this list? You can still find it later in your archived lists.",
+  "loading": "Loading list…",
+  "confirmArchive": "Archive list",
+  "confirmArchivePending": "Archiving…",
+  "error": {
+    "notFound": "This list could not be found.",
+    "forbidden": "You are not allowed to archive this list.",
+    "loadFailed": "Failed to load the list. Please try again."
+  }
+}

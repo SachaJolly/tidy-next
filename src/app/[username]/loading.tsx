@@ -1,6 +1,6 @@
 import React from 'react';
 import PageLayout from '@/layouts/PageLayout';
-import { ProfileHeaderSkeleton } from '@/components/ProfileCard/ProfileHeader.skeleton';
+import { ProfileHeaderSkeleton } from '@/components/ProfileHeader/ProfileHeader.skeleton';
 import { ProfileListsSkeleton } from '@/components/ProfileCard/ProfileLists.skeleton';
 
 export default function Loading() {

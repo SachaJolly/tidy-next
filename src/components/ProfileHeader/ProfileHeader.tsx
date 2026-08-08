@@ -1,15 +1,19 @@
-import React from 'react';
-import PageHeader from '@/components/PageHeader/PageHeader';
-import Avatar from '@/components/Avatar/Avatar';
-import styles from '@/components/PageHeader/PageHeader.module.scss';
-import MetaGroup from '@/components/MetaGroup/MetaGroup';
-import Meta from '@/components/Meta/Meta';
-import Icon from '@/components/Icon/Icon';
-import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
-import Button from '@/components/Button/Button';
-import { List, User } from '@/lib/types';
+'use client';
 
-type ProfileUser = User & {
+import React from 'react';
+import { useTranslations } from 'next-intl';
+
+import Avatar from '@/components/Avatar/Avatar';
+import Button from '@/components/Button/Button';
+import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
+import Meta from '@/components/Meta/Meta';
+import MetaGroup from '@/components/MetaGroup/MetaGroup';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import type { List, User } from '@/lib/types';
+
+import styles from './ProfileHeader.module.scss';
+
+export type ProfileUser = User & {
   public_lists_count: number;
   publicLists: List[];
   avatar: string | null;
@@ -17,19 +21,18 @@ type ProfileUser = User & {
   unconfirmedProfilePublicVisible?: boolean;
 };
 
-type ProfileHeaderSectionProps = {
+interface ProfileHeaderProps {
   user: ProfileUser;
-  verifiedUserLabel: string;
-  publicListsLabel: string;
-  showEditProfileButton: boolean;
-};
+  showEdit: boolean;
+}
 
-export default function ProfileHeaderSection({
+export default function ProfileHeader({
   user,
-  verifiedUserLabel,
-  publicListsLabel,
-  showEditProfileButton,
-}: ProfileHeaderSectionProps) {
+  showEdit,
+}: ProfileHeaderProps) {
+  const common = useTranslations('common');
+  const profile = useTranslations('profile');
+
   return (
     <PageHeader>
       <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
@@ -51,16 +54,10 @@ export default function ProfileHeaderSection({
             {user.bio && <p className={styles.caption}>{user.bio}</p>}
           </div>
           <MetaGroup>
-            <Meta>
-              <Icon name="verified" size={16} />
-              <span>{verifiedUserLabel}</span>
-            </Meta>
-            <Meta>
-              <Icon name="list" size={16} />
-              {publicListsLabel}
-            </Meta>
+            <Meta icon="verified" label={common('verifiedUser')} />
+            <Meta icon="list" label={profile('publicLists', { count: user.public_lists_count })} />
           </MetaGroup>
-          {showEditProfileButton && (
+          {showEdit && (
             <ButtonGroup>
               <Button label="Edit profile" href="/settings" />
             </ButtonGroup>

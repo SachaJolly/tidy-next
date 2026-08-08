@@ -24,13 +24,6 @@
   font-size: 0.8125rem;
 }
 
-.item-preview-not-clickable {
-  pointer-events: none;
-  user-select: none;
-  cursor: default;
-  touch-action: none;
-}
-
 .skeleton-line,
 .skeleton-line-short,
 .skeleton-card,

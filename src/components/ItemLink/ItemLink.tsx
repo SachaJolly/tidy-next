@@ -67,7 +67,7 @@ function ItemLinkContent({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
 }
 
 function ItemLinkBookmark({ metadata }: { metadata: ItemLinkProps['metadata'] }) {
-  const galleryImages = metadata.images?.slice(0, 8) ?? [];
+  const galleryImages = metadata.images?.slice(0, 4) ?? [];
 
   return (
     <>
