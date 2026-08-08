@@ -368,7 +368,20 @@ export async function fetchOpenGraphAction(rawUrl: string): Promise<FetchOpenGra
     const providerMetadata = await extractProviderSpecificMetadata(finalUrl, html);
     const ogImageValues = extractMetaContentValues(html, ['og:image', 'twitter:image'])
       .map((value) => resolveMaybeRelativeUrl(value, finalUrl))
-      .filter((value): value is string => Boolean(value));
+      .filter((value): value is string => Boolean(value))
+      // yt3.googleusercontent.com hosts YouTube channel/artist avatars and banners.
+      // On music.youtube.com and some youtube.com pages, this domain appears as the
+      // og:image even though it has nothing to do with the video being viewed.
+      // It is never a valid content thumbnail, so we filter it out here to prevent
+      // channel avatars from showing up alongside (or instead of) the real video
+      // thumbnail from i.ytimg.com that comes from the oEmbed response.
+      .filter((value) => {
+        try {
+          return new URL(value).hostname !== 'yt3.googleusercontent.com';
+        } catch {
+          return true;
+        }
+      });
     // OG/Twitter meta tags come first — they are always scoped to the specific page
     // being viewed (one tweet, one video, one article). Provider-specific images
     // (e.g. scraped preloads) are appended as supplemental candidates only after
