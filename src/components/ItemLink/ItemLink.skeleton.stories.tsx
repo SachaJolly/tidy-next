@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+
 import ItemLinkSkeleton from './ItemLink.skeleton';
 
 const meta = {
@@ -8,15 +9,28 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
+  args: {
+    displayMode: 'link',
+  },
 } satisfies Meta<typeof ItemLinkSkeleton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
-
-export const Loading: Story = {
+export const Link: Story = {
   args: {
-    loading: true,
+    displayMode: 'link',
+  },
+};
+
+export const Bookmark: Story = {
+  args: {
+    displayMode: 'bookmark',
+  },
+};
+
+export const Embed: Story = {
+  args: {
+    displayMode: 'embed',
   },
 };

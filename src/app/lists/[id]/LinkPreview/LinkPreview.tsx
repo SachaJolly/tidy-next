@@ -9,7 +9,7 @@ import ItemLink from '@/components/ItemLink/ItemLink';
 import type { ItemLinkMetadata } from '@/components/ItemLink/ItemLink.types';
 import { getResolvedDisplayMode, isEmbedModeAvailable } from '@/lib/item-display-mode';
 
-import LinkPreviewSkeleton from './LinkPreviewSkeleton';
+import LinkPreviewSkeleton from '@/components/ItemLink/ItemLink.skeleton';
 import styles from './LinkPreview.module.scss';
 import Notice from '@/components/Notice/Notice';
 
@@ -56,20 +56,21 @@ export default function LinkPreview({
 }: LinkPreviewProps) {
   const resolvedDisplayMode = getResolvedDisplayMode(displayMode, metadata);
   const canUseEmbedMode = isEmbedModeAvailable(metadata);
+  const previewHost = (() => {
+    try {
+      return new URL(url).host;
+    } catch {
+      return undefined;
+    }
+  })();
   const linkMetadata: ItemLinkMetadata = {
     title: metadata?.title?.trim() || labels.fallbackTitle,
     description: metadata?.description,
     favicon: metadata?.favicon,
     image: metadata?.image,
     images: metadata?.images,
-    siteName: metadata?.siteName,
-    host: (() => {
-      try {
-        return new URL(url).host;
-      } catch {
-        return undefined;
-      }
-    })(),
+    siteName: metadata?.siteName?.trim() || previewHost,
+    host: previewHost,
     author: metadata?.author,
     embed: metadata?.embed,
     videoUrl: metadata?.videoUrl,
@@ -132,7 +133,7 @@ export default function LinkPreview({
 
       <div className={styles.content}>
         {isLoading ? (
-          <LinkPreviewSkeleton displayMode={resolvedDisplayMode} wrapped={false} />
+          <LinkPreviewSkeleton displayMode={resolvedDisplayMode} />
         ) : (
           <div className="non-interactive">
             <ItemLink url={url} metadata={linkMetadata} displayMode={resolvedDisplayMode} />
@@ -143,7 +144,10 @@ export default function LinkPreview({
         (error ? (
           <Notice description={error} variant="error" />
         ) : (
-          <Notice description="Pro tip: You can change format by editing this item later." variant="discovery" />
+          <Notice
+            description="Pro tip: You can change format by editing this item later."
+            variant="discovery"
+          />
         ))}
     </div>
   );
