@@ -55,12 +55,8 @@ export default function ListHeader({list, author, locale, isAuthor }: ListHeader
               </Link>
             </span>
           </Meta>
-          <Meta size="base">
-            {date('lastUpdated', {
-              date: formatDate(list.updatedAt, 'short'),
-            })}
-          </Meta>
-          <Meta size="base">{t('items', { count: list.itemsCount })}</Meta>
+          <Meta size="base" label={date('lastUpdated', { date: formatDate(list.updatedAt, 'short') })} />
+          <Meta size="base" label={t('items', { count: list.itemsCount })} />
         </MetaGroup>
       </div>
 
