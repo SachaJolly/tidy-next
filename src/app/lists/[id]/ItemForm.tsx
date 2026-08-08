@@ -100,7 +100,9 @@ type ItemFormProps = {
   action: (values: {
     body: string;
     display_mode: 'text' | 'link' | 'bookmark' | 'embed';
-    url?: string;
+    // `null` (not `undefined`) so a text-only item explicitly clears any previously
+    // extracted URL server-side — this matches ItemFormPayload in @/actions/items.
+    url: string | null;
     metadata?: ItemType['metadata'];
   }) => Promise<{
     item?: ItemType;
@@ -165,6 +167,18 @@ export default function ItemForm({
   const resizeTextarea = useCallback((element: HTMLTextAreaElement) => {
     element.style.height = 'auto';
     element.style.height = `${element.scrollHeight}px`;
+  }, []);
+
+  const focusTextarea = useCallback((cursorPosition?: number) => {
+    const textarea = document.getElementById('item-body');
+    if (!(textarea instanceof HTMLTextAreaElement)) {
+      return;
+    }
+
+    textarea.focus();
+    if (cursorPosition !== undefined) {
+      textarea.setSelectionRange(cursorPosition, cursorPosition);
+    }
   }, []);
 
   // Sync initial values when props change (e.g., when editing a different item).
@@ -396,6 +410,7 @@ export default function ItemForm({
                 metadata: metadataPayload,
               }
             : {
+                url: null,
                 display_mode: 'text',
                 body: markdownBody,
               },
@@ -447,7 +462,13 @@ export default function ItemForm({
     }
     suppressedAutoPreviewUrlRef.current = removedUrl;
     resolvedMetadataUrlRef.current = null;
-  }, [extractedUrl, urlDraft]);
+
+    // Restore keyboard flow to the body field so the user can immediately edit
+    // the text that remains after removing the preview block.
+    requestAnimationFrame(() => {
+      focusTextarea(extractedUrl ? removedUrl.length : 0);
+    });
+  }, [extractedUrl, focusTextarea, urlDraft]);
 
   const handleRefreshPreview = useCallback(() => {
     if (!extractedUrl || isFetchingMetadata) {
