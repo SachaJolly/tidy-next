@@ -370,12 +370,19 @@ export async function fetchOpenGraphAction(rawUrl: string): Promise<FetchOpenGra
       .map((value) => resolveMaybeRelativeUrl(value, finalUrl))
       .filter((value): value is string => Boolean(value))
       // yt3.googleusercontent.com hosts YouTube channel/artist avatars and banners.
-      // On music.youtube.com and some youtube.com pages, this domain appears as the
-      // og:image even though it has nothing to do with the video being viewed.
-      // It is never a valid content thumbnail, so we filter it out here to prevent
-      // channel avatars from showing up alongside (or instead of) the real video
-      // thumbnail from i.ytimg.com that comes from the oEmbed response.
+      // On standard youtube.com video pages, this domain appears as the og:image
+      // even though it has nothing to do with the video — the real thumbnail comes
+      // from i.ytimg.com via the oEmbed response. We filter it out for youtube.com.
+      //
+      // Exception: music.youtube.com — on that platform the artist/album artwork
+      // (served from yt3.googleusercontent.com) IS the intended cover image, so
+      // we keep it there.
       .filter((value) => {
+        const finalHostname = finalUrl.hostname.toLowerCase();
+        if (finalHostname === 'music.youtube.com') {
+          return true;
+        }
+
         try {
           return new URL(value).hostname !== 'yt3.googleusercontent.com';
         } catch {

@@ -50,17 +50,50 @@ function needsOpenGraphEnrichment(metadata: LinkMetadata): boolean {
   return !metadata.title?.trim() || !metadata.description?.trim() || !hasImageData(metadata);
 }
 
-function mergeOEmbedWithOpenGraph(oembed: LinkMetadata, og: LinkMetadata): LinkMetadata {
+function mergeOEmbedWithOpenGraph(
+  oembed: LinkMetadata,
+  og: LinkMetadata,
+  rawUrl: string,
+): LinkMetadata {
+  let parsedUrl: URL | null = null;
+  try {
+    parsedUrl = new URL(rawUrl);
+  } catch {
+    // keep null — fallback to generic merge below
+  }
+
+  const isMusicYouTube = parsedUrl?.hostname.toLowerCase() === 'music.youtube.com';
+
+  // On music.youtube.com, the oEmbed thumbnail (i.ytimg.com) is the video
+  // thumbnail which has no relevance for a music track — the og:image artwork
+  // (yt3.googleusercontent.com) is the correct cover. We drop i.ytimg.com
+  // images so only the album/artist artwork is kept.
+  const filterImages = (urls: string[]): string[] => {
+    if (!isMusicYouTube) {
+      return urls;
+    }
+
+    return urls.filter((value) => {
+      try {
+        return new URL(value).hostname !== 'i.ytimg.com';
+      } catch {
+        return true;
+      }
+    });
+  };
+
   // OG images are listed first so that asset-level deduplication keeps the
   // higher-quality / more canonical URL when both sources reference the same
   // logical image (e.g. YouTube: OG maxresdefault.jpg wins over oEmbed hqdefault.jpg).
   const mergedImages = dedupeImagesByAsset(
-    [
-      ...(og.images ?? []),
-      og.image ?? '',
-      ...(oembed.images ?? []),
-      oembed.image ?? '',
-    ].filter((value) => value.trim().length > 0),
+    filterImages(
+      [
+        ...(og.images ?? []),
+        og.image ?? '',
+        ...(oembed.images ?? []),
+        oembed.image ?? '',
+      ].filter((value) => value.trim().length > 0),
+    ),
   );
 
   return {
@@ -110,7 +143,7 @@ export async function fetchLinkMetadataAction(rawUrl: string): Promise<FetchLink
       // In that case, enrich with OG/JSON-LD instead of returning an empty-looking preview.
       const ogEnrichmentResult = await fetchOpenGraphAction(normalizedUrl);
       if (ogEnrichmentResult.metadata) {
-        return { metadata: mergeOEmbedWithOpenGraph(oembedMetadata, ogEnrichmentResult.metadata) };
+        return { metadata: mergeOEmbedWithOpenGraph(oembedMetadata, ogEnrichmentResult.metadata, normalizedUrl) };
       }
 
       // Degraded path: return sparse oEmbed data instead of hard failing the form.
