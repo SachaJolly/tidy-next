@@ -34,8 +34,13 @@ export default function EditItemModal({ listId, items }: EditItemModalProps) {
   }, [queryModal]);
 
   const handleSuccess = useCallback(() => {
-    router.refresh();
+    // Order matters. Our server actions call `revalidatePath('/', 'layout')`, which makes
+    // the following `router.refresh()` fall back to a full MPA navigation towards the URL
+    // the router currently holds. Closing first rewrites that URL (via replaceState) so the
+    // modal params are already gone, which keeps the refresh soft and stops the page — and
+    // every embedded iframe — from reloading and re-opening the modal.
     closeModal();
+    router.refresh();
   }, [closeModal, router]);
 
   if (!isOpen) {

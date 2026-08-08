@@ -43,8 +43,12 @@ export default function EditListModal({
   }, [forceOpen, queryModal, router]);
 
   const handleSuccess = useCallback(() => {
-    router.refresh();
+    // Close before refreshing: `revalidatePath('/', 'layout')` in the server action turns a
+    // subsequent `router.refresh()` into a hard MPA navigation to the router's current URL.
+    // Clearing the modal params first keeps that refresh soft, so the page never reloads and
+    // the modal cannot re-open from a stale `?modal=` param.
     closeModal();
+    router.refresh();
   }, [closeModal, router]);
 
   useEffect(() => {
