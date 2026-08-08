@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 
 import {DropdownItem, DropdownMenu, DropdownSeparator, DropdownText} from '@/components/Dropdown';
 import { useQueryModal } from '@/hooks/use-query-modal';
+import { useDateFormatter } from '@/hooks/use-date-formatter';
 
 interface ItemOptionsDropdownProps {
   listId: string;
@@ -29,17 +30,16 @@ export default function ItemOptionsDropdown({
 }: ItemOptionsDropdownProps) {
   const common = useTranslations('common');
   const t = useTranslations('ItemOptionsDropdown');
+  const date = useTranslations('date');
+  const formatDate = useDateFormatter();
   const queryModal = useQueryModal();
 
   const handleEdit = useCallback(() => {
     queryModal.openModal('edit-item', itemId);
   }, [queryModal, itemId]);
 
-  const formatDate = (dateStr?: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  };
+  const formatItemDate = (dateStr?: string) =>
+    dateStr ? formatDate(dateStr, 'short') : '';
 
   return (
     <DropdownMenu align="end" inline={inline}>
@@ -67,7 +67,7 @@ export default function ItemOptionsDropdown({
       <DropdownSeparator />
       <DropdownText>
         {authorName && <p className="text-small text-muted">{t('addedBy', { author: authorName })}</p>}
-        {updatedAt && <p className="text-small text-muted">{t('lastUpdated', { date: formatDate(updatedAt) })}</p>}
+        {updatedAt && <p className="text-small text-muted">{date('lastUpdated', { date: formatItemDate(updatedAt) })}</p>}
         {canManage && <p className="text-small text-muted">{t('viewsCount', {count: viewsCount})}</p>}
       </DropdownText>
     </DropdownMenu>

@@ -117,7 +117,6 @@ async function ListHeaderContainer({ id }: { id: string }) {
       list={list}
       author={list.author}
       locale={locale}
-      timezone={timezone}
       isAuthor={isAuthor}
     />
   );

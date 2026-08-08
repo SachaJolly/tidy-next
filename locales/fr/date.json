@@ -1,4 +1,11 @@
 {
   "lastUpdated": "Mis à jour le {date}",
-  "publishedOn": "Publié le {date}"
+  "releasedOn": "Publié le {date}",
+  "formats": {
+    "short": { "year": "numeric", "month": "short", "day": "numeric" },
+    "long": { "year": "numeric", "month": "long", "day": "numeric" },
+    "numeric": { "day": "2-digit", "month": "2-digit", "year": "numeric" },
+    "month-year": { "year": "numeric", "month": "long" },
+    "month-day": { "day": "numeric", "month": "long" }
+  }
 }

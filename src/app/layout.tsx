@@ -53,8 +53,8 @@ export default async function RootLayout({
   const colorScheme = resolveColorSchemeFromTheme(themePreference);
 
   // Load messages for the detected locale
-  // Using getMessages() with the locale we determined
   const messages = await getMessages({ locale });
+  const dateFormats = (messages.date as { formats?: Record<string, Intl.DateTimeFormatOptions> })?.formats ?? {};
   const newListGate = await getNewListGate();
   const user = await getUser();
   const shouldShowConfirmEmailBanner = user?.emailConfirmed === false;
@@ -67,7 +67,7 @@ export default async function RootLayout({
     >
       <head></head>
       <body className={`${ibmPlexSans.variable} ${spaceGrotesk.variable}`}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages} formats={{ dateTime: dateFormats as Record<string, import('use-intl').DateTimeFormatOptions> }}>
           <UserProvider initialUser={user}>
             <div id="application-banners">
               {shouldShowConfirmEmailBanner && (

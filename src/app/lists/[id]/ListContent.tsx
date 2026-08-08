@@ -124,12 +124,7 @@ export async function ListHeaderSection({ id }: { id: string }) {
           </Meta>
           <Meta size="base">
             {date('lastUpdated', {
-              date: formatDate(list.updatedAt, locale, {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-                timeZone: timezone,
-              }),
+              date: formatDate(list.updatedAt, locale, 'short', timezone ?? undefined),
             })}
           </Meta>
           <Meta size="base">{t('items', { count: list.itemsCount })}</Meta>

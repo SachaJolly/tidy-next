@@ -1,6 +1,5 @@
 {
   "archive": "Archive",
   "viewsCount": "{count, number} views",
-  "addedBy": "Added by {author}",
-  "lastUpdated": "Last updated {date}"
+  "addedBy": "Added by {author}"
 }

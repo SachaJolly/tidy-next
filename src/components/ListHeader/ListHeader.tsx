@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 import { localizePath } from '@/lib/locale-path';
-import { formatDate } from '@/lib/date';
+import { useDateFormatter } from '@/hooks/use-date-formatter';
 import { useQueryModal } from '@/hooks/use-query-modal';
 
 import MetaGroup from '@/components/MetaGroup/MetaGroup';
@@ -22,14 +22,14 @@ interface ListHeaderProps {
   list: List;
   author: User;
   locale: string;
-  timezone: string | null;
   isAuthor: boolean;
 }
 
-export default function ListHeader({list, author, locale, timezone, isAuthor }: ListHeaderProps) {
+export default function ListHeader({list, author, locale, isAuthor }: ListHeaderProps) {
   const t = useTranslations('listPage');
   const common = useTranslations('common');
   const date = useTranslations('date');
+  const formatDate = useDateFormatter();
   const queryModal = useQueryModal();
 
   const handleAddItem = () => {
@@ -57,12 +57,7 @@ export default function ListHeader({list, author, locale, timezone, isAuthor }: 
           </Meta>
           <Meta size="base">
             {date('lastUpdated', {
-              date: formatDate(list.updatedAt, locale, {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-                timeZone: timezone ?? undefined,
-              }),
+              date: formatDate(list.updatedAt, 'short'),
             })}
           </Meta>
           <Meta size="base">{t('items', { count: list.itemsCount })}</Meta>

@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 
+import { useDateFormatter } from '@/hooks/use-date-formatter';
+
 import { toDisplayMediaUrl } from '@/lib/media-proxy';
 
 import styles from './ItemLink.module.scss';
@@ -90,19 +92,15 @@ export function ItemLinkDataList({ metadata }: Pick<ItemLinkProps, 'metadata'>) 
 
 export function ItemLinkSite({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
   const siteName = metadata.siteName || metadata.host;
+  const formatDate = useDateFormatter();
 
   const formattedDate = metadata.publishedTime
-    ? new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: 'numeric' }).format(
-        new Date(metadata.publishedTime)
-      )
+    ? formatDate(metadata.publishedTime, 'short')
     : null;
 
   return (
     <div className={styles.site}>
       {metadata.favicon && <ItemLinkFavicon src={metadata.favicon} />}
-
-      {/* Each piece of meta is a list item — the CSS ::before separator is purely decorative
-          and won't be read by screen readers, unlike an explicit <span>·</span> */}
       <ul className={styles['site-list']}>
         {siteName && <li className={styles['site-list-item']}>{siteName}</li>}
         {metadata.author && <li className={styles['site-list-item']}>{metadata.author}</li>}
@@ -118,7 +116,6 @@ export function ItemLinkSite({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
 
 export function ItemLinkEmbedVideo({ src, title }: { src: string; title?: string }) {
   return (
-    // title mirrors aria-label for both AT and tooltip on hover
     <video
       aria-label={title}
       className={styles['embed-video']}

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 
 import {
@@ -25,7 +25,6 @@ import { localizePath } from '@/lib/locale-path';
 import { useUser } from '@/providers/UserProvider';
 import { type LanguagePreference, LANGUAGE_OPTIONS } from '@/lib/language-mapper';
 import { type ThemePreference, THEME_OPTIONS } from '@/lib/theme-mapper';
-import { formatDate } from '@/lib/date';
 import { formatTimezoneLabel } from '@/lib/timezone-mapper';
 
 const MOCK_ACCOUNTS = [
@@ -51,6 +50,7 @@ export default function NavbarOptions({
   const date = useTranslations('date');
   const common = useTranslations('common');
   const locale = useLocale();
+  const format = useFormatter();
   const router = useRouter();
   const releaseDate = process.env.NEXT_PUBLIC_RELEASE_DATE;
   const [activeAccount, setActiveAccount] = useState(MOCK_ACCOUNTS[1]?.value ?? '');
@@ -197,12 +197,8 @@ export default function NavbarOptions({
         <p className="text-small">{t('version', { version: packageJson.version })}</p>
         {releaseDate && (
           <p className="text-small">
-            {date('publishedOn', {
-              date: formatDate(releaseDate, locale, {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric',
-              }),
+            {date('releasedOn', {
+              date: format.dateTime(new Date(releaseDate), 'long'),
             })}
           </p>
         )}

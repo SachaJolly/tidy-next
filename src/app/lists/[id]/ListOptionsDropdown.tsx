@@ -12,8 +12,8 @@ import {
 import VisibilityRadioGroup from '@/components/Lists/VisibilityRadioGroup';
 import type { List } from '@/lib/types';
 import { updateListVisibilityAction } from '@/actions/lists';
-import { formatDate } from '@/lib/date';
 import { useQueryModal } from '@/hooks/use-query-modal';
+import { useDateFormatter } from '@/hooks/use-date-formatter';
 
 type ListVisibility = List['visibility'];
 
@@ -36,6 +36,7 @@ export default function ListOptionsDropdown({
 }: ListOptionsDropdownProps) {
   const router = useRouter();
   const locale = useLocale();
+  const formatDate = useDateFormatter();
   const date = useTranslations('date');
   const common = useTranslations('common');
   const queryModal = useQueryModal();
@@ -44,15 +45,8 @@ export default function ListOptionsDropdown({
   const [error, setError] = useState<string | null>(null);
 
   const updatedLabel = useMemo(
-    () =>
-      date('lastUpdated', {
-        date: formatDate(updatedAt, locale, {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-        }),
-      }),
-    [date, locale, updatedAt],
+    () => date('lastUpdated', { date: formatDate(updatedAt, 'short') }),
+    [date, formatDate, updatedAt],
   );
 
   const handleEdit = () => {

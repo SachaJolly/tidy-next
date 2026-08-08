@@ -95,8 +95,19 @@ export default getRequestConfig(async ({ requestLocale }) => {
     defaultLocale
   ) as Locale;
 
+  const messages = loadMessages(normalizedLocale);
+
+  // Date formats are defined in locales/{locale}/date.json under "formats".
+  // This mirrors Rails en.yml > date > formats — each locale controls its own
+  // format options (e.g. fr uses day-first numeric, en uses month-first).
+  // Cast is safe: next-intl's DateTimeFormatOptions extends Intl.DateTimeFormatOptions.
+  const dateFormats = (messages.date as { formats?: Record<string, Intl.DateTimeFormatOptions> })?.formats ?? {};
+
   return {
     locale: normalizedLocale,
-    messages: loadMessages(normalizedLocale),
+    messages,
+    formats: {
+      dateTime: dateFormats as Record<string, import('use-intl').DateTimeFormatOptions>,
+    },
   };
 });

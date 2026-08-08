@@ -55,7 +55,6 @@ export const AsAuthor: Story = {
     list: mockList,
     author: mockAuthor,
     locale: 'en',
-    timezone: 'America/New_York',
     isAuthor: true,
   },
 };
@@ -65,7 +64,6 @@ export const AsViewer: Story = {
     list: mockList,
     author: mockAuthor,
     locale: 'en',
-    timezone: 'America/New_York',
     isAuthor: false,
   },
 };
@@ -75,7 +73,6 @@ export const WithoutDescription: Story = {
     list: { ...mockList, description: null },
     author: mockAuthor,
     locale: 'en',
-    timezone: 'America/New_York',
     isAuthor: true,
   },
 };
@@ -85,7 +82,6 @@ export const PrivateList: Story = {
     list: { ...mockList, visibility: 'PRIVATE' },
     author: mockAuthor,
     locale: 'en',
-    timezone: 'America/New_York',
     isAuthor: true,
   },
 };
