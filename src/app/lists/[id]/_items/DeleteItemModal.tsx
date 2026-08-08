@@ -10,15 +10,12 @@ import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import { Item } from '@/components/Item/Item';
 import { Modal, ModalClose, ModalContent, ModalFooter, ModalHeader } from '@/components/Modal/Modal';
 import { useQueryModal } from '@/hooks/use-query-modal';
-import type { Item as ItemType } from '@/lib/types';
 import Notice from '@/components/Notice/Notice';
 
-type DeleteItemModalProps = {
-  listId: string;
-  items: ItemType[];
-};
+import { useListContext } from '../ListProvider';
 
-export default function DeleteItemModal({ listId, items }: DeleteItemModalProps) {
+export default function DeleteItemModal() {
+  const { list, items } = useListContext();
   const t = useTranslations('ItemOptionsDropdown');
   const forms = useTranslations('forms');
   const queryModal = useQueryModal({ modalIdKey: 'id' });
@@ -59,7 +56,7 @@ export default function DeleteItemModal({ listId, items }: DeleteItemModalProps)
     setIsSubmitting(true);
     setError(null);
 
-    const result = await archiveListItemAction(listId, item.id);
+    const result = await archiveListItemAction(list.id, item.id);
     if (result.error) {
       setError(result.error);
       setIsSubmitting(false);
@@ -69,7 +66,7 @@ export default function DeleteItemModal({ listId, items }: DeleteItemModalProps)
     queryModal.closeModal();
     router.refresh();
     setIsSubmitting(false);
-  }, [isSubmitting, item, listId, queryModal, router, t]);
+  }, [isSubmitting, item, list.id, queryModal, router, t]);
 
   if (!isOpen) {
     return null;
@@ -85,7 +82,8 @@ export default function DeleteItemModal({ listId, items }: DeleteItemModalProps)
             <p>{t('confirmDescription')}</p>
 
             <div className="non-interactive">
-              <Item item={item} listId="" canManage={false} />
+              {/* Preview only: the confirmation must never expose the item actions. */}
+              <Item item={item} canManage={false} />
             </div>
 
             {error && <Notice variant="error" description={error} />}

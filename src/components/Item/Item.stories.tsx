@@ -52,7 +52,6 @@ const baseBookmarkItem: ItemType = {
 export const Link: Story = {
   args: {
     item: baseLinkItem,
-    listId: 'list-123',
   },
 };
 
@@ -65,7 +64,6 @@ export const LinkNoFavicon: Story = {
       ...baseLinkItem,
       metadata: {},
     },
-    listId: 'list-123',
   },
 };
 
@@ -78,7 +76,6 @@ export const LinkCaption: Story = {
       ...baseLinkItem,
       body: 'A major release with new features and improvements',
     },
-    listId: 'list-123',
   },
 };
 
@@ -88,6 +85,5 @@ export const LinkCaption: Story = {
 export const Bookmark: Story = {
   args: {
     item: baseBookmarkItem,
-    listId: 'list-123',
   },
 };

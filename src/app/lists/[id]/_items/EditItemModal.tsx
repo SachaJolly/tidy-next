@@ -7,17 +7,13 @@ import { useTranslations } from 'next-intl';
 import { updateListItemAction } from '@/actions/items';
 import { ModalContent, ModalHeader } from '@/components/Modal/Modal';
 import { useQueryModal } from '@/hooks/use-query-modal';
-import type { Item } from '@/lib/types';
 
+import { useListContext } from '../ListProvider';
 import ItemForm from './ItemForm';
 import ListModal from '@/components/Modal/ListModal';
 
-type EditItemModalProps = {
-  listId: string;
-  items: Item[];
-};
-
-export default function EditItemModal({ listId, items }: EditItemModalProps) {
+export default function EditItemModal() {
+  const { list, items } = useListContext();
   const t = useTranslations('EditItemModal');
   const router = useRouter();
   const queryModal = useQueryModal();
@@ -63,7 +59,7 @@ export default function EditItemModal({ listId, items }: EditItemModalProps) {
       <ItemForm
         title={t('title')}
         submitLabel={t('save')}
-        action={(values) => updateListItemAction(listId, item.id, values)}
+        action={(values) => updateListItemAction(list.id, item.id, values)}
         initialBody={item.body}
         initialExtractedUrl={item.url}
         initialDisplayMode={item.display_mode}

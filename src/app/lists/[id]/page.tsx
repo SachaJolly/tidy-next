@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { api, ApiFetchError } from '@/lib/api';
-import type { List, Item as ItemType, User } from '@/lib/types';
+import type { List, User } from '@/lib/types';
 import { TIMEZONE_COOKIE_NAME, parseTimezone } from '@/lib/timezone-mapper';
 
 import ListLayout from '@/layouts/ListLayout';
@@ -14,9 +14,8 @@ import { ListItemsSkeleton } from '@/components/Item/ListItems.skeleton';
 import { Item } from '@/components/Item/Item';
 
 import styles from '@/layouts/ListLayout/ListLayout.module.scss';
-import DeleteItemModal from './_items/DeleteItemModal';
-import EditItemModal from './_items/EditItemModal';
-import NewItemModal from './_items/NewItemModal';
+import { ListProvider } from './ListProvider';
+import ItemModals from './_items/ItemModals';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -115,7 +114,9 @@ async function ListHeaderContainer({ id }: { id: string }) {
 
   return (
     <ListHeader
-      list={list}
+      // The header never reads the items, and everything handed to a client component is
+      // serialised into the RSC payload — so the array is left out rather than shipped twice.
+      list={{ ...list, items: undefined }}
       author={list.author}
       locale={locale}
       isAuthor={isAuthor}
@@ -135,41 +136,32 @@ async function ListTopCover({ id }: { id: string }) {
   return <div className={styles['page-cover']} style={coverStyle} aria-hidden="true" />;
 }
 
-async function ListItems({ id }: { id: string }) {
+/**
+ * Items and their modals share one boundary: both need the same list and the same
+ * permission, so the page resolves them once and exposes them through ListProvider instead
+ * of threading `listId` / `canManage` / `items` through every component underneath.
+ */
+async function ListBody({ id }: { id: string }) {
   const { list, common, isAuthor } = await getListPageData(id);
-  const items = list.items || [];
+  const items = list.items ?? [];
 
   return (
-    <section className={styles['items-section']}>
-      {items.length > 0 ? (
-        <div className={styles['items-grid']}>
-          {items.map((item: ItemType) => (
-            <Item item={item} key={item.id} listId={id} canManage={isAuthor} />
-          ))}
-        </div>
-      ) : (
-        <div className={styles['empty-state']}>
-          <p>{common('noItemsYet')}</p>
-        </div>
-      )}
-    </section>
-  );
-}
-
-async function ListModals({ id }: { id: string }) {
-  const { list, isAuthor } = await getListPageData(id);
-  const items = list.items || [];
-
-  if (!isAuthor) {
-    return null;
-  }
-
-  return (
-    <>
-      <NewItemModal listId={id} />
-      <EditItemModal listId={id} items={items} />
-      <DeleteItemModal listId={id} items={items} />
-    </>
+    <ListProvider list={list} canManage={isAuthor}>
+      <section className={styles['items-section']}>
+        {items.length > 0 ? (
+          <div className={styles['items-grid']}>
+            {items.map((item) => (
+              <Item item={item} key={item.id} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles['empty-state']}>
+            <p>{common('noItemsYet')}</p>
+          </div>
+        )}
+      </section>
+      <ItemModals />
+    </ListProvider>
   );
 }
 
@@ -181,19 +173,18 @@ export default function ListPage({ params }: PageProps) {
   const { id } = use(params);
 
   return (
-    <ListLayout cover={
-      <Suspense fallback={null}>
-        <ListTopCover id={id} />
-      </Suspense>
-    }>
+    <ListLayout
+      cover={
+        <Suspense fallback={null}>
+          <ListTopCover id={id} />
+        </Suspense>
+      }
+    >
       <Suspense fallback={<ListHeaderSkeleton />}>
         <ListHeaderContainer id={id} />
       </Suspense>
       <Suspense fallback={<ListItemsSkeleton />}>
-        <ListItems id={id} />
-      </Suspense>
-      <Suspense fallback={null}>
-        <ListModals id={id} />
+        <ListBody id={id} />
       </Suspense>
     </ListLayout>
   );

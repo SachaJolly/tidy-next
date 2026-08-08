@@ -9,30 +9,34 @@ import ItemBody from '@/components/ItemBody/ItemBody';
 import ItemLink from '@/components/ItemLink/ItemLink';
 import type { ItemLinkMetadata } from '@/components/ItemLink/ItemLink.types';
 import { Item as ItemType } from '@/lib/types';
+import { useOptionalListContext } from '@/app/lists/[id]/ListProvider';
 
 import styles from './Item.module.scss';
 
 interface ItemProps {
   item: ItemType;
-  listId: string;
+  /**
+   * Overrides the permission carried by the list context. Only the archive confirmation
+   * needs it, to render a read-only preview of the item it is about to remove.
+   */
   canManage?: boolean;
 }
 
-export const Item = ({ item, listId, canManage = false }: ItemProps) => {
+export const Item = ({ item, canManage }: ItemProps) => {
   const t = useTranslations('item');
   const listPage = useTranslations('listPage');
+  const listContext = useOptionalListContext();
+  const showActions = canManage ?? listContext?.canManage ?? false;
   const metadata = item.metadata as ItemLinkMetadata;
   const linkTitle = metadata.title?.trim() || t('noTitle');
   const hasLinkUrl = typeof item.url === 'string' && item.url.trim().length > 0;
-  const actions = canManage && (
+  const actions = showActions && (
     <div className={styles.actions}>
       <Dropdown>
         <ButtonHover aria-label={listPage('settings')} />
         <ItemOptionsDropdown
-          listId={listId}
           itemId={item.id}
           viewsCount={item.stats?.views ?? 0}
-          canManage={canManage}
           authorName={item.author?.name}
           updatedAt={item.updatedAt}
         />

@@ -7,14 +7,13 @@ import { useTranslations } from 'next-intl';
 import { createListItemAction } from '@/actions/items';
 import { useQueryModal } from '@/hooks/use-query-modal';
 
+import { useListContext } from '../ListProvider';
+
 import ItemForm from './ItemForm';
 import ListModal from '@/components/Modal/ListModal';
 
-type NewItemModalProps = {
-  listId: string;
-};
-
-export default function NewItemModal({ listId }: NewItemModalProps) {
+export default function NewItemModal() {
+  const { list } = useListContext();
   const t = useTranslations('NewItemModal');
   const router = useRouter();
   const queryModal = useQueryModal();
@@ -42,7 +41,7 @@ export default function NewItemModal({ listId }: NewItemModalProps) {
       <ItemForm
         title={t('title')}
         submitLabel={t('add')}
-        action={(values) => createListItemAction(listId, values)}
+        action={(values) => createListItemAction(list.id, values)}
         onCancel={closeModal}
         onSuccess={handleSuccess}
       />
