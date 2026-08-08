@@ -10,7 +10,7 @@ import { useQueryModal } from '@/hooks/use-query-modal';
 import type { Item } from '@/lib/types';
 
 import ItemForm from './ItemForm';
-import ListModal from '../ListModal';
+import ListModal from '@/components/Modal/ListModal';
 
 type EditItemModalProps = {
   listId: string;

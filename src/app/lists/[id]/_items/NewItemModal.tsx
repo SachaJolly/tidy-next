@@ -8,7 +8,7 @@ import { createListItemAction } from '@/actions/items';
 import { useQueryModal } from '@/hooks/use-query-modal';
 
 import ItemForm from './ItemForm';
-import ListModal from '../ListModal';
+import ListModal from '@/components/Modal/ListModal';
 
 type NewItemModalProps = {
   listId: string;

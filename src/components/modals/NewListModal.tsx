@@ -7,9 +7,9 @@ import { localizePath } from '@/lib/locale-path';
 import { useQueryModal } from '@/hooks/use-query-modal';
 import type { List, NewListGate } from '@/lib/types';
 
-import ListLimitReached from './ListLimitReached';
-import ListModal from './ListModal';
-import ListForm from './ListForm';
+import ListLimitReached from '@/components/modals/ListLimitReached';
+import ListModal from '@/components/Modal/ListModal';
+import ListForm from '@/components/modals/ListForm';
 
 /**
  * Dedicated modal for creating a new list.

@@ -13,7 +13,7 @@ import { UserProvider } from '@/providers/UserProvider';
 
 import ConfirmEmailBanner from '@/components/Banner/ConfirmEmailBanner';
 import Footer from '@/components/Footer/Footer';
-import GlobalModals from '@/components/GlobalModals';
+import GlobalModals from '@/components/modals/GlobalModals';
 import { LanguageInitializer } from '@/components/LanguageInitializer';
 import Navbar from '@/components/Navbar/Navbar';
 

@@ -10,15 +10,15 @@ import { useQueryModal } from '@/hooks/use-query-modal';
 import type { NewListGate } from '@/lib/types';
 import type { List } from '@/lib/types';
 
-const NewListModal = dynamic(() => import('@/app/lists/NewListModal'), {
+const NewListModal = dynamic(() => import('./NewListModal'), {
   ssr: false,
 });
 
-const EditListModal = dynamic(() => import('@/app/lists/[id]/EditListModal'), {
+const EditListModal = dynamic(() => import('./EditListModal'), {
   ssr: false,
 });
 
-const DeleteListModal = dynamic(() => import('@/app/lists/[id]/DeleteListModal'), {
+const DeleteListModal = dynamic(() => import('./DeleteListModal'), {
   ssr: false,
 });
 

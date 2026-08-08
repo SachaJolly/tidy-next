@@ -6,7 +6,7 @@ import { Dropdown } from '@/components/Dropdown';
 import { ButtonHover } from '@/components/ButtonHover';
 import Meta from '@/components/Meta/Meta';
 import MetaGroup from '@/components/MetaGroup/MetaGroup';
-import ListOptionsDropdown from '@/app/lists/[id]/ListOptionsDropdown';
+import ListOptionsDropdown from '@/components/ListOptionsDropdown/ListOptionsDropdown';
 import styles from './ListCard.module.scss';
 import { List } from '@/lib/types';
 

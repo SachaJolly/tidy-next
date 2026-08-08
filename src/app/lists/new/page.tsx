@@ -1,4 +1,4 @@
-import NewListModal from '../NewListModal';
+import NewListModal from '@/components/modals/NewListModal';
 import { getNewListGate } from '@/lib/new-list-gate';
 
 export default async function NewListPage() {

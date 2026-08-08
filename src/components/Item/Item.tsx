@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { ButtonHover } from '@/components/ButtonHover';
 import { Dropdown } from '@/components/Dropdown';
-import ItemOptionsDropdown from '@/app/lists/[id]/ItemOptionsDropdown';
+import ItemOptionsDropdown from '@/components/ItemOptionsDropdown/ItemOptionsDropdown';
 import ItemBody from '@/components/ItemBody/ItemBody';
 import ItemLink from '@/components/ItemLink/ItemLink';
 import type { ItemLinkMetadata } from '@/components/ItemLink/ItemLink.types';

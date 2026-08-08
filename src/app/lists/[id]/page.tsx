@@ -14,9 +14,9 @@ import { ListItemsSkeleton } from '@/components/Item/ListItems.skeleton';
 import { Item } from '@/components/Item/Item';
 
 import styles from '@/layouts/ListLayout/ListLayout.module.scss';
-import DeleteItemModal from './DeleteItemModal';
-import EditItemModal from './EditItemModal';
-import NewItemModal from './NewItemModal';
+import DeleteItemModal from './_items/DeleteItemModal';
+import EditItemModal from './_items/EditItemModal';
+import NewItemModal from './_items/NewItemModal';
 
 interface PageProps {
   params: Promise<{ id: string }>;

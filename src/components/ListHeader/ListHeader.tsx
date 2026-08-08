@@ -13,7 +13,7 @@ import Avatar from '@/components/Avatar/Avatar';
 import Button from '@/components/Button/Button';
 import ButtonGroup from '@/components/ButtonGroup/ButtonGroup';
 import { Dropdown } from '@/components/Dropdown';
-import ListOptionsDropdown from '@/app/lists/[id]/ListOptionsDropdown';
+import ListOptionsDropdown from '@/components/ListOptionsDropdown/ListOptionsDropdown';
 
 import type { List, User } from '@/lib/types';
 import styles from './ListHeader.module.scss';

@@ -8,8 +8,8 @@ import type { List } from '@/lib/types';
 import { ModalContent, ModalHeader } from '@/components/Modal/Modal';
 
 import { updateListAction } from '@/actions/lists';
-import ListForm from '@/app/lists/ListForm';
-import ListModal from '@/app/lists/ListModal';
+import ListForm from '@/components/modals/ListForm';
+import ListModal from '@/components/Modal/ListModal';
 
 /**
  * Modal component for editing an existing list via query param (?modal=edit-list&modalId=xxx).

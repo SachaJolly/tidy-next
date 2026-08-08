@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 
-import EditListModal from '../EditListModal';
+import EditListModal from '@/components/modals/EditListModal';
 import { api, ApiFetchError } from '@/lib/api';
 import type { List } from '@/lib/types';
 
