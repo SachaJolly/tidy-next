@@ -9,7 +9,7 @@ import type {
   ItemLinkWithDisplayModeProps,
 } from './ItemLink.types';
 import {
-  ItemLinkDataList, ItemLinkEmbedVideo,
+  ItemLinkDataList, ItemLinkEmbedHtml, ItemLinkEmbedVideo,
   ItemLinkFavicon,
   ItemLinkInfoMeta,
   ItemLinkSite,
@@ -23,10 +23,10 @@ function ItemLink({ url, metadata, displayMode = 'link' }: ItemLinkWithDisplayMo
   const isEmbed = resolvedMode === 'embed';
 
   const content =
-    resolvedMode === 'bookmark' ? (
-      <ItemLinkBookmark metadata={metadata} />
-    ) : resolvedMode === 'embed' ? (
-      <ItemLinkEmbed metadata={metadata} />
+    resolvedMode === 'embed' ? (
+      <ItemEmbedContent metadata={metadata} />
+    ) : resolvedMode === 'bookmark' ? (
+      <ItemBookmarkContent metadata={metadata} />
     ) : (
       <ItemLinkContent metadata={metadata} />
     );
@@ -66,7 +66,7 @@ function ItemLinkContent({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
   );
 }
 
-function ItemLinkBookmark({ metadata }: { metadata: ItemLinkProps['metadata'] }) {
+function ItemBookmarkContent({ metadata }: { metadata: ItemLinkProps['metadata'] }) {
   const galleryImages = metadata.images?.slice(0, 4) ?? [];
 
   return (
@@ -107,13 +107,13 @@ function ItemLinkBookmark({ metadata }: { metadata: ItemLinkProps['metadata'] })
   );
 }
 
-function ItemLinkEmbed({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
+function ItemEmbedContent({ metadata }: Pick<ItemLinkProps, 'metadata'>) {
   return (
     <>
       <ItemLinkInfoMeta title={metadata.title} description={metadata.description} />
       <ItemLinkDataList metadata={metadata} />
       {metadata.embed ? (
-        <div className={styles['embed-content']} dangerouslySetInnerHTML={{ __html: metadata.embed }} />
+        <ItemLinkEmbedHtml html={metadata.embed} />
       ) : metadata.videoUrl ? (
         <div className={styles['embed-content']}>
           <ItemLinkEmbedVideo src={metadata.videoUrl} title={metadata.title} />

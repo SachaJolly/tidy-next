@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 type QueryModalName = string;
 
@@ -15,12 +15,27 @@ interface UseQueryModalOptions {
  *
  * The current modal is encoded in the search params so every modal can be
  * deep-linked, shared, and restored with the browser back button.
+ *
+ * WHY the native History API instead of `router.push` / `router.replace`:
+ * both router methods are real *navigations*. In the App Router any change to the
+ * search params — even on the exact same pathname — invalidates the client cache
+ * entry for the route and refetches its RSC payload. Our list pages fetch with
+ * `cache: 'no-store'`, so every single modal open/close re-rendered the whole page
+ * subtree on the server and re-created the `<Item>` DOM. That destroys and rebuilds
+ * every provider `<iframe>`, which is why embedded players visibly reloaded (and
+ * restarted from zero) each time any modal was opened, saved or closed.
+ *
+ * `window.history.pushState` / `replaceState` are patched by Next.js: they update the
+ * URL and re-run `usePathname` / `useSearchParams` with **no** server round-trip and
+ * no re-render of Server Components, so the existing DOM — iframes included — is left
+ * untouched. Reads are unchanged, so deep links still work: a cold load of
+ * `/lists/42?modal=edit-item&modalId=7` is still server-rendered from the URL, and
+ * back/forward still fire `popstate`, which Next.js syncs back into `useSearchParams`.
  */
 export function useQueryModal({
   modalKey = 'modal',
   modalIdKey = 'modalId',
 }: UseQueryModalOptions = {}) {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -53,7 +68,11 @@ export function useQueryModal({
         return;
       }
 
-      router.push(
+      // pushState (not replaceState) so the back button closes the modal instead of
+      // leaving the page, matching the previous `router.push` behaviour.
+      window.history.pushState(
+        null,
+        '',
         buildUrl((params) => {
           params.set(modalKey, modalName);
           if (modalId) {
@@ -64,24 +83,26 @@ export function useQueryModal({
             params.delete('listId');
           }
         }),
-        { scroll: false },
       );
     },
-    [buildUrl, currentModal, currentModalId, modalIdKey, modalKey, router],
+    [buildUrl, currentModal, currentModalId, modalIdKey, modalKey],
   );
 
   const closeModal = useCallback(() => {
     if (!currentModal) return;
 
-    router.replace(
+    // replaceState mirrors the previous `router.replace`: closing consumes the entry
+    // created by openModal rather than stacking a second "modal-less" one.
+    window.history.replaceState(
+      null,
+      '',
       buildUrl((params) => {
         params.delete(modalKey);
         params.delete(modalIdKey);
         params.delete('listId');
       }),
-      { scroll: false },
     );
-  }, [buildUrl, currentModal, modalIdKey, modalKey, router]);
+  }, [buildUrl, currentModal, modalIdKey, modalKey]);
 
   return useMemo(
     () => ({
