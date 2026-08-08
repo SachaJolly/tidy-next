@@ -18,6 +18,8 @@ export default function DeleteItemModal() {
   const { list, items } = useListContext();
   const t = useTranslations('ItemOptionsDropdown');
   const forms = useTranslations('forms');
+  // `?modal=delete&id=…` rather than the default `modalId`, so an item archive can be open
+  // at the same time as a list modal without the two fighting over the same param.
   const queryModal = useQueryModal({ modalIdKey: 'id' });
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);

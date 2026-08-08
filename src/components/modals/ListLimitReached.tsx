@@ -11,6 +11,11 @@ type ListLimitReachedProps = {
   className?: string;
 };
 
+/**
+ * Blocking state shown instead of the creation form when an unconfirmed account has hit its
+ * list cap. Purely presentational: the decision is made by the caller, and enforced again
+ * server-side by the Rails List model — this is only the explanation.
+ */
 export default function ListLimitReached({
   title,
   description,

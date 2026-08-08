@@ -79,6 +79,13 @@ function toInitialLinkMetadata(
   };
 }
 
+/**
+ * Decides whether a half-typed string is worth fetching metadata for.
+ *
+ * `new URL()` alone is far too permissive here: "https://h" parses fine, and every keystroke
+ * on the way to a real address would fire its own request. So the hostname must also look
+ * finished — dotted labels ending in a plausible TLD.
+ */
 function isCompleteHttpsUrl(value: string): boolean {
   try {
     const parsed = new URL(value);
@@ -118,6 +125,17 @@ type ItemFormProps = {
   initialMetadata?: ItemType['metadata'];
 };
 
+/**
+ * Shared form for creating and editing an item. The caller supplies the server action, so
+ * this component never needs to know which one it is driving.
+ *
+ * Most of the complexity comes from one product behaviour: typing or pasting a URL at the
+ * start of the body silently turns the item into a link card. That happens in two stages —
+ * the URL becomes a `urlDraft` while it is still being typed, then, once it parses and the
+ * typing settles, it is promoted to `extractedUrl` and lifted out of the body so it is not
+ * displayed twice. Everything else here exists to keep that transition reversible: removing
+ * the preview must not re-trigger it, and reopening the modal on another item must reset it.
+ */
 export default function ItemForm({
   title,
   action,
@@ -225,6 +243,8 @@ export default function ItemForm({
     };
   }, [initialBody, initialDisplayMode, initialExtractedUrl]);
 
+  // First stage of the auto-preview: a URL at the very start of the body becomes a "draft".
+  // Only leading URLs qualify, so a link mentioned mid-sentence stays plain text.
   useEffect(() => {
     if (extractedUrl) {
       setUrlDraft(null);
@@ -240,11 +260,14 @@ export default function ItemForm({
     const token = match[1];
     const remainingBody = match[2].replace(/^\s+/, '');
 
+    // Removing a preview records its URL as suppressed. Without this the very next render
+    // would see the same leading URL in the body and immediately rebuild what was dismissed.
     if (suppressedAutoPreviewUrlRef.current && token === suppressedAutoPreviewUrlRef.current) {
       setUrlDraft(null);
       return;
     }
 
+    // A different URL means the user moved on, so the suppression no longer applies.
     if (suppressedAutoPreviewUrlRef.current && token !== suppressedAutoPreviewUrlRef.current) {
       suppressedAutoPreviewUrlRef.current = null;
     }
@@ -252,6 +275,10 @@ export default function ItemForm({
     setUrlDraft({ token, remainingBody });
   }, [extractedUrl, markdownBody]);
 
+  // Second stage: a draft that turns out to be a complete URL is promoted to the real
+  // preview, and the URL is lifted out of the body so it is not shown twice. Debounced,
+  // because a URL is typed or pasted character by character and every intermediate value
+  // would otherwise trigger its own metadata fetch.
   useEffect(() => {
     if (!urlDraft) {
       return;
@@ -341,6 +368,9 @@ export default function ItemForm({
     };
   }, [extractedUrl, linkPreviewFetchFailedLabel, metadataRefreshKey]);
 
+  // Keeps the stored mode honest. The preview merely *renders* embed as bookmark when the
+  // page exposes nothing embeddable, so without this the form would save 'embed' for a link
+  // that cannot embed — and the list would then disagree with what the user was shown.
   useEffect(() => {
     if (!extractedUrl || isFetchingMetadata) {
       return;
@@ -352,6 +382,8 @@ export default function ItemForm({
     }
   }, [extractedUrl, isFetchingMetadata, linkMetadata, urlDisplayMode]);
 
+  // The textarea starts at one row and grows with its content, so it has to be measured
+  // after every change rather than sized by CSS.
   useEffect(() => {
     const textarea = document.getElementById('item-body');
     if (!(textarea instanceof HTMLTextAreaElement)) {
@@ -365,6 +397,9 @@ export default function ItemForm({
     setMarkdownBody(event.currentTarget.value);
   }, []);
 
+  // Pasting a fresh URL over a dismissed one is a deliberate act, so it lifts the
+  // suppression the removal put in place. Only a paste at the very start counts — that is
+  // the position the auto-preview reacts to.
   const handlePaste = useCallback((event: React.ClipboardEvent<HTMLTextAreaElement>) => {
     if (!suppressedAutoPreviewUrlRef.current) {
       return;

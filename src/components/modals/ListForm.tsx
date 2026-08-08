@@ -39,6 +39,16 @@ type VisibilityOption = {
   icon: IconName;
 };
 
+/**
+ * Maps whatever the caller has to the enum keys the form works with.
+ *
+ * Visibility reaches us in two shapes: the raw API value ("PUBLIC") when it comes from a
+ * fetched list, and the enum key ("published") when it comes back from this form. Accepting
+ * both keeps callers from having to know which one they are holding.
+ *
+ * Unknown values fall back to 'restricted' (private) — the safe default, since guessing
+ * wrong in the other direction would silently publish a list.
+ */
 function normalizeVisibility(value: string): 'published' | 'unindexed' | 'restricted' {
   const mapping: Record<string, 'published' | 'unindexed' | 'restricted'> = {
     PUBLIC: 'published',
@@ -52,6 +62,10 @@ function normalizeVisibility(value: string): 'published' | 'unindexed' | 'restri
   return mapping[value] || 'restricted';
 }
 
+/**
+ * Shared form for both list modals. Defaults to creating; `EditListModal` passes an `action`
+ * bound to the list being updated.
+ */
 export default function ListForm({
   title,
   action = createListAction,
@@ -76,6 +90,8 @@ export default function ListForm({
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Re-seeds the fields when the modal is reused for a different list. The edit modal fetches
+  // asynchronously, so the form first mounts empty and only then receives its real values.
   useEffect(() => {
     setFormTitle(initialTitle);
     setDescription(initialDescription);

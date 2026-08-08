@@ -40,6 +40,12 @@ export async function generateMetadata({ params }: PageProps) {
 // Data Fetching
 // ============================================================================
 
+/**
+ * Loads the list, falling back to the public read when the token is rejected.
+ *
+ * `no-store` for everyone: a list changes as soon as its owner touches it, and a cached
+ * copy would show a visitor items that were archived minutes ago.
+ */
 const getListById = cache(async (id: string, authToken: string | null) => {
   try {
     return authToken
@@ -49,6 +55,8 @@ const getListById = cache(async (id: string, authToken: string | null) => {
         })
       : await api.get<List>(`/api/v1/lists/${id}`, { cache: 'no-store' });
   } catch (error) {
+    // An expired session must not hide a public list. Retrying anonymously lets the reader
+    // through as a visitor instead of bouncing them to a sign-in page they do not need.
     if (error instanceof ApiFetchError && error.status === 401 && authToken) {
       return api.get<List>(`/api/v1/lists/${id}`, { cache: 'no-store' });
     }
@@ -57,6 +65,10 @@ const getListById = cache(async (id: string, authToken: string | null) => {
   }
 });
 
+/**
+ * Single loader for the page. Wrapped in `cache()` so the sections below can each ask for
+ * what they need — they run in separate Suspense boundaries and would otherwise refetch.
+ */
 const getListPageData = cache(async (id: string) => {
   const locale = await getLocale();
   const t = await getTranslations('listPage');
@@ -74,6 +86,8 @@ const getListPageData = cache(async (id: string) => {
         cache: 'no-store',
       });
     } catch (error) {
+      // A rejected token means "browsing as a visitor", not a broken page. Anything else is
+      // a real failure and must surface.
       if (!(error instanceof ApiFetchError && error.status === 401)) {
         throw error;
       }
@@ -95,6 +109,8 @@ const getListPageData = cache(async (id: string) => {
     nextNotFound();
   }
 
+  // Second line of defence behind the API. A private list answers 404 rather than 403 so the
+  // response never confirms that a list exists at this id to someone who may not read it.
   const canAccessList = list.visibility !== 'PRIVATE' || currentUser?.id === list.author?.id;
   if (!canAccessList) {
     nextNotFound();
@@ -172,6 +188,9 @@ async function ListBody({ id }: { id: string }) {
 export default function ListPage({ params }: PageProps) {
   const { id } = use(params);
 
+  // Each section streams on its own: the cover and header only need the list record, while
+  // the body waits on the items. Splitting the boundaries lets the title paint immediately
+  // instead of holding the whole page behind the slowest part of the response.
   return (
     <ListLayout
       cover={

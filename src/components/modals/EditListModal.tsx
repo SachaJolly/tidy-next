@@ -12,7 +12,15 @@ import ListForm from '@/components/modals/ListForm';
 import ListModal from '@/components/Modal/ListModal';
 
 /**
- * Modal component for editing an existing list via query param (?modal=edit-list&modalId=xxx).
+ * Edits a list, from two different entry points.
+ *
+ * - Overlay: `?modal=edit-list&modalId=<id>` on any page, opened by GlobalModals. The param
+ *   carries an id but no list, so the modal has to fetch it from the client.
+ * - Route: `/lists/:id/edit`, which resolves the list on the server and passes it as
+ *   `initialList`, skipping that fetch entirely.
+ *
+ * A dropdown can open this from a card on `/discover` or `/dashboard`, where the page never
+ * loaded that list — hence the client fetch rather than reading it from a parent.
  */
 type EditListModalProps = {
   forceOpen?: boolean;
@@ -34,6 +42,8 @@ export default function EditListModal({
   const shouldRender = isOpen && !!listId;
 
   const closeModal = useCallback(() => {
+    // On the route there is no page underneath to reveal, so clearing the param would strand
+    // the user on /lists/:id/edit. Going back returns them to wherever they came from.
     if (forceOpen) {
       router.back();
       return;
@@ -56,6 +66,8 @@ export default function EditListModal({
       return;
     }
 
+    // The route already resolved the list on the server; refetching it would only add a
+    // loading flash to a form that is ready to paint.
     if (initialList) {
       setList(initialList);
       setIsLoading(false);
@@ -63,6 +75,8 @@ export default function EditListModal({
       return;
     }
 
+    // Guards against a stale response overwriting a newer one: the user can close and
+    // reopen on another list while the first request is still in flight.
     let isActive = true;
 
     const fetchList = async () => {
